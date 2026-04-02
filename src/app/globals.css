@@ -6,16 +6,19 @@
   --color-blue: #1a6fd4;
   --color-white: #f5f5f5;
   --color-navy: #0d1b3e;
+  --color-surface: #141920;
+  --color-mid: #111318;
   --color-blue-grey: #b8cef0;
+
+  /* Font system */
+  --font-display: var(--font-bebas);
+  --font-body: var(--font-grotesk);
+  --font-mono: var(--font-jetbrains);
 
   /* Neo-Brutalism Shadows */
   --shadow-brutal: 4px 4px 0px #1a6fd4;
   --shadow-brutal-lg: 6px 6px 0px #1a6fd4;
   --shadow-brutal-sm: 2px 2px 0px #1a6fd4;
-
-  /* Typography */
-  --font-heading: 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
 
   /* Transitions */
   --transition-base: 250ms ease;
@@ -58,9 +61,10 @@ html {
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-body);
+  font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: none;
 }
 
 /* Glassmorphism utility */
@@ -81,6 +85,64 @@ body {
 .brutal-card:hover {
   box-shadow: var(--shadow-brutal-lg);
   transform: translate(-2px, -2px);
+}
+
+/* Grid overlay utility */
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(26, 111, 212, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 111, 212, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Section label utility */
+.section-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  color: #1a6fd4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: #1a6fd4;
+  flex-shrink: 0;
+}
+
+/* Scroll-reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Blinking cursor for typed text */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Scroll hint line animation */
+@keyframes scrollLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* Electric blue glow utility */
