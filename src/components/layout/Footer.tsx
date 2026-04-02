@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const NAV = [
   { label: 'About', href: '#about' },
@@ -11,16 +12,18 @@ const NAV = [
 ];
 
 export default function Footer() {
+  const { isMobile } = useBreakpoint();
+
   return (
     <footer
       style={{
         background: '#0a0a0a',
         borderTop: '1px solid rgba(26,111,212,0.15)',
-        padding: '3rem',
+        padding: isMobile ? '2rem 1.5rem' : '3rem',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'flex-start' : 'center',
         justifyContent: 'space-between',
-        flexWrap: 'wrap',
         gap: '1.5rem',
       }}
     >
@@ -37,7 +40,7 @@ export default function Footer() {
       </div>
 
       {/* Nav links */}
-      <nav style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+      <nav style={{ display: 'flex', gap: isMobile ? '1.5rem' : '2rem', flexWrap: 'wrap' }}>
         {NAV.map(link => (
           <Link
             key={link.label}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const TABS = [
   {
@@ -75,18 +76,16 @@ const TABS = [
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState(0);
+  const { isMobile, isTablet, isDesktop } = useBreakpoint();
   const panel = TABS[activeTab];
 
+  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
+
   return (
-    <section
-      id="services"
-      style={{ background: '#111318', padding: '6rem 3rem' }}
-    >
+    <section id="services" style={{ background: '#111318', padding: sectionPadding }}>
       {/* Header */}
-      <div style={{ marginBottom: '4rem' }}>
-        <div className="section-label" style={{ marginBottom: '1rem' }}>
-          What We Do
-        </div>
+      <div style={{ marginBottom: isMobile ? '2rem' : '4rem' }}>
+        <div className="section-label" style={{ marginBottom: '1rem' }}>What We Do</div>
         <h2
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
@@ -100,17 +99,19 @@ export default function Services() {
         </h2>
       </div>
 
-      {/* 2-column grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 2fr',
-          gap: '3rem',
-          alignItems: 'start',
-        }}
-      >
-        {/* LEFT — sticky tab nav */}
-        <nav style={{ position: 'sticky', top: '8rem' }}>
+      {/* Mobile / Tablet: horizontal scrollable tabs */}
+      {!isDesktop && (
+        <div
+          style={{
+            overflowX: 'auto',
+            display: 'flex',
+            gap: '0',
+            borderBottom: '1px solid rgba(245,245,245,0.06)',
+            marginBottom: '2rem',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
+          } as React.CSSProperties}
+        >
           {TABS.map((tab, i) => {
             const active = i === activeTab;
             return (
@@ -119,50 +120,94 @@ export default function Services() {
                 onClick={() => setActiveTab(i)}
                 data-hover
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  padding: '1rem 0',
-                  borderBottom: '1px solid rgba(245,245,245,0.06)',
+                  flexShrink: 0,
+                  padding: '0.6rem 1rem',
                   background: 'transparent',
                   border: 'none',
-                  cursor: 'pointer',
+                  borderBottom: active ? '2px solid #1a6fd4' : '2px solid transparent',
+                  marginBottom: '-1px',
                   fontFamily: 'var(--font-grotesk), sans-serif',
                   fontWeight: 500,
-                  fontSize: '0.82rem',
+                  fontSize: '0.7rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                   color: active ? '#1a6fd4' : 'rgba(245,245,245,0.4)',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
                   transition: 'color 0.2s',
-                  textAlign: 'left',
-                }}
-                onMouseEnter={e => {
-                  if (!active) (e.currentTarget as HTMLElement).style.color = '#f5f5f5';
-                }}
-                onMouseLeave={e => {
-                  if (!active) (e.currentTarget as HTMLElement).style.color = 'rgba(245,245,245,0.4)';
                 }}
               >
                 {tab.label}
-                <span
-                  style={{
-                    opacity: active ? 1 : 0,
-                    transform: active ? 'translateX(0)' : 'translateX(-6px)',
-                    transition: 'opacity 0.2s, transform 0.2s',
-                    color: '#1a6fd4',
-                  }}
-                >
-                  →
-                </span>
               </button>
             );
           })}
-        </nav>
+        </div>
+      )}
 
-        {/* RIGHT — content panel */}
+      {/* Layout grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: isDesktop ? '1fr 2fr' : '1fr',
+          gap: '3rem',
+          alignItems: 'start',
+        }}
+      >
+        {/* Desktop-only: sticky vertical tab nav */}
+        {isDesktop && (
+          <nav style={{ position: 'sticky', top: '8rem' }}>
+            {TABS.map((tab, i) => {
+              const active = i === activeTab;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(i)}
+                  data-hover
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '1rem 0',
+                    borderBottom: '1px solid rgba(245,245,245,0.06)',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-grotesk), sans-serif',
+                    fontWeight: 500,
+                    fontSize: '0.82rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: active ? '#1a6fd4' : 'rgba(245,245,245,0.4)',
+                    transition: 'color 0.2s',
+                    textAlign: 'left',
+                  }}
+                  onMouseEnter={e => {
+                    if (!active) (e.currentTarget as HTMLElement).style.color = '#f5f5f5';
+                  }}
+                  onMouseLeave={e => {
+                    if (!active) (e.currentTarget as HTMLElement).style.color = 'rgba(245,245,245,0.4)';
+                  }}
+                >
+                  {tab.label}
+                  <span
+                    style={{
+                      opacity: active ? 1 : 0,
+                      transform: active ? 'translateX(0)' : 'translateX(-6px)',
+                      transition: 'opacity 0.2s, transform 0.2s',
+                      color: '#1a6fd4',
+                    }}
+                  >
+                    →
+                  </span>
+                </button>
+              );
+            })}
+          </nav>
+        )}
+
+        {/* Content panel */}
         <div>
-          {/* Visual block */}
           <div
             style={{
               height: '180px',
@@ -214,11 +259,10 @@ export default function Services() {
             {panel.description}
           </p>
 
-          {/* Features grid */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
+              gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
               gap: '1px',
               background: 'rgba(26,111,212,0.1)',
             }}

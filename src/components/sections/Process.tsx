@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const STEPS = [
   {
@@ -31,6 +32,15 @@ const STEPS = [
 
 export default function Process() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { isMobile, isTablet, isDesktop } = useBreakpoint();
+
+  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
+
+  const gridCols = isMobile
+    ? '1fr'
+    : isTablet
+    ? 'repeat(2, 1fr)'
+    : 'repeat(4, 1fr)';
 
   useEffect(() => {
     const cards = sectionRef.current?.querySelectorAll('.reveal');
@@ -38,9 +48,7 @@ export default function Process() {
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible');
         });
       },
       { threshold: 0.15 }
@@ -50,15 +58,9 @@ export default function Process() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      style={{ background: '#111318', padding: '6rem 3rem' }}
-    >
-      {/* Header */}
-      <div style={{ marginBottom: '4rem' }}>
-        <div className="section-label" style={{ marginBottom: '1rem' }}>
-          How We Work
-        </div>
+    <section ref={sectionRef} style={{ background: '#111318', padding: sectionPadding }}>
+      <div style={{ marginBottom: isMobile ? '2rem' : '4rem' }}>
+        <div className="section-label" style={{ marginBottom: '1rem' }}>How We Work</div>
         <h2
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
@@ -72,17 +74,16 @@ export default function Process() {
         </h2>
       </div>
 
-      {/* 4-column grid */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: gridCols,
           gap: '1px',
           background: 'rgba(26,111,212,0.1)',
         }}
       >
         {STEPS.map(step => (
-          <StepCard key={step.number} {...step} />
+          <StepCard key={step.number} isMobile={isMobile} {...step} />
         ))}
       </div>
     </section>
@@ -93,21 +94,21 @@ function StepCard({
   number,
   title,
   description,
+  isMobile,
 }: {
   number: string;
   title: string;
   description: string;
+  isMobile: boolean;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const accentRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
-      ref={cardRef}
       className="reveal"
       style={{
         background: '#111318',
-        padding: '2.5rem 2rem',
+        padding: isMobile ? '1.5rem' : '2.5rem 2rem',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -118,7 +119,6 @@ function StepCard({
         if (accentRef.current) accentRef.current.style.height = '0';
       }}
     >
-      {/* Left accent line */}
       <div
         ref={accentRef}
         style={{
@@ -131,7 +131,6 @@ function StepCard({
           transition: 'height 0.5s ease',
         }}
       />
-
       <div
         style={{
           fontFamily: 'var(--font-bebas), sans-serif',
@@ -143,7 +142,6 @@ function StepCard({
       >
         {number}
       </div>
-
       <div
         style={{
           fontFamily: 'var(--font-grotesk), sans-serif',
@@ -155,7 +153,6 @@ function StepCard({
       >
         {title}
       </div>
-
       <div
         style={{
           fontFamily: 'var(--font-grotesk), sans-serif',

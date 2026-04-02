@@ -1,18 +1,21 @@
 'use client';
 
-export default function MarqueeStrip() {
-  const items = [
-    'Web Development',
-    'Brand Identity',
-    'M-Pesa Integration',
-    'Digital Marketing',
-    'Full-Stack Applications',
-    'Graphic Design',
-    'Nairobi Made',
-    'World Class',
-  ];
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
-  const track = [...items, ...items];
+const ITEMS = [
+  'Web Development',
+  'Brand Identity',
+  'M-Pesa Integration',
+  'Digital Marketing',
+  'Full-Stack Applications',
+  'Graphic Design',
+  'Nairobi Made',
+  'World Class',
+];
+
+export default function MarqueeStrip() {
+  const { isMobile } = useBreakpoint();
+  const track = [...ITEMS, ...ITEMS];
 
   return (
     <div
@@ -28,7 +31,7 @@ export default function MarqueeStrip() {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '2rem',
+          gap: isMobile ? '2rem' : '2rem',
           animation: 'marquee 20s linear infinite',
           width: 'max-content',
         }}
@@ -40,11 +43,14 @@ export default function MarqueeStrip() {
         }}
       >
         {track.map((item, i) => (
-          <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexShrink: 0 }}>
+          <span
+            key={i}
+            style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '2rem' : '2rem', flexShrink: 0 }}
+          >
             <span
               style={{
                 fontFamily: 'var(--font-bebas), sans-serif',
-                fontSize: '1rem',
+                fontSize: isMobile ? '0.85rem' : '1rem',
                 letterSpacing: '0.15em',
                 color: 'rgba(245,245,245,0.35)',
                 whiteSpace: 'nowrap',

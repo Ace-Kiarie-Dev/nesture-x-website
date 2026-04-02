@@ -1,5 +1,7 @@
 'use client';
 
+import { useBreakpoint } from '@/lib/useBreakpoint';
+
 const PARTNERS = [
   { name: 'Rar Ray Bakes', industry: 'Bakery · Food' },
   { name: 'MR Right Imports', industry: 'Imports · Fitness Equipment' },
@@ -9,22 +11,29 @@ const PARTNERS = [
 ];
 
 export default function Partners() {
+  const { isMobile, isTablet, isDesktop } = useBreakpoint();
+  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
+
+  const partnerCols = isMobile
+    ? '1fr'
+    : isTablet
+    ? 'repeat(3, 1fr)'
+    : 'repeat(5, 1fr)';
+
   return (
-    <section style={{ background: '#0a0a0a', padding: '6rem 3rem' }}>
-      {/* Two-column intro */}
+    <section style={{ background: '#0a0a0a', padding: sectionPadding }}>
+      {/* Two-column intro — stacks on mobile/tablet */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '4rem',
+          gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
+          gap: isDesktop ? '4rem' : '2rem',
           marginBottom: '4rem',
           alignItems: 'end',
         }}
       >
         <div>
-          <div className="section-label" style={{ marginBottom: '1rem' }}>
-            Portfolio Companies
-          </div>
+          <div className="section-label" style={{ marginBottom: '1rem' }}>Portfolio Companies</div>
           <h2
             style={{
               fontFamily: 'var(--font-bebas), sans-serif',
@@ -57,7 +66,7 @@ export default function Partners() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
+          gridTemplateColumns: partnerCols,
           gap: '1px',
           background: 'rgba(26,111,212,0.1)',
         }}

@@ -1,20 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
 export default function CTA() {
+  const { isMobile, isTablet } = useBreakpoint();
+  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
+
   return (
     <section
       style={{
         background: '#0d1b3e',
         borderTop: '1px solid rgba(26,111,212,0.3)',
-        padding: '6rem 3rem',
+        padding: sectionPadding,
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* Radial glow */}
       <div
         style={{
           position: 'absolute',
@@ -52,11 +55,21 @@ export default function CTA() {
           Tell us what you&apos;re trying to solve. The first conversation is always free.
         </p>
 
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2rem' }}>
-          <Link href="#contact" style={{ textDecoration: 'none' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: '1rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '2rem',
+          }}
+        >
+          <Link href="#contact" style={{ textDecoration: 'none', width: isMobile ? '100%' : undefined }}>
             <button
               data-hover
               style={{
+                width: isMobile ? '100%' : undefined,
                 padding: '0.85rem 2rem',
                 fontFamily: 'var(--font-grotesk), sans-serif',
                 fontWeight: 600,
@@ -73,10 +86,11 @@ export default function CTA() {
               Book a Consultation
             </button>
           </Link>
-          <Link href="#portfolio" style={{ textDecoration: 'none' }}>
+          <Link href="#portfolio" style={{ textDecoration: 'none', width: isMobile ? '100%' : undefined }}>
             <button
               data-hover
               style={{
+                width: isMobile ? '100%' : undefined,
                 padding: '0.85rem 2rem',
                 fontFamily: 'var(--font-grotesk), sans-serif',
                 fontWeight: 600,
