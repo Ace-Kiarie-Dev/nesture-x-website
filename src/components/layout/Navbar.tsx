@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '@/constants';
+import NxButton from '@/components/ui/NxButton';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -168,37 +169,9 @@ export default function Navbar() {
           </button>
 
           {/* CTA */}
-          <Link
-            href="#contact"
-            style={{
-              padding: '10px 20px',
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#f5f5f5',
-              background: '#1a6fd4',
-              border: '2px solid #f5f5f5',
-              boxShadow: '3px 3px 0px #f5f5f5',
-              borderRadius: 0,
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-              transition: 'all 150ms ease',
-              display: 'inline-block',
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.boxShadow = 'none';
-              el.style.transform = 'translate(3px, 3px)';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.boxShadow = '3px 3px 0px #f5f5f5';
-              el.style.transform = 'translate(0, 0)';
-            }}
-          >
+          <NxButton variant="primary" size="sm" href="#contact">
             Book a Consultation
-          </Link>
+          </NxButton>
         </div>
 
         {/* Mobile: hamburger only */}
@@ -301,32 +274,26 @@ export default function Navbar() {
         })}
 
         {/* Mobile CTA */}
-        <Link
-          href="#contact"
-          onClick={() => setMenuOpen(false)}
+        <div
           style={{
             position: 'absolute',
             bottom: '48px',
             width: '80%',
             maxWidth: '320px',
-            textAlign: 'center',
-            padding: '14px 20px',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#f5f5f5',
-            background: '#1a6fd4',
-            border: '2px solid #f5f5f5',
-            boxShadow: '3px 3px 0px #f5f5f5',
-            borderRadius: 0,
-            textDecoration: 'none',
-            transition: 'all 150ms ease',
-            display: 'block',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
-          Book a Consultation
-        </Link>
+          <NxButton
+            variant="primary"
+            size="sm"
+            href="#contact"
+            onClick={() => setMenuOpen(false)}
+            className="w-full"
+          >
+            Book a Consultation
+          </NxButton>
+        </div>
       </div>
     </>
   );

@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ParticleCanvas from '@/components/ui/ParticleCanvas';
+import NxButton from '@/components/ui/NxButton';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const TYPED_PHRASES = [
@@ -168,56 +168,22 @@ export default function Hero() {
             marginTop: '2.5rem',
           }}
         >
-          <Link href="#contact" style={{ textDecoration: 'none', width: isMobile ? '100%' : undefined }}>
-            <button
-              data-hover
-              style={{
-                width: isMobile ? '100%' : undefined,
-                padding: '0.85rem 2rem',
-                fontFamily: 'var(--font-grotesk), sans-serif',
-                fontWeight: 600,
-                fontSize: '0.78rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#f5f5f5',
-                background: '#1a6fd4',
-                border: 'none',
-                clipPath: 'polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px)',
-                cursor: 'pointer',
-              }}
-            >
-              Book a Consultation
-            </button>
-          </Link>
-          <Link href="#portfolio" style={{ textDecoration: 'none', width: isMobile ? '100%' : undefined }}>
-            <button
-              data-hover
-              style={{
-                width: isMobile ? '100%' : undefined,
-                padding: '0.85rem 2rem',
-                fontFamily: 'var(--font-grotesk), sans-serif',
-                fontWeight: 600,
-                fontSize: '0.78rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#f5f5f5',
-                background: 'transparent',
-                border: '1px solid rgba(245,245,245,0.2)',
-                cursor: 'pointer',
-                transition: 'border-color 0.3s, color 0.3s',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = '#1a6fd4';
-                (e.currentTarget as HTMLElement).style.color = '#1a6fd4';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,245,245,0.2)';
-                (e.currentTarget as HTMLElement).style.color = '#f5f5f5';
-              }}
-            >
-              View Our Work
-            </button>
-          </Link>
+          <NxButton
+            variant="primary"
+            size="lg"
+            href="#contact"
+            className={isMobile ? 'w-full' : ''}
+          >
+            Book a Consultation
+          </NxButton>
+          <NxButton
+            variant="ghost"
+            size="lg"
+            href="#portfolio"
+            className={isMobile ? 'w-full' : ''}
+          >
+            View Our Work
+          </NxButton>
         </motion.div>
       </div>
 
