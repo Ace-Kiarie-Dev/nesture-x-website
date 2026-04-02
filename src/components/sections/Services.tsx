@@ -1,101 +1,46 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SERVICES } from '@/constants';
+import NxButton from '@/components/ui/NxButton';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
-const TABS = [
-  {
-    id: 'web',
-    label: 'Web Development',
-    ghost: 'WEB',
-    title: 'Web Development',
-    description: 'Custom websites and full-stack web applications built for performance, scalability, and real business results — M-Pesa included.',
-    features: [
-      'Custom Website Design & Build',
-      'Full-Stack Web Applications',
-      'React / Node.js Development',
-      'Admin Panels & Dashboards',
-      'API Development & Integration',
-      'MongoDB Atlas Databases',
-      'Netlify / Railway / Vercel Deploy',
-      'Authentication & User Systems',
-    ],
-  },
-  {
-    id: 'design',
-    label: 'Graphic Design',
-    ghost: 'DESIGN',
-    title: 'Graphic Design',
-    description: 'Brand identities and visual assets built with precision. From logo to launch collateral — every pixel has intent.',
-    features: [
-      'Logo & Brand Identity',
-      'Colour Systems & Typography',
-      'Flyers, Posters & Banners',
-      'Business Cards & Print',
-      'Social Media Assets',
-      'Company Profiles',
-      'Marketing Collateral',
-      'Canva Templates',
-    ],
-  },
-  {
-    id: 'marketing',
-    label: 'Digital Marketing',
-    ghost: 'MARKET',
-    title: 'Digital Marketing',
-    description: 'Strategy and execution to grow your audience. Content, SEO, WhatsApp flows — built for the Nairobi market and beyond.',
-    features: [
-      'Social Media Strategy',
-      'Content Creation & Planning',
-      'SEO & Content Marketing',
-      'WhatsApp Marketing Flows',
-      'Outreach & Backlink Strategy',
-      'Campaign Management',
-      'Audience & Analytics Review',
-      'Growth Consulting',
-    ],
-  },
-  {
-    id: 'mpesa',
-    label: 'M-Pesa Integration',
-    ghost: 'MPESA',
-    title: 'M-Pesa Integration',
-    description: 'End-to-end Daraja API integration. STK push, webhooks, booking flows, and payment confirmations — production-ready.',
-    features: [
-      'M-Pesa STK Push (Daraja API)',
-      'Paybill & Buy Goods Setup',
-      'Booking & Payment Flows',
-      'Payment Confirmation Webhooks',
-      'WhatsApp Post-Payment Triggers',
-      'Order Management Systems',
-      'Payment Ledger & Reporting',
-      'End-to-End QA Testing',
-    ],
-  },
-];
+const TAB_NUMS = ['01', '02', '03', '04'];
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState(0);
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
-  const panel = TABS[activeTab];
+  const service = SERVICES[activeTab];
 
-  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
+  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '7rem 3rem';
 
   return (
-    <section id="services" style={{ background: '#111318', padding: sectionPadding }}>
+    <section
+      id="services"
+      style={{ background: '#111318', padding: sectionPadding, position: 'relative' }}
+    >
       {/* Header */}
-      <div style={{ marginBottom: isMobile ? '2rem' : '4rem' }}>
+      <div style={{ marginBottom: isMobile ? '2rem' : '3rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>What We Do</div>
         <h2
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
-            fontSize: 'clamp(3rem, 7vw, 6rem)',
-            color: '#f5f5f5',
+            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
             lineHeight: 1,
             margin: 0,
           }}
         >
-          OUR SERVICES
+          <span style={{ display: 'block', color: '#f5f5f5' }}>OUR</span>
+          <span
+            style={{
+              display: 'block',
+              color: 'transparent',
+              WebkitTextStroke: '1px #1a6fd4',
+            }}
+          >
+            SERVICES
+          </span>
         </h2>
       </div>
 
@@ -105,97 +50,131 @@ export default function Services() {
           style={{
             overflowX: 'auto',
             display: 'flex',
-            gap: '0',
-            borderBottom: '1px solid rgba(245,245,245,0.06)',
+            borderBottom: '1px solid rgba(26,111,212,0.15)',
             marginBottom: '2rem',
             scrollbarWidth: 'none',
             WebkitOverflowScrolling: 'touch',
           } as React.CSSProperties}
         >
-          {TABS.map((tab, i) => {
+          {SERVICES.map((svc, i) => {
             const active = i === activeTab;
             return (
               <button
-                key={tab.id}
+                key={svc.id}
                 onClick={() => setActiveTab(i)}
                 data-hover
                 style={{
                   flexShrink: 0,
-                  padding: '0.6rem 1rem',
+                  padding: '0.75rem 1.2rem',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: active ? '2px solid #1a6fd4' : '2px solid transparent',
                   marginBottom: '-1px',
                   fontFamily: 'var(--font-grotesk), sans-serif',
                   fontWeight: 500,
-                  fontSize: '0.7rem',
+                  fontSize: '0.72rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                   color: active ? '#1a6fd4' : 'rgba(245,245,245,0.4)',
-                  cursor: 'pointer',
+                  cursor: 'none',
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s',
                 }}
               >
-                {tab.label}
+                {svc.tab}
               </button>
             );
           })}
         </div>
       )}
 
-      {/* Layout grid */}
+      {/* Grid: desktop 2-col, otherwise single col */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: isDesktop ? '1fr 2fr' : '1fr',
-          gap: '3rem',
+          gridTemplateColumns: isDesktop ? '280px 1fr' : '1fr',
+          gap: isDesktop ? '4rem' : '0',
           alignItems: 'start',
         }}
       >
-        {/* Desktop-only: sticky vertical tab nav */}
+        {/* Desktop: sticky vertical tab nav */}
         {isDesktop && (
-          <nav style={{ position: 'sticky', top: '8rem' }}>
-            {TABS.map((tab, i) => {
+          <nav style={{ position: 'sticky', top: '100px' }}>
+            {SERVICES.map((svc, i) => {
               const active = i === activeTab;
               return (
                 <button
-                  key={tab.id}
+                  key={svc.id}
                   onClick={() => setActiveTab(i)}
                   data-hover
                   style={{
                     display: 'flex',
-                    alignItems: 'center',
                     justifyContent: 'space-between',
+                    alignItems: 'center',
                     width: '100%',
-                    padding: '1rem 0',
+                    padding: '1rem 0 1rem 1rem',
+                    borderTop: 'none',
+                    borderRight: 'none',
                     borderBottom: '1px solid rgba(245,245,245,0.06)',
-                    background: 'transparent',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontFamily: 'var(--font-grotesk), sans-serif',
-                    fontWeight: 500,
-                    fontSize: '0.82rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    color: active ? '#1a6fd4' : 'rgba(245,245,245,0.4)',
-                    transition: 'color 0.2s',
+                    borderLeft: active
+                      ? '2px solid #1a6fd4'
+                      : '2px solid transparent',
+                    background: 'none',
+                    cursor: 'none',
                     textAlign: 'left',
+                    transition: 'all 0.3s ease',
                   }}
                   onMouseEnter={e => {
-                    if (!active) (e.currentTarget as HTMLElement).style.color = '#f5f5f5';
+                    if (!active)
+                      (e.currentTarget as HTMLElement).style.color =
+                        'rgba(245,245,245,0.8)';
                   }}
                   onMouseLeave={e => {
-                    if (!active) (e.currentTarget as HTMLElement).style.color = 'rgba(245,245,245,0.4)';
+                    if (!active)
+                      (e.currentTarget as HTMLElement).style.color =
+                        'rgba(245,245,245,0.35)';
                   }}
                 >
-                  {tab.label}
+                  <div>
+                    {/* Number label */}
+                    <span
+                      style={{
+                        display: 'block',
+                        fontFamily: 'var(--font-jetbrains), monospace',
+                        fontSize: '0.6rem',
+                        color: 'rgba(26,111,212,0.5)',
+                        letterSpacing: '0.15em',
+                        marginBottom: '0.2rem',
+                      }}
+                    >
+                      {TAB_NUMS[i]}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-grotesk), sans-serif',
+                        fontWeight: 500,
+                        fontSize: '0.85rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: active
+                          ? '#1a6fd4'
+                          : 'rgba(245,245,245,0.35)',
+                        transition: 'color 0.3s ease',
+                      }}
+                    >
+                      {svc.tab}
+                    </span>
+                  </div>
+                  {/* Arrow */}
                   <span
                     style={{
                       opacity: active ? 1 : 0,
-                      transform: active ? 'translateX(0)' : 'translateX(-6px)',
-                      transition: 'opacity 0.2s, transform 0.2s',
+                      transform: active
+                        ? 'translateX(0)'
+                        : 'translateX(-8px)',
+                      transition: 'opacity 0.3s, transform 0.3s',
                       color: '#1a6fd4',
+                      fontSize: '1rem',
                     }}
                   >
                     →
@@ -206,89 +185,168 @@ export default function Services() {
           </nav>
         )}
 
-        {/* Content panel */}
-        <div>
-          <div
-            style={{
-              height: '180px',
-              background: '#141920',
-              border: '1px solid rgba(26,111,212,0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '2rem',
-              overflow: 'hidden',
-            }}
+        {/* Content panel — AnimatePresence transitions */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={service.id}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            <span
+            {/* Visual block */}
+            <div
               style={{
-                fontFamily: 'var(--font-bebas), sans-serif',
-                fontSize: '5rem',
-                color: 'rgba(26,111,212,0.08)',
-                letterSpacing: '0.1em',
-                userSelect: 'none',
+                height: '200px',
+                background: service.gradient,
+                border: '1px solid rgba(26,111,212,0.15)',
+                position: 'relative',
+                overflow: 'hidden',
+                marginBottom: '2rem',
               }}
             >
-              {panel.ghost}
-            </span>
-          </div>
-
-          <h3
-            style={{
-              fontFamily: 'var(--font-bebas), sans-serif',
-              fontSize: '3rem',
-              color: '#f5f5f5',
-              margin: '0 0 1rem',
-              lineHeight: 1,
-            }}
-          >
-            {panel.title}
-          </h3>
-
-          <p
-            style={{
-              fontFamily: 'var(--font-grotesk), sans-serif',
-              fontWeight: 300,
-              fontSize: '1rem',
-              color: 'rgba(245,245,245,0.6)',
-              maxWidth: '500px',
-              lineHeight: 1.7,
-              margin: '0 0 2rem',
-            }}
-          >
-            {panel.description}
-          </p>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
-              gap: '1px',
-              background: 'rgba(26,111,212,0.1)',
-            }}
-          >
-            {panel.features.map(feature => (
+              {/* Ghost text */}
               <div
-                key={feature}
                 style={{
-                  background: '#111318',
-                  border: '1px solid rgba(26,111,212,0.1)',
-                  padding: '0.7rem',
-                  fontFamily: 'var(--font-grotesk), sans-serif',
-                  fontSize: '0.82rem',
-                  color: 'rgba(245,245,245,0.7)',
+                  position: 'absolute',
+                  inset: 0,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
+                  justifyContent: 'center',
+                  fontFamily: 'var(--font-bebas), sans-serif',
+                  fontSize: 'clamp(3rem, 8vw, 5.5rem)',
+                  color: 'rgba(26,111,212,0.07)',
+                  letterSpacing: '0.1em',
+                  userSelect: 'none',
                 }}
               >
-                <span style={{ color: '#1a6fd4', flexShrink: 0 }}>→</span>
-                {feature}
+                {service.visual}
               </div>
-            ))}
-          </div>
-        </div>
+
+              {/* Animated bottom line */}
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  height: '2px',
+                  background: '#1a6fd4',
+                }}
+              />
+
+              {/* Dot accent */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: '#1a6fd4',
+                }}
+              />
+            </div>
+
+            {/* Headline */}
+            <h3
+              style={{
+                fontFamily: 'var(--font-bebas), sans-serif',
+                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                color: '#f5f5f5',
+                marginBottom: '0.75rem',
+                lineHeight: 1,
+              }}
+            >
+              {service.headline}
+            </h3>
+
+            {/* Description */}
+            <p
+              style={{
+                fontFamily: 'var(--font-grotesk), sans-serif',
+                fontWeight: 300,
+                fontSize: '1rem',
+                color: 'rgba(245,245,245,0.6)',
+                lineHeight: 1.8,
+                maxWidth: '520px',
+                marginBottom: '2rem',
+                borderLeft: '2px solid rgba(26,111,212,0.3)',
+                paddingLeft: '1rem',
+              }}
+            >
+              {service.description}
+            </p>
+
+            {/* Features grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
+                gap: '0.6rem',
+                marginBottom: '2.5rem',
+              }}
+            >
+              {service.features.map(feature => (
+                <FeatureItem key={feature} text={feature} />
+              ))}
+            </div>
+
+            {/* CTA row */}
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <NxButton variant="primary" size="md" href="/services">
+                See Full Details
+              </NxButton>
+              <NxButton variant="ghost" size="md" href="#contact">
+                Get a Quote
+              </NxButton>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
+  );
+}
+
+function FeatureItem({ text }: { text: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        padding: '0.75rem 1rem',
+        border: `1px solid ${hovered ? 'rgba(26,111,212,0.3)' : 'rgba(26,111,212,0.1)'}`,
+        background: hovered ? 'rgba(26,111,212,0.06)' : 'rgba(26,111,212,0.02)',
+        transform: hovered ? 'translateX(4px)' : 'translateX(0)',
+        transition: 'all 0.3s ease',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-jetbrains), monospace',
+          fontSize: '0.7rem',
+          color: '#1a6fd4',
+          flexShrink: 0,
+        }}
+      >
+        →
+      </span>
+      <span
+        style={{
+          fontFamily: 'var(--font-grotesk), sans-serif',
+          fontSize: '0.82rem',
+          color: 'rgba(245,245,245,0.75)',
+        }}
+      >
+        {text}
+      </span>
+    </div>
   );
 }

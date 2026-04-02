@@ -1,3 +1,188 @@
+import type { Metadata } from 'next';
+import Services from '@/components/sections/Services';
+import NxButton from '@/components/ui/NxButton';
+
+export const metadata: Metadata = {
+  title: 'Services | Nesture-X',
+  description:
+    "Web development, graphic design, digital marketing and M-Pesa integration from Nairobi's creative technology agency.",
+};
+
+const STATS = [
+  { number: '11+', label: 'Clients Served' },
+  { number: '5', label: 'Equity Partners' },
+  { number: '100%', label: 'Full-Stack In-House' },
+  { number: '2024', label: 'Founded & Building' },
+];
+
 export default function ServicesPage() {
-  return <div>Services Page</div>;
+  return (
+    <main>
+      {/* ── Page Hero ── */}
+      <section
+        style={{
+          minHeight: '40vh',
+          background: '#0a0a0a',
+          display: 'flex',
+          alignItems: 'center',
+          padding: 'clamp(5rem, 10vw, 7rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 6vw, 5rem)',
+          paddingTop: 'calc(80px + clamp(2rem, 5vw, 4rem))',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Subtle grid overlay */}
+        <div className="grid-overlay" style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
+
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '700px' }}>
+          {/* Eyebrow */}
+          <div
+            className="section-label"
+            style={{ marginBottom: '1.5rem' }}
+          >
+            What We Do
+          </div>
+
+          {/* Headline */}
+          <h1
+            style={{
+              fontFamily: 'var(--font-bebas), sans-serif',
+              fontSize: 'clamp(3.5rem, 10vw, 8rem)',
+              lineHeight: 0.9,
+              margin: '0 0 1.5rem',
+            }}
+          >
+            <span style={{ display: 'block', color: '#f5f5f5' }}>SERVICES</span>
+            <span
+              style={{
+                display: 'block',
+                color: 'transparent',
+                WebkitTextStroke: '1px rgba(245,245,245,0.2)',
+              }}
+            >
+              &amp;
+            </span>
+            <span style={{ display: 'block', color: '#f5f5f5' }}>SOLUTIONS</span>
+          </h1>
+
+          {/* Subtext */}
+          <p
+            style={{
+              fontFamily: 'var(--font-grotesk), sans-serif',
+              fontWeight: 300,
+              fontSize: '1.1rem',
+              color: 'rgba(245,245,245,0.55)',
+              lineHeight: 1.7,
+              maxWidth: '500px',
+              margin: 0,
+            }}
+          >
+            We solve problems with design and code.
+            <br />
+            Here&apos;s what that looks like in practice.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Services Interactive Section ── */}
+      <Services />
+
+      {/* ── Stats Strip ── */}
+      <section style={{ background: '#111318', padding: 'clamp(3rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem)' }}>
+        <div
+          className="grid grid-cols-2 md:grid-cols-4"
+          style={{ gap: '1px', background: 'rgba(26,111,212,0.1)' }}
+        >
+          {STATS.map(stat => (
+            <div
+              key={stat.label}
+              style={{
+                background: '#111318',
+                padding: '2rem 1.5rem',
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--font-bebas), sans-serif',
+                  fontSize: '3.5rem',
+                  color: '#1a6fd4',
+                  lineHeight: 1,
+                  marginBottom: '0.5rem',
+                }}
+              >
+                {stat.number}
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontSize: '0.65rem',
+                  color: 'rgba(245,245,245,0.4)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                }}
+              >
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA Strip ── */}
+      <section
+        style={{
+          background: '#0d1b3e',
+          padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem)',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Radial glow */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%,-50%)',
+            width: '500px',
+            height: '500px',
+            background: 'radial-gradient(circle, rgba(26,111,212,0.1) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-bebas), sans-serif',
+              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+              color: '#f5f5f5',
+              lineHeight: 1,
+              margin: '0 0 1rem',
+            }}
+          >
+            READY TO START?
+          </h2>
+
+          <p
+            style={{
+              fontFamily: 'var(--font-grotesk), sans-serif',
+              fontWeight: 300,
+              fontSize: '1rem',
+              color: 'rgba(245,245,245,0.5)',
+              marginBottom: '2rem',
+            }}
+          >
+            Tell us what you need. We&apos;ll tell you how to build it.
+          </p>
+
+          <NxButton variant="primary" size="lg" href="/#contact">
+            Book a Free Consultation
+          </NxButton>
+        </div>
+      </section>
+    </main>
+  );
 }
