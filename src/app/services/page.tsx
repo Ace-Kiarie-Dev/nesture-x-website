@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Services from '@/components/sections/Services';
 import NxButton from '@/components/ui/NxButton';
+import { CONTACT } from '@/constants';
 
 export const metadata: Metadata = {
   title: 'Services | Nesture-X',
   description:
-    "Web development, graphic design, digital marketing and M-Pesa integration from Nairobi's creative technology agency.",
+    "Web development, mobile apps, graphic design, print & branding, and digital marketing from Nairobi's creative technology agency.",
 };
 
 const STATS = [
@@ -181,6 +182,18 @@ export default function ServicesPage() {
           <NxButton variant="primary" size="lg" href="/#contact">
             Book a Free Consultation
           </NxButton>
+
+          <p
+            style={{
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '0.68rem',
+              color: 'rgba(245,245,245,0.3)',
+              letterSpacing: '0.1em',
+              marginTop: '2rem',
+            }}
+          >
+            {CONTACT.phoneDisplay} &nbsp;·&nbsp; {CONTACT.email} &nbsp;·&nbsp; {CONTACT.location}
+          </p>
         </div>
       </section>
     </main>

@@ -2,6 +2,7 @@
 
 import { useBreakpoint } from '@/lib/useBreakpoint';
 import NxButton from '@/components/ui/NxButton';
+import { CONTACT } from '@/constants';
 
 export default function CTA() {
   const { isMobile, isTablet } = useBreakpoint();
@@ -92,7 +93,7 @@ export default function CTA() {
             textTransform: 'uppercase',
           }}
         >
-          Nairobi, Kenya · info@nesturex.co.ke
+          {CONTACT.location} · {CONTACT.phoneDisplay} · {CONTACT.email}
         </div>
       </div>
     </section>

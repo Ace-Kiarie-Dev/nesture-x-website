@@ -33,8 +33,6 @@ export default function NxButton({
   const isPrimary = variant === 'primary';
 
   const sharedStyle: React.CSSProperties = {
-    position: 'relative',
-    overflow: 'hidden',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -48,44 +46,36 @@ export default function NxButton({
     clipPath: CLIP,
     textDecoration: 'none',
     whiteSpace: 'nowrap',
-    zIndex: 0,
     ...(isPrimary
       ? {
           background: '#1a6fd4',
           color: '#f5f5f5',
           border: 'none',
+          boxShadow: 'none',
         }
       : {
           background: 'transparent',
           color: '#f5f5f5',
-          // borderColor intentionally omitted — CSS handles it so :hover can override
           borderStyle: 'solid',
           borderWidth: '1px',
+          boxShadow: 'none',
         }),
   };
 
-  const sweepBg = isPrimary ? '#2580e8' : '#1a6fd4';
   const variantClass = isPrimary ? 'nx-btn--primary' : 'nx-btn--ghost';
   const cls = `nx-btn ${variantClass}${className ? ` ${className}` : ''}`;
-
-  const inner = (
-    <>
-      <span aria-hidden="true" className="nx-btn-sweep" style={{ background: sweepBg }} />
-      <span className="nx-btn-text">{children}</span>
-    </>
-  );
 
   if (href) {
     return (
       <Link href={href} target={target} onClick={onClick} className={cls} style={sharedStyle}>
-        {inner}
+        {children}
       </Link>
     );
   }
 
   return (
     <button type="button" onClick={onClick} className={cls} style={sharedStyle}>
-      {inner}
+      {children}
     </button>
   );
 }

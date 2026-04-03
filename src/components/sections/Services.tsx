@@ -6,7 +6,6 @@ import { SERVICES } from '@/constants';
 import NxButton from '@/components/ui/NxButton';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
-const TAB_NUMS = ['01', '02', '03', '04'];
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState(0);
@@ -147,7 +146,7 @@ export default function Services() {
                         marginBottom: '0.2rem',
                       }}
                     >
-                      {TAB_NUMS[i]}
+                      {svc.number}
                     </span>
                     <span
                       style={{

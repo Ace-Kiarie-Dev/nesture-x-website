@@ -146,46 +146,44 @@ body {
 }
 
 /* ── NxButton unified CTA system ── */
-.nx-btn {
-  transition: transform 0.2s ease, color 0.3s ease, border-color 0.4s ease;
+.nx-btn--primary {
+  transition: background 0.3s ease,
+              box-shadow 0.3s ease,
+              letter-spacing 0.3s ease,
+              transform 0.2s ease;
 }
 
-.nx-btn:hover {
+.nx-btn--primary:hover {
+  background: #2178e0 !important;
+  box-shadow: 0 0 18px rgba(26, 111, 212, 0.55),
+              0 0 40px rgba(26, 111, 212, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.1em;
   transform: translateY(-2px);
 }
 
-.nx-btn:active {
-  transform: translateY(0) scale(0.98);
+.nx-btn--primary:active {
+  transform: translateY(0px) scale(0.98);
+  box-shadow: 0 0 8px rgba(26, 111, 212, 0.4);
 }
 
-/* Ghost border — driven by CSS so hover can override without inline specificity conflict */
 .nx-btn--ghost {
   border-color: rgba(245, 245, 245, 0.25);
+  transition: all 0.3s ease;
 }
 
 .nx-btn--ghost:hover {
+  background: #1a6fd4 !important;
+  color: #ffffff;
   border-color: #1a6fd4;
+  box-shadow: 0 0 18px rgba(26, 111, 212, 0.45),
+              0 0 35px rgba(26, 111, 212, 0.15);
+  letter-spacing: 0.1em;
+  transform: translateY(-2px);
 }
 
-/* Diagonal sweep layer */
-.nx-btn-sweep {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  transform: translateX(-110%) skewX(-15deg);
-  transform-origin: left center;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
-}
-
-.nx-btn:hover .nx-btn-sweep {
-  transform: translateX(0%) skewX(-15deg);
-}
-
-/* Text sits above the sweep */
-.nx-btn-text {
-  position: relative;
-  z-index: 2;
+.nx-btn--ghost:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* Electric blue glow utility */
