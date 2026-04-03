@@ -70,7 +70,7 @@ export default function Hero() {
         display: 'flex',
         alignItems: 'center',
         padding: sectionPadding,
-        background: '#0a0a0a',
+        background: 'rgba(10,10,10,0.93)',
       }}
     >
       {/* z-1: Grid overlay */}

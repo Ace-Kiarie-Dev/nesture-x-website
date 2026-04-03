@@ -102,6 +102,7 @@ export default function ParticleCanvas() {
         height: '100vh',
         zIndex: 0,
         pointerEvents: 'none',
+        display: 'block',
       }}
     />
   );

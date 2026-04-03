@@ -116,7 +116,7 @@ export default function ServicesPage() {
             <div
               key={stat.label}
               style={{
-                background: '#111318',
+                background: 'rgba(17,19,24,0.93)',
                 padding: '2rem 1.5rem',
                 textAlign: 'center',
               }}

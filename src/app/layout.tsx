@@ -58,7 +58,9 @@ export default function RootLayout({
         <ParticleCanvas />
         <CustomCursor />
         <Navbar />
-        {children}
+        <div className="site-wrapper flex flex-col flex-1">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

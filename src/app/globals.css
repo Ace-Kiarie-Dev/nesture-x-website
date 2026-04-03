@@ -56,26 +56,31 @@
 
 html {
   scroll-behavior: smooth;
+  background: #0a0a0a; /* viewport fallback — shows if canvas hasn't mounted yet */
 }
 
 body {
-  background-color: var(--color-bg);
+  /* no background here — propagating it to html keeps the body element transparent
+     so the fixed canvas composites correctly against section rgba backgrounds */
   color: var(--color-text);
   font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   cursor: none;
+  position: relative;
 }
 
-/* Stacking order: canvas(0) → content(1) → nav(50-100) → cursor(9999) */
-main {
-  position: relative;
-  z-index: 1;
+canvas {
+  display: block;
 }
 
-footer {
+/* site-wrapper is the single stacking context above the canvas (z-index 0).
+   Removing z-index from <main> and <footer> prevents nested stacking contexts
+   that can cause the GPU compositor to flatten rgba sections to opaque. */
+.site-wrapper {
   position: relative;
   z-index: 1;
+  min-height: 100vh;
 }
 
 /* Glassmorphism utility */
