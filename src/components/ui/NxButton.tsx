@@ -32,7 +32,7 @@ export default function NxButton({
   const { padding, fontSize } = SIZES[size];
   const isPrimary = variant === 'primary';
 
-  const sharedStyle: React.CSSProperties = {
+  const btnStyle: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -46,36 +46,24 @@ export default function NxButton({
     clipPath: CLIP,
     textDecoration: 'none',
     whiteSpace: 'nowrap',
+    border: 'none',
     ...(isPrimary
-      ? {
-          background: '#1a6fd4',
-          color: '#f5f5f5',
-          border: 'none',
-          boxShadow: 'none',
-        }
-      : {
-          background: 'transparent',
-          color: '#f5f5f5',
-          borderStyle: 'solid',
-          borderWidth: '1px',
-          boxShadow: 'none',
-        }),
+      ? { background: '#1a6fd4', color: '#f5f5f5' }
+      : { background: 'transparent', color: '#f5f5f5', borderStyle: 'solid', borderWidth: '1px' }),
   };
 
-  const variantClass = isPrimary ? 'nx-btn--primary' : 'nx-btn--ghost';
-  const cls = `nx-btn ${variantClass}${className ? ` ${className}` : ''}`;
+  const wrapperClass = `nx-btn-wrapper nx-btn-wrapper--${variant}${className ? ` ${className}` : ''}`;
+  const btnClass = `nx-btn nx-btn--${variant}`;
 
-  if (href) {
-    return (
-      <Link href={href} target={target} onClick={onClick} className={cls} style={sharedStyle}>
-        {children}
-      </Link>
-    );
-  }
-
-  return (
-    <button type="button" onClick={onClick} className={cls} style={sharedStyle}>
+  const el = href ? (
+    <Link href={href} target={target} onClick={onClick} className={btnClass} style={btnStyle}>
+      {children}
+    </Link>
+  ) : (
+    <button type="button" onClick={onClick} className={btnClass} style={btnStyle}>
       {children}
     </button>
   );
+
+  return <div className={wrapperClass}>{el}</div>;
 }

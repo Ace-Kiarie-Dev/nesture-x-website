@@ -145,45 +145,70 @@ body {
   100% { transform: translateX(-50%); }
 }
 
-/* ── NxButton unified CTA system ── */
-.nx-btn--primary {
-  transition: background 0.3s ease,
-              box-shadow 0.3s ease,
-              letter-spacing 0.3s ease,
-              transform 0.2s ease;
+/* ── NxButton neo-brutalist lift system ── */
+.nx-btn-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: none;
 }
 
-.nx-btn--primary:hover {
-  background: #2178e0 !important;
-  box-shadow: 0 0 18px rgba(26, 111, 212, 0.55),
-              0 0 40px rgba(26, 111, 212, 0.2),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  letter-spacing: 0.1em;
-  transform: translateY(-2px);
+/* Full-width support (e.g. Tailwind w-full) */
+.nx-btn-wrapper.w-full {
+  display: block;
+}
+.nx-btn-wrapper.w-full .nx-btn {
+  width: 100%;
+  display: flex;
 }
 
-.nx-btn--primary:active {
-  transform: translateY(0px) scale(0.98);
-  box-shadow: 0 0 8px rgba(26, 111, 212, 0.4);
+/* Hard shadow layer — same clip-path as the button */
+.nx-btn-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px),
+                     calc(100% - 10px) 100%, 0% 100%, 0% 10px);
+  transform: translate(4px, 4px);
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
+.nx-btn-wrapper--primary::after { background: #0d4a9e; }
+.nx-btn-wrapper--ghost::after   { background: #1a6fd4; }
+
+.nx-btn-wrapper:hover::after { opacity: 1; }
+
+/* The button itself */
+.nx-btn {
+  position: relative;
+  z-index: 1;
+  transform: translate(0px, 0px);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.2s ease,
+              color 0.2s ease,
+              border-color 0.2s ease;
+  cursor: none;
+}
+
+.nx-btn-wrapper:hover .nx-btn {
+  transform: translate(-4px, -4px);
+}
+
+.nx-btn-wrapper:active .nx-btn {
+  transform: translate(0px, 0px);
+  transition: transform 0.1s ease;
+}
+
+/* Ghost variant color states */
 .nx-btn--ghost {
   border-color: rgba(245, 245, 245, 0.25);
-  transition: all 0.3s ease;
 }
 
-.nx-btn--ghost:hover {
-  background: #1a6fd4 !important;
-  color: #ffffff;
+.nx-btn-wrapper--ghost:hover .nx-btn--ghost {
   border-color: #1a6fd4;
-  box-shadow: 0 0 18px rgba(26, 111, 212, 0.45),
-              0 0 35px rgba(26, 111, 212, 0.15);
-  letter-spacing: 0.1em;
-  transform: translateY(-2px);
-}
-
-.nx-btn--ghost:active {
-  transform: translateY(0) scale(0.98);
+  color: #1a6fd4;
 }
 
 /* Electric blue glow utility */
