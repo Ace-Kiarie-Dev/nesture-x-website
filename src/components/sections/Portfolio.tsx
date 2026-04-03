@@ -1,202 +1,297 @@
 'use client';
 
 import { useState } from 'react';
-import { useBreakpoint } from '@/lib/useBreakpoint';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FileText } from 'lucide-react';
+import NxButton from '@/components/ui/NxButton';
+import PortfolioModal from '@/components/sections/PortfolioModal';
+import portfolioData from '@/data/portfolio.json';
 
-const CATEGORIES = ['All', 'Web Projects', 'Brand Identity', 'Print Design', 'Originals'];
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const CARDS = [
-  { id: 1, title: 'Vicking Ventures', category: 'Web Projects', ghost: 'VV', tall: true, bg: 'linear-gradient(135deg,#0d1b3e 0%,#0a0a0a 100%)' },
-  { id: 2, title: 'ODU Active', category: 'Web Projects', ghost: 'ODU', tall: false, bg: 'linear-gradient(135deg,#111318 0%,#0a0a0a 100%)' },
-  { id: 3, title: 'Shinkusen', category: 'Brand Identity', ghost: 'SHN', tall: false, bg: 'linear-gradient(135deg,#0a0a0a 0%,#141920 100%)' },
-  { id: 4, title: 'MR Right Imports', category: 'Web Projects', ghost: 'MR', tall: false, bg: 'linear-gradient(135deg,#141920 0%,#0d1b3e 100%)' },
-  { id: 5, title: 'NX Originals', category: 'Originals', ghost: 'NX', tall: true, bg: 'linear-gradient(135deg,#0d1b3e 0%,#111318 100%)' },
-  { id: 6, title: 'Brand Collateral', category: 'Print Design', ghost: 'PRINT', tall: false, bg: 'linear-gradient(135deg,#111318 0%,#0a0a0a 100%)' },
+export interface PortfolioItem {
+  id: string;
+  filename: string;
+  client: string;
+  type: string;
+  isPDF: boolean;
+  coverImage?: string;
+  description: string;
+  tags: string[];
+  featured: boolean;
+}
+
+type Tab = 'All' | 'Logos' | 'Branding' | 'Social Media' | 'Web' | 'Print & Merch' | 'Documents';
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const TABS: Tab[] = [
+  'All',
+  'Logos',
+  'Branding',
+  'Social Media',
+  'Web',
+  'Print & Merch',
+  'Documents',
 ];
 
-export default function Portfolio() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const { isMobile, isTablet, isDesktop } = useBreakpoint();
+const BRANDING_TYPES = new Set([
+  'Business Cards',
+  'Flyer',
+  'Menu',
+  'Mockup',
+  'One-Pager',
+  'Infographic',
+]);
 
-  const filtered = activeCategory === 'All'
-    ? CARDS
-    : CARDS.filter(c => c.category === activeCategory);
+const DOCUMENT_TYPES = new Set([
+  'Company Profile',
+  'Proposal',
+  'Quotation',
+  'Rate Card',
+  'PowerPoint',
+  'White Paper',
+]);
 
-  const gridCols = isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)';
-  const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function filterByTab(tab: Tab, items: PortfolioItem[]): PortfolioItem[] {
+  switch (tab) {
+    case 'Logos':       return items.filter(i => i.type === 'Logo');
+    case 'Branding':    return items.filter(i => BRANDING_TYPES.has(i.type));
+    case 'Social Media':return items.filter(i => i.type === 'Social Media');
+    case 'Web':         return items.filter(i => i.type === 'Web');
+    case 'Print & Merch':return items.filter(i => i.type === 'Print');
+    case 'Documents':   return items.filter(i => DOCUMENT_TYPES.has(i.type));
+    default:            return items;
+  }
+}
+
+function getAspectRatio(type: string): string {
+  switch (type) {
+    case 'Logo':          return '1 / 1';
+    case 'Web':           return '16 / 9';
+    case 'Company Profile':
+    case 'One-Pager':
+    case 'White Paper':
+    case 'PowerPoint':
+    case 'Proposal':      return '3 / 4';
+    case 'Business Cards':return '9 / 5';
+    default:              return '4 / 3';
+  }
+}
+
+function getThumbnailSrc(item: PortfolioItem): string | null {
+  if (item.isPDF) {
+    return item.coverImage ? `/images/portfolio/${item.coverImage}` : null;
+  }
+  return `/images/portfolio/${item.filename}`;
+}
+
+// ─── Animation variants ───────────────────────────────────────────────────────
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.04, delayChildren: 0.05 },
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.15 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
+};
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function PDFPlaceholder({ filename }: { filename: string }) {
+  return (
+    <div className="portfolio-card__placeholder">
+      <FileText size={28} color="var(--color-blue)" aria-hidden />
+      <span className="portfolio-card__placeholder-name">{filename}</span>
+    </div>
+  );
+}
+
+function PortfolioCard({
+  item,
+  onOpen,
+}: {
+  item: PortfolioItem;
+  onOpen: () => void;
+}) {
+  const imgSrc = getThumbnailSrc(item);
+  const isGif = item.filename.endsWith('.gif');
+  const aspectRatio = getAspectRatio(item.type);
 
   return (
-    <section id="portfolio" style={{ background: 'rgba(17,19,24,0.92)', padding: sectionPadding }}>
-      {/* Header */}
+    <article className="portfolio-card" onClick={onOpen} data-hover aria-label={`${item.client} — ${item.type}`}>
+      {/* Image / media area */}
+      <div className="relative" style={{ aspectRatio }}>
+        {isGif && imgSrc ? (
+          // Must be <img> — next/image strips GIF animation
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imgSrc}
+            alt={`${item.client} logo animation`}
+            className="portfolio-card__gif"
+          />
+        ) : imgSrc ? (
+          <Image
+            src={imgSrc}
+            alt={`${item.client} — ${item.type}`}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+          />
+        ) : (
+          <PDFPlaceholder filename={item.filename} />
+        )}
+      </div>
+
+      {/* PDF corner badge */}
+      {item.isPDF && (
+        <div className="portfolio-card__pdf-badge" aria-label="PDF document">
+          PDF
+        </div>
+      )}
+
+      {/* Hover overlay */}
+      <div className="portfolio-card__overlay" aria-hidden>
+        <span className="portfolio-card__type">{item.type}</span>
+        <p className="portfolio-card__client">{item.client}</p>
+        <NxButton variant="ghost" size="sm">
+          View →
+        </NxButton>
+      </div>
+    </article>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export default function Portfolio() {
+  const [activeTab, setActiveTab] = useState<Tab>('All');
+  // selectedItem is set here; modal (Step 3) reads it via prop/context
+  const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+
+  const items = portfolioData as PortfolioItem[];
+  const filtered = filterByTab(activeTab, items);
+
+  return (
+    <section
+      id="portfolio"
+      style={{
+        padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3rem)',
+        background: 'rgba(17, 19, 24, 0.92)',
+      }}
+    >
+      {/* ── Header ── */}
       <div style={{ marginBottom: '3rem' }}>
-        <div className="section-label" style={{ marginBottom: '1rem' }}>Selected Work</div>
+        <div className="section-label" style={{ marginBottom: '1rem' }}>
+          Selected Work
+        </div>
         <h2
           style={{
-            fontFamily: 'var(--font-bebas), sans-serif',
+            fontFamily: 'var(--font-display)',
             fontSize: 'clamp(3rem, 7vw, 6rem)',
-            color: '#f5f5f5',
+            color: 'var(--color-white)',
             lineHeight: 1,
-            margin: 0,
           }}
         >
-          OUR WORK
+          OUR PORTFOLIO
         </h2>
       </div>
 
-      {/* Category tabs — scrollable on mobile */}
+      {/* ── Filter tabs ── */}
       <div
         style={{
-          overflowX: isMobile ? 'auto' : 'visible',
+          overflowX: 'auto',
           scrollbarWidth: 'none',
-          display: 'flex',
-          gap: isMobile ? '0' : '2rem',
-          borderBottom: '1px solid rgba(26,111,212,0.15)',
-          marginBottom: '2rem',
           WebkitOverflowScrolling: 'touch',
         } as React.CSSProperties}
       >
-        {CATEGORIES.map(cat => {
-          const active = cat === activeCategory;
-          return (
+        <div
+          role="tablist"
+          aria-label="Portfolio categories"
+          style={{
+            display: 'flex',
+            gap: '2rem',
+            borderBottom: '1px solid rgba(26, 111, 212, 0.15)',
+            marginBottom: '1rem',
+            minWidth: 'max-content',
+          }}
+        >
+          {TABS.map(tab => (
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
+              key={tab}
+              role="tab"
+              aria-selected={activeTab === tab}
+              onClick={() => setActiveTab(tab)}
+              className={`portfolio-tab${activeTab === tab ? ' portfolio-tab--active' : ''}`}
               data-hover
-              style={{
-                flexShrink: 0,
-                background: 'transparent',
-                border: 'none',
-                borderBottom: active ? '2px solid #1a6fd4' : '2px solid transparent',
-                marginBottom: '-1px',
-                padding: isMobile ? '0.5rem 0.75rem' : '0.5rem 0',
-                fontFamily: 'var(--font-grotesk), sans-serif',
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-                color: active ? '#1a6fd4' : 'rgba(245,245,245,0.4)',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'color 0.2s, border-color 0.2s',
-              }}
             >
-              {cat}
+              {tab}
             </button>
-          );
-        })}
+          ))}
+        </div>
       </div>
 
-      {/* Portfolio grid */}
-      <div
+      {/* ── Item count ── */}
+      <p
         style={{
-          display: 'grid',
-          gridTemplateColumns: gridCols,
-          gap: '1px',
-          background: 'rgba(26,111,212,0.1)',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.65rem',
+          color: 'rgba(245, 245, 245, 0.3)',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          marginBottom: '2rem',
         }}
       >
-        {filtered.map(card => {
-          const isTall = !isMobile && card.tall;
-          const overlayVisible = isMobile || hoveredCard === card.id;
+        {filtered.length} {filtered.length === 1 ? 'item' : 'items'}
+      </p>
 
-          return (
-            <div
-              key={card.id}
-              onMouseEnter={() => setHoveredCard(card.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-              style={{
-                gridRow: isTall ? 'span 2' : 'span 1',
-                aspectRatio: isTall ? undefined : '4/3',
-                background: card.bg,
-                position: 'relative',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                minHeight: isTall ? '400px' : undefined,
-              }}
+      {/* ── Masonry grid ── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4"
+          style={{ columnGap: '1rem' }}
+        >
+          {filtered.map(item => (
+            <motion.div
+              key={item.id}
+              variants={cardVariants}
+              className="break-inside-avoid block"
+              style={{ marginBottom: '1rem' }}
             >
-              {/* Ghost text */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: 'var(--font-bebas), sans-serif',
-                  fontSize: '5rem',
-                  color: 'rgba(26,111,212,0.08)',
-                  userSelect: 'none',
-                  letterSpacing: '0.1em',
-                }}
-              >
-                {card.ghost}
-              </div>
+              <PortfolioCard item={item} onOpen={() => setSelectedItem(item)} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
-              {/* Blue dot accent */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '1rem',
-                  right: '1rem',
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: '#1a6fd4',
-                }}
-              />
-
-              {/* Overlay — always visible on mobile, hover on desktop */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 60%)',
-                  opacity: overlayVisible ? 1 : 0,
-                  transition: isMobile ? 'none' : 'opacity 0.4s',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  padding: '1.5rem',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: 'var(--font-jetbrains), monospace',
-                    fontSize: '0.6rem',
-                    color: '#1a6fd4',
-                    letterSpacing: '0.15em',
-                    textTransform: 'uppercase',
-                    marginBottom: '0.4rem',
-                  }}
-                >
-                  {card.category}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-bebas), sans-serif',
-                    fontSize: '1.6rem',
-                    color: '#f5f5f5',
-                    lineHeight: 1,
-                    marginBottom: '0.5rem',
-                  }}
-                >
-                  {card.title}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-grotesk), sans-serif',
-                    fontSize: '0.78rem',
-                    color: '#1a6fd4',
-                  }}
-                >
-                  View →
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/* ── Modal ── */}
+      {selectedItem !== null && (
+        <PortfolioModal
+          item={selectedItem}
+          items={items}
+          onClose={() => setSelectedItem(null)}
+        />
+      )}
     </section>
   );
 }

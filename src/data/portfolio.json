@@ -1,0 +1,1750 @@
+[
+  {
+    "id": "business-card-1",
+    "filename": "business-cards1.png",
+    "client": "Nesture-X",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Nesture-X business card front — Peter Kiarie personal brand layout.",
+    "tags": ["identity", "print", "cards"],
+    "featured": true
+  },
+  {
+    "id": "business-card-2",
+    "filename": "business-cards2.png",
+    "client": "Nesture-X",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Nesture-X business card back — complementary reverse side design.",
+    "tags": ["identity", "print", "cards"],
+    "featured": false
+  },
+  {
+    "id": "business-card-3",
+    "filename": "business-cards3.png",
+    "client": "Centron Technics",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Centron Technics business card — Korir Vincent CEO, layout 1.",
+    "tags": ["identity", "print", "cards", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "business-card-4",
+    "filename": "business-cards4.png",
+    "client": "Centron Technics",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Centron Technics business card — Korir Vincent CEO, layout 2.",
+    "tags": ["identity", "print", "cards", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "business-card-5",
+    "filename": "business-cards5.png",
+    "client": "Centron Technics",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Centron Technics business card — Korir Vincent CEO, layout 3.",
+    "tags": ["identity", "print", "cards", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "business-card-6",
+    "filename": "business-cards6.png",
+    "client": "Centron Technics",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Centron Technics business card — Korir Vincent CEO, layout 4.",
+    "tags": ["identity", "print", "cards", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "business-card-7",
+    "filename": "business-cards7.png",
+    "client": "Centron Technics",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Centron Technics business card — Korir Vincent CEO, layout 5.",
+    "tags": ["identity", "print", "cards", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "business-card-8",
+    "filename": "business-cards8.png",
+    "client": "Centron Technics",
+    "type": "Business Cards",
+    "isPDF": false,
+    "description": "Centron Technics business card — Korir Vincent CEO, layout 6.",
+    "tags": ["identity", "print", "cards", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "company-profile-cover-1",
+    "filename": "company-profile1.png",
+    "client": "Deborah Driving Consultancy",
+    "type": "Company Profile",
+    "isPDF": false,
+    "description": "Cover spread for the Deborah Driving Consultancy company profile.",
+    "tags": ["branding", "corporate", "cover"],
+    "featured": true
+  },
+  {
+    "id": "company-profile-cover-2",
+    "filename": "company-profile2.png",
+    "client": "Blefice",
+    "type": "Company Profile",
+    "isPDF": false,
+    "description": "Blefice company profile cover — v1 grey and white edition.",
+    "tags": ["branding", "corporate", "cover"],
+    "featured": false
+  },
+  {
+    "id": "company-profile-cover-3",
+    "filename": "company-profile3.png",
+    "client": "Blefice",
+    "type": "Company Profile",
+    "isPDF": false,
+    "description": "Blefice company profile cover — v2 blue and white 2025 edition.",
+    "tags": ["branding", "corporate", "cover"],
+    "featured": false
+  },
+  {
+    "id": "company-profile-cover-4",
+    "filename": "company-profile4.png",
+    "client": "Centron Technics",
+    "type": "Company Profile",
+    "isPDF": false,
+    "description": "Centron Technics solar division company profile cover — 2024 edition.",
+    "tags": ["branding", "corporate", "cover", "solar"],
+    "featured": false
+  },
+  {
+    "id": "company-profile-cover-5",
+    "filename": "company-profile5.png",
+    "client": "BEEST Athletic",
+    "type": "Company Profile",
+    "isPDF": false,
+    "description": "BEEST Athletic company profile cover — performance brand identity.",
+    "tags": ["branding", "corporate", "cover", "sports"],
+    "featured": false
+  },
+  {
+    "id": "company-profile-cover-6",
+    "filename": "company-profile6.png",
+    "client": "Centron Technics",
+    "type": "Company Profile",
+    "isPDF": false,
+    "description": "Centron Technics water infrastructure company profile cover — 2025 edition.",
+    "tags": ["branding", "corporate", "cover", "infrastructure"],
+    "featured": false
+  },
+  {
+    "id": "ddc-company-profile-pdf",
+    "filename": "(DDC) Company Profile Final Draft.pdf",
+    "client": "Deborah Driving Consultancy",
+    "type": "Company Profile",
+    "isPDF": true,
+    "coverImage": "company-profile1.png",
+    "description": "Full Deborah Driving Consultancy company profile — final draft.",
+    "tags": ["document", "corporate", "PDF"],
+    "featured": false
+  },
+  {
+    "id": "beest-company-profile-pdf",
+    "filename": "Beest Athletic Company Profile Final Draft.pdf",
+    "client": "BEEST Athletic",
+    "type": "Company Profile",
+    "isPDF": true,
+    "coverImage": "company-profile5.png",
+    "description": "Full BEEST Athletic company profile — final draft.",
+    "tags": ["document", "corporate", "PDF", "sports"],
+    "featured": false
+  },
+  {
+    "id": "bleffent-company-profile-pdf",
+    "filename": "Bleffent-Company-Profile.pdf",
+    "client": "Blefice",
+    "type": "Company Profile",
+    "isPDF": true,
+    "coverImage": "company-profile2.png",
+    "description": "Blefice (Bleffent) company profile — grey/white first edition PDF.",
+    "tags": ["document", "corporate", "PDF"],
+    "featured": false
+  },
+  {
+    "id": "blefice-company-profile-2025-pdf",
+    "filename": "Blefice-Company-Profile-2025.pdf",
+    "client": "Blefice",
+    "type": "Company Profile",
+    "isPDF": true,
+    "coverImage": "company-profile3.png",
+    "description": "Blefice company profile 2025 — refreshed blue and white edition PDF.",
+    "tags": ["document", "corporate", "PDF"],
+    "featured": false
+  },
+  {
+    "id": "centron-company-profile-pdf",
+    "filename": "Centron Technics Company Profile.pdf",
+    "client": "Centron Technics",
+    "type": "Company Profile",
+    "isPDF": true,
+    "coverImage": "company-profile4.png",
+    "description": "Full Centron Technics solar division company profile PDF.",
+    "tags": ["document", "corporate", "PDF", "solar", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "centron-water-company-profile-pdf",
+    "filename": "Centron Water Company Profile.pdf",
+    "client": "Centron Technics",
+    "type": "Company Profile",
+    "isPDF": true,
+    "coverImage": "company-profile6.png",
+    "description": "Full Centron Technics water infrastructure company profile PDF.",
+    "tags": ["document", "corporate", "PDF", "infrastructure", "engineering"],
+    "featured": false
+  },
+  {
+    "id": "flyer-1",
+    "filename": "flyer1.png",
+    "client": "Centron Technics",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Centron Technics solar services promotional flyer.",
+    "tags": ["print", "marketing", "solar"],
+    "featured": false
+  },
+  {
+    "id": "flyer-2",
+    "filename": "flyer2.png",
+    "client": "Miss Right Beauty",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Miss Right Beauty promotional flyer — salon and beauty services.",
+    "tags": ["print", "marketing", "beauty"],
+    "featured": false
+  },
+  {
+    "id": "flyer-3",
+    "filename": "flyer3.png",
+    "client": "Zaidi Movers",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Zaidi Movers 'Moving Soon' announcement flyer.",
+    "tags": ["print", "marketing", "logistics"],
+    "featured": false
+  },
+  {
+    "id": "flyer-4",
+    "filename": "flyer4.png",
+    "client": "Mr Right Gym",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Mr Right Gym 'Join Today' membership recruitment flyer.",
+    "tags": ["print", "marketing", "fitness"],
+    "featured": false
+  },
+  {
+    "id": "flyer-5",
+    "filename": "flyer5.png",
+    "client": "Mr Right Gym",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Mr Right Gym 'Get Fit, Get Going' motivational campaign flyer.",
+    "tags": ["print", "marketing", "fitness"],
+    "featured": false
+  },
+  {
+    "id": "flyer-6",
+    "filename": "flyer6.png",
+    "client": "Centron Technics",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Centron Technics 'Blackout Isikustress' power solutions awareness flyer.",
+    "tags": ["print", "marketing", "energy", "campaign"],
+    "featured": true
+  },
+  {
+    "id": "flyer-7",
+    "filename": "flyer7.png",
+    "client": "Zaidi Movers",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Zaidi Movers 'Moving Out Soon' relocation services flyer.",
+    "tags": ["print", "marketing", "logistics"],
+    "featured": false
+  },
+  {
+    "id": "flyer-8",
+    "filename": "flyer8.png",
+    "client": "Centron Technics",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Centron Technics single-phase meter installation services flyer.",
+    "tags": ["print", "marketing", "engineering", "electrical"],
+    "featured": false
+  },
+  {
+    "id": "flyer-9",
+    "filename": "flyer9.png",
+    "client": "TikTok Live Event",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "One-off community TikTok live event promotional flyer.",
+    "tags": ["print", "social", "event"],
+    "featured": false
+  },
+  {
+    "id": "flyer-10",
+    "filename": "flyer10.png",
+    "client": "Zaidi Movers",
+    "type": "Flyer",
+    "isPDF": false,
+    "description": "Zaidi Movers 'Relax, Move, Isikustress' stress-free relocation flyer.",
+    "tags": ["print", "marketing", "logistics"],
+    "featured": false
+  },
+  {
+    "id": "infographic-1",
+    "filename": "infographics1.png",
+    "client": "Salix Data",
+    "type": "Infographic",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' — visual style 1.",
+    "tags": ["data", "visual", "corporate", "B2B"],
+    "featured": true
+  },
+  {
+    "id": "infographic-2",
+    "filename": "infographics2.png",
+    "client": "Salix Data",
+    "type": "Infographic",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' — visual style 2.",
+    "tags": ["data", "visual", "corporate", "B2B"],
+    "featured": false
+  },
+  {
+    "id": "infographic-3",
+    "filename": "infographics3.png",
+    "client": "Salix Data",
+    "type": "Infographic",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' — visual style 3.",
+    "tags": ["data", "visual", "corporate", "B2B"],
+    "featured": false
+  },
+  {
+    "id": "infographic-4",
+    "filename": "infographics4.png",
+    "client": "Salix Data",
+    "type": "Infographic",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' — visual style 4.",
+    "tags": ["data", "visual", "corporate", "B2B"],
+    "featured": false
+  },
+  {
+    "id": "infographic-5",
+    "filename": "infographics5.png",
+    "client": "Salix Data",
+    "type": "Infographic",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' — visual style 5.",
+    "tags": ["data", "visual", "corporate", "B2B"],
+    "featured": false
+  },
+  {
+    "id": "infographic-6",
+    "filename": "infographics6.png",
+    "client": "Salix Data",
+    "type": "Infographic",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' — visual style 6.",
+    "tags": ["data", "visual", "corporate", "B2B"],
+    "featured": false
+  },
+  {
+    "id": "logo-0",
+    "filename": "logo0.gif",
+    "client": "Nairobi Made",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Nairobi Made animated logo — motion identity loop.",
+    "tags": ["logo", "animation", "brand", "Nairobi"],
+    "featured": false
+  },
+  {
+    "id": "logo-1",
+    "filename": "logo1.png",
+    "client": "Nairobi Made",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Nairobi brand mark — roaring lion circle emblem.",
+    "tags": ["logo", "emblem", "Nairobi", "lion"],
+    "featured": false
+  },
+  {
+    "id": "logo-2",
+    "filename": "logo2.png",
+    "client": "Nairobi Made",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Nairobi Made wordmark — black text on transparent background.",
+    "tags": ["logo", "wordmark", "Nairobi"],
+    "featured": false
+  },
+  {
+    "id": "logo-3",
+    "filename": "logo3.png",
+    "client": "Shadowscope",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Shadowscope primary logo mark.",
+    "tags": ["logo", "tech", "dark"],
+    "featured": false
+  },
+  {
+    "id": "logo-4",
+    "filename": "logo4.png",
+    "client": "Simba On Wheels",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Simba On Wheels brand logo.",
+    "tags": ["logo", "transport", "lion"],
+    "featured": false
+  },
+  {
+    "id": "logo-5",
+    "filename": "logo5.png",
+    "client": "Shadowscope",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Triple S — earlier Shadowscope brand iteration.",
+    "tags": ["logo", "tech", "lettermark"],
+    "featured": false
+  },
+  {
+    "id": "logo-6",
+    "filename": "logo6.png",
+    "client": "JC Monogram",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "JC Monogram concept — personal brand spec work.",
+    "tags": ["logo", "monogram", "concept"],
+    "featured": false
+  },
+  {
+    "id": "logo-7",
+    "filename": "logo7.png",
+    "client": "Nesture-X",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Nesture-X 3D experimental logo mark.",
+    "tags": ["logo", "3D", "experimental", "NX"],
+    "featured": false
+  },
+  {
+    "id": "logo-8",
+    "filename": "logo8.png",
+    "client": "Peter Kiarie",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Peter Kiarie personal brand — PK serif monogram.",
+    "tags": ["logo", "personal", "monogram", "serif"],
+    "featured": false
+  },
+  {
+    "id": "logo-9",
+    "filename": "logo9.png",
+    "client": "Peter Kiarie",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Peter Kiarie personal brand — PK geometric monogram.",
+    "tags": ["logo", "personal", "monogram", "geometric"],
+    "featured": false
+  },
+  {
+    "id": "logo-10",
+    "filename": "logo10.png",
+    "client": "Kiota",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Kiota logo — early Nesture-X brand iteration.",
+    "tags": ["logo", "brand", "early-concept"],
+    "featured": false
+  },
+  {
+    "id": "logo-11",
+    "filename": "logo11.png",
+    "client": "Kiota",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Kiota logo fragment — partial mark exploration.",
+    "tags": ["logo", "fragment", "concept"],
+    "featured": false
+  },
+  {
+    "id": "logo-12",
+    "filename": "logo12.png",
+    "client": "AISHITE",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "AISHITE play button II mark — media brand identity.",
+    "tags": ["logo", "media", "play-button"],
+    "featured": false
+  },
+  {
+    "id": "logo-13",
+    "filename": "logo13.png",
+    "client": "Nairobi Made",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Nairobi Made gold ornate lion — premium heritage mark.",
+    "tags": ["logo", "gold", "ornate", "Nairobi", "lion"],
+    "featured": true
+  },
+  {
+    "id": "logo-14",
+    "filename": "logo14.png",
+    "client": "AMARL",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "AMARL brand logo mark.",
+    "tags": ["logo", "brand"],
+    "featured": false
+  },
+  {
+    "id": "logo-15",
+    "filename": "logo15.png",
+    "client": "Gaucho Strength & Performance",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Gaucho Strength & Performance gym and athletic brand logo.",
+    "tags": ["logo", "fitness", "strength"],
+    "featured": false
+  },
+  {
+    "id": "logo-16",
+    "filename": "logo16.png",
+    "client": "AfuaMed",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "AfuaMed medical brand logo — white and black colourway.",
+    "tags": ["logo", "medical", "healthcare"],
+    "featured": false
+  },
+  {
+    "id": "logo-17",
+    "filename": "logo17.png",
+    "client": "AfuaMed",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "AfuaMed medical brand logo — blue and grey colourway.",
+    "tags": ["logo", "medical", "healthcare"],
+    "featured": false
+  },
+  {
+    "id": "logo-18",
+    "filename": "logo18.png",
+    "client": "AfuaMed",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "AfuaMed medical brand logo — high contrast colourway.",
+    "tags": ["logo", "medical", "healthcare"],
+    "featured": false
+  },
+  {
+    "id": "logo-19",
+    "filename": "logo19.png",
+    "client": "Kahawa Boxing Club",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Kahawa Boxing Club stamp circle badge.",
+    "tags": ["logo", "sports", "boxing", "badge"],
+    "featured": false
+  },
+  {
+    "id": "logo-20",
+    "filename": "logo20.png",
+    "client": "Kahawa Boxing Club",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Kahawa Boxing Club boxer silhouette mark.",
+    "tags": ["logo", "sports", "boxing", "silhouette"],
+    "featured": false
+  },
+  {
+    "id": "logo-21",
+    "filename": "logo21.png",
+    "client": "Kahawa Boxing Academy",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Kahawa Boxing Academy KB monogram mark.",
+    "tags": ["logo", "sports", "boxing", "monogram"],
+    "featured": false
+  },
+  {
+    "id": "logo-22",
+    "filename": "logo22.png",
+    "client": "Kahawa Boxing Club",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Kahawa Boxing Club shield crest logo.",
+    "tags": ["logo", "sports", "boxing", "crest"],
+    "featured": false
+  },
+  {
+    "id": "logo-23",
+    "filename": "logo23.png",
+    "client": "CMF Family / Nairobi Made",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "CMF Family / Nairobi Made collaborative brand mark.",
+    "tags": ["logo", "community", "Nairobi"],
+    "featured": false
+  },
+  {
+    "id": "logo-24",
+    "filename": "logo24.png",
+    "client": "Carry Build",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Carry Build brand logo mark.",
+    "tags": ["logo", "construction", "brand"],
+    "featured": false
+  },
+  {
+    "id": "logo-25",
+    "filename": "logo25.png",
+    "client": "Mr Right Gym",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Mr Right Gym MR lettermark logo.",
+    "tags": ["logo", "fitness", "lettermark"],
+    "featured": false
+  },
+  {
+    "id": "logo-26",
+    "filename": "logo26.png",
+    "client": "General Contractors Limited",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "General Contractors Limited G mark logo.",
+    "tags": ["logo", "construction", "lettermark"],
+    "featured": false
+  },
+  {
+    "id": "logo-27",
+    "filename": "logo27.png",
+    "client": "Foot First",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Foot First — Nike Air Max circle illustration mark.",
+    "tags": ["logo", "footwear", "illustration", "circle"],
+    "featured": false
+  },
+  {
+    "id": "logo-28",
+    "filename": "logo28.png",
+    "client": "Osoro Law",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Osoro Law — minimal scales of justice mark.",
+    "tags": ["logo", "legal", "minimal"],
+    "featured": true
+  },
+  {
+    "id": "logo-29",
+    "filename": "logo29.png",
+    "client": "General Contractors Limited",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "General Contractors Limited lightning bolt energy mark.",
+    "tags": ["logo", "construction", "energy"],
+    "featured": false
+  },
+  {
+    "id": "logo-30",
+    "filename": "logo30.png",
+    "client": "Foot First",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Foot First FOOT wordmark logo.",
+    "tags": ["logo", "footwear", "wordmark"],
+    "featured": false
+  },
+  {
+    "id": "logo-31",
+    "filename": "logo31.png",
+    "client": "Drinks With Mwenda",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Drinks With Mwenda gold bartender illustration mark.",
+    "tags": ["logo", "hospitality", "gold", "illustration"],
+    "featured": false
+  },
+  {
+    "id": "logo-32",
+    "filename": "logo32.png",
+    "client": "Osoro Law",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Osoro Law scales with laurel wreath mark.",
+    "tags": ["logo", "legal", "laurel"],
+    "featured": false
+  },
+  {
+    "id": "logo-33",
+    "filename": "logo33.png",
+    "client": "Rar Ray Bakes",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Rar Ray Bakes cupcake peach illustration logo.",
+    "tags": ["logo", "food", "bakery", "illustration"],
+    "featured": true
+  },
+  {
+    "id": "logo-34",
+    "filename": "logo34.png",
+    "client": "Rar Ray Bakes",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Rar Ray Bakes heart whisk rose gold logo.",
+    "tags": ["logo", "food", "bakery", "rose-gold"],
+    "featured": false
+  },
+  {
+    "id": "logo-35",
+    "filename": "logo35.png",
+    "client": "Waridi Wholesalers",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Waridi Wholesalers WH monogram logo.",
+    "tags": ["logo", "retail", "monogram"],
+    "featured": false
+  },
+  {
+    "id": "logo-36",
+    "filename": "logo36.png",
+    "client": "Drinks With Mwenda",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Drinks With Mwenda cocktail shaker circle logo.",
+    "tags": ["logo", "hospitality", "circle"],
+    "featured": false
+  },
+  {
+    "id": "logo-37",
+    "filename": "logo37.png",
+    "client": "Foot First",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Foot First diamond shape emblem mark.",
+    "tags": ["logo", "footwear", "geometric"],
+    "featured": false
+  },
+  {
+    "id": "logo-38",
+    "filename": "logo38.png",
+    "client": "Osoro Law",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Osoro Law horizontal gavel composition logo.",
+    "tags": ["logo", "legal", "gavel"],
+    "featured": false
+  },
+  {
+    "id": "logo-39",
+    "filename": "logo39.png",
+    "client": "Cradle Tattoos",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Cradle Tattoos dual machines badge logo.",
+    "tags": ["logo", "tattoo", "badge"],
+    "featured": false
+  },
+  {
+    "id": "logo-40",
+    "filename": "logo40.png",
+    "client": "Rar Ray Bakes",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Rar Ray Bakes rose gold logo — v2 iteration.",
+    "tags": ["logo", "food", "bakery", "rose-gold"],
+    "featured": false
+  },
+  {
+    "id": "logo-41",
+    "filename": "logo41.png",
+    "client": "Foot First",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Foot First full FOOTFIRST badge logo — complete brand mark.",
+    "tags": ["logo", "footwear", "badge", "complete"],
+    "featured": true
+  },
+  {
+    "id": "logo-42",
+    "filename": "logo42.png",
+    "client": "Osoro Law",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Osoro Law scales with laurel — grey alternate colourway.",
+    "tags": ["logo", "legal", "grey"],
+    "featured": false
+  },
+  {
+    "id": "logo-43",
+    "filename": "logo43.png",
+    "client": "Foot First",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Foot First Vans shoe illustration mark.",
+    "tags": ["logo", "footwear", "illustration"],
+    "featured": false
+  },
+  {
+    "id": "logo-44",
+    "filename": "logo44.png",
+    "client": "Foot First",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Foot First Adidas shoe illustration mark.",
+    "tags": ["logo", "footwear", "illustration"],
+    "featured": false
+  },
+  {
+    "id": "logo-45",
+    "filename": "logo45.png",
+    "client": "Cradle Tattoos",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Cradle Tattoos single machine wordmark logo.",
+    "tags": ["logo", "tattoo", "wordmark"],
+    "featured": false
+  },
+  {
+    "id": "logo-46",
+    "filename": "logo46.png",
+    "client": "Tessty Brands",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Tessty Brands logo mark.",
+    "tags": ["logo", "brand", "food"],
+    "featured": false
+  },
+  {
+    "id": "logo-47",
+    "filename": "logo47.png",
+    "client": "Music Brand Concept",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Music brand concept — headphones icon mark (client unknown).",
+    "tags": ["logo", "music", "concept"],
+    "featured": false
+  },
+  {
+    "id": "logo-48",
+    "filename": "logo48.png",
+    "client": "Mr Right Shipping",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Mr Right Shipping brand logo mark.",
+    "tags": ["logo", "logistics", "shipping"],
+    "featured": false
+  },
+  {
+    "id": "logo-49",
+    "filename": "logo49.png",
+    "client": "JC Monogram",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "JC Monogram personal brand — olive variant colourway.",
+    "tags": ["logo", "monogram", "olive"],
+    "featured": false
+  },
+  {
+    "id": "logo-50",
+    "filename": "logo50.png",
+    "client": "ODU Active",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "ODU Active sports brand logo mark.",
+    "tags": ["logo", "sports", "active"],
+    "featured": true
+  },
+  {
+    "id": "logo-51",
+    "filename": "logo51.png",
+    "client": "Drinks With Mwenda",
+    "type": "Logo",
+    "isPDF": false,
+    "description": "Drinks With Mwenda martini circle logo.",
+    "tags": ["logo", "hospitality", "cocktail"],
+    "featured": false
+  },
+  {
+    "id": "menu-1",
+    "filename": "menu1.png",
+    "client": "R&R's Restaurant",
+    "type": "Menu",
+    "isPDF": false,
+    "description": "R&R's restaurant full menu design — layout 1.",
+    "tags": ["print", "hospitality", "menu"],
+    "featured": false
+  },
+  {
+    "id": "menu-2",
+    "filename": "menu2.png",
+    "client": "R&R's Restaurant",
+    "type": "Menu",
+    "isPDF": false,
+    "description": "R&R's restaurant full menu design — layout 2.",
+    "tags": ["print", "hospitality", "menu"],
+    "featured": false
+  },
+  {
+    "id": "mockup-1",
+    "filename": "mockup1.jpg",
+    "client": "Kiota",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "Kiota brand identity — gold embossed business card mockup.",
+    "tags": ["mockup", "brand", "gold", "cards"],
+    "featured": false
+  },
+  {
+    "id": "mockup-2",
+    "filename": "mockup2.png",
+    "client": "R&R's Restaurant",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "R&R's Restaurant branded street sign mockup.",
+    "tags": ["mockup", "signage", "hospitality"],
+    "featured": false
+  },
+  {
+    "id": "mockup-3",
+    "filename": "mockup3.png",
+    "client": "The Great Omera",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "The Great Omera brand identity — flag mockup presentation.",
+    "tags": ["mockup", "flag", "brand"],
+    "featured": false
+  },
+  {
+    "id": "mockup-4",
+    "filename": "mockup4.png",
+    "client": "Nesture-X",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "Nesture-X branded street sign mockup — agency identity piece.",
+    "tags": ["mockup", "signage", "NX", "agency"],
+    "featured": true
+  },
+  {
+    "id": "mockup-5",
+    "filename": "mockup5.png",
+    "client": "Centron Technics",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "Centron Technics branded polo shirt merchandise mockup.",
+    "tags": ["mockup", "merchandise", "apparel"],
+    "featured": false
+  },
+  {
+    "id": "mockup-6",
+    "filename": "mockup6.png",
+    "client": "Centron Technics",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "Centron Technics branded safety vest merchandise mockup.",
+    "tags": ["mockup", "merchandise", "workwear"],
+    "featured": false
+  },
+  {
+    "id": "mockup-7",
+    "filename": "mockup7.png",
+    "client": "Wess Fitss",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "Wess Fitss white baseball jersey sports apparel mockup.",
+    "tags": ["mockup", "apparel", "sports", "jersey"],
+    "featured": false
+  },
+  {
+    "id": "mockup-8",
+    "filename": "mockup8.png",
+    "client": "Wess Fitss",
+    "type": "Mockup",
+    "isPDF": false,
+    "description": "Wess Fitss red football jersey sports apparel mockup.",
+    "tags": ["mockup", "apparel", "sports", "jersey"],
+    "featured": false
+  },
+  {
+    "id": "one-pager-1",
+    "filename": "one-pager1.png",
+    "client": "Salix Data",
+    "type": "One-Pager",
+    "isPDF": false,
+    "description": "Salix Data general outsourcing services one-pager.",
+    "tags": ["document", "B2B", "outsourcing"],
+    "featured": true
+  },
+  {
+    "id": "one-pager-2",
+    "filename": "one-pager2.png",
+    "client": "Salix Data",
+    "type": "One-Pager",
+    "isPDF": false,
+    "description": "Salix Data 'The Salix Way' methodology one-pager.",
+    "tags": ["document", "B2B", "process"],
+    "featured": false
+  },
+  {
+    "id": "one-pager-3",
+    "filename": "one-pager3.png",
+    "client": "Centron Technics",
+    "type": "One-Pager",
+    "isPDF": false,
+    "description": "Centron Technics transmission tower monitoring services one-pager.",
+    "tags": ["document", "engineering", "infrastructure"],
+    "featured": false
+  },
+  {
+    "id": "powerpoint-1",
+    "filename": "powerpoint1.png",
+    "client": "Salix Data",
+    "type": "PowerPoint",
+    "isPDF": false,
+    "description": "Salix Data presentation template — clean white edition.",
+    "tags": ["presentation", "template", "corporate"],
+    "featured": false
+  },
+  {
+    "id": "powerpoint-2",
+    "filename": "powerpoint2.png",
+    "client": "Salix Data",
+    "type": "PowerPoint",
+    "isPDF": false,
+    "description": "Salix Data presentation template — dark green edition.",
+    "tags": ["presentation", "template", "corporate"],
+    "featured": false
+  },
+  {
+    "id": "ppt-template-pdf",
+    "filename": "PPT Template .pdf",
+    "client": "Salix Data",
+    "type": "PowerPoint",
+    "isPDF": true,
+    "coverImage": "powerpoint1.png",
+    "description": "Salix Data PPT template — white edition full PDF export.",
+    "tags": ["presentation", "template", "PDF"],
+    "featured": false
+  },
+  {
+    "id": "ppt-template-2-pdf",
+    "filename": "PPT Template 2.pdf",
+    "client": "Salix Data",
+    "type": "PowerPoint",
+    "isPDF": true,
+    "coverImage": "powerpoint2.png",
+    "description": "Salix Data PPT template 2 — dark edition full PDF export.",
+    "tags": ["presentation", "template", "PDF"],
+    "featured": false
+  },
+  {
+    "id": "print-1",
+    "filename": "print1.jpg",
+    "client": "Centron Technics",
+    "type": "Print",
+    "isPDF": false,
+    "description": "Centron Technics branded merchandise photography — item 1.",
+    "tags": ["print", "merchandise", "photography"],
+    "featured": false
+  },
+  {
+    "id": "print-2",
+    "filename": "print2.jpg",
+    "client": "Centron Technics",
+    "type": "Print",
+    "isPDF": false,
+    "description": "Centron Technics branded merchandise photography — item 2.",
+    "tags": ["print", "merchandise", "photography"],
+    "featured": false
+  },
+  {
+    "id": "print-3",
+    "filename": "print3.jpg",
+    "client": "Centron Technics",
+    "type": "Print",
+    "isPDF": false,
+    "description": "Centron Technics branded merchandise photography — item 3.",
+    "tags": ["print", "merchandise", "photography"],
+    "featured": false
+  },
+  {
+    "id": "print-4",
+    "filename": "print4.jpg",
+    "client": "Centron Technics",
+    "type": "Print",
+    "isPDF": false,
+    "description": "Centron Technics branded merchandise photography — item 4.",
+    "tags": ["print", "merchandise", "photography"],
+    "featured": false
+  },
+  {
+    "id": "print-5",
+    "filename": "print5.jpg",
+    "client": "Centron Technics",
+    "type": "Print",
+    "isPDF": false,
+    "description": "Centron Technics branded merchandise photography — item 5.",
+    "tags": ["print", "merchandise", "photography"],
+    "featured": false
+  },
+  {
+    "id": "print-6",
+    "filename": "print6.jpg",
+    "client": "Centron Technics",
+    "type": "Print",
+    "isPDF": false,
+    "description": "Centron Technics branded merchandise photography — item 6.",
+    "tags": ["print", "merchandise", "photography"],
+    "featured": false
+  },
+  {
+    "id": "proposal-1",
+    "filename": "proposal1.png",
+    "client": "Nesture-X",
+    "type": "Proposal",
+    "isPDF": false,
+    "description": "Nesture-X internal client proposal cover design.",
+    "tags": ["document", "proposal", "NX"],
+    "featured": false
+  },
+  {
+    "id": "roadshow-proposal-pdf",
+    "filename": "Roadshow Masters Company  Website Proposal..pdf",
+    "client": "Roadshow Masters",
+    "type": "Proposal",
+    "isPDF": true,
+    "description": "Roadshow Masters company website proposal — full PDF document.",
+    "tags": ["document", "proposal", "PDF", "web"],
+    "featured": false
+  },
+  {
+    "id": "quotations-nx",
+    "filename": "quotations.png",
+    "client": "Nesture-X",
+    "type": "Quotation",
+    "isPDF": false,
+    "description": "Nesture-X branded quotation document template design.",
+    "tags": ["document", "pricing", "template"],
+    "featured": false
+  },
+  {
+    "id": "ratecard-nx",
+    "filename": "ratecard.png",
+    "client": "Nesture-X",
+    "type": "Rate Card",
+    "isPDF": false,
+    "description": "Nesture-X agency rate card — services pricing sheet.",
+    "tags": ["document", "pricing", "agency"],
+    "featured": false
+  },
+  {
+    "id": "social-0",
+    "filename": "social0.jpg",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — dynamic brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": true
+  },
+  {
+    "id": "social-1",
+    "filename": "social1.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-2",
+    "filename": "social2.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-3",
+    "filename": "social3.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-4",
+    "filename": "social4.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-5",
+    "filename": "social5.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-6",
+    "filename": "social6.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-7",
+    "filename": "social7.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-8",
+    "filename": "social8.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-9",
+    "filename": "social9.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-10",
+    "filename": "social10.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-11",
+    "filename": "social11.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-12",
+    "filename": "social12.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-13",
+    "filename": "social13.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-14",
+    "filename": "social14.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-15",
+    "filename": "social15.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-16",
+    "filename": "social16.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-17",
+    "filename": "social17.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-18",
+    "filename": "social18.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-19",
+    "filename": "social19.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-20",
+    "filename": "social20.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-21",
+    "filename": "social21.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-22",
+    "filename": "social22.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-23",
+    "filename": "social23.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-24",
+    "filename": "social24.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-25",
+    "filename": "social25.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-26",
+    "filename": "social26.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-27",
+    "filename": "social27.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-28",
+    "filename": "social28.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-29",
+    "filename": "social29.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-30",
+    "filename": "social30.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-31",
+    "filename": "social31.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-32",
+    "filename": "social32.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-33",
+    "filename": "social33.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-34",
+    "filename": "social34.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-35",
+    "filename": "social35.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-36",
+    "filename": "social36.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-37",
+    "filename": "social37.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-38",
+    "filename": "social38.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-39",
+    "filename": "social39.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-40",
+    "filename": "social40.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-41",
+    "filename": "social41.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-42",
+    "filename": "social42.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-43",
+    "filename": "social43.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-44",
+    "filename": "social44.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-45",
+    "filename": "social45.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-46",
+    "filename": "social46.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-47",
+    "filename": "social47.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-48",
+    "filename": "social48.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "social-49",
+    "filename": "social49.png",
+    "client": "Various Clients",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Social media creative — brand content for client feed.",
+    "tags": ["social", "digital", "marketing"],
+    "featured": false
+  },
+  {
+    "id": "web-1",
+    "filename": "web1.png",
+    "client": "Various Clients",
+    "type": "Web",
+    "isPDF": false,
+    "description": "Website design screenshot — full page web project.",
+    "tags": ["web", "UI", "digital"],
+    "featured": true
+  },
+  {
+    "id": "web-2",
+    "filename": "web2.png",
+    "client": "Various Clients",
+    "type": "Web",
+    "isPDF": false,
+    "description": "Website design screenshot — full page web project.",
+    "tags": ["web", "UI", "digital"],
+    "featured": false
+  },
+  {
+    "id": "web-3",
+    "filename": "web3.png",
+    "client": "Various Clients",
+    "type": "Web",
+    "isPDF": false,
+    "description": "Website design screenshot — full page web project.",
+    "tags": ["web", "UI", "digital"],
+    "featured": false
+  },
+  {
+    "id": "web-4",
+    "filename": "web4.png",
+    "client": "Various Clients",
+    "type": "Web",
+    "isPDF": false,
+    "description": "Website design screenshot — full page web project.",
+    "tags": ["web", "UI", "digital"],
+    "featured": false
+  },
+  {
+    "id": "web-5",
+    "filename": "web5.png",
+    "client": "Various Clients",
+    "type": "Web",
+    "isPDF": false,
+    "description": "Website design screenshot — full page web project.",
+    "tags": ["web", "UI", "digital"],
+    "featured": false
+  },
+  {
+    "id": "wpt-1",
+    "filename": "WPT1.png",
+    "client": "Salix Data",
+    "type": "White Paper",
+    "isPDF": false,
+    "description": "Salix Data white paper template — design 1.",
+    "tags": ["document", "research", "B2B", "template"],
+    "featured": false
+  },
+  {
+    "id": "wpt-2",
+    "filename": "WPT2.png",
+    "client": "Salix Data",
+    "type": "White Paper",
+    "isPDF": false,
+    "description": "Salix Data white paper template — design 2.",
+    "tags": ["document", "research", "B2B", "template"],
+    "featured": false
+  },
+  {
+    "id": "wpt-3",
+    "filename": "WPT3.png",
+    "client": "Salix Data",
+    "type": "White Paper",
+    "isPDF": false,
+    "description": "Salix Data white paper template — design 3.",
+    "tags": ["document", "research", "B2B", "template"],
+    "featured": false
+  },
+  {
+    "id": "product-foot-first",
+    "filename": "product.png",
+    "client": "Foot First",
+    "type": "Social Media",
+    "isPDF": false,
+    "description": "Foot First product placement social media creative.",
+    "tags": ["social", "footwear", "product"],
+    "featured": false
+  }
+]
