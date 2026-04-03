@@ -23,7 +23,7 @@ export default function ServicesPage() {
       <section
         style={{
           minHeight: '40vh',
-          background: '#0a0a0a',
+          background: 'rgba(10,10,10,0.92)',
           display: 'flex',
           alignItems: 'center',
           padding: 'clamp(5rem, 10vw, 7rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 6vw, 5rem)',
@@ -45,25 +45,42 @@ export default function ServicesPage() {
           </div>
 
           {/* Headline */}
-          <h1
-            style={{
-              fontFamily: 'var(--font-bebas), sans-serif',
-              fontSize: 'clamp(3.5rem, 10vw, 8rem)',
-              lineHeight: 0.9,
-              margin: '0 0 1.5rem',
-            }}
-          >
-            <span style={{ display: 'block', color: '#f5f5f5' }}>SERVICES</span>
+          <h1 style={{ margin: '0 0 1.5rem', lineHeight: 0.9 }}>
             <span
               style={{
                 display: 'block',
+                fontFamily: 'var(--font-bebas), sans-serif',
+                fontSize: 'clamp(4rem, 12vw, 9rem)',
+                color: '#f5f5f5',
+                lineHeight: 0.9,
+              }}
+            >
+              SERVICES
+            </span>
+            <span
+              style={{
+                display: 'block',
+                fontFamily: 'var(--font-bebas), sans-serif',
+                fontSize: 'clamp(1.5rem, 4vw, 3rem)',
                 color: 'transparent',
                 WebkitTextStroke: '1px rgba(245,245,245,0.2)',
+                margin: '0.2rem 0',
               }}
             >
               &amp;
             </span>
-            <span style={{ display: 'block', color: '#f5f5f5' }}>SOLUTIONS</span>
+            <span
+              style={{
+                display: 'block',
+                fontFamily: 'var(--font-bebas), sans-serif',
+                fontSize: 'clamp(4rem, 12vw, 9rem)',
+                color: 'transparent',
+                WebkitTextStroke: '1px #1a6fd4',
+                lineHeight: 0.9,
+              }}
+            >
+              SOLUTIONS
+            </span>
           </h1>
 
           {/* Subtext */}
@@ -71,10 +88,11 @@ export default function ServicesPage() {
             style={{
               fontFamily: 'var(--font-grotesk), sans-serif',
               fontWeight: 300,
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               color: 'rgba(245,245,245,0.55)',
               lineHeight: 1.7,
-              maxWidth: '500px',
+              maxWidth: '480px',
+              marginTop: '1.5rem',
               margin: 0,
             }}
           >
@@ -89,7 +107,7 @@ export default function ServicesPage() {
       <Services />
 
       {/* ── Stats Strip ── */}
-      <section style={{ background: '#111318', padding: 'clamp(3rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem)' }}>
+      <section style={{ background: 'rgba(17,19,24,0.92)', padding: 'clamp(3rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem)' }}>
         <div
           className="grid grid-cols-2 md:grid-cols-4"
           style={{ gap: '1px', background: 'rgba(26,111,212,0.1)' }}
