@@ -21,7 +21,7 @@ export default function Partners() {
     : 'repeat(5, 1fr)';
 
   return (
-    <section style={{ background: '#0a0a0a', padding: sectionPadding }}>
+    <section style={{ background: 'rgba(10,10,10,0.92)', padding: sectionPadding }}>
       {/* Two-column intro — stacks on mobile/tablet */}
       <div
         style={{

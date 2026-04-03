@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import ParticleCanvas from '@/components/ui/ParticleCanvas';
 import NxButton from '@/components/ui/NxButton';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
@@ -74,9 +73,6 @@ export default function Hero() {
         background: '#0a0a0a',
       }}
     >
-      {/* z-0: Particle field */}
-      <ParticleCanvas />
-
       {/* z-1: Grid overlay */}
       <div
         className="grid-overlay"

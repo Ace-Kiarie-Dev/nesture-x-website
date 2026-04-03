@@ -58,7 +58,7 @@ export default function Process() {
   }, []);
 
   return (
-    <section ref={sectionRef} style={{ background: '#111318', padding: sectionPadding }}>
+    <section ref={sectionRef} style={{ background: 'rgba(17,19,24,0.92)', padding: sectionPadding }}>
       <div style={{ marginBottom: isMobile ? '2rem' : '4rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>How We Work</div>
         <h2

@@ -17,7 +17,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      style={{ background: '#111318', padding: sectionPadding, position: 'relative' }}
+      style={{ background: 'rgba(17,19,24,0.92)', padding: sectionPadding, position: 'relative' }}
     >
       {/* Header */}
       <div style={{ marginBottom: isMobile ? '2rem' : '3rem' }}>

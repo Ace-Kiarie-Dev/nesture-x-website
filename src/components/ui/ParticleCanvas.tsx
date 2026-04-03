@@ -27,20 +27,20 @@ export default function ParticleCanvas() {
     const particles: Particle[] = [];
 
     const handleResize = () => {
-      W = canvas.width = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     };
 
     function initParticles() {
       particles.length = 0;
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 120; i++) {
         particles.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 1.5 + 0.5,
-          alpha: Math.random() * 0.4 + 0.1,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          radius: Math.random() * 1.8 + 0.4,
+          alpha: Math.random() * 0.45 + 0.08,
         });
       }
     }
@@ -65,11 +65,11 @@ export default function ParticleCanvas() {
           const dx = particles[j].x - particles[i].x;
           const dy = particles[j].y - particles[i].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          if (dist < 150) {
             safeCtx.beginPath();
             safeCtx.moveTo(particles[i].x, particles[i].y);
             safeCtx.lineTo(particles[j].x, particles[j].y);
-            safeCtx.strokeStyle = `rgba(26,111,212,${0.08 * (1 - dist / 120)})`;
+            safeCtx.strokeStyle = `rgba(26,111,212,${0.1 * (1 - dist / 150)})`;
             safeCtx.lineWidth = 0.5;
             safeCtx.stroke();
           }
@@ -95,11 +95,11 @@ export default function ParticleCanvas() {
     <canvas
       ref={canvasRef}
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         zIndex: 0,
         pointerEvents: 'none',
       }}

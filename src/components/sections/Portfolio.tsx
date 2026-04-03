@@ -27,7 +27,7 @@ export default function Portfolio() {
   const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
 
   return (
-    <section id="portfolio" style={{ background: '#111318', padding: sectionPadding }}>
+    <section id="portfolio" style={{ background: 'rgba(17,19,24,0.92)', padding: sectionPadding }}>
       {/* Header */}
       <div style={{ marginBottom: '3rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>Selected Work</div>

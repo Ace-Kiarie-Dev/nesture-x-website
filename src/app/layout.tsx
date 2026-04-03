@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Footer from "@/components/layout/Footer";
+import ParticleCanvas from "@/components/ui/ParticleCanvas";
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -54,6 +55,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+        <ParticleCanvas />
         <CustomCursor />
         <Navbar />
         {children}

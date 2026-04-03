@@ -133,7 +133,7 @@ export default function ServicesPage() {
       {/* ── CTA Strip ── */}
       <section
         style={{
-          background: '#0d1b3e',
+          background: 'rgba(13,27,62,0.92)',
           padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem)',
           textAlign: 'center',
           position: 'relative',

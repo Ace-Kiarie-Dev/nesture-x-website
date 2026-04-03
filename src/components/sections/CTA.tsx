@@ -11,7 +11,7 @@ export default function CTA() {
   return (
     <section
       style={{
-        background: '#0d1b3e',
+        background: 'rgba(13,27,62,0.92)',
         borderTop: '1px solid rgba(26,111,212,0.3)',
         padding: sectionPadding,
         textAlign: 'center',

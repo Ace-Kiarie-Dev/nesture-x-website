@@ -67,6 +67,17 @@ body {
   cursor: none;
 }
 
+/* Stacking order: canvas(0) → content(1) → nav(50-100) → cursor(9999) */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+}
+
 /* Glassmorphism utility */
 .glass {
   background: rgba(26, 111, 212, 0.08);

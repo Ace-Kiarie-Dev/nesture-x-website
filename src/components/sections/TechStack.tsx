@@ -33,7 +33,7 @@ export default function TechStack() {
   const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
 
   return (
-    <section style={{ background: '#0a0a0a', padding: sectionPadding }}>
+    <section style={{ background: 'rgba(10,10,10,0.92)', padding: sectionPadding }}>
       <div style={{ marginBottom: '3rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>Technologies</div>
         <h2
