@@ -94,20 +94,21 @@ function getThumbnailSrc(item: PortfolioItem): string | null {
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.04, delayChildren: 0.05 },
+    // 0.012s stagger: 50 visible cards ≈ 0.6 s total, 174 ≈ 2.1 s max
+    transition: { staggerChildren: 0.012, delayChildren: 0.03 },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.15 },
+    transition: { duration: 0.12 },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   },
 };
 
