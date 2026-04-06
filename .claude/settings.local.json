@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(cat D:/Work/Code/Code/Clients/Nesture-X/nesture-x-website/next.config.*)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
