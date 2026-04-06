@@ -43,13 +43,12 @@ export default function NxButton({
     letterSpacing: '0.06em',
     textTransform: 'uppercase',
     cursor: 'none',
-    clipPath: CLIP,
     textDecoration: 'none',
     whiteSpace: 'nowrap',
     border: 'none',
     ...(isPrimary
-      ? { background: '#1a6fd4', color: '#f5f5f5' }
-      : { background: 'transparent', color: '#f5f5f5', borderStyle: 'solid', borderWidth: '1px' }),
+      ? { background: 'var(--color-primary)', color: 'var(--color-text)', clipPath: CLIP }
+      : { background: 'transparent', color: 'var(--color-text)', borderStyle: 'solid', borderWidth: '1px' }),
   };
 
   const wrapperClass = `nx-btn-wrapper nx-btn-wrapper--${variant}${className ? ` ${className}` : ''}`;

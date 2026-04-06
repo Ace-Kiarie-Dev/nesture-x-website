@@ -30,12 +30,12 @@ export default function Services() {
             margin: 0,
           }}
         >
-          <span style={{ display: 'block', color: '#f5f5f5' }}>OUR</span>
+          <span style={{ display: 'block', color: 'var(--color-text)' }}>OUR</span>
           <span
             style={{
               display: 'block',
               color: 'transparent',
-              WebkitTextStroke: '1px #1a6fd4',
+              WebkitTextStroke: '1px var(--color-primary)',
             }}
           >
             SERVICES
@@ -67,14 +67,14 @@ export default function Services() {
                   padding: '0.75rem 1.2rem',
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: active ? '2px solid #1a6fd4' : '2px solid transparent',
+                  borderBottom: active ? '2px solid var(--color-primary)' : '2px solid transparent',
                   marginBottom: '-1px',
                   fontFamily: 'var(--font-grotesk), sans-serif',
                   fontWeight: 500,
                   fontSize: '0.72rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
-                  color: active ? '#1a6fd4' : 'rgba(245,245,245,0.4)',
+                  color: active ? 'var(--color-primary)' : 'rgba(245,245,245,0.4)',
                   cursor: 'none',
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s',
@@ -116,7 +116,7 @@ export default function Services() {
                     borderRight: 'none',
                     borderBottom: '1px solid rgba(245,245,245,0.06)',
                     borderLeft: active
-                      ? '2px solid #1a6fd4'
+                      ? '2px solid var(--color-primary)'
                       : '2px solid transparent',
                     background: 'none',
                     cursor: 'none',
@@ -156,7 +156,7 @@ export default function Services() {
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
                         color: active
-                          ? '#1a6fd4'
+                          ? 'var(--color-primary)'
                           : 'rgba(245,245,245,0.35)',
                         transition: 'color 0.3s ease',
                       }}
@@ -172,7 +172,7 @@ export default function Services() {
                         ? 'translateX(0)'
                         : 'translateX(-8px)',
                       transition: 'opacity 0.3s, transform 0.3s',
-                      color: '#1a6fd4',
+                      color: 'var(--color-primary)',
                       fontSize: '1rem',
                     }}
                   >
@@ -232,11 +232,11 @@ export default function Services() {
                   bottom: 0,
                   left: 0,
                   height: '2px',
-                  background: '#1a6fd4',
+                  background: 'var(--color-primary)',
                 }}
               />
 
-              {/* Dot accent */}
+              {/* Dot accent — circular element, border-radius allowed */}
               <div
                 style={{
                   position: 'absolute',
@@ -245,7 +245,7 @@ export default function Services() {
                   width: '8px',
                   height: '8px',
                   borderRadius: '50%',
-                  background: '#1a6fd4',
+                  background: 'var(--color-primary)',
                 }}
               />
             </div>
@@ -255,7 +255,7 @@ export default function Services() {
               style={{
                 fontFamily: 'var(--font-bebas), sans-serif',
                 fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                color: '#f5f5f5',
+                color: 'var(--color-text)',
                 marginBottom: '0.75rem',
                 lineHeight: 1,
               }}
@@ -331,7 +331,7 @@ function FeatureItem({ text }: { text: string }) {
         style={{
           fontFamily: 'var(--font-jetbrains), monospace',
           fontSize: '0.7rem',
-          color: '#1a6fd4',
+          color: 'var(--color-primary)',
           flexShrink: 0,
         }}
       >

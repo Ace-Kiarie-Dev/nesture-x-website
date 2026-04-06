@@ -100,6 +100,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  data-hover
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -108,21 +109,21 @@ export default function Navbar() {
                     fontWeight: 500,
                     letterSpacing: '0.15em',
                     textTransform: 'uppercase',
-                    color: active ? '#1a6fd4' : '#f5f5f5',
+                    color: active ? 'var(--color-primary)' : 'var(--color-text)',
                     textDecoration: 'none',
-                    transition: 'color 150ms ease',
+                    transition: 'color 300ms ease',
                   }}
                   onMouseEnter={e => {
-                    if (!active) (e.currentTarget as HTMLElement).style.color = '#1a6fd4';
+                    if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--color-primary)';
                   }}
                   onMouseLeave={e => {
-                    if (!active) (e.currentTarget as HTMLElement).style.color = '#f5f5f5';
+                    if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--color-text)';
                   }}
                 >
                   {/* Bullet — always rendered, hidden when inactive to preserve spacing */}
                   <span
                     style={{
-                      color: '#1a6fd4',
+                      color: 'var(--color-primary)',
                       fontSize: '0.6rem',
                       lineHeight: 1,
                       visibility: active ? 'visible' : 'hidden',
@@ -140,29 +141,29 @@ export default function Navbar() {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
+            data-hover
             style={{
               width: '36px',
               height: '36px',
               border: '1px solid rgba(245, 245, 245, 0.2)',
-              borderRadius: '4px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               background: 'transparent',
-              color: '#f5f5f5',
-              cursor: 'pointer',
-              transition: 'border-color 150ms ease, color 150ms ease',
+              color: 'var(--color-text)',
+              cursor: 'none',
+              transition: 'border-color 300ms ease, color 300ms ease',
               flexShrink: 0,
             }}
             onMouseEnter={e => {
               const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = '#1a6fd4';
-              el.style.color = '#1a6fd4';
+              el.style.borderColor = 'var(--color-primary)';
+              el.style.color = 'var(--color-primary)';
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLElement;
               el.style.borderColor = 'rgba(245, 245, 245, 0.2)';
-              el.style.color = '#f5f5f5';
+              el.style.color = 'var(--color-text)';
             }}
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
@@ -179,17 +180,17 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
+            data-hover
             style={{
               width: '40px',
               height: '40px',
               border: '1px solid rgba(245, 245, 245, 0.3)',
-              borderRadius: '4px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               background: 'transparent',
-              color: '#f5f5f5',
-              cursor: 'pointer',
+              color: 'var(--color-text)',
+              cursor: 'none',
             }}
           >
             <Menu size={20} />
@@ -218,6 +219,7 @@ export default function Navbar() {
         <button
           onClick={() => setMenuOpen(false)}
           aria-label="Close menu"
+          data-hover
           style={{
             position: 'absolute',
             top: '24px',
@@ -225,13 +227,12 @@ export default function Navbar() {
             width: '44px',
             height: '44px',
             border: '1px solid rgba(245, 245, 245, 0.3)',
-            borderRadius: '4px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: 'transparent',
-            color: '#f5f5f5',
-            cursor: 'pointer',
+            color: 'var(--color-text)',
+            cursor: 'none',
           }}
         >
           <X size={20} />
@@ -245,6 +246,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
+              data-hover
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -253,14 +255,14 @@ export default function Navbar() {
                 fontSize: '2.5rem',
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: active ? '#1a6fd4' : '#f5f5f5',
+                color: active ? 'var(--color-primary)' : 'var(--color-text)',
                 textDecoration: 'none',
-                transition: 'color 150ms ease',
+                transition: 'color 300ms ease',
               }}
             >
               <span
                 style={{
-                  color: '#1a6fd4',
+                  color: 'var(--color-primary)',
                   fontSize: '0.9rem',
                   lineHeight: 1,
                   visibility: active ? 'visible' : 'hidden',

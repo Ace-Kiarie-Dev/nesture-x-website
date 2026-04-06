@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import NxButton from '@/components/ui/NxButton';
 import { FileText } from 'lucide-react';
 import portfolioData from '@/data/portfolio.json';
 
@@ -205,7 +206,7 @@ export default function Portfolio({ featuredOnly = false }: { featuredOnly?: boo
           style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(3rem, 7vw, 6rem)',
-            color: 'var(--color-white)',
+            color: 'var(--color-text)',
             lineHeight: 1,
           }}
         >
@@ -292,14 +293,9 @@ export default function Portfolio({ featuredOnly = false }: { featuredOnly?: boo
       {/* ── View all CTA — shown in featuredOnly mode ── */}
       {featuredOnly && (
         <div className="mt-12 flex justify-center">
-          <Link
-            href="/portfolio"
-            className="inline-flex items-center px-10 py-3 rounded-full bg-[var(--color-blue)] text-[var(--color-white)] text-sm tracking-[0.18em] uppercase transition-opacity duration-200 hover:opacity-85"
-            style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', letterSpacing: '0.12em' }}
-            data-hover
-          >
+          <NxButton variant="primary" size="lg" href="/portfolio">
             VIEW ALL WORK
-          </Link>
+          </NxButton>
         </div>
       )}
     </section>

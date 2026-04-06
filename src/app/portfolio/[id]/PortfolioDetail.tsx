@@ -145,9 +145,10 @@ function PDFViewer({ item }: { item: PortfolioItem }) {
       <iframe
         src={src}
         title={`${item.client} — ${item.type}`}
-        className="flex-1 w-full border-none bg-[#111]"
+        className="flex-1 w-full border-none"
+        style={{ background: 'var(--color-mid)' }}
       />
-      <a href={src} target="_blank" rel="noopener noreferrer" className="pd-pdf-link cursor-pointer">
+      <a href={src} target="_blank" rel="noopener noreferrer" className="pd-pdf-link">
         Open PDF
       </a>
     </div>
@@ -165,10 +166,11 @@ function RelatedCard({ item }: { item: PortfolioItem }) {
       <Link
         href={`/portfolio/${item.id}`}
         aria-label={`${getDisplayClient(item.client)} — ${item.type}`}
-        className="block rounded-lg overflow-hidden border border-white/[0.06] transition-all duration-200 hover:border-[rgba(26,111,212,0.4)] hover:shadow-[0_0_0_1px_rgba(26,111,212,0.15),0_4px_20px_rgba(26,111,212,0.25)] cursor-pointer"
+        className="block overflow-hidden border border-white/[0.06] transition-all duration-300 hover:border-[rgba(26,111,212,0.4)] hover:shadow-[0_0_0_1px_rgba(26,111,212,0.15),0_4px_20px_rgba(26,111,212,0.25)]"
+        style={{ cursor: 'none' }}
         data-hover
       >
-        <div className="relative aspect-[4/3] overflow-hidden bg-black">
+        <div className="relative aspect-[4/3] overflow-hidden" style={{ background: 'var(--color-bg)' }}>
           {isGif && imgSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={imgSrc} alt="" className="w-full h-full object-cover block" />
@@ -181,8 +183,8 @@ function RelatedCard({ item }: { item: PortfolioItem }) {
               style={{ objectFit: 'cover' }}
             />
           ) : (
-            <div className="flex items-center justify-center w-full h-full bg-[#141920]">
-              <span className="font-mono text-[0.55rem] tracking-widest uppercase text-[var(--color-blue)]">
+            <div className="flex items-center justify-center w-full h-full" style={{ background: 'var(--color-surface)' }}>
+              <span style={{ fontFamily: 'var(--font-mono)' }} className="text-[0.55rem] tracking-widest uppercase text-[var(--color-primary)]">
                 PDF
               </span>
             </div>
@@ -300,7 +302,7 @@ export default function PortfolioDetail({
   };
 
   return (
-    <div className="pd-page cursor-auto">
+    <div className="pd-page">
 
       {/* ── ZONE 1: Top bar ─────────────────────────────────────────────────── */}
       <div className="pd-topbar sticky top-16 z-10">
@@ -413,7 +415,7 @@ export default function PortfolioDetail({
         </motion.div>{/* /LEFT */}
 
         {/* RIGHT — 60%, sticky, 6-column image-only grid */}
-        <div className="w-full md:w-[60%] md:sticky md:top-[80px] md:h-[calc(100vh-80px)] bg-[#141920] border-t border-white/[0.06] md:border-t-0 md:border-l flex flex-col overflow-hidden">
+        <div className="w-full md:w-[60%] md:sticky md:top-[80px] md:h-[calc(100vh-80px)] border-t border-white/[0.06] md:border-t-0 md:border-l flex flex-col overflow-hidden" style={{ background: 'var(--color-surface)' }}>
           <div className="flex-1 overflow-y-auto p-3 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.08)_transparent]">
             <motion.div
               className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-1.5"

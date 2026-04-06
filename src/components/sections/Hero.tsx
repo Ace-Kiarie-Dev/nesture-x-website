@@ -83,12 +83,12 @@ export default function Hero() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: isMobile ? '100%' : '700px' }}>
         {/* Eyebrow */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-          <span style={{ display: 'block', width: '24px', height: '1px', background: '#1a6fd4', flexShrink: 0 }} />
+          <span style={{ display: 'block', width: '24px', height: '1px', background: 'var(--color-primary)', flexShrink: 0 }} />
           <span
             style={{
               fontFamily: 'var(--font-jetbrains), monospace',
               fontSize: '0.72rem',
-              color: '#1a6fd4',
+              color: 'var(--color-primary)',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
             }}
@@ -110,8 +110,8 @@ export default function Hero() {
                 fontFamily: 'var(--font-bebas), sans-serif',
                 fontSize: headlineFontSize,
                 lineHeight: 0.92,
-                color: line.outline ? 'transparent' : '#f5f5f5',
-                WebkitTextStroke: line.outline ? '1px #1a6fd4' : undefined,
+                color: line.outline ? 'transparent' : 'var(--color-text)',
+                WebkitTextStroke: line.outline ? '1px var(--color-primary)' : undefined,
               }}
             >
               {line.text}
@@ -124,7 +124,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.6 }}
-          style={{ marginTop: '2rem', borderLeft: '2px solid #1a6fd4', paddingLeft: '1rem' }}
+          style={{ marginTop: '2rem', borderLeft: '2px solid var(--color-primary)', paddingLeft: '1rem' }}
         >
           <p
             style={{
@@ -143,7 +143,7 @@ export default function Hero() {
                 display: 'inline-block',
                 width: '3px',
                 height: '1em',
-                background: '#1a6fd4',
+                background: 'var(--color-primary)',
                 verticalAlign: 'middle',
                 marginLeft: '2px',
                 animation: 'blink 0.8s infinite',
@@ -204,7 +204,7 @@ export default function Hero() {
                 style={{
                   fontFamily: 'var(--font-bebas), sans-serif',
                   fontSize: isTablet ? '2rem' : '2.8rem',
-                  color: '#1a6fd4',
+                  color: 'var(--color-primary)',
                   lineHeight: 1,
                 }}
               >
@@ -264,7 +264,7 @@ export default function Hero() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: '#1a6fd4',
+                background: 'var(--color-primary)',
                 animation: 'scrollLine 2s infinite',
               }}
             />

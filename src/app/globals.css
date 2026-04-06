@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Colors */
-  --color-black: #0a0a0a;
-  --color-blue: #1a6fd4;
-  --color-white: #f5f5f5;
-  --color-navy: #0d1b3e;
+  /* Brand Colors — canonical source of truth */
+  --color-bg: #0a0a0a;
+  --color-primary: #1a6fd4;
+  --color-text: #f5f5f5;
+  --color-bg-secondary: #0d1b3e;
   --color-surface: #141920;
   --color-mid: #111318;
-  --color-blue-grey: #b8cef0;
+
+  /* Legacy aliases — backwards compatibility only, do not use in new code */
+  --color-black: var(--color-bg);
+  --color-blue: var(--color-primary);
+  --color-white: var(--color-text);
+  --color-navy: var(--color-bg-secondary);
 
   /* Font system */
   --font-display: var(--font-bebas);
@@ -16,26 +21,25 @@
   --font-mono: var(--font-jetbrains);
 
   /* Neo-Brutalism Shadows */
-  --shadow-brutal: 4px 4px 0px #1a6fd4;
-  --shadow-brutal-lg: 6px 6px 0px #1a6fd4;
-  --shadow-brutal-sm: 2px 2px 0px #1a6fd4;
+  --shadow-brutal: 4px 4px 0px var(--color-primary);
+  --shadow-brutal-lg: 6px 6px 0px var(--color-primary);
+  --shadow-brutal-sm: 2px 2px 0px var(--color-primary);
 
   /* Transitions */
   --transition-base: 250ms ease;
   --transition-fast: 150ms ease;
 
   /* Borders — Neo-Brutalism */
-  --border-brutal: 2px solid #f5f5f5;
-  --border-blue: 2px solid #1a6fd4;
+  --border-brutal: 2px solid var(--color-text);
+  --border-blue: 2px solid var(--color-primary);
 }
 
 /* Dark mode — default experience */
 [data-theme='dark'] {
   --color-bg: #0a0a0a;
-  --color-surface: #111111;
+  --color-surface: #141920;
   --color-text: #f5f5f5;
-  --color-text-muted: #b8cef0;
-  --border-brutal: 2px solid #f5f5f5;
+  --border-brutal: 2px solid var(--color-text);
 }
 
 /* Light mode — toggle state */
@@ -43,8 +47,7 @@
   --color-bg: #f5f5f5;
   --color-surface: #ffffff;
   --color-text: #0a0a0a;
-  --color-text-muted: #0d1b3e;
-  --border-brutal: 2px solid #0a0a0a;
+  --border-brutal: 2px solid var(--color-text);
 }
 
 /* Base resets */
@@ -56,7 +59,7 @@
 
 html {
   scroll-behavior: smooth;
-  background: #0a0a0a; /* viewport fallback — shows if canvas hasn't mounted yet */
+  background: var(--color-bg); /* viewport fallback — shows if canvas hasn't mounted yet */
 }
 
 body {
@@ -115,7 +118,7 @@ canvas {
 .section-label {
   font-family: var(--font-mono), monospace;
   font-size: 0.68rem;
-  color: #1a6fd4;
+  color: var(--color-primary);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   display: flex;
@@ -127,7 +130,7 @@ canvas {
   content: '';
   width: 24px;
   height: 1px;
-  background: #1a6fd4;
+  background: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -177,13 +180,11 @@ canvas {
   display: flex;
 }
 
-/* Hard shadow layer — same clip-path as the button */
+/* Hard shadow layer */
 .nx-btn-wrapper::after {
   content: '';
   position: absolute;
   inset: 0;
-  clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px),
-                     calc(100% - 10px) 100%, 0% 100%, 0% 10px);
   transform: translate(4px, 4px);
   z-index: 0;
   opacity: 0;
@@ -191,8 +192,17 @@ canvas {
   pointer-events: none;
 }
 
-.nx-btn-wrapper--primary::after { background: #0d4a9e; }
-.nx-btn-wrapper--ghost::after   { background: #1a6fd4; }
+/* Primary: clip-path shadow matches button shape */
+.nx-btn-wrapper--primary::after {
+  background: #0d4a9e;
+  clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px),
+                     calc(100% - 10px) 100%, 0% 100%, 0% 10px);
+}
+
+/* Ghost: sharp rectangle shadow */
+.nx-btn-wrapper--ghost::after {
+  background: var(--color-primary);
+}
 
 .nx-btn-wrapper:hover::after { opacity: 1; }
 
@@ -223,8 +233,8 @@ canvas {
 }
 
 .nx-btn-wrapper--ghost:hover .nx-btn--ghost {
-  border-color: #1a6fd4;
-  color: #1a6fd4;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 /* Electric blue glow utility */
@@ -252,7 +262,7 @@ canvas {
   text-transform: uppercase;
   letter-spacing: 0.07em;
   color: rgba(245, 245, 245, 0.35);
-  cursor: pointer;
+  cursor: none;
   white-space: nowrap;
   transition: color var(--transition-fast), border-color var(--transition-fast);
 }
@@ -275,9 +285,8 @@ canvas {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid transparent;
-  border-radius: 12px;
   overflow: hidden;
-  cursor: pointer;
+  cursor: none;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.06),
     0 4px 24px rgba(255, 255, 255, 0.04);
@@ -484,13 +493,13 @@ canvas {
   transform: translateY(-50%);
   background: rgba(20, 25, 32, 0.85);
   border: 1px solid rgba(26, 111, 212, 0.3);
-  color: var(--color-white);
+  color: var(--color-text);
   width: 2.25rem;
   height: 2.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: none;
   z-index: 10;
   transition: background var(--transition-fast), border-color var(--transition-fast);
   flex-shrink: 0;
@@ -529,7 +538,7 @@ canvas {
   font-family: var(--font-mono), monospace;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
-  cursor: pointer;
+  cursor: none;
   transition: border-color var(--transition-fast), color var(--transition-fast);
 }
 
@@ -551,7 +560,7 @@ canvas {
   padding: 0.6rem;
   background: rgba(26, 111, 212, 0.04);
   border: 1px solid rgba(26, 111, 212, 0.12);
-  cursor: pointer;
+  cursor: none;
   width: 100%;
   text-align: left;
   transition: border-color var(--transition-fast), background var(--transition-fast);
@@ -602,7 +611,7 @@ canvas {
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* Icon buttons (back arrow, three-dot) */
+/* Icon buttons (back arrow, three-dot) — circular, border-radius allowed */
 .pd-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -613,7 +622,7 @@ canvas {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(245, 245, 245, 0.6);
-  cursor: pointer;
+  cursor: none;
   text-decoration: none;
   transition: color var(--transition-fast), background var(--transition-fast),
               border-color var(--transition-fast);
@@ -674,7 +683,7 @@ canvas {
   flex: 1;
   width: 100%;
   border: none;
-  background: #111;
+  background: var(--color-mid);
 }
 
 .pd-pdf-link {
@@ -686,11 +695,12 @@ canvas {
   font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-blue);
+  color: var(--color-primary);
   border-top: 1px solid rgba(26, 111, 212, 0.2);
   background: rgba(20, 25, 32, 0.9);
   text-decoration: none;
   flex-shrink: 0;
+  cursor: none;
   transition: color var(--transition-fast);
 }
 
@@ -712,7 +722,7 @@ canvas {
   background: transparent;
   border: none;
   color: rgba(245, 245, 245, 0.45);
-  cursor: pointer;
+  cursor: none;
   font-family: var(--font-mono), monospace;
   font-size: 0.7rem;
   letter-spacing: 0.06em;
@@ -740,9 +750,8 @@ canvas {
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--color-blue);
+  color: var(--color-primary);
   border: 1px solid rgba(26, 111, 212, 0.5);
-  border-radius: 100px;
   padding: 0.2rem 0.65rem;
   margin-bottom: 1.1rem;
 }
@@ -844,7 +853,7 @@ canvas {
   background: transparent;
   border: none;
   color: rgba(245, 245, 245, 0.3);
-  cursor: pointer;
+  cursor: none;
   display: inline-flex;
   align-items: center;
   padding: 0.25rem;
@@ -860,7 +869,7 @@ canvas {
   top: 80px;
   flex: 0 0 40%;
   height: calc(100vh - 80px);
-  background: #141920;
+  background: var(--color-surface);
   border-left: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
@@ -895,7 +904,6 @@ canvas {
 .pd-grid-card {
   display: block;
   text-decoration: none;
-  border-radius: 8px;
   overflow: hidden;
   background: rgba(20, 25, 32, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -951,9 +959,8 @@ canvas {
   font-size: 0.52rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-blue);
+  color: var(--color-primary);
   border: 1px solid rgba(26, 111, 212, 0.4);
-  border-radius: 100px;
   padding: 0.12rem 0.4rem;
 }
 
