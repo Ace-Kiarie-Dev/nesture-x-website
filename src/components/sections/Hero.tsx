@@ -200,7 +200,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* z-2: Right — 3D App Cards cluster (desktop + tablet only) */}
+      {/* z-2: Right — NX Originals label + 3D App Cards cluster (desktop + tablet only) */}
       {!isMobile && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -209,12 +209,39 @@ export default function Hero() {
           style={{
             position: 'relative',
             zIndex: 2,
-            width: '420px',
-            height: '360px',
             flexShrink: 0,
-            perspective: '800px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            alignItems: 'flex-start',
           }}
         >
+          {/* NX Originals label */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span
+              style={{
+                display: 'block',
+                width: '24px',
+                height: '1px',
+                background: 'var(--color-primary)',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '0.7rem',
+                color: 'var(--color-primary)',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}
+            >
+              NX Originals
+            </span>
+          </div>
+
+          {/* Perspective container */}
+          <div style={{ width: '420px', height: '360px', perspective: '800px' }}>
           {/* Breathing container — slow rotateY oscillation */}
           <motion.div
             animate={{ rotateY: [-5, 5, -5] }}
@@ -320,6 +347,7 @@ export default function Hero() {
               );
             })}
           </motion.div>
+          </div>
         </motion.div>
       )}
 
