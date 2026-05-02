@@ -21,12 +21,12 @@ const APP_CARDS = [
 ];
 
 // Absolute px positions + 3D rotations within the cluster container.
-// 2-column stagger: left col (0) and right col (250), 50 px horizontal gap between columns.
+// 2-column grid: left col (0) and right col (250), rows aligned on the same top values.
 const CARD_META = [
   { top:   0, left:   0, rotateX:  8, rotateY: -12, translateZ: 20 }, // left  row 1
-  { top:  60, left: 250, rotateX: -6, rotateY:  10, translateZ: 10 }, // right row 1
+  { top:   0, left: 250, rotateX: -6, rotateY:  10, translateZ: 10 }, // right row 1
   { top: 180, left:   0, rotateX: 10, rotateY:  -8, translateZ: 30 }, // left  row 2
-  { top: 240, left: 250, rotateX: -8, rotateY:  12, translateZ:  5 }, // right row 2
+  { top: 180, left: 250, rotateX: -8, rotateY:  12, translateZ:  5 }, // right row 2
 ];
 
 function statusColor(status: string): string {
