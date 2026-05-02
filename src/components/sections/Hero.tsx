@@ -13,6 +13,21 @@ const TYPED_PHRASES = [
   'for the Nairobi hustle',
 ];
 
+const APP_CARDS = [
+  { name: 'BetLedger',   tagline: 'Bet tracking & analytics', status: 'In Development' },
+  { name: 'Hikarani',    tagline: 'Faith & community app',    status: 'In Development' },
+  { name: 'Kikota',      tagline: 'SaaS platform',            status: 'Coming Soon'    },
+  { name: 'Alarm Clock', tagline: "You can't snooze this",    status: 'Concept'        },
+];
+
+// Absolute position + initial 3D rotation for each card within the cluster container
+const CARD_META = [
+  { top: '2%',  left: '4%',  rotateX: -8,  rotateY:  12, translateZ: 20 },
+  { top: '18%', left: '48%', rotateX:  5,  rotateY: -10, translateZ: 40 },
+  { top: '50%', left: '2%',  rotateX:  10, rotateY:   8, translateZ: 15 },
+  { top: '62%', left: '44%', rotateX: -12, rotateY: -15, translateZ: 30 },
+];
+
 export default function Hero() {
   const { isMobile, isTablet } = useBreakpoint();
   const [typedText, setTypedText] = useState('');
@@ -48,17 +63,18 @@ export default function Hero() {
     : 'clamp(5rem, 12vw, 11rem)';
 
   const sectionPadding = isMobile ? '0 1.5rem' : isTablet ? '0 2rem' : '0 3rem';
+  const sidePad        = isTablet ? '2rem' : '3rem';
 
   const headlineLines = [
-    { text: 'CREATE.', outline: false },
-    { text: 'DISCOVER.', outline: true },
-    { text: 'EXPLORE.', outline: false },
+    { text: 'CREATE.',   outline: false },
+    { text: 'DISCOVER.', outline: true  },
+    { text: 'EXPLORE.',  outline: false },
   ];
 
   const stats = [
-    { number: '11+', label: 'Clients Served' },
-    { number: '5', label: 'Equity Partners' },
-    { number: '100%', label: 'Full-Stack Capable' },
+    { number: '11+',  label: 'Clients Served'     },
+    { number: '5',    label: 'Equity Partners'     },
+    { number: '100%', label: 'Full-Stack Capable'  },
   ];
 
   return (
@@ -69,18 +85,23 @@ export default function Hero() {
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
         padding: sectionPadding,
         background: 'rgba(10,10,10,0.93)',
       }}
     >
       {/* z-1: Grid overlay */}
-      <div
-        className="grid-overlay"
-        style={{ position: 'absolute', inset: 0, zIndex: 1 }}
-      />
+      <div className="grid-overlay" style={{ position: 'absolute', inset: 0, zIndex: 1 }} />
 
-      {/* z-2: Hero content */}
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: isMobile ? '100%' : '700px' }}>
+      {/* z-2: Left — Hero text content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          flex: '0 1 600px',
+          maxWidth: isMobile ? '100%' : isTablet ? '50%' : '52%',
+        }}
+      >
         {/* Eyebrow */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
           <span style={{ display: 'block', width: '24px', height: '1px', background: 'var(--color-primary)', flexShrink: 0 }} />
@@ -164,42 +185,141 @@ export default function Hero() {
             marginTop: '2.5rem',
           }}
         >
-          <NxButton
-            variant="primary"
-            size="lg"
-            href="#contact"
-            className={isMobile ? 'w-full' : ''}
-          >
+          <NxButton variant="primary" size="lg" href="/booking" className={isMobile ? 'w-full' : ''}>
             Book a Consultation
           </NxButton>
-          <NxButton
-            variant="ghost"
-            size="lg"
-            href="#portfolio"
-            className={isMobile ? 'w-full' : ''}
-          >
+          <NxButton variant="ghost" size="lg" href="#portfolio" className={isMobile ? 'w-full' : ''}>
             View Our Work
           </NxButton>
         </motion.div>
       </div>
 
-      {/* Stats strip — hidden on mobile */}
+      {/* z-2: Right — 3D App Cards cluster (desktop + tablet only) */}
+      {!isMobile && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            flex: '0 0 45%',
+            height: '380px',
+            perspective: '800px',
+          }}
+        >
+          {/* Breathing container — slow rotateY oscillation */}
+          <motion.div
+            animate={{ rotateY: [-5, 5, -5] }}
+            transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity }}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            {APP_CARDS.map((card, i) => {
+              const meta = CARD_META[i];
+              return (
+                <motion.div
+                  key={card.name}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.8 + i * 0.12 }}
+                  whileHover={{
+                    translateZ: meta.translateZ + 40,
+                    scale: 1.06,
+                    borderColor: 'var(--color-primary)',
+                    boxShadow: '0 0 24px rgba(26,111,212,0.4)',
+                    transition: { type: 'spring', stiffness: 300, damping: 20 },
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: meta.top,
+                    left: meta.left,
+                    width: '180px',
+                    height: '100px',
+                    rotateX: meta.rotateX,
+                    rotateY: meta.rotateY,
+                    translateZ: meta.translateZ,
+                    background: 'rgba(255,255,255,0.04)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
+                    borderColor: 'rgba(26,111,212,0.25)',
+                    clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)',
+                    cursor: 'none',
+                    padding: '0.75rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  {/* App name */}
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-bebas), sans-serif',
+                      fontSize: '1.4rem',
+                      color: 'var(--color-text)',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {card.name}
+                  </div>
+
+                  {/* One-liner */}
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-grotesk), sans-serif',
+                      fontSize: '0.65rem',
+                      color: 'rgba(245,245,245,0.5)',
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {card.tagline}
+                  </div>
+
+                  {/* Status tag — bottom-right */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '0.5rem',
+                      right: '0.6rem',
+                      fontFamily: 'var(--font-jetbrains), monospace',
+                      fontSize: '0.55rem',
+                      color: 'var(--color-primary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    {card.status}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Stats strip — bottom horizontal row, just above scroll hint, hidden on mobile */}
       {!isMobile && (
         <div
           style={{
             position: 'absolute',
-            right: isTablet ? '2rem' : '3rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            bottom: '5.5rem',
+            left: sidePad,
+            right: sidePad,
             zIndex: 2,
             display: 'flex',
-            flexDirection: 'column',
-            gap: '2.5rem',
-            textAlign: 'right',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
           }}
         >
           {stats.map(stat => (
-            <div key={stat.label}>
+            <div key={stat.label} style={{ textAlign: 'center' }}>
               <div
                 style={{
                   fontFamily: 'var(--font-bebas), sans-serif',
@@ -233,7 +353,7 @@ export default function Hero() {
           style={{
             position: 'absolute',
             bottom: '2.5rem',
-            left: isTablet ? '2rem' : '3rem',
+            left: sidePad,
             zIndex: 2,
             display: 'flex',
             alignItems: 'center',
