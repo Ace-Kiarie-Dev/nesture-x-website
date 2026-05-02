@@ -214,7 +214,7 @@ export default function Hero() {
             flexShrink: 0,
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.75rem',
+            gap: '1.75rem',
             alignItems: 'flex-start',
           }}
         >
