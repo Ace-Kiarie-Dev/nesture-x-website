@@ -351,15 +351,11 @@ export default function Hero() {
         </motion.div>
       )}
 
-      {/* Stats strip — vertical right side, hidden on mobile */}
+      {/* Stats strip — in-flow flex child on the right, hidden on mobile */}
       {!isMobile && (
         <div
           style={{
-            position: 'absolute',
-            right: sidePad,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 2,
+            flexShrink: 0,
             display: 'flex',
             flexDirection: 'column',
             gap: '2.5rem',
