@@ -14,10 +14,10 @@ const TYPED_PHRASES = [
 ];
 
 const APP_CARDS = [
-  { name: 'BetLedger',       platform: 'Mobile App',     tagline: 'Bet tracking & analytics', status: 'In Development' },
-  { name: 'Hikarani',        platform: 'Cross Platform', tagline: 'Faith & community app',    status: 'In Development' },
-  { name: 'Kikota',          platform: 'Web App · SaaS', tagline: 'SaaS platform',            status: 'Coming Soon'    },
-  { name: 'No-Snooze Alarm', platform: 'Mobile App',     tagline: "You can't snooze this",    status: 'Concept'        },
+  { name: 'BetLedger',       platform: 'Mobile App',     tagline: 'Bet tracking & analytics', status: 'Awaiting Deployment' },
+  { name: 'Hikarani',        platform: 'Cross Platform', tagline: 'Faith & community app',    status: 'In Development'      },
+  { name: 'Kikota',          platform: 'Web App · SaaS', tagline: 'SaaS platform',            status: 'In Development'      },
+  { name: 'No-Snooze Alarm', platform: 'Mobile App',     tagline: "You can't snooze this",    status: 'In Development'      },
 ];
 
 // Absolute px positions + 3D rotations within the cluster container.
@@ -30,8 +30,9 @@ const CARD_META = [
 ];
 
 function statusColor(status: string): string {
-  if (status === 'In Development') return 'var(--color-primary)';
-  if (status === 'Coming Soon')    return 'rgba(245,245,245,0.4)';
+  if (status === 'Awaiting Deployment') return 'var(--color-text)';
+  if (status === 'In Development')      return 'var(--color-primary)';
+  if (status === 'Coming Soon')         return 'rgba(245,245,245,0.4)';
   return 'rgba(245,245,245,0.25)';
 }
 
