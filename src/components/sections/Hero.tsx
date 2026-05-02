@@ -20,12 +20,13 @@ const APP_CARDS = [
   { name: 'No-Snooze Alarm', platform: 'Mobile App',     tagline: "You can't snooze this",    status: 'Concept'        },
 ];
 
-// Absolute px positions + 3D rotations within the cluster container
+// Absolute px positions + 3D rotations within the cluster container.
+// 2-column stagger: left col (0) and right col (220), 60 px vertical gap within each column.
 const CARD_META = [
-  { top:   0, left:  20, rotateX:  8, rotateY: -12, translateZ: 20 },
-  { top:  60, left: 200, rotateX: -6, rotateY:  10, translateZ: 10 },
-  { top: 160, left:  10, rotateX: 10, rotateY:  -8, translateZ: 30 },
-  { top: 220, left: 190, rotateX: -8, rotateY:  12, translateZ:  5 },
+  { top:   0, left:   0, rotateX:  8, rotateY: -12, translateZ: 20 }, // left  row 1
+  { top:  60, left: 220, rotateX: -6, rotateY:  10, translateZ: 10 }, // right row 1
+  { top: 180, left:   0, rotateX: 10, rotateY:  -8, translateZ: 30 }, // left  row 2
+  { top: 240, left: 220, rotateX: -8, rotateY:  12, translateZ:  5 }, // right row 2
 ];
 
 function statusColor(status: string): string {
@@ -216,8 +217,8 @@ export default function Hero() {
             alignItems: 'flex-start',
           }}
         >
-          {/* NX Originals label */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          {/* NX Originals label — centered over the full cluster width */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', width: '420px' }}>
             <span
               style={{
                 display: 'block',
@@ -230,7 +231,8 @@ export default function Hero() {
             <span
               style={{
                 fontFamily: 'var(--font-jetbrains), monospace',
-                fontSize: '0.7rem',
+                fontSize: '0.75rem',
+                fontWeight: 700,
                 color: 'var(--color-primary)',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
