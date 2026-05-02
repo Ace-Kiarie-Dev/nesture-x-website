@@ -7,7 +7,7 @@ import { useBreakpoint } from '@/lib/useBreakpoint';
 import Portfolio from './Portfolio';
 import WebDevGrid from './WebDevGrid';
 
-type View = 'entry' | 'design' | 'webdev';
+type View = 'entry' | 'design' | 'digital';
 
 const fadeSlide = {
   initial:  { opacity: 0, y: 20 },
@@ -213,10 +213,10 @@ export default function PortfolioEntry() {
           />
 
           <EntryPanel
-            label="WEB"
-            sublabel="DEVELOPMENT"
+            label="DIGITAL"
+            sublabel="PRODUCTS"
             backgroundPattern={gridPattern}
-            onClick={() => setView('webdev')}
+            onClick={() => setView('digital')}
           />
         </motion.div>
       )}
@@ -229,9 +229,9 @@ export default function PortfolioEntry() {
         </motion.div>
       )}
 
-      {/* ── Web development view ── */}
-      {view === 'webdev' && (
-        <motion.div key="webdev" {...fadeSlide}>
+      {/* ── Digital products view ── */}
+      {view === 'digital' && (
+        <motion.div key="digital" {...fadeSlide}>
           <BackBar onBack={() => setView('entry')} />
           <WebDevGrid />
         </motion.div>
