@@ -1,14 +1,14 @@
-import Portfolio from '@/components/sections/Portfolio';
+import PortfolioEntry from '@/components/sections/PortfolioEntry';
 
 export const metadata = {
   title: 'Portfolio | Nesture-X',
-  description: 'Browse 174 design and development projects by Nesture-X — logos, branding, social media, web, print, and more.',
+  description: 'Browse design and development projects by Nesture-X — logos, branding, social media, web, print, and more.',
 };
 
 export default function PortfolioPage() {
   return (
     <main>
-      <Portfolio />
+      <PortfolioEntry />
     </main>
   );
 }
