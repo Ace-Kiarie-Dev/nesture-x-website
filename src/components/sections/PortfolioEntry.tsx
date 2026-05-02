@@ -44,7 +44,7 @@ function BackBar({ onBack }: { onBack: () => void }) {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '0.4rem',
-          background: 'transparent',
+          background: hovered ? 'rgba(26,111,212,0.06)' : 'transparent',
           borderWidth: '1px',
           borderStyle: 'solid',
           borderColor: hovered ? 'var(--color-primary)' : 'rgba(245,245,245,0.2)',
@@ -55,10 +55,16 @@ function BackBar({ onBack }: { onBack: () => void }) {
           textTransform: 'uppercase',
           padding: '0.4rem 0.9rem',
           cursor: 'none',
-          transition: 'border-color 0.2s ease, color 0.2s ease',
+          transition: 'border-color 0.25s ease, color 0.25s ease, background 0.25s ease',
         }}
       >
-        <ChevronLeft size={14} aria-hidden />
+        <motion.span
+          animate={{ x: hovered ? -4 : 0 }}
+          transition={{ duration: 0.25, ease: 'easeOut' as const }}
+          style={{ display: 'inline-flex', alignItems: 'center' }}
+        >
+          <ChevronLeft size={14} aria-hidden />
+        </motion.span>
         Back
       </button>
     </div>
