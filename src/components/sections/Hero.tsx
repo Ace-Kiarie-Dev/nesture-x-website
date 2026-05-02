@@ -14,19 +14,25 @@ const TYPED_PHRASES = [
 ];
 
 const APP_CARDS = [
-  { name: 'BetLedger',   tagline: 'Bet tracking & analytics', status: 'In Development' },
-  { name: 'Hikarani',    tagline: 'Faith & community app',    status: 'In Development' },
-  { name: 'Kikota',      tagline: 'SaaS platform',            status: 'Coming Soon'    },
-  { name: 'Alarm Clock', tagline: "You can't snooze this",    status: 'Concept'        },
+  { name: 'BetLedger',       platform: 'Mobile App',     tagline: 'Bet tracking & analytics', status: 'In Development' },
+  { name: 'Hikarani',        platform: 'Cross Platform', tagline: 'Faith & community app',    status: 'In Development' },
+  { name: 'Kikota',          platform: 'Web App · SaaS', tagline: 'SaaS platform',            status: 'Coming Soon'    },
+  { name: 'No-Snooze Alarm', platform: 'Mobile App',     tagline: "You can't snooze this",    status: 'Concept'        },
 ];
 
-// Absolute position + initial 3D rotation for each card within the cluster container
+// Absolute px positions + 3D rotations within the cluster container
 const CARD_META = [
-  { top: '2%',  left: '4%',  rotateX: -8,  rotateY:  12, translateZ: 20 },
-  { top: '18%', left: '48%', rotateX:  5,  rotateY: -10, translateZ: 40 },
-  { top: '50%', left: '2%',  rotateX:  10, rotateY:   8, translateZ: 15 },
-  { top: '62%', left: '44%', rotateX: -12, rotateY: -15, translateZ: 30 },
+  { top:   0, left:  20, rotateX:  8, rotateY: -12, translateZ: 20 },
+  { top:  60, left: 200, rotateX: -6, rotateY:  10, translateZ: 10 },
+  { top: 160, left:  10, rotateX: 10, rotateY:  -8, translateZ: 30 },
+  { top: 220, left: 190, rotateX: -8, rotateY:  12, translateZ:  5 },
 ];
+
+function statusColor(status: string): string {
+  if (status === 'In Development') return 'var(--color-primary)';
+  if (status === 'Coming Soon')    return 'rgba(245,245,245,0.4)';
+  return 'rgba(245,245,245,0.25)';
+}
 
 export default function Hero() {
   const { isMobile, isTablet } = useBreakpoint();
@@ -72,9 +78,9 @@ export default function Hero() {
   ];
 
   const stats = [
-    { number: '11+',  label: 'Clients Served'     },
-    { number: '5',    label: 'Equity Partners'     },
-    { number: '100%', label: 'Full-Stack Capable'  },
+    { number: '11+',  label: 'Clients Served'    },
+    { number: '5',    label: 'Equity Partners'    },
+    { number: '100%', label: 'Full-Stack Capable' },
   ];
 
   return (
@@ -203,8 +209,9 @@ export default function Hero() {
           style={{
             position: 'relative',
             zIndex: 2,
-            flex: '0 0 45%',
-            height: '380px',
+            width: '420px',
+            height: '360px',
+            flexShrink: 0,
             perspective: '800px',
           }}
         >
@@ -214,8 +221,8 @@ export default function Hero() {
             transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity }}
             style={{
               position: 'relative',
-              width: '100%',
-              height: '100%',
+              width: '420px',
+              height: '360px',
               transformStyle: 'preserve-3d',
             }}
           >
@@ -238,8 +245,9 @@ export default function Hero() {
                     position: 'absolute',
                     top: meta.top,
                     left: meta.left,
-                    width: '180px',
-                    height: '100px',
+                    width: '200px',
+                    height: '120px',
+                    minHeight: '120px',
                     rotateX: meta.rotateX,
                     rotateY: meta.rotateY,
                     translateZ: meta.translateZ,
@@ -251,17 +259,18 @@ export default function Hero() {
                     borderColor: 'rgba(26,111,212,0.25)',
                     clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)',
                     cursor: 'none',
-                    padding: '0.75rem',
+                    overflow: 'hidden',
+                    padding: '1rem',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    gap: '0.3rem',
                   }}
                 >
-                  {/* App name */}
+                  {/* ROW 1 — App name */}
                   <div
                     style={{
                       fontFamily: 'var(--font-bebas), sans-serif',
-                      fontSize: '1.4rem',
+                      fontSize: '1.3rem',
                       color: 'var(--color-text)',
                       lineHeight: 1,
                     }}
@@ -269,7 +278,20 @@ export default function Hero() {
                     {card.name}
                   </div>
 
-                  {/* One-liner */}
+                  {/* ROW 2 — Platform tag */}
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-jetbrains), monospace',
+                      fontSize: '0.55rem',
+                      color: 'var(--color-primary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    {card.platform}
+                  </div>
+
+                  {/* ROW 3 — One-liner */}
                   <div
                     style={{
                       fontFamily: 'var(--font-grotesk), sans-serif',
@@ -281,15 +303,13 @@ export default function Hero() {
                     {card.tagline}
                   </div>
 
-                  {/* Status tag — bottom-right */}
+                  {/* ROW 4 — Status (pushed to bottom) */}
                   <div
                     style={{
-                      position: 'absolute',
-                      bottom: '0.5rem',
-                      right: '0.6rem',
+                      marginTop: 'auto',
                       fontFamily: 'var(--font-jetbrains), monospace',
                       fontSize: '0.55rem',
-                      color: 'var(--color-primary)',
+                      color: statusColor(card.status),
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
                     }}
@@ -303,23 +323,23 @@ export default function Hero() {
         </motion.div>
       )}
 
-      {/* Stats strip — bottom horizontal row, just above scroll hint, hidden on mobile */}
+      {/* Stats strip — vertical right side, hidden on mobile */}
       {!isMobile && (
         <div
           style={{
             position: 'absolute',
-            bottom: '5.5rem',
-            left: sidePad,
             right: sidePad,
+            top: '50%',
+            transform: 'translateY(-50%)',
             zIndex: 2,
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
+            flexDirection: 'column',
+            gap: '2.5rem',
+            textAlign: 'right',
           }}
         >
           {stats.map(stat => (
-            <div key={stat.label} style={{ textAlign: 'center' }}>
+            <div key={stat.label}>
               <div
                 style={{
                   fontFamily: 'var(--font-bebas), sans-serif',
