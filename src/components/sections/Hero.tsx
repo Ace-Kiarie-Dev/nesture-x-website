@@ -21,12 +21,12 @@ const APP_CARDS = [
 ];
 
 // Absolute px positions + 3D rotations within the cluster container.
-// 2-column stagger: left col (0) and right col (220), 60 px vertical gap within each column.
+// 2-column stagger: left col (0) and right col (250), 50 px horizontal gap between columns.
 const CARD_META = [
   { top:   0, left:   0, rotateX:  8, rotateY: -12, translateZ: 20 }, // left  row 1
-  { top:  60, left: 220, rotateX: -6, rotateY:  10, translateZ: 10 }, // right row 1
+  { top:  60, left: 250, rotateX: -6, rotateY:  10, translateZ: 10 }, // right row 1
   { top: 180, left:   0, rotateX: 10, rotateY:  -8, translateZ: 30 }, // left  row 2
-  { top: 240, left: 220, rotateX: -8, rotateY:  12, translateZ:  5 }, // right row 2
+  { top: 240, left: 250, rotateX: -8, rotateY:  12, translateZ:  5 }, // right row 2
 ];
 
 function statusColor(status: string): string {
@@ -218,7 +218,7 @@ export default function Hero() {
           }}
         >
           {/* NX Originals label — centered over the full cluster width */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', width: '420px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', width: '460px' }}>
             <span
               style={{
                 display: 'block',
@@ -243,14 +243,14 @@ export default function Hero() {
           </div>
 
           {/* Perspective container */}
-          <div style={{ width: '420px', height: '360px', perspective: '800px' }}>
+          <div style={{ width: '460px', height: '360px', perspective: '800px' }}>
           {/* Breathing container — slow rotateY oscillation */}
           <motion.div
             animate={{ rotateY: [-5, 5, -5] }}
             transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity }}
             style={{
               position: 'relative',
-              width: '420px',
+              width: '460px',
               height: '360px',
               transformStyle: 'preserve-3d',
             }}
