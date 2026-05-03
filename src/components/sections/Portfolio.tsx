@@ -186,7 +186,7 @@ export default function Portfolio({ featuredOnly = false }: { featuredOnly?: boo
 
   const items = portfolioData as PortfolioItem[];
   const filtered = featuredOnly
-    ? items.filter(i => i.featured).slice(0, 6)
+    ? items.filter(i => i.featured).slice(0, 8)
     : filterByTab(activeTab, items);
 
   return (

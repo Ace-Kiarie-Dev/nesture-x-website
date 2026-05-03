@@ -18,6 +18,9 @@ interface NxButtonProps {
   children: React.ReactNode;
   className?: string;
   target?: string;
+  // ── Added ──
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 export default function NxButton({
@@ -28,6 +31,8 @@ export default function NxButton({
   children,
   className = '',
   target,
+  type = 'button',   // default stays 'button' — safe everywhere else
+  disabled = false,
 }: NxButtonProps) {
   const { padding, fontSize } = SIZES[size];
   const isPrimary = variant === 'primary';
@@ -42,10 +47,12 @@ export default function NxButton({
     fontSize,
     letterSpacing: '0.06em',
     textTransform: 'uppercase',
-    cursor: 'none',
+    cursor: disabled ? 'not-allowed' : 'none',
     textDecoration: 'none',
     whiteSpace: 'nowrap',
     border: 'none',
+    opacity: disabled ? 0.5 : 1,
+    transition: 'opacity 0.2s',
     ...(isPrimary
       ? { background: 'var(--color-primary)', color: 'var(--color-text)', clipPath: CLIP }
       : { background: 'transparent', color: 'var(--color-text)', borderStyle: 'solid', borderWidth: '1px' }),
@@ -59,7 +66,13 @@ export default function NxButton({
       {children}
     </Link>
   ) : (
-    <button type="button" onClick={onClick} className={btnClass} style={btnStyle}>
+    <button
+      type={type}          
+      onClick={onClick}
+      disabled={disabled}  
+      className={btnClass}
+      style={btnStyle}
+    >
       {children}
     </button>
   );

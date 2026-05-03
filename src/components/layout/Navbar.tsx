@@ -170,7 +170,7 @@ export default function Navbar() {
           </button>
 
           {/* CTA */}
-          <NxButton variant="primary" size="sm" href="#contact">
+          <NxButton variant="primary" size="sm" href="/booking">
             Book a Consultation
           </NxButton>
         </div>
@@ -289,7 +289,7 @@ export default function Navbar() {
           <NxButton
             variant="primary"
             size="sm"
-            href="#contact"
+            href="/booking"
             onClick={() => setMenuOpen(false)}
             className="w-full"
           >

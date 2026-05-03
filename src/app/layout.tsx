@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import CustomCursor from "@/components/ui/CustomCursor";
-import Footer from "@/components/layout/Footer";
-import ParticleCanvas from "@/components/ui/ParticleCanvas";
+import ClientShell from "@/components/layout/ClientShell";
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -55,13 +52,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <ParticleCanvas />
-        <CustomCursor />
-        <Navbar />
-        <div className="site-wrapper flex flex-col flex-1">
+        <ClientShell>
           {children}
-        </div>
-        <Footer />
+        </ClientShell>
       </body>
     </html>
   );

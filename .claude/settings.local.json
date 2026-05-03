@@ -4,7 +4,16 @@
       "Bash(node:*)",
       "Bash(cat D:/Work/Code/Code/Clients/Nesture-X/nesture-x-website/next.config.*)",
       "Bash(npx tsc:*)",
-      "Bash(grep -n \"#[0-9a-fA-F]\\\\{3,6\\\\}\" src/app/globals.css)"
+      "Bash(grep -n \"#[0-9a-fA-F]\\\\{3,6\\\\}\" src/app/globals.css)",
+      "Bash(npm install:*)",
+      "Bash(ls /d/Work/Code/Code/Clients/Nesture-X/nesture-x-website/.env*)",
+      "Bash(next build:*)",
+      "Bash(npx next:*)",
+      "Bash(taskkill /f /im node.exe)",
+      "Bash(grep -n \"AnimatePresence\\\\|</>$\\\\|^          <\\\\/motion\\\\.div>\" /d/Work/Code/Code/Clients/Nesture-X/nesture-x-website/src/components/ui/BookingModal.tsx)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

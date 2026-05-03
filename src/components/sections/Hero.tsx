@@ -16,7 +16,7 @@ const TYPED_PHRASES = [
 const APP_CARDS = [
   { name: 'BetLedger',       platform: 'Mobile App',     tagline: 'Bet tracking & analytics', status: 'Awaiting Deployment' },
   { name: 'Hikarani',        platform: 'Cross Platform', tagline: 'Faith & community app',    status: 'In Development'      },
-  { name: 'Kikota',          platform: 'Web App · SaaS', tagline: 'SaaS platform',            status: 'In Development'      },
+  { name: 'Kikota',          platform: 'Web App · SaaS', tagline: 'Gym management SaaS',      status: 'In Development'      },
   { name: 'No-Snooze Alarm', platform: 'Mobile App',     tagline: "You can't snooze this",    status: 'In Development'      },
 ];
 

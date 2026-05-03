@@ -11,6 +11,7 @@ import Partners from '@/components/sections/Partners';
 import Process from '@/components/sections/Process';
 import TechStack from '@/components/sections/TechStack';
 import CTA from '@/components/sections/CTA';
+import Contact from '@/components/sections/Contact';
 
 export default function Home() {
   return (
@@ -25,17 +26,35 @@ export default function Home() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="bg-[var(--color-black)] py-[clamp(3rem,6vw,5rem)] px-[clamp(1rem,3vw,2rem)]"
+        style={{
+          background: 'var(--color-bg)',
+          padding: 'clamp(8rem, 12vw, 14rem) clamp(2rem, 7vw, 8rem)',
+        }}
       >
+        <p className="section-label" style={{ marginBottom: '3.5rem' }}>
+          Who We Are
+        </p>
         <h2
-          className="text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] text-[var(--color-text)] max-w-4xl mb-6"
-          style={{ fontFamily: 'var(--font-display)' }}
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.8rem, 7vw, 6.5rem)',
+            lineHeight: 0.92,
+            color: 'var(--color-text)',
+            maxWidth: '72rem',
+            marginBottom: '3.5rem',
+          }}
         >
           WE BUILD DIGITAL EXPERIENCES THAT HIT DIFFERENT.
         </h2>
         <p
-          className="text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-2xl leading-relaxed mb-10"
-          style={{ fontFamily: 'var(--font-body)', color: 'rgba(245,245,245,0.60)' }}
+          style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
+            maxWidth: '36rem',
+            lineHeight: 1.9,
+            color: 'rgba(245,245,245,0.60)',
+            marginBottom: '5rem',
+          }}
         >
           Strategy, design, and code — all under one roof, all built with intention.
           Born in Nairobi, built for the world.
@@ -50,6 +69,7 @@ export default function Home() {
       <Partners />
       <Process />
       <TechStack />
+      <Contact />
       <CTA />
     </main>
   );

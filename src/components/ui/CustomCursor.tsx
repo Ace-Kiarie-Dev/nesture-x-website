@@ -2,34 +2,23 @@
 
 import { useEffect, useState } from 'react';
 
+// Standard arrow cursor path — tip sits at (0,0) of the SVG viewport
+const ARROW = 'M 1 1 L 1 15 L 4.5 11.5 L 7 17 L 9.2 16.1 L 6.7 10.5 L 12 10.5 Z';
+
+// Pointing hand for interactive elements — simplified pointer shape
+const HAND  = 'M 6 1 C 6 1 6 8 6 8 C 6 8 5 7 4 7 C 3 7 2 8 3 9 L 6 14 C 6 14 7 16 9 16 C 12 16 13 14 13 11 L 13 7 C 13 6 12 5 11 5 C 11 5 11 4 10 4 C 10 4 10 3 9 3 C 9 3 9 1 8 1 C 7 1 6 1 6 1 Z';
+
 export default function CustomCursor() {
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-  const [ringPos, setRingPos] = useState({ x: -100, y: -100 });
-  const [ringScale, setRingScale] = useState(1);
-  const [ringOpacity, setRingOpacity] = useState('rgba(26,111,212,0.5)');
+  const [pos,     setPos]     = useState({ x: -100, y: -100 });
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
-    let ringTimer: ReturnType<typeof setTimeout>;
+    const onMove = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
 
-    const onMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-      clearTimeout(ringTimer);
-      ringTimer = setTimeout(() => {
-        setRingPos({ x: e.clientX, y: e.clientY });
-      }, 60);
-    };
+    const onEnter = () => setIsHover(true);
+    const onLeave = () => setIsHover(false);
 
-    const onEnter = () => {
-      setRingScale(1.8);
-      setRingOpacity('rgba(26,111,212,0.8)');
-    };
-
-    const onLeave = () => {
-      setRingScale(1);
-      setRingOpacity('rgba(26,111,212,0.5)');
-    };
-
-    const attachListeners = () => {
+    const attach = () => {
       document.querySelectorAll('a, button, [data-hover]').forEach(el => {
         el.removeEventListener('mouseenter', onEnter);
         el.removeEventListener('mouseleave', onLeave);
@@ -38,50 +27,41 @@ export default function CustomCursor() {
       });
     };
 
-    window.addEventListener('mousemove', onMouseMove);
-    attachListeners();
+    window.addEventListener('mousemove', onMove);
+    attach();
 
-    const observer = new MutationObserver(attachListeners);
+    const observer = new MutationObserver(attach);
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      clearTimeout(ringTimer);
+      window.removeEventListener('mousemove', onMove);
       observer.disconnect();
     };
   }, []);
 
   return (
-    <>
-      <div
-        style={{
-          position: 'fixed',
-          left: cursorPos.x,
-          top: cursorPos.y,
-          width: '8px',
-          height: '8px',
-          borderRadius: '50%',
-          background: '#1a6fd4',
-          transform: 'translate(-50%, -50%)',
-          pointerEvents: 'none',
-          zIndex: 9999,
-        }}
+    <svg
+      width={isHover ? 18 : 16}
+      height={isHover ? 22 : 20}
+      viewBox={isHover ? '0 0 16 18' : '0 0 14 20'}
+      style={{
+        position:    'fixed',
+        left:        pos.x,
+        top:         pos.y,
+        pointerEvents: 'none',
+        zIndex:      9999,
+        transition:  'width 0.15s ease, height 0.15s ease',
+        filter:      'drop-shadow(0 0 3px rgba(26,111,212,0.5))',
+      }}
+      aria-hidden
+    >
+      <path
+        d={isHover ? HAND : ARROW}
+        fill="#1a6fd4"
+        stroke="#0a0a0a"
+        strokeWidth="1"
+        strokeLinejoin="round"
       />
-      <div
-        style={{
-          position: 'fixed',
-          left: ringPos.x,
-          top: ringPos.y,
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          border: `1px solid ${ringOpacity}`,
-          transform: `translate(-50%, -50%) scale(${ringScale})`,
-          pointerEvents: 'none',
-          zIndex: 9998,
-          transition: 'transform 0.2s ease, border-color 0.2s ease',
-        }}
-      />
-    </>
+    </svg>
   );
 }
