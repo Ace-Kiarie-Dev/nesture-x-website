@@ -75,7 +75,7 @@ export default function Services() {
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                   color: active ? 'var(--color-primary)' : 'rgba(245,245,245,0.4)',
-                  cursor: 'none',
+                  cursor: 'pointer',
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s',
                 }}
@@ -119,7 +119,7 @@ export default function Services() {
                       ? '2px solid var(--color-primary)'
                       : '2px solid transparent',
                     background: 'none',
-                    cursor: 'none',
+                    cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.3s ease',
                   }}

@@ -367,7 +367,7 @@ export default function Contact() {
                   background: 'none',
                   border: 'none',
                   padding: 0,
-                  cursor: 'none',
+                  cursor: 'pointer',
                   transition: 'color 0.2s',
                 }}
                 onMouseEnter={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.6)')}
@@ -442,7 +442,7 @@ export default function Contact() {
                       name="service"
                       value={form.service}
                       onChange={handle}
-                      style={{ ...inputStyle, color: form.service ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'none' }}
+                      style={{ ...inputStyle, color: form.service ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'pointer' }}
                       onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
                       onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
                     >
@@ -486,7 +486,7 @@ export default function Contact() {
                         name="budget"
                         value={form.budget}
                         onChange={handle}
-                        style={{ ...inputStyle, color: form.budget ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'none' }}
+                        style={{ ...inputStyle, color: form.budget ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'pointer' }}
                         onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
                         onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
                       >
@@ -507,7 +507,7 @@ export default function Contact() {
                         name="timeline"
                         value={form.timeline}
                         onChange={handle}
-                        style={{ ...inputStyle, color: form.timeline ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'none' }}
+                        style={{ ...inputStyle, color: form.timeline ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'pointer' }}
                         onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
                         onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
                       >

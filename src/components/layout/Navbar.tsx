@@ -151,7 +151,7 @@ export default function Navbar() {
               justifyContent: 'center',
               background: 'transparent',
               color: 'var(--color-text)',
-              cursor: 'none',
+              cursor: 'pointer',
               transition: 'border-color 300ms ease, color 300ms ease',
               flexShrink: 0,
             }}
@@ -190,7 +190,7 @@ export default function Navbar() {
               justifyContent: 'center',
               background: 'transparent',
               color: 'var(--color-text)',
-              cursor: 'none',
+              cursor: 'pointer',
             }}
           >
             <Menu size={20} />
@@ -232,7 +232,7 @@ export default function Navbar() {
             justifyContent: 'center',
             background: 'transparent',
             color: 'var(--color-text)',
-            cursor: 'none',
+            cursor: 'pointer',
           }}
         >
           <X size={20} />

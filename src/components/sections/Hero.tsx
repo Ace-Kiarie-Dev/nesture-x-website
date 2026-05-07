@@ -288,7 +288,6 @@ export default function Hero() {
                     borderStyle: 'solid',
                     borderColor: 'rgba(26,111,212,0.25)',
                     clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)',
-                    cursor: 'none',
                     overflow: 'hidden',
                     padding: '1rem',
                     display: 'flex',

@@ -141,15 +141,20 @@ function GifViewer({ item }: { item: PortfolioItem }) {
 function PDFViewer({ item }: { item: PortfolioItem }) {
   const src = getFileSrc(item);
   return (
-    <div className="flex flex-col w-full" style={{ aspectRatio: '3 / 4' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
       <iframe
-        src={src}
+        src={`${src}#toolbar=0&navpanes=0&scrollbar=0`}
         title={`${item.client} — ${item.type}`}
-        className="flex-1 w-full border-none"
-        style={{ background: 'var(--color-mid)' }}
+        style={{
+          width: '100%',
+          height: 'clamp(420px, 65vh, 720px)',
+          border: 'none',
+          background: 'var(--color-mid)',
+          display: 'block',
+        }}
       />
       <a href={src} target="_blank" rel="noopener noreferrer" className="pd-pdf-link">
-        Open PDF
+        Open full PDF ↗
       </a>
     </div>
   );
@@ -167,7 +172,6 @@ function RelatedCard({ item }: { item: PortfolioItem }) {
         href={`/portfolio/${item.id}`}
         aria-label={`${getDisplayClient(item.client)} — ${item.type}`}
         className="block overflow-hidden border border-white/[0.06] transition-all duration-300 hover:border-[rgba(26,111,212,0.4)] hover:shadow-[0_0_0_1px_rgba(26,111,212,0.15),0_4px_20px_rgba(26,111,212,0.25)]"
-        style={{ cursor: 'none' }}
         data-hover
       >
         <div className="relative aspect-[4/3] overflow-hidden" style={{ background: 'var(--color-bg)' }}>
@@ -304,8 +308,8 @@ export default function PortfolioDetail({
   return (
     <div className="pd-page">
 
-      {/* ── ZONE 1: Top bar ─────────────────────────────────────────────────── */}
-      <div className="pd-topbar sticky top-16 z-10">
+      {/* ── ZONE 1: Floating icon row ────────────────────────────────────────── */}
+      <div className="pd-topbar" style={{ position: 'sticky', top: '4rem', zIndex: 20 }}>
         <Link href="/portfolio" className="pd-icon-btn" aria-label="Back to portfolio" data-hover>
           <ArrowLeft size={16} aria-hidden />
         </Link>

@@ -219,19 +219,21 @@ export default function Portfolio({ featuredOnly = false }: { featuredOnly?: boo
         <div
           style={{
             overflowX: 'auto',
-            scrollbarWidth: 'none',
             WebkitOverflowScrolling: 'touch',
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none',
           } as React.CSSProperties}
+          className="portfolio-tabs-scroll"
         >
           <div
             role="tablist"
             aria-label="Portfolio categories"
             style={{
               display: 'flex',
-              gap: '1.75rem',
+              flexWrap: 'wrap',
+              gap: '0.25rem 1.5rem',
               borderBottom: '1px solid rgba(26, 111, 212, 0.15)',
               marginBottom: '0.75rem',
-              minWidth: 'max-content',
             }}
           >
             {TABS.map(tab => (

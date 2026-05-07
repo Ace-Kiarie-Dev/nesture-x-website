@@ -47,7 +47,7 @@ export default function NxButton({
     fontSize,
     letterSpacing: '0.06em',
     textTransform: 'uppercase',
-    cursor: disabled ? 'not-allowed' : 'none',
+    cursor: disabled ? 'not-allowed' : 'pointer',
     textDecoration: 'none',
     whiteSpace: 'nowrap',
     border: 'none',

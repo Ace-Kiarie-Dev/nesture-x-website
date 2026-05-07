@@ -338,7 +338,7 @@ export default function BookingPage() {
                         style={{
                           ...inputSt,
                           color:  form.service ? 'var(--color-text)' : 'rgba(245,245,245,0.32)',
-                          cursor: 'none',
+                          cursor: 'pointer',
                         }}
                       >
                         {SERVICES.map(s => (
@@ -481,7 +481,7 @@ export default function BookingPage() {
                       letterSpacing: '0.15em',
                       textTransform: 'uppercase',
                       color:         'rgba(245,245,245,0.28)',
-                      cursor:        'none',
+                      cursor:        'pointer',
                       padding:       '0.5rem',
                       transition:    'color 0.2s',
                       alignSelf:     'flex-start',
@@ -663,7 +663,7 @@ export default function BookingPage() {
                       letterSpacing: '0.15em',
                       textTransform: 'uppercase',
                       color:         'rgba(245,245,245,0.25)',
-                      cursor:        'none',
+                      cursor:        'pointer',
                       padding:       '0.5rem',
                       transition:    'color 0.2s',
                       alignSelf:     'flex-start',

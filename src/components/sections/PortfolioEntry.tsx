@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useBreakpoint } from '@/lib/useBreakpoint';
@@ -44,7 +45,7 @@ function BackBar({ onBack }: { onBack: () => void }) {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '0.4rem',
-          background: hovered ? 'rgba(26,111,212,0.06)' : 'transparent',
+          background: hovered ? 'rgba(26,111,212,0.1)' : 'transparent',
           borderWidth: '1px',
           borderStyle: 'solid',
           borderColor: hovered ? 'var(--color-primary)' : 'rgba(245,245,245,0.2)',
@@ -54,8 +55,9 @@ function BackBar({ onBack }: { onBack: () => void }) {
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
           padding: '0.4rem 0.9rem',
-          cursor: 'none',
-          transition: 'border-color 0.25s ease, color 0.25s ease, background 0.25s ease',
+          cursor: 'pointer',
+          boxShadow: hovered ? '0 0 12px rgba(26,111,212,0.3)' : 'none',
+          transition: 'border-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease',
         }}
       >
         <motion.span
@@ -99,7 +101,7 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        cursor: 'none',
+        cursor: 'pointer',
         overflow: 'hidden',
       }}
     >
@@ -161,6 +163,7 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
 export default function PortfolioEntry() {
   const [view, setView] = useState<View>('entry');
   const { isMobile } = useBreakpoint();
+  const router = useRouter();
 
   const noisePattern: React.CSSProperties = {
     backgroundImage: `repeating-linear-gradient(
@@ -224,7 +227,7 @@ export default function PortfolioEntry() {
       {/* ── Design work view (existing Portfolio component, untouched) ── */}
       {view === 'design' && (
         <motion.div key="design" {...fadeSlide}>
-          <BackBar onBack={() => setView('entry')} />
+          <BackBar onBack={() => router.push('/portfolio')} />
           <Portfolio />
         </motion.div>
       )}
@@ -232,7 +235,7 @@ export default function PortfolioEntry() {
       {/* ── Digital products view ── */}
       {view === 'digital' && (
         <motion.div key="digital" {...fadeSlide}>
-          <BackBar onBack={() => setView('entry')} />
+          <BackBar onBack={() => router.push('/portfolio')} />
           <WebDevGrid />
         </motion.div>
       )}

@@ -206,7 +206,7 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
       href={project.url!}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ display: 'block', textDecoration: 'none', cursor: 'none' }}
+      style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }}
       data-hover
     >
       {inner}
