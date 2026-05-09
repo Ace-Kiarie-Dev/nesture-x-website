@@ -3,9 +3,13 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { Heart, ArrowLeft, MoreHorizontal, Send, FileText } from 'lucide-react';
 import type { PortfolioItem } from '@/components/sections/Portfolio';
+
+const PDFViewerClient = dynamic(() => import('./PDFViewerClient'), { ssr: false });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -141,22 +145,10 @@ function GifViewer({ item }: { item: PortfolioItem }) {
 function PDFViewer({ item }: { item: PortfolioItem }) {
   const src = getFileSrc(item);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-      <iframe
-        src={`${src}#toolbar=0&navpanes=0&scrollbar=0`}
-        title={`${item.client} — ${item.type}`}
-        style={{
-          width: '100%',
-          height: 'clamp(420px, 65vh, 720px)',
-          border: 'none',
-          background: 'var(--color-mid)',
-          display: 'block',
-        }}
-      />
-      <a href={src} target="_blank" rel="noopener noreferrer" className="pd-pdf-link">
-        Open full PDF ↗
-      </a>
-    </div>
+    <PDFViewerClient
+      src={src}
+      title={`${item.client} — ${item.type}`}
+    />
   );
 }
 
@@ -255,6 +247,7 @@ export default function PortfolioDetail({
   item: PortfolioItem;
   items: PortfolioItem[];
 }) {
+  const router = useRouter();
   const [liked,       setLiked]       = useState(false);
   const [likeCount,   setLikeCount]   = useState(0);
   const [comments,    setComments]    = useState<Comment[]>([]);
@@ -309,17 +302,22 @@ export default function PortfolioDetail({
     <div className="pd-page">
 
       {/* ── ZONE 1: Floating icon row ────────────────────────────────────────── */}
-      <div className="pd-topbar" style={{ position: 'sticky', top: '4rem', zIndex: 20 }}>
-        <Link href="/portfolio" className="pd-icon-btn" aria-label="Back to portfolio" data-hover>
+      <div className="pd-topbar">
+        <button
+          className="pd-icon-btn"
+          aria-label="Back to portfolio"
+          data-hover
+          onClick={() => router.push('/portfolio?view=design')}
+        >
           <ArrowLeft size={16} aria-hidden />
-        </Link>
+        </button>
         <button className="pd-icon-btn" aria-label="More options" data-hover>
           <MoreHorizontal size={16} aria-hidden />
         </button>
       </div>
 
       {/* ── ZONE 2: Two-column section ──────────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row items-start">
+      <div className="flex flex-col md:flex-row items-start pt-[2rem]">
 
         {/* LEFT — 40%, scrolls with page */}
         <motion.div
@@ -331,7 +329,8 @@ export default function PortfolioDetail({
           {/* Viewer — padded so image never touches column edges */}
           <motion.div
             variants={leftItemVariants}
-            className="p-8 bg-[var(--color-bg)]"
+            className="px-8 pb-8 bg-[var(--color-bg)]"
+            style={{ paddingTop: 'calc(80px + 2rem)' }}
           >
             {isGif ? (
               <GifViewer item={item} />

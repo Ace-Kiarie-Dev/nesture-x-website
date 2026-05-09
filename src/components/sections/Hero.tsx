@@ -205,6 +205,7 @@ export default function Hero() {
       {/* z-2: Right — NX Originals label + 3D App Cards cluster (desktop + tablet only) */}
       {!isMobile && (
         <motion.div
+          className="hidden md:flex flex-col"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -212,8 +213,6 @@ export default function Hero() {
             position: 'relative',
             zIndex: 2,
             flexShrink: 0,
-            display: 'flex',
-            flexDirection: 'column',
             gap: '1.75rem',
             alignItems: 'flex-start',
           }}

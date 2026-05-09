@@ -20,7 +20,7 @@ export default function ClientShell({ children }: { children: React.ReactNode })
     <>
       <ParticleCanvas />
       <Navbar />
-      <div className="site-wrapper flex flex-col flex-1">
+      <div className="site-wrapper flex flex-col flex-1" style={{ paddingTop: '80px' }}>
         {children}
       </div>
       <Footer />

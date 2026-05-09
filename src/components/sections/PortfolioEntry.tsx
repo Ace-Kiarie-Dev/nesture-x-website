@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useBreakpoint } from '@/lib/useBreakpoint';
@@ -25,8 +26,8 @@ function BackBar({ onBack }: { onBack: () => void }) {
     <div
       style={{
         position: 'sticky',
-        top: 0,
-        zIndex: 10,
+        top: 80,
+        zIndex: 49,
         padding: '0.85rem 2rem',
         background: 'rgba(10,10,10,0.92)',
         backdropFilter: 'blur(8px)',
@@ -45,28 +46,24 @@ function BackBar({ onBack }: { onBack: () => void }) {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '0.4rem',
-          background: hovered ? 'rgba(26,111,212,0.1)' : 'transparent',
-          borderWidth: '1px',
-          borderStyle: 'solid',
-          borderColor: hovered ? 'var(--color-primary)' : 'rgba(245,245,245,0.2)',
+          background: hovered ? 'rgba(26,111,212,0.12)' : 'transparent',
+          border: hovered
+            ? '1px solid var(--color-primary)'
+            : '1px solid rgba(245,245,245,0.2)',
           color: hovered ? 'var(--color-primary)' : 'var(--color-text)',
           fontFamily: 'var(--font-jetbrains), monospace',
           fontSize: '0.65rem',
           letterSpacing: '0.1em',
-          textTransform: 'uppercase',
+          textTransform: 'uppercase' as const,
           padding: '0.4rem 0.9rem',
           cursor: 'pointer',
-          boxShadow: hovered ? '0 0 12px rgba(26,111,212,0.3)' : 'none',
-          transition: 'border-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease',
+          outline: 'none',
+          boxShadow: hovered ? '0 0 14px rgba(26,111,212,0.35)' : 'none',
+          transform: hovered ? 'translateX(-2px)' : 'translateX(0)',
+          transition: 'border 0.22s ease, color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease',
         }}
       >
-        <motion.span
-          animate={{ x: hovered ? -4 : 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' as const }}
-          style={{ display: 'inline-flex', alignItems: 'center' }}
-        >
-          <ChevronLeft size={14} aria-hidden />
-        </motion.span>
+        <ChevronLeft size={14} aria-hidden />
         Back
       </button>
     </div>
@@ -105,7 +102,6 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
         overflow: 'hidden',
       }}
     >
-      {/* Texture / grid pattern overlay */}
       <div
         style={{
           position: 'absolute',
@@ -115,7 +111,6 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
         }}
       />
 
-      {/* Label */}
       <span
         style={{
           fontFamily: 'var(--font-bebas), sans-serif',
@@ -139,7 +134,6 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
         )}
       </span>
 
-      {/* Chevron — fades + slides in on hover */}
       <motion.div
         animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : 10 }}
         transition={{ duration: 0.22, ease: 'easeOut' }}
@@ -158,12 +152,21 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
   );
 }
 
-// ─── Main export ──────────────────────────────────────────────────────────────
+// ─── Inner component ──────────────────────────────────────────────────────────
+// Separated so useSearchParams is inside a Suspense boundary (required for
+// static prerendering — see Next.js docs on useSearchParams).
 
-export default function PortfolioEntry() {
-  const [view, setView] = useState<View>('entry');
-  const { isMobile } = useBreakpoint();
+function PortfolioEntryInner() {
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const { isMobile } = useBreakpoint();
+
+  const raw = searchParams.get('view');
+  const view: View = raw === 'design' || raw === 'digital' ? raw : 'entry';
+
+  const goTo = (v: View) => {
+    router.push(v === 'entry' ? '/portfolio' : `/portfolio?view=${v}`);
+  };
 
   const noisePattern: React.CSSProperties = {
     backgroundImage: `repeating-linear-gradient(
@@ -202,10 +205,9 @@ export default function PortfolioEntry() {
             label="DESIGN"
             sublabel="WORK"
             backgroundPattern={noisePattern}
-            onClick={() => setView('design')}
+            onClick={() => goTo('design')}
           />
 
-          {/* Divider */}
           <div
             style={{
               width: isMobile ? '100%' : '1px',
@@ -219,15 +221,15 @@ export default function PortfolioEntry() {
             label="DIGITAL"
             sublabel="PRODUCTS"
             backgroundPattern={gridPattern}
-            onClick={() => setView('digital')}
+            onClick={() => goTo('digital')}
           />
         </motion.div>
       )}
 
-      {/* ── Design work view (existing Portfolio component, untouched) ── */}
+      {/* ── Design work view ── */}
       {view === 'design' && (
         <motion.div key="design" {...fadeSlide}>
-          <BackBar onBack={() => router.push('/portfolio')} />
+          <BackBar onBack={() => goTo('entry')} />
           <Portfolio />
         </motion.div>
       )}
@@ -235,11 +237,21 @@ export default function PortfolioEntry() {
       {/* ── Digital products view ── */}
       {view === 'digital' && (
         <motion.div key="digital" {...fadeSlide}>
-          <BackBar onBack={() => router.push('/portfolio')} />
+          <BackBar onBack={() => goTo('entry')} />
           <WebDevGrid />
         </motion.div>
       )}
 
     </AnimatePresence>
+  );
+}
+
+// ─── Main export ──────────────────────────────────────────────────────────────
+
+export default function PortfolioEntry() {
+  return (
+    <Suspense fallback={null}>
+      <PortfolioEntryInner />
+    </Suspense>
   );
 }
