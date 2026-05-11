@@ -8,6 +8,8 @@ const NAV = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#portfolio' },
   { label: 'Contact', href: '#contact' },
+  { label: 'Free Tools', href: '/tools' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
   { label: 'Shinkusen ↗', href: 'https://shinkusen.co.ke' },
 ];
 

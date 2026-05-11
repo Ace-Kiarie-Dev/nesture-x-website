@@ -1,0 +1,200 @@
+
+> nesture-x-website@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.2 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.100.5:3000
+- Environments: .env.local
+✓ Ready in 2.6s
+
+ GET /portfolio?view=design 200 in 5.2s (next.js: 1365ms, application-code: 3.8s)
+ GET / 200 in 2.3s (next.js: 538ms, application-code: 1775ms)
+[browser] Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template). 
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RedirectBoundary>
+      <RedirectErrorBoundary router={{...}}>
+        <InnerLayoutRouter url="/portfolio..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+          <SegmentViewNode type="page" pagePath="portfolio/...">
+            <SegmentTrieNode>
+            <PortfolioPage>
+              <main>
+                <PortfolioEntry>
+                  <AnimatePresence mode="wait">
+                    <PresenceChild isPresent={true} initial={undefined} custom={undefined} presenceAffectsLayout={true} ...>
+                      <PopChild pop={false} isPresent={true} anchorX="left" anchorY="top" root={undefined}>
+                        <PopChildMeasure isPresent={true} childRef={{current:null}} sizeRef={{...}} pop={false}>
+                          <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0, ...}} ...>
+                            <div
+                              style={{
++                               opacity: 0
+-                               opacity: "0"
++                               transform: "translateY(20px)"
+-                               transform: "translateY(20px)"
+-                               min-height: "100vh"
+-                               display: "flex"
+-                               flex-direction: "row"
+-                               background-image: ""
+-                               background-position-x: ""
+-                               background-position-y: ""
+-                               background-size: ""
+-                               background-repeat: ""
+-                               background-attachment: ""
+-                               background-origin: ""
+-                               background-clip: ""
+-                               background-color: ""
+                              }}
+                              ref={function useMotionRef.useCallback}
+                            >
+                              <BackBar onBack={function onBack}>
+                                <div
+                                  style={{
++                                   position: "sticky"
+-                                   position: "relative"
++                                   top: 80
++                                   zIndex: 49
++                                   padding: "0.85rem 2rem"
++                                   background: "rgba(10,10,10,0.92)"
++                                   backdropFilter: "blur(8px)"
++                                   WebkitBackdropFilter: "blur(8px)"
++                                   borderBottom: "1px solid rgba(26,111,212,0.12)"
++                                   display: "flex"
+-                                   display: "flex"
++                                   alignItems: "center"
+-                                   flex-grow: "0"
+-                                   flex-shrink: "0"
+-                                   flex-basis: "50%"
+-                                   align-items: "center"
+-                                   justify-content: "center"
+-                                   cursor: "pointer"
+-                                   overflow-x: "hidden"
+-                                   overflow-y: "hidden"
+                                  }}
+                                >
++                                 <button
++                                   onClick={function onBack}
++                                   onMouseEnter={function onMouseEnter}
++                                   onMouseLeave={function onMouseLeave}
++                                   data-hover={true}
++                                   style={{display:"inline-flex",alignItems:"center",gap:"0.4rem",background:"transparent",border:"1px...", ...}}
++                                 >
+-                                 <div
+-                                   style={{position:"absolute",top:"0px",right:"0px",bottom:"0px",left:"0px",pointer-events:"none", ...}}
+-                                 >
+                              ...
+          ...
+        ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at button (<anonymous>)
+    at BackBar (src/components/sections/PortfolioEntry.tsx:46:7)
+    at PortfolioEntry (src/components/sections/PortfolioEntry.tsx:244:11)
+    at PortfolioPage (src\app\portfolio\page.tsx:11:7)
+  44 |       }}
+  45 |     >
+> 46 |       <button
+     |       ^
+  47 |         onClick={onBack}
+  48 |         onMouseEnter={() => setHovered(true)}
+  49 |         onMouseLeave={() => setHovered(false)}
+[browser] Image with src "/images/portfolio/powerpoint1.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/portfolio/company-profile6.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET /portfolio/business-card-2 200 in 8.6s (next.js: 5.3s, generate-params: 5.3s, application-code: 3.3s)
+ GET /portfolio/centron-water-company-profile-pdf 200 in 7.1s (next.js: 4.7s, generate-params: 4.6s, application-code: 2.5s)
+ GET /portfolio/business-card-1 200 in 14.7s (next.js: 13.5s, generate-params: 12.8s, application-code: 1236ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET / 200 in 262ms (next.js: 25ms, application-code: 237ms)
+ GET /portfolio 200 in 399ms (next.js: 18ms, application-code: 380ms)
+ GET /portfolio?view=design 200 in 199ms (next.js: 19ms, application-code: 179ms)
+ GET /portfolio/social-11 200 in 303ms (next.js: 50ms, generate-params: 30ms, application-code: 252ms)
+ GET /portfolio?view=design 200 in 397ms (next.js: 58ms, application-code: 339ms)
+ GET /portfolio?view=design 200 in 274ms (next.js: 33ms, application-code: 241ms)
+✓ Compiled in 2.4s
+ GET /portfolio/social-11 200 in 454ms (next.js: 83ms, generate-params: 68ms, application-code: 371ms)
+ GET /portfolio?view=design 200 in 951ms (next.js: 454ms, application-code: 497ms)
+ GET /portfolio/flyer-3 200 in 343ms (next.js: 58ms, generate-params: 32ms, application-code: 284ms)
+ GET /portfolio?view=design 200 in 172ms (next.js: 14ms, application-code: 158ms)
+ GET /portfolio 200 in 68ms (next.js: 18ms, application-code: 50ms)
+ GET /portfolio 200 in 237ms (next.js: 19ms, application-code: 218ms)
+ GET /portfolio?view=design 200 in 84ms (next.js: 10ms, application-code: 75ms)
+ GET /portfolio/flyer-4 200 in 322ms (next.js: 42ms, generate-params: 25ms, application-code: 280ms)
+✓ Compiled in 1969ms
+✓ Compiled in 2s
+ GET /portfolio/flyer-4 200 in 11.8s (next.js: 1385ms, generate-params: 48ms, application-code: 10.4s)
+[browser] Image with src "/images/portfolio/flyer9.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET /portfolio?view=design 200 in 102ms (next.js: 14ms, application-code: 88ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /portfolio/business-card-1 200 in 715ms (next.js: 129ms, generate-params: 81ms, application-code: 586ms)
+✓ Compiled in 5s
+✓ Compiled in 1913ms
+ GET /portfolio/business-card-1 200 in 9.4s (next.js: 1251ms, generate-params: 41ms, application-code: 8.2s)
+[browser] Image with src "/images/portfolio/business-cards5.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+✓ Compiled in 1370ms
+ GET / 200 in 7.2s (next.js: 1830ms, application-code: 5.3s)
+ GET /portfolio/business-card-2 200 in 2.0s (next.js: 1277ms, generate-params: 51ms, application-code: 754ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /portfolio/business-card-1 200 in 477ms (next.js: 31ms, generate-params: 19ms, application-code: 446ms)
+ GET /portfolio/flyer-3 200 in 368ms (next.js: 84ms, generate-params: 35ms, application-code: 284ms)
+ GET /portfolio/flyer-9 200 in 263ms (next.js: 73ms, generate-params: 29ms, application-code: 190ms)
+ GET /portfolio/business-card-4 200 in 489ms (next.js: 93ms, generate-params: 36ms, application-code: 396ms)
+✓ Compiled in 733ms
+ GET /portfolio/business-card-1 200 in 1232ms (next.js: 666ms, generate-params: 79ms, application-code: 566ms)
+ GET /portfolio/flyer-4 200 in 306ms (next.js: 50ms, generate-params: 26ms, application-code: 256ms)
+ GET /portfolio?view=design 200 in 1030ms (next.js: 816ms, application-code: 214ms)
+ GET /portfolio 200 in 68ms (next.js: 18ms, application-code: 50ms)
+ GET /portfolio 200 in 216ms (next.js: 16ms, application-code: 200ms)
+ GET /portfolio?view=design 200 in 146ms (next.js: 21ms, application-code: 125ms)
+ GET / 200 in 218ms (next.js: 26ms, application-code: 193ms)
+ GET / 200 in 164ms (next.js: 14ms, application-code: 150ms)
+ GET /services 200 in 1162ms (next.js: 745ms, application-code: 416ms)
+ GET /portfolio 200 in 183ms (next.js: 18ms, application-code: 164ms)
+ GET /about 200 in 467ms (next.js: 211ms, application-code: 256ms)
+ GET / 200 in 1595ms (next.js: 46ms, application-code: 1549ms)
+✓ Compiled in 46.9s
+✓ Finished writing to filesystem cache in 13.0s
+ GET / 200 in 71s (next.js: 30.5s, application-code: 41s)
+ GET / 200 in 52s (next.js: 16.1s, application-code: 35.7s)
+ GET / 200 in 8.1s (next.js: 3.4s, application-code: 4.7s)
+ GET / 200 in 8.1s (next.js: 4.8s, application-code: 3.3s)
+ GET / 200 in 8.1s (next.js: 5.7s, application-code: 2.4s)
+ GET / 200 in 2.3s (next.js: 104ms, application-code: 2.1s)
+ GET / 200 in 2.5s (next.js: 316ms, application-code: 2.2s)
+ GET / 200 in 1839ms (next.js: 88ms, application-code: 1751ms)
+ GET / 200 in 1893ms (next.js: 466ms, application-code: 1427ms)
+ GET / 200 in 2.3s (next.js: 694ms, application-code: 1558ms)
+ GET / 200 in 2.4s (next.js: 53ms, application-code: 2.4s)
+ GET / 200 in 2.5s (next.js: 108ms, application-code: 2.4s)
+ GET / 200 in 3.2s (next.js: 91ms, application-code: 3.1s)
+ GET / 200 in 2.6s (next.js: 89ms, application-code: 2.5s)
+ GET / 200 in 2.6s (next.js: 403ms, application-code: 2.2s)
+ GET / 200 in 3.0s (next.js: 673ms, application-code: 2.3s)
+ GET / 200 in 2.6s (next.js: 85ms, application-code: 2.5s)
+ GET / 200 in 2.7s (next.js: 73ms, application-code: 2.6s)
+ GET / 200 in 1725ms (next.js: 82ms, application-code: 1643ms)
+ GET / 200 in 1750ms (next.js: 49ms, application-code: 1701ms)
+ GET / 200 in 1756ms (next.js: 360ms, application-code: 1396ms)
+ GET / 200 in 1966ms (next.js: 83ms, application-code: 1883ms)
+ GET / 200 in 2.6s (next.js: 97ms, application-code: 2.5s)
+ GET / 200 in 2.2s (next.js: 51ms, application-code: 2.1s)
+ GET / 200 in 2.2s (next.js: 444ms, application-code: 1740ms)
+ GET / 200 in 1723ms (next.js: 43ms, application-code: 1680ms)
+ GET / 200 in 1735ms (next.js: 386ms, application-code: 1349ms)
+ GET / 200 in 1352ms (next.js: 52ms, application-code: 1300ms)
+ GET / 200 in 918ms (next.js: 44ms, application-code: 875ms)
+ GET / 200 in 504ms (next.js: 64ms, application-code: 440ms)

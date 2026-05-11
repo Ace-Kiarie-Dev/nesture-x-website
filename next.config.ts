@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      { source: '/tools/image-converter',  destination: '/tools/image-studio', permanent: true },
+      { source: '/tools/image-compressor', destination: '/tools/image-studio', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
