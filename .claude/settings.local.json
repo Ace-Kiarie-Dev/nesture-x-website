@@ -34,7 +34,18 @@
       "Bash(Get-Process -Name \"node\" -ErrorAction SilentlyContinue)",
       "Bash(Select-Object Id, CPU, WorkingSet)",
       "Bash(Format-Table)",
-      "Bash(Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue)"
+      "Bash(Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue)",
+      "Bash(git ls-tree *)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(grep -E \"^\\(sharp|pdf-lib|qrcode|jszip\\)$\")",
+      "Bash(rm -rf .next)",
+      "Bash(MONGODB_URI=\"mongodb://localhost:27017/dummy\" JWT_SECRET=\"dummy\" ADMIN_PASSWORD=\"dummy\" npm run build)",
+      "Bash(MONGODB_URI=mongodb://localhost:27017/dummy JWT_SECRET=dummy ADMIN_PASSWORD=dummy RESEND_API_KEY=re_dummy MPESA_CONSUMER_KEY=dummy MPESA_CONSUMER_SECRET=dummy MPESA_SHORTCODE=174379 MPESA_PASSKEY=dummy MPESA_CALLBACK_URL=https://example.com/callback MPESA_ENVIRONMENT=sandbox NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/dummy CALENDLY_URL=https://calendly.com/dummy CONSULTATION_FEE=1000 NEXT_PUBLIC_APP_NAME=Nesture-X NEXT_PUBLIC_API_BASE=http://localhost:3000 npm run build)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(git checkout *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(grep *)"
     ]
   }
 }
