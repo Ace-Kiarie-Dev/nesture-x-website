@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import NxButton from '@/components/ui/NxButton';
+import NxOriginalsCarousel from './NxOriginalsCarousel';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const TYPED_PHRASES = [
@@ -12,29 +13,6 @@ const TYPED_PHRASES = [
   'end-to-end, M-Pesa included',
   'for the Nairobi hustle',
 ];
-
-const APP_CARDS = [
-  { name: 'BetLedger',       platform: 'Mobile App',     tagline: 'Bet tracking & analytics', status: 'Awaiting Deployment' },
-  { name: 'Hikarani',        platform: 'Cross Platform', tagline: 'Faith & community app',    status: 'In Development'      },
-  { name: 'Kikota',          platform: 'Web App · SaaS', tagline: 'Gym management SaaS',      status: 'In Development'      },
-  { name: 'No-Snooze Alarm', platform: 'Mobile App',     tagline: "You can't snooze this",    status: 'In Development'      },
-];
-
-// Absolute px positions + 3D rotations within the cluster container.
-// 2-column grid: left col (0) and right col (250), rows aligned on the same top values.
-const CARD_META = [
-  { top:   0, left:   0, rotateX:  8, rotateY: -12, translateZ: 20 }, // left  row 1
-  { top:   0, left: 250, rotateX: -6, rotateY:  10, translateZ: 10 }, // right row 1
-  { top: 180, left:   0, rotateX: 10, rotateY:  -8, translateZ: 30 }, // left  row 2
-  { top: 180, left: 250, rotateX: -8, rotateY:  12, translateZ:  5 }, // right row 2
-];
-
-function statusColor(status: string): string {
-  if (status === 'Awaiting Deployment') return 'var(--color-text)';
-  if (status === 'In Development')      return 'var(--color-primary)';
-  if (status === 'Coming Soon')         return 'rgba(245,245,245,0.4)';
-  return 'rgba(245,245,245,0.25)';
-}
 
 export default function Hero() {
   const { isMobile, isTablet } = useBreakpoint();
@@ -242,112 +220,9 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Perspective container */}
-          <div style={{ width: '460px', height: '360px', perspective: '800px' }}>
-          {/* Breathing container — slow rotateY oscillation */}
-          <motion.div
-            animate={{ rotateY: [-5, 5, -5] }}
-            transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity }}
-            style={{
-              position: 'relative',
-              width: '460px',
-              height: '360px',
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            {APP_CARDS.map((card, i) => {
-              const meta = CARD_META[i];
-              return (
-                <motion.div
-                  key={card.name}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.8 + i * 0.12 }}
-                  whileHover={{
-                    translateZ: meta.translateZ + 40,
-                    scale: 1.06,
-                    borderColor: 'var(--color-primary)',
-                    boxShadow: '0 0 24px rgba(26,111,212,0.4)',
-                    transition: { type: 'spring', stiffness: 300, damping: 20 },
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: meta.top,
-                    left: meta.left,
-                    width: '200px',
-                    height: '120px',
-                    minHeight: '120px',
-                    rotateX: meta.rotateX,
-                    rotateY: meta.rotateY,
-                    translateZ: meta.translateZ,
-                    background: 'rgba(255,255,255,0.04)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    borderWidth: '1px',
-                    borderStyle: 'solid',
-                    borderColor: 'rgba(26,111,212,0.25)',
-                    clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)',
-                    overflow: 'hidden',
-                    padding: '1rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.3rem',
-                  }}
-                >
-                  {/* ROW 1 — App name */}
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-bebas), sans-serif',
-                      fontSize: '1.3rem',
-                      color: 'var(--color-text)',
-                      lineHeight: 1,
-                    }}
-                  >
-                    {card.name}
-                  </div>
-
-                  {/* ROW 2 — Platform tag */}
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-jetbrains), monospace',
-                      fontSize: '0.55rem',
-                      color: 'var(--color-primary)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                    }}
-                  >
-                    {card.platform}
-                  </div>
-
-                  {/* ROW 3 — One-liner */}
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-grotesk), sans-serif',
-                      fontSize: '0.65rem',
-                      color: 'rgba(245,245,245,0.5)',
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {card.tagline}
-                  </div>
-
-                  {/* ROW 4 — Status (pushed to bottom) */}
-                  <div
-                    style={{
-                      marginTop: 'auto',
-                      fontFamily: 'var(--font-jetbrains), monospace',
-                      fontSize: '0.55rem',
-                      color: statusColor(card.status),
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    {card.status}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+          {/* NX Originals carousel */}
+          <div style={{ width: '460px' }}>
+            <NxOriginalsCarousel />
           </div>
         </motion.div>
       )}
