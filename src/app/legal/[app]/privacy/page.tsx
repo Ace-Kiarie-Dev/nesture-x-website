@@ -1,6 +1,47 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { privacyPolicies } from '@/lib/legal/privacy-policies';
+
+const LINK_PATTERN = /(https?:\/\/[^\s]+(?<![.,;:!?)]))|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
+
+function linkifyText(text: string, keyPrefix: string): ReactNode[] {
+  const parts: ReactNode[] = [];
+  let lastIndex = 0;
+  let linkIndex = 0;
+  let match: RegExpExecArray | null;
+
+  LINK_PATTERN.lastIndex = 0;
+  while ((match = LINK_PATTERN.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    const value = match[0];
+    const href = match[1] ? value : `mailto:${value}`;
+    parts.push(
+      <a
+        key={`${keyPrefix}-link-${linkIndex++}`}
+        href={href}
+        style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}
+      >
+        {value}
+      </a>
+    );
+    lastIndex = LINK_PATTERN.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
+
+function renderParagraphs(text: string, keyPrefix: string, style: React.CSSProperties) {
+  return text.split('\n\n').map((paragraph, i) => (
+    <p key={`${keyPrefix}-p-${i}`} style={style}>
+      {linkifyText(paragraph, `${keyPrefix}-${i}`)}
+    </p>
+  ));
+}
 
 export async function generateStaticParams() {
   return privacyPolicies.map((p) => ({ app: p.slug }));
@@ -81,6 +122,17 @@ export default async function NxPrivPolicyPage({
             Last updated: {policy.lastUpdated}
           </p>
 
+          {policy.intro && (
+            <div className="mt-8 space-y-4">
+              {renderParagraphs(policy.intro, 'intro', {
+                fontFamily: 'var(--font-body)',
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: 'rgba(245,245,245,0.85)',
+              })}
+            </div>
+          )}
+
           <div className="mt-10 space-y-8">
             {policy.sections.map((section) => (
               <div key={section.heading}>
@@ -96,16 +148,14 @@ export default async function NxPrivPolicyPage({
                 >
                   {section.heading}
                 </h2>
-                <p
-                  style={{
+                <div className="space-y-3">
+                  {renderParagraphs(section.body, section.heading, {
                     fontFamily: 'var(--font-body)',
                     fontSize: '0.95rem',
                     lineHeight: 1.8,
                     color: 'rgba(245,245,245,0.7)',
-                  }}
-                >
-                  {section.body}
-                </p>
+                  })}
+                </div>
               </div>
             ))}
           </div>
