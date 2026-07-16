@@ -45,7 +45,10 @@
       "Bash(git checkout *)",
       "Bash(git merge *)",
       "Bash(git stash *)",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(powershell -Command 'Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object {$_.MainWindowTitle -eq '\\\\'''\\\\''} | Stop-Process -Force')",
+      "Bash(mv \"src/app/legal/nx-priv-8f2k/[app]/page.tsx\" \"src/app/legal/[app]/privacy/page.tsx\")",
+      "Bash(mv \"src/app/legal/nx-priv-8f2k/[app]/layout.tsx\" \"src/app/legal/[app]/privacy/layout.tsx\")"
     ]
   }
 }
