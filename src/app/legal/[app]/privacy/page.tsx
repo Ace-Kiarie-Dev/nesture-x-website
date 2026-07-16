@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { privacyPolicies } from '@/lib/legal/privacy-policies';
+import PrivacyCard from './PrivacyCard';
+import './privacy.css';
 
 const LINK_PATTERN = /(https?:\/\/[^\s]+(?<![.,;:!?)]))|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
 
@@ -22,7 +24,7 @@ function linkifyText(text: string, keyPrefix: string): ReactNode[] {
       <a
         key={`${keyPrefix}-link-${linkIndex++}`}
         href={href}
-        style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}
+        className="nx-privacy-link"
       >
         {value}
       </a>
@@ -80,99 +82,93 @@ export default async function NxPrivPolicyPage({
       className="min-h-screen flex items-center justify-center px-4 py-16 sm:px-8"
       style={{ background: 'var(--color-bg)' }}
     >
-      <div
-        className="w-full border border-white/10 backdrop-blur-md"
-        style={{
-          maxWidth: '48rem',
-          background: 'color-mix(in srgb, var(--color-surface) 60%, transparent)',
-        }}
-      >
-        <div className="px-6 py-10 sm:px-12 sm:py-14">
-          <h1
-            className="uppercase"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-              lineHeight: 0.95,
-              color: 'var(--color-text)',
-            }}
-          >
-            {policy.appName}
-          </h1>
-          <p
-            className="mt-3"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8rem',
-              letterSpacing: '0.05em',
-              color: 'rgba(245,245,245,0.45)',
-            }}
-          >
-            {policy.platform}
-          </p>
-          <p
-            className="mt-1"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.78rem',
-              letterSpacing: '0.05em',
-              color: 'rgba(245,245,245,0.35)',
-            }}
-          >
-            Last updated: {policy.lastUpdated}
-          </p>
+      <PrivacyCard>
+        <h1
+          className="uppercase"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            lineHeight: 0.95,
+            color: 'var(--color-text)',
+          }}
+        >
+          {policy.appName}
+        </h1>
+        <p
+          className="mt-3"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.8rem',
+            letterSpacing: '0.05em',
+            color: 'rgba(245,245,245,0.45)',
+          }}
+        >
+          {policy.platform}
+        </p>
+        <p
+          className="mt-1"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.78rem',
+            letterSpacing: '0.05em',
+            color: 'rgba(245,245,245,0.35)',
+          }}
+        >
+          Last updated: {policy.lastUpdated}
+        </p>
 
-          {policy.intro && (
-            <div className="mt-8 space-y-4">
-              {renderParagraphs(policy.intro, 'intro', {
-                fontFamily: 'var(--font-body)',
-                fontSize: '1rem',
-                lineHeight: 1.8,
-                color: 'rgba(245,245,245,0.85)',
-              })}
-            </div>
-          )}
-
-          <div className="mt-10 space-y-8">
-            {policy.sections.map((section) => (
-              <div key={section.heading}>
-                <h2
-                  className="uppercase"
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-                    letterSpacing: '0.03em',
-                    color: 'var(--color-primary)',
-                    marginBottom: '0.6rem',
-                  }}
-                >
-                  {section.heading}
-                </h2>
-                <div className="space-y-3">
-                  {renderParagraphs(section.body, section.heading, {
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.95rem',
-                    lineHeight: 1.8,
-                    color: 'rgba(245,245,245,0.7)',
-                  })}
-                </div>
-              </div>
-            ))}
+        {policy.intro && (
+          <div className="mt-8" style={{ marginBottom: '2rem' }}>
+            {renderParagraphs(policy.intro, 'intro', {
+              fontFamily: 'var(--font-body)',
+              fontSize: '1.1rem',
+              fontWeight: 500,
+              lineHeight: 1.8,
+              color: 'rgba(245,245,245,0.9)',
+              marginBottom: '1.5rem',
+            })}
           </div>
+        )}
 
-          <p
-            className="mt-12 border-t border-white/10 pt-6"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.85rem',
-              letterSpacing: '0.02em',
-              color: 'var(--color-primary)',
-            }}
-          >
-            {policy.contactEmail}
-          </p>
+        <div className="mt-10">
+          {policy.sections.map((section) => (
+            <div key={section.heading} style={{ marginBottom: '2rem' }}>
+              <h2
+                className="uppercase"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(1.125rem, 2.5vw, 1.5rem)',
+                  letterSpacing: '0.05em',
+                  color: 'var(--color-primary)',
+                  marginBottom: '0.6rem',
+                }}
+              >
+                {section.heading}
+              </h2>
+              <div className="space-y-3">
+                {renderParagraphs(section.body, section.heading, {
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '0.95rem',
+                  lineHeight: 1.8,
+                  color: 'rgba(245,245,245,0.7)',
+                })}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
+
+        <p
+          className="mt-12 border-t border-white/10 pt-6"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.85rem',
+            letterSpacing: '0.02em',
+            color: 'var(--color-primary)',
+          }}
+        >
+          {policy.contactEmail}
+        </p>
+      </PrivacyCard>
     </main>
   );
 }

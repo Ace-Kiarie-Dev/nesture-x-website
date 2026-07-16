@@ -1,0 +1,13 @@
+.nx-privacy-link {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nx-privacy-link:hover {
+  text-decoration: underline;
+}
+
+.nx-privacy-link:focus-visible {
+  outline: none;
+  text-shadow: 0 0 8px rgba(26, 111, 212, 0.3);
+}
