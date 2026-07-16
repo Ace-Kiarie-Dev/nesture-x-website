@@ -1,0 +1,40 @@
+.nx-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  z-index: 5;
+}
+
+.nx-carousel-arrow:hover {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.nx-carousel-arrow--prev {
+  left: -56px;
+}
+
+.nx-carousel-arrow--next {
+  right: -56px;
+}
+
+@media (max-width: 768px) {
+  .nx-carousel-arrow--prev {
+    left: 8px;
+  }
+
+  .nx-carousel-arrow--next {
+    right: 8px;
+  }
+}

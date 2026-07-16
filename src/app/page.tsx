@@ -6,6 +6,7 @@ import NxButton from '@/components/ui/NxButton';
 import MarqueeStrip from '@/components/sections/Marquee';
 import Services from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
+import NxOriginals from '@/components/sections/NxOriginals';
 import About from '@/components/sections/About';
 import Partners from '@/components/sections/Partners';
 import Process from '@/components/sections/Process';
@@ -65,6 +66,7 @@ export default function Home() {
       </motion.section>
 
       <Portfolio featuredOnly />
+      <NxOriginals />
       <About />
       <Partners />
       <Process />
