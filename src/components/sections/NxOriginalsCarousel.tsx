@@ -78,7 +78,7 @@ const products: NxOriginal[] = [
   },
 ];
 
-const AUTOPLAY_INTERVAL = 4000;
+const AUTOPLAY_INTERVAL = 10000;
 const RESUME_DELAY = 8000;
 
 export default function NxOriginalsCarousel() {
@@ -142,6 +142,8 @@ export default function NxOriginalsCarousel() {
         maxWidth: '100%',
         margin: '0 auto',
       }}
+      onMouseEnter={() => setAutoplay(false)}
+      onMouseLeave={() => setAutoplay(true)}
     >
       {/* Carousel Container */}
       <div
