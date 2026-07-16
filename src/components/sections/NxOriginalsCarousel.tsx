@@ -122,9 +122,9 @@ export default function NxOriginalsCarousel() {
       <TiltedCard
         imageSrc={current.imageSrc}
         altText={current.name}
-        containerHeight="400px"
+        containerHeight="260px"
         containerWidth="100%"
-        imageHeight="400px"
+        imageHeight="260px"
         imageWidth="100%"
         rotateAmplitude={12}
         scaleOnHover={1.05}
@@ -136,12 +136,11 @@ export default function NxOriginalsCarousel() {
   );
 
   return (
-    <section
+    <div
       style={{
         width: '100%',
-        maxWidth: '600px',
+        maxWidth: '100%',
         margin: '0 auto',
-        padding: '0 16px',
       }}
     >
       {/* Carousel Container */}
@@ -149,7 +148,7 @@ export default function NxOriginalsCarousel() {
         style={{
           position: 'relative',
           width: '100%',
-          minHeight: '500px',
+          minHeight: '280px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -183,7 +182,7 @@ export default function NxOriginalsCarousel() {
           aria-label="Previous product"
           className="nx-carousel-arrow nx-carousel-arrow--prev"
         >
-          <ChevronLeft size={20} aria-hidden />
+          <ChevronLeft size={16} aria-hidden />
         </button>
 
         <button
@@ -191,7 +190,7 @@ export default function NxOriginalsCarousel() {
           aria-label="Next product"
           className="nx-carousel-arrow nx-carousel-arrow--next"
         >
-          <ChevronRight size={20} aria-hidden />
+          <ChevronRight size={16} aria-hidden />
         </button>
       </div>
 
@@ -199,16 +198,16 @@ export default function NxOriginalsCarousel() {
       <div
         style={{
           textAlign: 'center',
-          marginTop: '32px',
-          marginBottom: '32px',
+          marginTop: '16px',
+          marginBottom: '16px',
         }}
       >
         <h3
           style={{
-            fontSize: '24px',
+            fontSize: '20px',
             fontFamily: 'var(--font-display)',
             color: 'var(--color-text)',
-            margin: '0 0 8px 0',
+            margin: '0 0 4px 0',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
           }}
@@ -217,7 +216,7 @@ export default function NxOriginalsCarousel() {
         </h3>
         <p
           style={{
-            fontSize: '14px',
+            fontSize: '13px',
             fontFamily: 'var(--font-body)',
             color: 'rgba(245,245,245,0.7)',
             margin: 0,
@@ -256,6 +255,6 @@ export default function NxOriginalsCarousel() {
           />
         ))}
       </div>
-    </section>
+    </div>
   );
 }

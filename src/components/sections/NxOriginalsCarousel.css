@@ -5,8 +5,8 @@
   background: rgba(10, 10, 10, 0.5);
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -22,19 +22,9 @@
 }
 
 .nx-carousel-arrow--prev {
-  left: -56px;
+  left: 8px;
 }
 
 .nx-carousel-arrow--next {
-  right: -56px;
-}
-
-@media (max-width: 768px) {
-  .nx-carousel-arrow--prev {
-    left: 8px;
-  }
-
-  .nx-carousel-arrow--next {
-    right: 8px;
-  }
+  right: 8px;
 }
