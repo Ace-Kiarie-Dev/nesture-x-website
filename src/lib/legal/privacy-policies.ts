@@ -51,7 +51,7 @@ export const privacyPolicies: PrivacyPolicy[] = [
     slug: 'betledger',
     appName: 'Bet Ledger',
     platform: 'Android / React Native',
-    lastUpdated: '2026-07-16',
+    lastUpdated: '2026-07-18',
     contactEmail: 'nesturex@gmail.com',
     intro:
       'Bet Ledger is a personal betting-record app. It helps you keep an honest record of the bets you place elsewhere, so you can see what your betting is actually costing you.\n\nBet Ledger does not accept bets, hold money, provide odds, offer tips or predictions, or connect to any betting platform. It is a record-keeping tool and nothing else.\n\nThis policy explains what personal data Bet Ledger collects, why, where it is stored, and what rights you have over it.',
@@ -66,11 +66,11 @@ export const privacyPolicies: PrivacyPolicy[] = [
       },
       {
         heading: 'What data we collect',
-        body: 'Bet Ledger collects only what it needs to work. There is no advertising, no analytics, no tracking, and no profiling.\n\nAccount information: When you sign in with Google, Firebase Authentication provides us with your email address, display name, and profile photo. We do not receive your Google password or have any access to your Google account beyond this.\n\nInformation you enter: Bet records (stake, odds, market, selection, sport, betting platform, outcome, and match time), a username you choose within the app, and a weekly budget you set for yourself.\n\nInformation the app derives: Bet Ledger calculates statistics from the bets you record, including profit and loss, win rate, and streaks. These are derived from your own entries; we do not obtain them from anywhere else.\n\nTechnical information: A notification token — a device identifier used only to send you the reminders you have switched on.\n\nWhat we do not collect: We do not collect your phone number, location, contacts, financial account details, payment information, or your activity on betting platforms. Bet Ledger has no connection to Betika, SportPesa, Odibets, M-Cheza, or any other operator. It only knows what you type into it.',
+        body: 'Bet Ledger collects only what it needs to work. There is no advertising, no analytics, no tracking, and no profiling.\n\nAccount information: When you sign in with Google, Firebase Authentication provides us with your email address, display name, and profile photo. We do not receive your Google password or have any access to your Google account beyond this.\n\nInformation you enter: Bet records (stake, odds, market, selection, sport, betting platform, outcome, and match time), a username you choose within the app, and a weekly budget you set for yourself.\n\nInformation the app derives: Bet Ledger calculates statistics from the bets you record, including profit and loss, win rate, and streaks. These are derived from your own entries; we do not obtain them from anywhere else.\n\nWhat we do not collect: We do not collect your phone number, location, contacts, financial account details, payment information, or your activity on betting platforms. Bet Ledger has no connection to Betika, SportPesa, Odibets, M-Cheza, or any other operator. It only knows what you type into it.',
       },
       {
         heading: 'Why we process your data',
-        body: 'We use your account information to create and secure your account (legal basis: Performance of a contract with you). We use your bet records, username, and weekly budget to store and display your betting records (legal basis: Performance of a contract with you). We use your bet records to calculate your statistics and insights (legal basis: Performance of a contract with you). We use your notification token to send reminders and alerts you enable (legal basis: Your consent, withdrawable in Settings). We do not use your data for advertising, and we never sell it.',
+        body: 'We use your account information to create and secure your account (legal basis: Performance of a contract with you). We use your bet records, username, and weekly budget to store and display your betting records (legal basis: Performance of a contract with you). We use your bet records to calculate your statistics and insights (legal basis: Performance of a contract with you). We do not use your data for advertising, and we never sell it.',
       },
       {
         heading: 'Where your data is stored',
@@ -86,11 +86,11 @@ export const privacyPolicies: PrivacyPolicy[] = [
       },
       {
         heading: 'Your rights',
-        body: 'Under the Data Protection Act, 2019, you have the right to: be informed about how your data is used (this policy), access the personal data we hold about you, correct data that is inaccurate or incomplete, delete your data (right to erasure), object to how we process your data, withdraw consent for notifications at any time in Settings, and lodge a complaint with the Office of the Data Protection Commissioner (ODPC) at https://www.odpc.go.ke.\n\nTo exercise any of these rights, email nesturex@gmail.com. We will respond within a reasonable period and in any case within 30 days.',
+        body: 'Under the Data Protection Act, 2019, you have the right to: be informed about how your data is used (this policy), access the personal data we hold about you, correct data that is inaccurate or incomplete, delete your data (right to erasure), object to how we process your data, and lodge a complaint with the Office of the Data Protection Commissioner (ODPC) at https://www.odpc.go.ke.\n\nTo exercise any of these rights, email nesturex@gmail.com. We will respond within a reasonable period and in any case within 30 days.',
       },
       {
         heading: 'Deleting your account and data',
-        body: 'In the app (immediate): Open Bet Ledger, go to Settings, tap Delete Account, confirm. Your bet history, statistics, username, budget, and sign-in record are permanently deleted straight away. This cannot be undone.\n\nBy email (if you no longer have the app): Email nesturex@gmail.com from the Google account address you signed up with, asking for your account to be deleted. We will delete it within 30 days of receiving your request.\n\nWhat deletion removes: Your Firebase Authentication record (your sign-in), your entire bet history, and your statistics, username, weekly budget, and notification preferences. Nothing is retained afterwards. Deleting your Bet Ledger account does not affect your Google account, which stays exactly as it was.',
+        body: 'In the app (immediate): Open Bet Ledger, go to Settings, tap Delete Account, confirm. Your bet history, statistics, username, budget, and sign-in record are permanently deleted straight away. This cannot be undone.\n\nBy email (if you no longer have the app): Email nesturex@gmail.com from the Google account address you signed up with, asking for your account to be deleted. We will delete it within 30 days of receiving your request.\n\nWhat deletion removes: Your Firebase Authentication record (your sign-in), your entire bet history, and your statistics, username, and weekly budget. Nothing is retained afterwards. Deleting your Bet Ledger account does not affect your Google account, which stays exactly as it was.',
       },
       {
         heading: 'How we protect your data',
