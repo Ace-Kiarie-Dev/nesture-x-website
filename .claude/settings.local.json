@@ -64,7 +64,12 @@
       "Bash(seq 1 30)",
       "Bash(taskkill //F //FI \"WINDOWTITLE eq *next*\")",
       "Bash(netstat -ano)",
-      "Bash(taskkill *)"
+      "Bash(taskkill *)",
+      "Bash(awk 'NR<=592 && /^D:/{f=$0} END{}' C:/Users/HomePC/AppData/Local/Temp/claude/D--Work-Code-Nesture-X-Projects-nesture-x-website-nesture-x-website/f13264e0-8a10-4870-b836-796d9ee6276f/scratchpad/lint_full.txt)",
+      "Bash(awk '/^D:/{f=$0} NR==592{print f}' C:/Users/HomePC/AppData/Local/Temp/claude/D--Work-Code-Nesture-X-Projects-nesture-x-website-nesture-x-website/f13264e0-8a10-4870-b836-796d9ee6276f/scratchpad/lint_full.txt)",
+      "Bash(awk '/^D:/{if\\(f && c>0\\) print c, f; f=$0; c=0; next} /warning|error/{c++} END{if\\(f && c>0\\) print c, f}' C:/Users/HomePC/AppData/Local/Temp/claude/D--Work-Code-Nesture-X-Projects-nesture-x-website-nesture-x-website/f13264e0-8a10-4870-b836-796d9ee6276f/scratchpad/lint_full.txt)",
+      "Bash(npx vercel *)",
+      "Skill(claude-in-chrome)"
     ]
   }
 }

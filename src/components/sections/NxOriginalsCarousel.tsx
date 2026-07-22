@@ -6,77 +6,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import TiltedCard from '@/components/ui/TiltedCard';
 import StatusBadge from '@/components/ui/StatusBadge';
+import { NX_ORIGINALS } from '@/data/nxOriginals';
 import './NxOriginalsCarousel.css';
 
-interface NxOriginal {
-  id: string;
-  name: string;
-  description: string;
-  imageSrc: string;
-  status: string;
-  statusDescription?: string;
-  category: 'web' | 'mobile';
-  link?: string | null;
-}
-
-const products: NxOriginal[] = [
-  {
-    id: 'shinkusen',
-    name: 'SHINKUSEN',
-    description: 'Faith × Anime Merch Store',
-    imageSrc: '/images/placeholder-shinkusen.svg',
-    status: 'In Development',
-    statusDescription: 'Site coming soon',
-    category: 'web',
-    link: 'https://shinkusen.co.ke',
-  },
-  {
-    id: 'betledger',
-    name: 'Bet Ledger',
-    description: 'Honest bet tracking analytics',
-    imageSrc: '/images/Bet%20Ledger%20Card.png',
-    status: 'In Testing',
-    statusDescription: 'Coming to Play Store',
-    category: 'mobile',
-    link: null,
-  },
-  {
-    id: 'hikarani',
-    name: 'Hikarani',
-    description: 'Faith Community App',
-    imageSrc: '/images/placeholder-hikarani.svg',
-    status: 'In Development',
-    category: 'mobile',
-    link: null,
-  },
-  {
-    id: 'kikota',
-    name: 'Kikota',
-    description: 'Gym Management SaaS',
-    imageSrc: '/images/placeholder-kikota.svg',
-    status: 'In Development',
-    category: 'web',
-    link: null,
-  },
-  {
-    id: 'no-snooze-alarm',
-    name: 'No-Snooze Alarm',
-    description: "The Alarm That Won't Quit",
-    imageSrc: '/images/placeholder-no-snooze.svg',
-    status: 'In Development',
-    category: 'mobile',
-    link: null,
-  },
-  {
-    id: 'matatu-dash',
-    name: 'Matatu Dash',
-    description: 'Mobile Game',
-    imageSrc: '/images/placeholder-matatu-dash.svg',
-    status: 'In Development',
-    category: 'mobile',
-    link: null,
-  },
-];
+const products = NX_ORIGINALS;
 
 const AUTOPLAY_INTERVAL = 10000;
 const RESUME_DELAY = 8000;
@@ -121,7 +54,7 @@ export default function NxOriginalsCarousel() {
     <div style={{ position: 'relative' }}>
       <TiltedCard
         imageSrc={current.imageSrc}
-        altText={current.name}
+        altText={current.title}
         containerHeight="260px"
         containerWidth="100%"
         imageHeight="260px"
@@ -168,12 +101,19 @@ export default function NxOriginalsCarousel() {
               position: 'relative',
             }}
           >
+            {/* SHINKUSEN has a live external site — keep sending it straight out.
+                Everything else deep-links into its portfolio Digital Products tab. */}
             {current.link ? (
               <Link href={current.link} target="_blank" rel="noopener noreferrer" style={{ cursor: 'pointer' }}>
                 {card}
               </Link>
             ) : (
-              card
+              <Link
+                href={`/portfolio?view=digital&type=${current.category}#${current.slug}`}
+                style={{ cursor: 'pointer' }}
+              >
+                {card}
+              </Link>
             )}
           </motion.div>
         </AnimatePresence>
@@ -214,7 +154,7 @@ export default function NxOriginalsCarousel() {
             letterSpacing: '0.05em',
           }}
         >
-          {current.name}
+          {current.title}
         </h3>
         <p
           style={{
@@ -241,7 +181,7 @@ export default function NxOriginalsCarousel() {
           <button
             key={product.id}
             onClick={() => goToSlide(index)}
-            aria-label={`Go to ${product.name}`}
+            aria-label={`Go to ${product.title}`}
             aria-current={currentIndex === index}
             style={{
               width: currentIndex === index ? '28px' : '12px',
@@ -253,7 +193,7 @@ export default function NxOriginalsCarousel() {
               padding: 0,
               transition: 'all 0.3s ease',
             }}
-            title={product.name}
+            title={product.title}
           />
         ))}
       </div>

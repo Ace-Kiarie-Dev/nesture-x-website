@@ -1,74 +1,67 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useBreakpoint } from '@/lib/useBreakpoint';
+import { getNxOriginalsByCategory } from '@/data/nxOriginals';
+import { DEV_PROJECTS } from './WebDevGrid';
 
-export interface DevProject {
+// ─── Shared card shape ─────────────────────────────────────────────────────────
+// Normalises both data sources (NX Originals + WebDevGrid client sites) into
+// one shape so a single card renderer can present them identically.
+
+interface ProductCardData {
+  key: string;
+  anchorId: string;
   name: string;
   image: string | null;
   url: string | null;
-  industry: string;
-  comingSoon?: boolean;
+  tag: string;
+  badge?: string;
 }
 
-// Exported so DigitalProductsGrid.tsx can fold these client sites into the
-// portfolio's Web Apps tab without duplicating the data.
-export const DEV_PROJECTS: DevProject[] = [
-  {
-    name: 'MegaJackpot Predictions',
-    image: '/images/megajp.png',
-    url: 'https://megajackpot-predicitions.netlify.app/',
-    industry: 'Sports & Betting',
-  },
-  {
-    name: 'ShadowScope',
-    image: '/images/shadowscope.png',
-    url: 'https://shadowscope.netlify.app/',
-    industry: 'Mystery Shopping',
-  },
-  {
-    name: 'Zaidi Movers',
-    image: '/images/zaidi.png',
-    url: 'https://zaidi-movers.netlify.app/',
-    industry: 'Logistics',
-  },
-  {
-    name: 'Gucha Youth FC',
-    image: '/images/gutcha.png',
-    url: 'https://gutcha-youth.netlify.app/',
-    industry: 'Sports & Community',
-  },
-  {
-    name: 'Fit Track',
-    image: '/images/fit.png',
-    url: 'https://fit-track-fitii.netlify.app/',
-    industry: 'Health & Fitness',
-  },
-  {
-    name: 'ODU Active',
-    image: '/images/odu.png',
-    url: 'https://www.oduactive.com/',
-    industry: 'Fitness Coaching',
-  },
-  {
-    name: 'Vicking Ventures',
-    image: null,
-    url: null,
-    industry: 'Tours & Travel',
-    comingSoon: true,
-  },
-];
+function slugify(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
 
-function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean }) {
+function getItems(type: 'web' | 'mobile'): ProductCardData[] {
+  const originals = getNxOriginalsByCategory(type).map(item => ({
+    key: `original-${item.id}`,
+    anchorId: item.slug,
+    name: item.title,
+    image: item.imageSrc,
+    url: item.link ?? null,
+    tag: item.description,
+    badge: item.status,
+  }));
+
+  if (type === 'mobile') return originals;
+
+  // Web Apps also folds in the existing client-site projects.
+  const clientSites = DEV_PROJECTS.map(project => ({
+    key: `client-${project.name}`,
+    anchorId: slugify(project.name),
+    name: project.name,
+    image: project.image,
+    url: project.url,
+    tag: project.industry,
+    badge: project.comingSoon ? 'Coming Soon' : undefined,
+  }));
+
+  return [...originals, ...clientSites];
+}
+
+// ─── Card ───────────────────────────────────────────────────────────────────────
+
+function ProductCard({ item }: { item: ProductCardData }) {
   const [hovered, setHovered] = useState(false);
-  const isComingSoon = !!project.comingSoon;
-  const isFullWidth = isComingSoon && !isMobile;
+  const isLinkable = !!item.url;
 
   const inner = (
     <div
-      onMouseEnter={() => { if (!isComingSoon) setHovered(true); }}
+      id={item.anchorId}
+      onMouseEnter={() => { if (isLinkable) setHovered(true); }}
       onMouseLeave={() => setHovered(false)}
       style={{
         position: 'relative',
@@ -79,13 +72,13 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
         borderColor: hovered ? 'var(--color-primary)' : 'rgba(26,111,212,0.2)',
         boxShadow: hovered ? '0 8px 32px rgba(26,111,212,0.2)' : 'none',
         transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+        scrollMarginTop: '120px',
       }}
     >
-      {/* Background: screenshot image or gradient placeholder */}
-      {project.image ? (
+      {item.image ? (
         <Image
-          src={project.image}
-          alt={project.name}
+          src={item.image}
+          alt={item.name}
           fill
           style={{ objectFit: 'cover' }}
           sizes="(max-width: 768px) 100vw, 50vw"
@@ -100,8 +93,7 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
         />
       )}
 
-      {/* Coming soon badge — top right */}
-      {isComingSoon && (
+      {item.badge && (
         <div
           style={{
             position: 'absolute',
@@ -118,16 +110,15 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
             zIndex: 2,
           }}
         >
-          Coming Soon
+          {item.badge}
         </div>
       )}
 
-      {/* Bottom overlay — darkens on hover */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: hovered && !isComingSoon
+          background: hovered
             ? 'linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.4) 50%, transparent 100%)'
             : 'linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.2) 50%, transparent 100%)',
           transition: 'background 0.3s ease',
@@ -138,7 +129,6 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
           zIndex: 1,
         }}
       >
-        {/* Industry tag */}
         <div
           style={{
             fontFamily: 'var(--font-jetbrains), monospace',
@@ -149,10 +139,9 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
             marginBottom: '0.35rem',
           }}
         >
-          {project.industry}
+          {item.tag}
         </div>
 
-        {/* Project name */}
         <div
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
@@ -162,10 +151,9 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
             marginBottom: '0.5rem',
           }}
         >
-          {project.name}
+          {item.name}
         </div>
 
-        {/* CTA row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           <span
             style={{
@@ -174,9 +162,9 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
               color: 'var(--color-text)',
             }}
           >
-            {isComingSoon ? 'Back Online Soon' : 'Visit Site'}
+            {isLinkable ? 'Visit Site' : item.badge || 'In Progress'}
           </span>
-          {!isComingSoon && (
+          {isLinkable && (
             <motion.span
               animate={{ x: hovered ? 4 : 0 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -195,17 +183,11 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
     </div>
   );
 
-  if (isComingSoon) {
-    return (
-      <div style={{ gridColumn: isFullWidth ? '1 / -1' : undefined }}>
-        {inner}
-      </div>
-    );
-  }
+  if (!isLinkable) return inner;
 
   return (
     <a
-      href={project.url!}
+      href={item.url!}
       target="_blank"
       rel="noopener noreferrer"
       style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }}
@@ -216,8 +198,26 @@ function DevCard({ project, isMobile }: { project: DevProject; isMobile: boolean
   );
 }
 
-export default function WebDevGrid() {
+// ─── Main component ───────────────────────────────────────────────────────────
+
+interface DigitalProductsGridProps {
+  type: 'web' | 'mobile';
+}
+
+export default function DigitalProductsGrid({ type }: DigitalProductsGridProps) {
   const { isMobile } = useBreakpoint();
+  const items = getItems(type);
+
+  // Deep-link scroll: if the URL carries a #slug (from the homepage hero
+  // carousel), scroll that card into view once the grid has mounted.
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [type]);
 
   return (
     <section
@@ -226,10 +226,9 @@ export default function WebDevGrid() {
         background: 'rgba(10,10,10,0.93)',
       }}
     >
-      {/* Header */}
       <div style={{ marginBottom: '2.5rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>
-          Web Development
+          Digital Products
         </div>
         <h2
           style={{
@@ -239,11 +238,10 @@ export default function WebDevGrid() {
             lineHeight: 1,
           }}
         >
-          LIVE PROJECTS
+          {type === 'web' ? 'WEB APPS' : 'MOBILE APPS'}
         </h2>
       </div>
 
-      {/* 2-column grid on desktop, 1 on mobile */}
       <div
         style={{
           display: 'grid',
@@ -251,8 +249,8 @@ export default function WebDevGrid() {
           gap: '1rem',
         }}
       >
-        {DEV_PROJECTS.map(project => (
-          <DevCard key={project.name} project={project} isMobile={isMobile} />
+        {items.map(item => (
+          <ProductCard key={item.key} item={item} />
         ))}
       </div>
     </section>
