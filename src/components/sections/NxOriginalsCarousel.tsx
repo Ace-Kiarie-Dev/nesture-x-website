@@ -7,6 +7,7 @@ import Link from 'next/link';
 import TiltedCard from '@/components/ui/TiltedCard';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { NX_ORIGINALS } from '@/data/nxOriginals';
+import { getProjectDestination } from '@/lib/getProjectDestination';
 import './NxOriginalsCarousel.css';
 
 const products = NX_ORIGINALS;
@@ -49,6 +50,7 @@ export default function NxOriginalsCarousel() {
   };
 
   const current = products[currentIndex];
+  const destination = getProjectDestination(current.link, current.slug);
 
   const card = (
     <div style={{ position: 'relative' }}>
@@ -101,17 +103,15 @@ export default function NxOriginalsCarousel() {
               position: 'relative',
             }}
           >
-            {/* SHINKUSEN has a live external site — keep sending it straight out.
-                Everything else deep-links into its portfolio Digital Products tab. */}
-            {current.link ? (
-              <Link href={current.link} target="_blank" rel="noopener noreferrer" style={{ cursor: 'pointer' }}>
+            {/* Same destination rule as the portfolio project cards: a live
+                link wins (e.g. SHINKUSEN → shinkusen.co.ke, external); everything
+                else goes to that project's shared status page. */}
+            {destination.isExternal ? (
+              <Link href={destination.href} target="_blank" rel="noopener noreferrer" style={{ cursor: 'pointer' }}>
                 {card}
               </Link>
             ) : (
-              <Link
-                href={`/portfolio?view=digital&type=${current.category}#${current.slug}`}
-                style={{ cursor: 'pointer' }}
-              >
+              <Link href={destination.href} style={{ cursor: 'pointer' }}>
                 {card}
               </Link>
             )}

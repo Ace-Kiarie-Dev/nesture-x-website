@@ -71,13 +71,13 @@ export const NX_ORIGINALS: NxOriginal[] = [
     link: null,
   },
   {
-    id: 'no-snooze-alarm',
-    slug: 'no-snooze-alarm',
-    title: 'No-Snooze Alarm',
+    id: 'no-snooze-solen',
+    slug: 'no-snooze-solen',
+    title: 'No Snooze Solen',
     description: "The alarm that won't let you quit",
     category: 'mobile',
     status: 'In Development',
-    imageSrc: '/images/placeholder-no-snooze.svg',
+    imageSrc: '/images/placeholder-no-snooze-solen.svg',
     link: null,
   },
 ];

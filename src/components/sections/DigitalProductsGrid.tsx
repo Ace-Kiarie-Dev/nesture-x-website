@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 import { getNxOriginalsByCategory } from '@/data/nxOriginals';
-import { DEV_PROJECTS } from './WebDevGrid';
+import { slugify } from '@/lib/slugify';
+import { getProjectDestination } from '@/lib/getProjectDestination';
+import { DEV_PROJECTS } from '@/data/devProjects';
 
 // ─── Shared card shape ─────────────────────────────────────────────────────────
 // Normalises both data sources (NX Originals + WebDevGrid client sites) into
@@ -19,10 +22,6 @@ interface ProductCardData {
   url: string | null;
   tag: string;
   badge?: string;
-}
-
-function slugify(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
 function getItems(type: 'web' | 'mobile'): ProductCardData[] {
@@ -56,12 +55,12 @@ function getItems(type: 'web' | 'mobile'): ProductCardData[] {
 
 function ProductCard({ item }: { item: ProductCardData }) {
   const [hovered, setHovered] = useState(false);
-  const isLinkable = !!item.url;
+  const { href, isExternal } = getProjectDestination(item.url, item.anchorId);
 
   const inner = (
     <div
       id={item.anchorId}
-      onMouseEnter={() => { if (isLinkable) setHovered(true); }}
+      onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         position: 'relative',
@@ -162,39 +161,43 @@ function ProductCard({ item }: { item: ProductCardData }) {
               color: 'var(--color-text)',
             }}
           >
-            {isLinkable ? 'Visit Site' : item.badge || 'In Progress'}
+            {isExternal ? 'Visit Site' : 'View Status'}
           </span>
-          {isLinkable && (
-            <motion.span
-              animate={{ x: hovered ? 4 : 0 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              style={{
-                fontFamily: 'var(--font-grotesk), sans-serif',
-                fontSize: '0.75rem',
-                color: 'var(--color-text)',
-                display: 'inline-block',
-              }}
-            >
-              →
-            </motion.span>
-          )}
+          <motion.span
+            animate={{ x: hovered ? 4 : 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            style={{
+              fontFamily: 'var(--font-grotesk), sans-serif',
+              fontSize: '0.75rem',
+              color: 'var(--color-text)',
+              display: 'inline-block',
+            }}
+          >
+            →
+          </motion.span>
         </div>
       </div>
     </div>
   );
 
-  if (!isLinkable) return inner;
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }}
+        data-hover
+      >
+        {inner}
+      </a>
+    );
+  }
 
   return (
-    <a
-      href={item.url!}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }}
-      data-hover
-    >
+    <Link href={href} style={{ display: 'block', textDecoration: 'none', cursor: 'pointer' }} data-hover>
       {inner}
-    </a>
+    </Link>
   );
 }
 

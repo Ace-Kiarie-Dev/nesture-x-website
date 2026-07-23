@@ -69,7 +69,11 @@
       "Bash(awk '/^D:/{f=$0} NR==592{print f}' C:/Users/HomePC/AppData/Local/Temp/claude/D--Work-Code-Nesture-X-Projects-nesture-x-website-nesture-x-website/f13264e0-8a10-4870-b836-796d9ee6276f/scratchpad/lint_full.txt)",
       "Bash(awk '/^D:/{if\\(f && c>0\\) print c, f; f=$0; c=0; next} /warning|error/{c++} END{if\\(f && c>0\\) print c, f}' C:/Users/HomePC/AppData/Local/Temp/claude/D--Work-Code-Nesture-X-Projects-nesture-x-website-nesture-x-website/f13264e0-8a10-4870-b836-796d9ee6276f/scratchpad/lint_full.txt)",
       "Bash(npx vercel *)",
-      "Skill(claude-in-chrome)"
+      "Skill(claude-in-chrome)",
+      "Bash(npx --yes tsx -e ' *)",
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(npx --yes tsx \"C:/Users/HomePC/AppData/Local/Temp/claude/D--Work-Code-Nesture-X-Projects-nesture-x-website-nesture-x-website/e89c3d20-4c90-4378-8ce7-92559d4f0fb7/scratchpad/verify-destinations.ts\")",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }
