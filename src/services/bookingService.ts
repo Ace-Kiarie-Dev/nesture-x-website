@@ -1,21 +1,21 @@
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb';
 
-export type BookingStatus = 'pending' | 'paid' | 'failed' | 'expired';
-
 export interface Booking {
-  _id?:              ObjectId;
-  name:              string;
-  email:             string;
-  phone:             string;
-  service:           string;
-  amount:            number;
-  checkoutRequestId: string;
-  merchantRequestId: string;
-  mpesaRef?:         string;
-  status:            BookingStatus;
-  createdAt:         Date;
-  paidAt?:           Date;
+  _id?:               ObjectId;
+  name:                string;
+  email:               string;
+  phone:               string;
+  service:             string;
+  date:                string; // 'YYYY-MM-DD'
+  timeSlot:            string; // e.g. '09:00'
+  createdAt:           Date;
+  // Parked M-Pesa fields — unused now that booking is payment-free, kept so
+  // the schema doesn't need re-migrating if payment comes back.
+  checkoutRequestId?: string;
+  merchantRequestId?: string;
+  mpesaRef?:          string;
+  paidAt?:            Date;
 }
 
 export async function createBooking(
@@ -29,27 +29,27 @@ export async function createBooking(
   return insertedId.toString();
 }
 
-export async function getBookingById(id: string): Promise<Booking | null> {
+// Time slots already taken on a given date — used to grey out unavailable
+// slots in the calendar and to re-check for a race on submit.
+export async function getTakenSlotsForDate(date: string): Promise<string[]> {
   const db = await getDb();
-  return db.collection<Booking>('bookings').findOne({ _id: new ObjectId(id) });
+  const bookings = await db
+    .collection<Booking>('bookings')
+    .find({ date }, { projection: { timeSlot: 1 } })
+    .toArray();
+  return bookings.map(b => b.timeSlot);
 }
+
+// ── Parked M-Pesa helpers ─────────────────────────────────────────────────
+// Unused now that the STK push flow is removed (see api/booking/route.ts),
+// kept alongside the parked checkoutRequestId/merchantRequestId fields above
+// so re-enabling payment later doesn't require rebuilding this lookup path.
 
 export async function getBookingByCheckoutId(
   checkoutRequestId: string
 ): Promise<Booking | null> {
   const db = await getDb();
   return db.collection<Booking>('bookings').findOne({ checkoutRequestId });
-}
-
-export async function updateBookingById(
-  id: string,
-  update: Partial<Booking>
-): Promise<void> {
-  const db = await getDb();
-  await db.collection('bookings').updateOne(
-    { _id: new ObjectId(id) },
-    { $set: update }
-  );
 }
 
 export async function updateBookingByCheckoutId(

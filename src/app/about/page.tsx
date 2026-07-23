@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import NxButton from '@/components/ui/NxButton';
+import AmbientGeometry from '@/components/ui/AmbientGeometry';
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
 // ─── Shared tokens ─────────────────────────────────────────────────────────────
 
@@ -95,6 +97,8 @@ const MILESTONES = [
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function AboutPage() {
+  const { isMobile } = useBreakpoint();
+
   return (
     <main>
 
@@ -103,12 +107,19 @@ export default function AboutPage() {
       ══════════════════════════════════════════════════════ */}
       <section
         className="relative overflow-hidden bg-[var(--color-bg)]"
-        style={{ padding: SECTION_PAD }}
+        style={{
+          padding: SECTION_PAD,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '2rem',
+        }}
       >
         <div className="grid-overlay absolute inset-0 z-0 pointer-events-none" aria-hidden />
 
         <motion.div
           className="relative z-[1]"
+          style={{ flex: isMobile ? '1 1 100%' : '0 1 640px', maxWidth: isMobile ? '100%' : '56%' }}
           variants={stagger}
           initial="hidden"
           animate="visible"
@@ -192,6 +203,13 @@ export default function AboutPage() {
             </motion.p>
           </motion.div>
         </motion.div>
+
+        {/* Ambient decorative geometry — right side, purely visual */}
+        {!isMobile && (
+          <div className="relative z-[1]" style={{ flex: '1 1 auto', alignSelf: 'stretch', minHeight: '420px' }}>
+            <AmbientGeometry />
+          </div>
+        )}
       </section>
 
       {/* ══════════════════════════════════════════════════════
