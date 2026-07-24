@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useBreakpoint } from '@/lib/useBreakpoint';
+import NxButton from '@/components/ui/NxButton';
 
 const stagger = {
   hidden: {},
@@ -104,22 +105,35 @@ export default function Solutions() {
           ))}
         </div>
 
-        {/* Closing line */}
-        <motion.p
+        {/* Closing line + CTA */}
+        <motion.div
           variants={item}
           style={{
-            fontFamily: 'var(--font-body), sans-serif',
-            fontWeight: 500,
-            fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)',
-            color: 'var(--color-text)',
-            lineHeight: 1.6,
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: 'space-between',
+            alignItems: isMobile ? 'flex-start' : 'center',
+            gap: isMobile ? '1.5rem' : '2rem',
             borderTop: '1px solid rgba(26,111,212,0.15)',
             paddingTop: '2rem',
-            margin: 0,
           }}
         >
-          Have a problem that doesn&apos;t fit a box? That&apos;s our favourite kind.
-        </motion.p>
+          <p
+            style={{
+              fontFamily: 'var(--font-body), sans-serif',
+              fontWeight: 500,
+              fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)',
+              color: 'var(--color-text)',
+              lineHeight: 1.6,
+              margin: 0,
+            }}
+          >
+            Have a problem that doesn&apos;t fit a box? That&apos;s our favourite kind.
+          </p>
+          <NxButton variant="primary" size="md" href="/booking" className={isMobile ? 'w-full' : ''}>
+            Book a Consultation →
+          </NxButton>
+        </motion.div>
       </motion.div>
     </section>
   );
