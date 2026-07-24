@@ -62,3 +62,37 @@ export async function updateBookingByCheckoutId(
     { $set: update }
   );
 }
+
+// ── Admin listing ────────────────────────────────────────────────────────
+// Some records predate the calendar migration (see git history) and have no
+// date/timeSlot, carrying instead a pending/paid/failed/expired `status`
+// field from the old M-Pesa flow. Read every field defensively so those rows
+// render instead of crashing the admin view.
+
+export interface AdminBooking {
+  _id:       string;
+  name?:     string;
+  email?:    string;
+  phone?:    string;
+  service?:  string;
+  date?:     string;
+  timeSlot?: string;
+  status?:   string;
+  createdAt: string; // ISO
+}
+
+export async function getAllBookings(): Promise<AdminBooking[]> {
+  const db   = await getDb();
+  const docs = await db.collection('bookings').find({}).sort({ createdAt: -1 }).toArray();
+  return docs.map(d => ({
+    _id:       d._id.toString(),
+    name:      typeof d.name === 'string' ? d.name : undefined,
+    email:     typeof d.email === 'string' ? d.email : undefined,
+    phone:     typeof d.phone === 'string' ? d.phone : undefined,
+    service:   typeof d.service === 'string' ? d.service : undefined,
+    date:      typeof d.date === 'string' ? d.date : undefined,
+    timeSlot:  typeof d.timeSlot === 'string' ? d.timeSlot : undefined,
+    status:    typeof d.status === 'string' ? d.status : undefined,
+    createdAt: d.createdAt ? new Date(d.createdAt).toISOString() : new Date(0).toISOString(),
+  }));
+}
