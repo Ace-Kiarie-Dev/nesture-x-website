@@ -8,6 +8,12 @@ import { Sun, Moon, Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '@/constants';
 import NxButton from '@/components/ui/NxButton';
 
+// Theme toggle is temporarily hidden pending completion of light-mode
+// tokens — 282 hardcoded rgba(245,245,245,*) text-color values across the
+// site don't yet respond to [data-theme='light'], which makes body copy
+// invisible in light mode. Flip this back to true once that work lands.
+const THEME_TOGGLE_VISIBLE = false;
+
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -16,8 +22,14 @@ export default function Navbar() {
 
   // Sync theme from DOM on mount
   useEffect(() => {
-    const stored = localStorage.getItem('nx-theme') as 'dark' | 'light' | null;
-    const initial = stored || 'dark';
+    // While the toggle is hidden, force 'dark' regardless of any stored
+    // preference — otherwise a user who previously switched to light mode
+    // would load into the broken (invisible-text) light mode with no way
+    // to switch back. Restore the commented-out lines when the toggle
+    // (and light mode) are re-enabled.
+    // const stored = localStorage.getItem('nx-theme') as 'dark' | 'light' | null;
+    // const initial = stored || 'dark';
+    const initial: 'dark' | 'light' = 'dark';
     setTheme(initial);
     document.documentElement.setAttribute('data-theme', initial);
   }, []);
@@ -137,37 +149,39 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            data-hover
-            style={{
-              width: '36px',
-              height: '36px',
-              border: '1px solid rgba(245, 245, 245, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'transparent',
-              color: 'var(--color-text)',
-              cursor: 'pointer',
-              transition: 'border-color 300ms ease, color 300ms ease',
-              flexShrink: 0,
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = 'var(--color-primary)';
-              el.style.color = 'var(--color-primary)';
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = 'rgba(245, 245, 245, 0.2)';
-              el.style.color = 'var(--color-text)';
-            }}
-          >
-            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+          {/* Theme toggle — temporarily hidden, see THEME_TOGGLE_VISIBLE above */}
+          {THEME_TOGGLE_VISIBLE && (
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              data-hover
+              style={{
+                width: '36px',
+                height: '36px',
+                border: '1px solid rgba(245, 245, 245, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'transparent',
+                color: 'var(--color-text)',
+                cursor: 'pointer',
+                transition: 'border-color 300ms ease, color 300ms ease',
+                flexShrink: 0,
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = 'var(--color-primary)';
+                el.style.color = 'var(--color-primary)';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = 'rgba(245, 245, 245, 0.2)';
+                el.style.color = 'var(--color-text)';
+              }}
+            >
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          )}
 
           {/* CTA */}
           <NxButton variant="primary" size="sm" href="/booking">
