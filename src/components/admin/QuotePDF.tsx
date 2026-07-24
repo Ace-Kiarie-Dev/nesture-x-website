@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
 } from '@react-pdf/renderer';
+import fs from 'fs';
 import path from 'path';
 import {
   type Quote,
@@ -52,8 +53,8 @@ const s = StyleSheet.create({
     flexDirection: 'column',
   },
   logo: {
-    width:  140,
-    height: 38,
+    width:  280,
+    height: 76,
     objectFit: 'contain',
   },
   headerTagline: {
@@ -273,13 +274,18 @@ const s = StyleSheet.create({
   },
 });
 
-// ── Logo path (resolved at runtime on server) ────────────────────────────────
+// ── Logo (resolved at runtime on server) ─────────────────────────────────────
+// Read into a Buffer rather than passing a raw path as `src` — @react-pdf/renderer
+// resolves string sources via url.parse(), which misreads a Windows absolute
+// path's drive letter (e.g. "D:\...") as a URL protocol and tries to fetch()
+// it remotely instead of reading it from disk. A Buffer skips that entirely.
 
-function getLogoPath(): string {
+function getLogoSrc(): Buffer | undefined {
   try {
-    return path.join(process.cwd(), 'public', 'images', 'logo-white.png');
+    const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-white.png');
+    return fs.readFileSync(logoPath);
   } catch {
-    return '';
+    return undefined;
   }
 }
 
@@ -289,7 +295,7 @@ export function QuotePDF({ quote }: { quote: Quote }) {
   const sub      = subtotal(quote.lines);
   const disc     = discountAmount(sub, quote.discountType, quote.discountValue);
   const total    = grandTotal(quote.lines, quote.discountType, quote.discountValue);
-  const logoPath = getLogoPath();
+  const logoSrc  = getLogoSrc();
 
   return (
     <Document
@@ -302,8 +308,8 @@ export function QuotePDF({ quote }: { quote: Quote }) {
         {/* ── Header ── */}
         <View style={s.header}>
           <View style={s.headerLeft}>
-            {logoPath ? (
-              <Image src={logoPath} style={s.logo} />
+            {logoSrc ? (
+              <Image src={logoSrc} style={s.logo} />
             ) : (
               <Text style={{ color: C.white, fontSize: 18, fontFamily: 'Helvetica-Bold', letterSpacing: 2 }}>
                 NESTURE-X
@@ -418,7 +424,7 @@ export function QuotePDF({ quote }: { quote: Quote }) {
         <View style={s.footer} fixed>
           <View>
             <Text style={s.footerBrand}>Nesture-X</Text>
-            <Text style={s.footerText}>Nairobi, Kenya  ·  +254 717 164 951  ·  Nesture-x@gmail.com</Text>
+            <Text style={s.footerText}>Nairobi, Kenya  ·  +254 717 164 951  ·  nesturex@gmail.com  ·  nesturex.com</Text>
           </View>
           <Text style={s.footerText}>
             This quotation is valid until {fmtDate(quote.expiryDate)}

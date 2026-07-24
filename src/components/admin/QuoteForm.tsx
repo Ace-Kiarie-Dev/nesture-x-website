@@ -241,7 +241,7 @@ function QuotePreview({ q }: { q: Quote }) {
       <div style={{ background: '#0d1b3e', padding: '10px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
         <div>
           <div style={{ color: '#1a6fd4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Nesture-X</div>
-          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>Nairobi, Kenya · +254 717 164 951 · Nesture-x@gmail.com</div>
+          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>Nairobi, Kenya · +254 717 164 951 · nesturex@gmail.com · nesturex.com</div>
         </div>
         <div style={{ color: 'rgba(184,206,240,0.55)', fontSize: '0.65rem' }}>Valid until {fmtDate(q.expiryDate) || '—'}</div>
       </div>
