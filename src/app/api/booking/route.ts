@@ -84,22 +84,34 @@ export async function POST(req: NextRequest) {
 
     const bookingId = await createBooking(booking);
 
-    await Promise.allSettled([
+    const [clientResult, peterResult] = await Promise.allSettled([
       resend.emails.send({
-        from:    'Peter at Nesture-X <onboarding@resend.dev>',
+        from:    'Nesture-X <bookings@nesturex.com>',
         to:      booking.email,
+        replyTo: 'nesturex@gmail.com',
         subject: 'Your Nesture-X Consultation is Confirmed ✓',
         text:    clientEmail(booking.name, booking.date, booking.timeSlot),
       }),
       resend.emails.send({
-        from:    'Nesture-X Bookings <onboarding@resend.dev>',
+        from:    'Nesture-X Bookings <bookings@nesturex.com>',
         to:      'nesturex@gmail.com',
         subject: `New Consultation — ${booking.name} — ${formatDateLabel(booking.date)}`,
         text:    peterEmail(booking.name, booking.email, booking.phone, booking.service, booking.date, booking.timeSlot),
       }),
     ]);
 
-    return NextResponse.json({ success: true, bookingId });
+    if (clientResult.status === 'rejected') {
+      console.error('[booking] confirmation email failed:', clientResult.reason);
+    }
+    if (peterResult.status === 'rejected') {
+      console.error('[booking] internal notification email failed:', peterResult.reason);
+    }
+
+    return NextResponse.json({
+      success:      true,
+      bookingId,
+      emailSent:    clientResult.status === 'fulfilled',
+    });
 
   } catch (err) {
     console.error('[booking/POST]', err);

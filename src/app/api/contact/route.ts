@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
 
     // ── 2. Internal notification email ────────────────────────────────────────
     await resend.emails.send({
-      from:    'Nesture-X Inquiries <onboarding@resend.dev>',
+      from:    'Nesture-X Inquiries <inquiries@nesturex.com>',
       to:      'nesturex@gmail.com',
       replyTo: email.trim(),
       subject: `New Inquiry — ${service || 'General'} — ${name}`,
@@ -101,8 +101,9 @@ export async function POST(req: NextRequest) {
 
     // ── 3. Auto-reply to the sender ───────────────────────────────────────────
     await resend.emails.send({
-      from:    'Peter at Nesture-X <onboarding@resend.dev>',
+      from:    'Peter at Nesture-X <inquiries@nesturex.com>',
       to:      email.trim(),
+      replyTo: 'nesturex@gmail.com',
       subject: "Got it — we're looking at your idea 👀",
       text:    autoReply(name),
     });
