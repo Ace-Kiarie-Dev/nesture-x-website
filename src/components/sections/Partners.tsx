@@ -21,7 +21,7 @@ export default function Partners() {
     : 'repeat(5, 1fr)';
 
   return (
-    <section style={{ background: 'rgba(10,10,10,0.92)', padding: sectionPadding }}>
+    <section style={{ background: 'var(--color-bg)', padding: sectionPadding }}>
       {/* Two-column intro — stacks on mobile/tablet */}
       <div
         style={{
@@ -38,7 +38,7 @@ export default function Partners() {
             style={{
               fontFamily: 'var(--font-bebas), sans-serif',
               fontSize: 'clamp(3rem, 7vw, 6rem)',
-              color: '#f5f5f5',
+              color: 'var(--color-text)',
               lineHeight: 1,
               margin: 0,
             }}
@@ -51,7 +51,7 @@ export default function Partners() {
             fontFamily: 'var(--font-grotesk), sans-serif',
             fontWeight: 300,
             fontSize: '1rem',
-            color: 'rgba(245,245,245,0.5)',
+            color: 'var(--color-text-secondary)',
             lineHeight: 1.7,
             margin: 0,
           }}
@@ -84,7 +84,7 @@ function PartnerCard({ name, industry }: { name: string; industry: string }) {
     <div
       data-hover
       style={{
-        background: '#0a0a0a',
+        background: 'var(--color-bg)',
         padding: '2rem 1.5rem',
         transition: 'background 0.3s',
         cursor: 'default',
@@ -93,7 +93,7 @@ function PartnerCard({ name, industry }: { name: string; industry: string }) {
         (e.currentTarget as HTMLElement).style.background = 'rgba(26,111,212,0.06)';
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.background = '#0a0a0a';
+        (e.currentTarget as HTMLElement).style.background = 'var(--color-bg)';
       }}
     >
       <div
@@ -115,7 +115,7 @@ function PartnerCard({ name, industry }: { name: string; industry: string }) {
         style={{
           fontFamily: 'var(--font-bebas), sans-serif',
           fontSize: '1.5rem',
-          color: '#f5f5f5',
+          color: 'var(--color-text)',
           lineHeight: 1.1,
           marginBottom: '0.5rem',
         }}
@@ -126,7 +126,7 @@ function PartnerCard({ name, industry }: { name: string; industry: string }) {
         style={{
           fontFamily: 'var(--font-grotesk), sans-serif',
           fontSize: '0.72rem',
-          color: 'rgba(245,245,245,0.35)',
+          color: 'var(--color-text-muted)',
           textTransform: 'uppercase',
           letterSpacing: '0.06em',
         }}

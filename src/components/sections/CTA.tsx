@@ -11,7 +11,7 @@ export default function CTA() {
   return (
     <section
       style={{
-        background: 'rgba(13,27,62,0.92)',
+        background: 'var(--color-bg-secondary)',
         borderTop: '1px solid rgba(26,111,212,0.3)',
         padding: sectionPadding,
         textAlign: 'center',
@@ -37,7 +37,7 @@ export default function CTA() {
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
             fontSize: 'clamp(3rem, 8vw, 7rem)',
-            color: '#f5f5f5',
+            color: 'var(--color-text)',
             lineHeight: 1,
             margin: '0 0 1.5rem',
           }}
@@ -49,7 +49,7 @@ export default function CTA() {
           style={{
             fontFamily: 'var(--font-grotesk), sans-serif',
             fontSize: '1rem',
-            color: 'rgba(245,245,245,0.5)',
+            color: 'var(--color-text-secondary)',
             margin: '0 0 2.5rem',
           }}
         >
@@ -88,7 +88,7 @@ export default function CTA() {
           style={{
             fontFamily: 'var(--font-jetbrains), monospace',
             fontSize: '0.68rem',
-            color: 'rgba(245,245,245,0.3)',
+            color: 'var(--color-text-faint)',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
           }}

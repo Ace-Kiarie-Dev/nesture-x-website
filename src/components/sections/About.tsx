@@ -81,7 +81,7 @@ export default function About() {
               fontFamily: 'var(--font-body)',
               fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
               lineHeight: 1.9,
-              color: 'rgba(245,245,245,0.65)',
+              color: 'var(--color-text-secondary)',
               marginBottom: '2rem',
             }}
             variants={item}
@@ -96,7 +96,7 @@ export default function About() {
               fontFamily: 'var(--font-body)',
               fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
               lineHeight: 1.9,
-              color: 'rgba(245,245,245,0.65)',
+              color: 'var(--color-text-secondary)',
               marginBottom: '5rem',
             }}
             variants={item}
@@ -135,7 +135,7 @@ export default function About() {
                 {stat}
               </span>
               <span
-                className="text-[0.68rem] tracking-[0.18em] uppercase text-[rgba(245,245,245,0.40)]"
+                className="text-[0.68rem] tracking-[0.18em] uppercase text-[var(--color-text-muted)]"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
                 {label}

@@ -65,7 +65,7 @@ export default function ContactPage() {
               fontFamily: 'var(--font-body)',
               fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
               lineHeight: 1.9,
-              color: 'rgba(245,245,245,0.55)',
+              color: 'var(--color-text-secondary)',
               maxWidth: '36rem',
               marginBottom: '3.5rem',
             }}

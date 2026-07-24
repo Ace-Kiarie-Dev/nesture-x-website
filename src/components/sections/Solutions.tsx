@@ -78,7 +78,7 @@ export default function Solutions() {
             fontFamily: 'var(--font-body), sans-serif',
             fontWeight: 300,
             fontSize: '1rem',
-            color: 'rgba(245,245,245,0.6)',
+            color: 'var(--color-text-secondary)',
             lineHeight: 1.8,
             maxWidth: '620px',
             marginBottom: isMobile ? '2rem' : '3rem',
@@ -184,7 +184,7 @@ function SolutionRow({ title, description }: { title: string; description: strin
             fontFamily: 'var(--font-body), sans-serif',
             fontWeight: 300,
             fontSize: '0.82rem',
-            color: 'rgba(245,245,245,0.6)',
+            color: 'var(--color-text-secondary)',
             lineHeight: 1.7,
           }}
         >

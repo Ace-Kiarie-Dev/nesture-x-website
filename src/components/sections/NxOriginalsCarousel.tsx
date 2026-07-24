@@ -160,7 +160,7 @@ export default function NxOriginalsCarousel() {
           style={{
             fontSize: '13px',
             fontFamily: 'var(--font-body)',
-            color: 'rgba(245,245,245,0.7)',
+            color: 'var(--color-text-secondary)',
             margin: 0,
           }}
         >

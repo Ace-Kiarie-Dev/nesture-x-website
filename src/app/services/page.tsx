@@ -23,7 +23,7 @@ export default function ServicesPage() {
       <section
         style={{
           minHeight: '40vh',
-          background: 'rgba(10,10,10,0.92)',
+          background: 'var(--color-bg)',
           display: 'flex',
           alignItems: 'center',
           padding: 'clamp(5rem, 10vw, 7rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 6vw, 5rem)',
@@ -51,7 +51,7 @@ export default function ServicesPage() {
                 display: 'block',
                 fontFamily: 'var(--font-bebas), sans-serif',
                 fontSize: 'clamp(4rem, 12vw, 9rem)',
-                color: '#f5f5f5',
+                color: 'var(--color-text)',
                 lineHeight: 0.9,
               }}
             >
@@ -63,7 +63,7 @@ export default function ServicesPage() {
                 fontFamily: 'var(--font-bebas), sans-serif',
                 fontSize: 'clamp(1.5rem, 4vw, 3rem)',
                 color: 'transparent',
-                WebkitTextStroke: '1px rgba(245,245,245,0.2)',
+                WebkitTextStroke: '1px var(--color-border-subtle)',
                 margin: '0.2rem 0',
               }}
             >
@@ -89,7 +89,7 @@ export default function ServicesPage() {
               fontFamily: 'var(--font-grotesk), sans-serif',
               fontWeight: 300,
               fontSize: '1rem',
-              color: 'rgba(245,245,245,0.55)',
+              color: 'var(--color-text-secondary)',
               lineHeight: 1.7,
               maxWidth: '480px',
               marginTop: '1.5rem',
@@ -107,7 +107,7 @@ export default function ServicesPage() {
       <Services />
 
       {/* ── Stats Strip ── */}
-      <section style={{ background: 'rgba(17,19,24,0.92)', padding: 'clamp(3rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem)' }}>
+      <section style={{ background: 'var(--color-surface)', padding: 'clamp(3rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem)' }}>
         <div
           className="grid grid-cols-2 md:grid-cols-4"
           style={{ gap: '1px', background: 'rgba(26,111,212,0.1)' }}
@@ -116,7 +116,7 @@ export default function ServicesPage() {
             <div
               key={stat.label}
               style={{
-                background: 'rgba(17,19,24,0.93)',
+                background: 'var(--color-surface)',
                 padding: '2rem 1.5rem',
                 textAlign: 'center',
               }}
@@ -136,7 +136,7 @@ export default function ServicesPage() {
                 style={{
                   fontFamily: 'var(--font-jetbrains), monospace',
                   fontSize: '0.65rem',
-                  color: 'rgba(245,245,245,0.4)',
+                  color: 'var(--color-text-muted)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.12em',
                 }}
@@ -151,7 +151,7 @@ export default function ServicesPage() {
       {/* ── CTA Strip ── */}
       <section
         style={{
-          background: 'rgba(13,27,62,0.92)',
+          background: 'var(--color-bg-secondary)',
           padding: 'clamp(3rem, 8vw, 5rem) clamp(1.5rem, 5vw, 3rem)',
           textAlign: 'center',
           position: 'relative',
@@ -177,7 +177,7 @@ export default function ServicesPage() {
             style={{
               fontFamily: 'var(--font-bebas), sans-serif',
               fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-              color: '#f5f5f5',
+              color: 'var(--color-text)',
               lineHeight: 1,
               margin: '0 0 1rem',
             }}
@@ -190,7 +190,7 @@ export default function ServicesPage() {
               fontFamily: 'var(--font-grotesk), sans-serif',
               fontWeight: 300,
               fontSize: '1rem',
-              color: 'rgba(245,245,245,0.5)',
+              color: 'var(--color-text-secondary)',
               marginBottom: '2rem',
             }}
           >
@@ -205,7 +205,7 @@ export default function ServicesPage() {
             style={{
               fontFamily: 'var(--font-jetbrains), monospace',
               fontSize: '0.68rem',
-              color: 'rgba(245,245,245,0.3)',
+              color: 'var(--color-text-faint)',
               letterSpacing: '0.1em',
               marginTop: '2rem',
             }}

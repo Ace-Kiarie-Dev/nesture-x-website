@@ -54,7 +54,7 @@ export default function Home() {
             fontSize: 'clamp(1rem, 1.5vw, 1.15rem)',
             maxWidth: '36rem',
             lineHeight: 1.9,
-            color: 'rgba(245,245,245,0.60)',
+            color: 'var(--color-text-secondary)',
             marginBottom: '5rem',
           }}
         >

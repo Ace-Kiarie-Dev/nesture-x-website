@@ -33,14 +33,14 @@ export default function TechStack() {
   const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '6rem 3rem';
 
   return (
-    <section style={{ background: 'rgba(10,10,10,0.92)', padding: sectionPadding }}>
+    <section style={{ background: 'var(--color-bg)', padding: sectionPadding }}>
       <div style={{ marginBottom: '3rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>Technologies</div>
         <h2
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
             fontSize: 'clamp(3rem, 7vw, 6rem)',
-            color: '#f5f5f5',
+            color: 'var(--color-text)',
             lineHeight: 1,
             margin: 0,
           }}
@@ -63,7 +63,7 @@ export default function TechStack() {
         style={{
           marginTop: '3rem',
           paddingTop: '2rem',
-          borderTop: '1px solid rgba(245,245,245,0.08)',
+          borderTop: '1px solid var(--color-border-hairline)',
         }}
       >
         <div
@@ -72,7 +72,7 @@ export default function TechStack() {
             fontSize: '0.62rem',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: 'rgba(245,245,245,0.35)',
+            color: 'var(--color-text-muted)',
             marginBottom: '1rem',
           }}
         >
@@ -98,21 +98,21 @@ function Pill({ label, featured, isMobile }: { label: string; featured: boolean;
         letterSpacing: '0.08em',
         border: featured ? '1px solid rgba(26,111,212,0.5)' : '1px solid rgba(26,111,212,0.2)',
         padding: isMobile ? '0.4rem 0.8rem' : '0.5rem 1rem',
-        color: featured ? '#1a6fd4' : 'rgba(245,245,245,0.6)',
+        color: featured ? 'var(--color-primary)' : 'var(--color-text-secondary)',
         cursor: 'default',
         transition: 'border-color 0.3s, color 0.3s, background 0.3s',
         display: 'inline-block',
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = '#1a6fd4';
-        el.style.color = '#f5f5f5';
+        el.style.borderColor = 'var(--color-primary)';
+        el.style.color = 'var(--color-text)';
         el.style.background = 'rgba(26,111,212,0.1)';
       }}
       onMouseLeave={e => {
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = featured ? 'rgba(26,111,212,0.5)' : 'rgba(26,111,212,0.2)';
-        el.style.color = featured ? '#1a6fd4' : 'rgba(245,245,245,0.6)';
+        el.style.color = featured ? 'var(--color-primary)' : 'var(--color-text-secondary)';
         el.style.background = 'transparent';
       }}
     >
@@ -129,23 +129,23 @@ function DesignPill({ label, isMobile }: { label: string; isMobile: boolean }) {
         fontFamily: 'var(--font-jetbrains), monospace',
         fontSize: isMobile ? '0.65rem' : '0.72rem',
         letterSpacing: '0.08em',
-        border: '1px solid rgba(245,245,245,0.15)',
+        border: '1px solid var(--color-border-subtle)',
         padding: isMobile ? '0.4rem 0.8rem' : '0.5rem 1rem',
-        color: 'rgba(245,245,245,0.45)',
+        color: 'var(--color-text-muted)',
         cursor: 'default',
         transition: 'border-color 0.3s, color 0.3s, background 0.3s',
         display: 'inline-block',
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = 'rgba(245,245,245,0.4)';
-        el.style.color = '#f5f5f5';
-        el.style.background = 'rgba(245,245,245,0.06)';
+        el.style.borderColor = 'var(--color-text-secondary)';
+        el.style.color = 'var(--color-text)';
+        el.style.background = 'var(--color-surface-hover)';
       }}
       onMouseLeave={e => {
         const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = 'rgba(245,245,245,0.15)';
-        el.style.color = 'rgba(245,245,245,0.45)';
+        el.style.borderColor = 'var(--color-border-subtle)';
+        el.style.color = 'var(--color-text-muted)';
         el.style.background = 'transparent';
       }}
     >

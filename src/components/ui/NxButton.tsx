@@ -54,7 +54,7 @@ export default function NxButton({
     opacity: disabled ? 0.5 : 1,
     transition: 'opacity 0.2s',
     ...(isPrimary
-      ? { background: 'var(--color-primary)', color: 'var(--color-text)', clipPath: CLIP }
+      ? { background: 'var(--color-primary)', color: 'var(--color-on-primary)', clipPath: CLIP }
       : { background: 'transparent', color: 'var(--color-text)', borderStyle: 'solid', borderWidth: '1px' }),
   };
 

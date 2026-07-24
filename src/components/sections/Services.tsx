@@ -17,7 +17,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      style={{ background: 'rgba(17,19,24,0.92)', padding: sectionPadding, position: 'relative' }}
+      style={{ background: 'var(--color-surface)', padding: sectionPadding, position: 'relative' }}
     >
       {/* Header */}
       <div style={{ marginBottom: isMobile ? '2rem' : '3rem' }}>
@@ -74,7 +74,7 @@ export default function Services() {
                   fontSize: '0.72rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
-                  color: active ? 'var(--color-primary)' : 'rgba(245,245,245,0.4)',
+                  color: active ? 'var(--color-primary)' : 'var(--color-text-muted)',
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s',
@@ -114,7 +114,7 @@ export default function Services() {
                     padding: '1rem 0 1rem 1rem',
                     borderTop: 'none',
                     borderRight: 'none',
-                    borderBottom: '1px solid rgba(245,245,245,0.06)',
+                    borderBottom: '1px solid var(--color-border-hairline)',
                     borderLeft: active
                       ? '2px solid var(--color-primary)'
                       : '2px solid transparent',
@@ -126,12 +126,12 @@ export default function Services() {
                   onMouseEnter={e => {
                     if (!active)
                       (e.currentTarget as HTMLElement).style.color =
-                        'rgba(245,245,245,0.8)';
+                        'var(--color-text)';
                   }}
                   onMouseLeave={e => {
                     if (!active)
                       (e.currentTarget as HTMLElement).style.color =
-                        'rgba(245,245,245,0.35)';
+                        'var(--color-text-muted)';
                   }}
                 >
                   <div>
@@ -157,7 +157,7 @@ export default function Services() {
                         letterSpacing: '0.05em',
                         color: active
                           ? 'var(--color-primary)'
-                          : 'rgba(245,245,245,0.35)',
+                          : 'var(--color-text-muted)',
                         transition: 'color 0.3s ease',
                       }}
                     >
@@ -269,7 +269,7 @@ export default function Services() {
                 fontFamily: 'var(--font-grotesk), sans-serif',
                 fontWeight: 300,
                 fontSize: '1rem',
-                color: 'rgba(245,245,245,0.6)',
+                color: 'var(--color-text-secondary)',
                 lineHeight: 1.8,
                 maxWidth: '520px',
                 marginBottom: '2rem',
@@ -341,7 +341,7 @@ function FeatureItem({ text }: { text: string }) {
         style={{
           fontFamily: 'var(--font-grotesk), sans-serif',
           fontSize: '0.82rem',
-          color: 'rgba(245,245,245,0.75)',
+          color: 'var(--color-text-secondary)',
         }}
       >
         {text}

@@ -163,7 +163,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.65)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '1.5rem',
               }}
               variants={item}
@@ -176,7 +176,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 2,
-                color: 'rgba(245,245,245,0.55)',
+                color: 'var(--color-text-secondary)',
                 borderLeft: '2px solid rgba(26,111,212,0.4)',
                 paddingLeft: '1.5rem',
                 marginBottom: '2.5rem',
@@ -268,7 +268,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.65)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '2rem',
               }}
               variants={item}
@@ -281,7 +281,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.65)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '2rem',
               }}
               variants={item}
@@ -295,7 +295,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 2.1,
-                color: 'rgba(245,245,245,0.45)',
+                color: 'var(--color-text-muted)',
                 borderLeft: '2px solid rgba(26,111,212,0.3)',
                 paddingLeft: '1.5rem',
                 marginBottom: '2.5rem',
@@ -312,7 +312,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.65)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '1rem',
               }}
               variants={item}
@@ -434,7 +434,7 @@ export default function AboutPage() {
                     fontFamily: 'var(--font-body)',
                     fontSize: '0.95rem',
                     lineHeight: 1.8,
-                    color: 'rgba(245,245,245,0.55)',
+                    color: 'var(--color-text-secondary)',
                   }}
                 >
                   {pillar.description}
@@ -448,7 +448,7 @@ export default function AboutPage() {
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(0.85rem, 1.1vw, 0.95rem)',
-              color: 'rgba(245,245,245,0.40)',
+              color: 'var(--color-text-muted)',
               letterSpacing: '0.05em',
               marginTop: '3rem',
               borderTop: '1px solid rgba(26,111,212,0.12)',
@@ -565,7 +565,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.65)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '1.5rem',
               }}
               variants={item}
@@ -581,7 +581,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.50)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '3rem',
               }}
               variants={item}
@@ -598,7 +598,7 @@ export default function AboutPage() {
                   fontSize: '0.62rem',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  color: 'rgba(245,245,245,0.35)',
+                  color: 'var(--color-text-muted)',
                   marginBottom: '1.25rem',
                 }}
                 variants={item}
@@ -620,7 +620,7 @@ export default function AboutPage() {
                     }}
                   >
                     <span style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem' }}>→</span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'rgba(245,245,245,0.70)' }}>{s}</span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>{s}</span>
                   </motion.div>
                 ))}
               </div>
@@ -713,7 +713,7 @@ export default function AboutPage() {
                     fontFamily: 'var(--font-body)',
                     fontSize: '0.95rem',
                     lineHeight: 1.85,
-                    color: 'rgba(245,245,245,0.55)',
+                    color: 'var(--color-text-secondary)',
                   }}
                 >
                   {v.body}
@@ -757,7 +757,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.65)',
+                color: 'var(--color-text-secondary)',
                 marginBottom: '2rem',
               }}
               variants={item}
@@ -771,7 +771,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 2.1,
-                color: 'rgba(245,245,245,0.45)',
+                color: 'var(--color-text-muted)',
                 borderLeft: '2px solid rgba(26,111,212,0.35)',
                 paddingLeft: '1.5rem',
                 marginBottom: '3rem',
@@ -788,7 +788,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.85rem',
                 lineHeight: 1.8,
-                color: 'rgba(245,245,245,0.35)',
+                color: 'var(--color-text-muted)',
                 marginBottom: '3.5rem',
               }}
               variants={item}
@@ -803,7 +803,7 @@ export default function AboutPage() {
                 fontSize: '0.62rem',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'rgba(245,245,245,0.35)',
+                color: 'var(--color-text-muted)',
                 marginBottom: '1.5rem',
               }}
               variants={item}
@@ -829,7 +829,7 @@ export default function AboutPage() {
                     background: 'rgba(26,111,212,0.04)',
                     fontFamily: 'var(--font-body)',
                     fontSize: '0.88rem',
-                    color: 'rgba(245,245,245,0.65)',
+                    color: 'var(--color-text-secondary)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.6rem',
@@ -845,7 +845,7 @@ export default function AboutPage() {
               style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.75rem',
-                color: 'rgba(245,245,245,0.25)',
+                color: 'var(--color-text-faint)',
                 marginTop: '1.5rem',
                 letterSpacing: '0.05em',
               }}
@@ -922,7 +922,7 @@ export default function AboutPage() {
                       fontFamily: 'var(--font-body)',
                       fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                       lineHeight: 1.7,
-                      color: 'rgba(245,245,245,0.65)',
+                      color: 'var(--color-text-secondary)',
                       paddingTop: '0.6rem',
                     }}
                   >
@@ -991,7 +991,7 @@ export default function AboutPage() {
               fontFamily: 'var(--font-body)',
               fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
               lineHeight: 2.1,
-              color: 'rgba(245,245,245,0.55)',
+              color: 'var(--color-text-secondary)',
               borderLeft: '2px solid rgba(26,111,212,0.35)',
               paddingLeft: '1.5rem',
               marginBottom: '2rem',
@@ -1053,7 +1053,7 @@ export default function AboutPage() {
                 fontFamily: 'var(--font-body)',
                 fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                 lineHeight: 1.9,
-                color: 'rgba(245,245,245,0.55)',
+                color: 'var(--color-text-secondary)',
               }}
             >
               This is usually where a conversation helps.
@@ -1097,7 +1097,7 @@ export default function AboutPage() {
                     fontFamily: 'var(--font-body)',
                     fontSize: 'clamp(1rem, 1.4vw, 1.1rem)',
                     lineHeight: 1.7,
-                    color: 'rgba(245,245,245,0.65)',
+                    color: 'var(--color-text-secondary)',
                     paddingTop: '0.4rem',
                   }}
                 >
