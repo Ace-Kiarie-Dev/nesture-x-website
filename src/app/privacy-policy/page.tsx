@@ -223,7 +223,7 @@ export default function PrivacyPolicyPage() {
               marginBottom: '4rem',
             }}
           >
-            nesture-x@gmail.com<br />
+            nesturex@gmail.com<br />
             Nairobi, Kenya
           </p>
 

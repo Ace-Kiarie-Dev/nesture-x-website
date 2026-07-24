@@ -120,7 +120,7 @@ export const SERVICES = [
 export const CONTACT = {
   phone: '+254717164951',
   phoneDisplay: '+254-717-164-951',
-  email: 'Nesture-x@gmail.com',
+  email: 'nesturex@gmail.com',
   whatsapp: 'https://wa.me/254717164951',
   location: 'Nairobi, Kenya',
 } as const;

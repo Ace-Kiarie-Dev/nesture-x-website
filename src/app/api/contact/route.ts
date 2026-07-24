@@ -49,7 +49,7 @@ Nesture-X
 ────────────────────────────
 Nairobi, Kenya
 +254 717 164 951
-Nesture-x@gmail.com
+nesturex@gmail.com
   `.trim();
 }
 
