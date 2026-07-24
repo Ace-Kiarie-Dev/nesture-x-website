@@ -6,10 +6,12 @@ import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useBreakpoint } from '@/lib/useBreakpoint';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 import Portfolio from './Portfolio';
-import WebDevGrid from './WebDevGrid';
+import DigitalProductsGrid from './DigitalProductsGrid';
 
 type View = 'entry' | 'design' | 'digital';
+type DigitalType = 'web' | 'mobile' | null;
 
 const fadeSlide = {
   initial:  { opacity: 0, y: 20 },
@@ -70,16 +72,137 @@ function BackBar({ onBack }: { onBack: () => void }) {
   );
 }
 
+// ─── Background texture motifs — Web Apps / Mobile Apps sub-split ────────────
+// Decorative only: absolutely positioned, low opacity, pointer-events none.
+// Sits behind the big headline text inside an EntryPanel.
+
+const MOTIF_LINE = 'rgba(26,111,212,0.28)';
+const MOTIF_FILL = 'rgba(26,111,212,0.05)';
+const MOTIF_GREY = 'rgba(184,206,240,0.22)';
+
+function BrowserChromeMotif() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        inset: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          width: 'min(360px, 60%)',
+          aspectRatio: '4 / 3',
+          border: `1px solid ${MOTIF_LINE}`,
+          borderRadius: '6px',
+          background: MOTIF_FILL,
+          position: 'relative',
+        }}
+      >
+        {/* title bar */}
+        <div
+          style={{
+            height: '22px',
+            borderBottom: `1px solid ${MOTIF_LINE}`,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '0 10px',
+          }}
+        >
+          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: MOTIF_LINE }} />
+          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: MOTIF_GREY }} />
+          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: MOTIF_LINE }} />
+          <span style={{ marginLeft: '10px', flex: 1, height: '10px', background: MOTIF_FILL, border: `1px solid ${MOTIF_LINE}`, borderRadius: '2px' }} />
+        </div>
+        {/* wireframe body */}
+        <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <span style={{ width: '45%', height: '8px', background: MOTIF_LINE }} />
+          <span style={{ width: '100%', height: '40px', background: MOTIF_GREY }} />
+          <span style={{ width: '80%', height: '8px', background: MOTIF_LINE }} />
+          <span style={{ width: '60%', height: '8px', background: MOTIF_LINE }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PhoneViewportMotif() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        inset: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          width: 'min(180px, 34%)',
+          aspectRatio: '9 / 19',
+          border: `1px solid ${MOTIF_LINE}`,
+          borderRadius: '22px',
+          background: MOTIF_FILL,
+          position: 'relative',
+          padding: '22px 10px 16px',
+        }}
+      >
+        {/* notch */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '8px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '36%',
+            height: '8px',
+            borderRadius: '4px',
+            background: MOTIF_GREY,
+          }}
+        />
+        {/* screen blocks */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <span style={{ width: '70%', height: '8px', background: MOTIF_LINE }} />
+          <span style={{ width: '100%', height: '70px', background: MOTIF_GREY }} />
+          <span style={{ width: '50%', height: '8px', background: MOTIF_LINE }} />
+        </div>
+        {/* home indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '30%',
+            height: '4px',
+            borderRadius: '2px',
+            background: MOTIF_LINE,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 // ─── Entry panel ──────────────────────────────────────────────────────────────
 
 interface EntryPanelProps {
   label: string;
   sublabel?: string;
-  backgroundPattern: React.CSSProperties;
+  backgroundPattern?: React.CSSProperties;
+  visual?: React.ReactNode;
   onClick: () => void;
 }
 
-function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelProps) {
+function EntryPanel({ label, sublabel, backgroundPattern, visual, onClick }: EntryPanelProps) {
   const [hovered, setHovered] = useState(false);
   const { isMobile } = useBreakpoint();
 
@@ -102,14 +225,18 @@ function EntryPanel({ label, sublabel, backgroundPattern, onClick }: EntryPanelP
         overflow: 'hidden',
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          pointerEvents: 'none',
-          ...backgroundPattern,
-        }}
-      />
+      {backgroundPattern && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            ...backgroundPattern,
+          }}
+        />
+      )}
+
+      {visual}
 
       <span
         style={{
@@ -161,11 +288,18 @@ function PortfolioEntryInner() {
   const router = useRouter();
   const { isMobile } = useBreakpoint();
 
-  const raw = searchParams.get('view');
-  const view: View = raw === 'design' || raw === 'digital' ? raw : 'entry';
+  const rawView = searchParams.get('view');
+  const view: View = rawView === 'design' || rawView === 'digital' ? rawView : 'entry';
+
+  const rawType = searchParams.get('type');
+  const digitalType: DigitalType = view === 'digital' && (rawType === 'web' || rawType === 'mobile') ? rawType : null;
 
   const goTo = (v: View) => {
     router.push(v === 'entry' ? '/portfolio' : `/portfolio?view=${v}`);
+  };
+
+  const goToDigitalType = (t: 'web' | 'mobile') => {
+    router.push(`/portfolio?view=digital&type=${t}`);
   };
 
   const noisePattern: React.CSSProperties = {
@@ -186,10 +320,16 @@ function PortfolioEntryInner() {
     backgroundSize: '40px 40px',
   };
 
+  // Animation-key for the outer AnimatePresence — one per distinct screen so
+  // the same fade/slide transition (no zoom) plays between every level.
+  const screenKey = view === 'digital'
+    ? (digitalType ? `digital-${digitalType}` : 'digital-split')
+    : view;
+
   return (
     <AnimatePresence mode="wait">
 
-      {/* ── Split entry screen ── */}
+      {/* ── Top-level split entry screen ── */}
       {view === 'entry' && (
         <motion.div
           key="entry"
@@ -234,11 +374,76 @@ function PortfolioEntryInner() {
         </motion.div>
       )}
 
-      {/* ── Digital products view ── */}
-      {view === 'digital' && (
-        <motion.div key="digital" {...fadeSlide}>
-          <BackBar onBack={() => goTo('entry')} />
-          <WebDevGrid />
+      {/* ── Digital Products: second-level split (Web Apps / Mobile Apps) ── */}
+      {view === 'digital' && !digitalType && (
+        <motion.div key={screenKey} {...fadeSlide}>
+          <Breadcrumb
+            segments={[
+              { label: 'Portfolio', onClick: () => goTo('entry') },
+              { label: 'Digital Products' },
+            ]}
+          />
+          <div
+            style={{
+              minHeight: 'calc(100vh - 80px)',
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              background: 'var(--color-bg)',
+            }}
+          >
+            <EntryPanel
+              label="WEB"
+              sublabel="APPS"
+              backgroundPattern={gridPattern}
+              visual={<BrowserChromeMotif />}
+              onClick={() => goToDigitalType('web')}
+            />
+
+            <div
+              style={{
+                width: isMobile ? '100%' : '1px',
+                height: isMobile ? '1px' : 'auto',
+                background: 'var(--color-primary)',
+                flexShrink: 0,
+              }}
+            />
+
+            <EntryPanel
+              label="MOBILE"
+              sublabel="APPS"
+              backgroundPattern={noisePattern}
+              visual={<PhoneViewportMotif />}
+              onClick={() => goToDigitalType('mobile')}
+            />
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Digital Products: Web Apps tab ── */}
+      {view === 'digital' && digitalType === 'web' && (
+        <motion.div key={screenKey} {...fadeSlide}>
+          <Breadcrumb
+            segments={[
+              { label: 'Portfolio', onClick: () => goTo('entry') },
+              { label: 'Digital Products', onClick: () => goTo('digital') },
+              { label: 'Web Apps' },
+            ]}
+          />
+          <DigitalProductsGrid type="web" />
+        </motion.div>
+      )}
+
+      {/* ── Digital Products: Mobile Apps tab ── */}
+      {view === 'digital' && digitalType === 'mobile' && (
+        <motion.div key={screenKey} {...fadeSlide}>
+          <Breadcrumb
+            segments={[
+              { label: 'Portfolio', onClick: () => goTo('entry') },
+              { label: 'Digital Products', onClick: () => goTo('digital') },
+              { label: 'Mobile Apps' },
+            ]}
+          />
+          <DigitalProductsGrid type="mobile" />
         </motion.div>
       )}
 

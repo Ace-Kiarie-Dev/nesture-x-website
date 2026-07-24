@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, FileText, LogOut, Trash2, ExternalLink } from 'lucide-react';
+import { Plus, FileText, Trash2, ExternalLink } from 'lucide-react';
+import AdminTopBar from '@/components/admin/AdminTopBar';
 import type { SavedQuote, QuoteStatus } from '@/services/quoteService';
 import { fmt, fmtDate, grandTotal } from '@/types/quote';
 
@@ -84,38 +85,15 @@ export default function AdminQuotesList() {
     }
   }
 
-  async function logout() {
-    await fetch('/api/admin/auth', { method: 'DELETE' });
-    router.replace('/admin');
-  }
-
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', fontFamily: 'var(--font-body), sans-serif', color: '#f5f5f5' }}>
 
       {/* Grid overlay */}
       <div className="grid-overlay" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
 
-      {/* Top bar */}
-      <div style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'rgba(10,10,10,0.92)', backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(26,111,212,0.15)',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 2rem', height: '60px',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--color-text)', letterSpacing: '0.05em' }}>
-            NX ADMIN
-          </span>
-          <span style={{ width: '1px', height: '18px', background: 'rgba(26,111,212,0.3)' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <FileText size={13} color="rgba(26,111,212,0.7)" />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}>
-              Quotations
-            </span>
-          </div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+      <AdminTopBar
+        active="quotes"
+        actions={
           <button
             onClick={() => router.push('/admin/quotes/new')}
             style={{
@@ -130,22 +108,8 @@ export default function AdminQuotesList() {
           >
             <Plus size={11} /> New Quote
           </button>
-          <button
-            onClick={logout}
-            style={{
-              background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.3)',
-              fontFamily: 'var(--font-mono)', fontSize: '0.58rem',
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              padding: '0.4rem 0.6rem', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', gap: '0.4rem', transition: 'color 0.18s',
-            }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)')}
-          >
-            <LogOut size={12} /> Logout
-          </button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Body */}
       <div style={{ position: 'relative', zIndex: 1, maxWidth: '1100px', margin: '0 auto', padding: 'clamp(1.5rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem)' }}>

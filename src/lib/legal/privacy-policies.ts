@@ -123,11 +123,11 @@ export const privacyPolicies: PrivacyPolicy[] = [
     contactEmail: CONTACT_EMAIL,
   },
   {
-    slug: 'no-snooze-alarm',
-    appName: 'No-Snooze Alarm',
+    slug: 'no-snooze-solen',
+    appName: 'No Snooze Solen',
     platform: 'Android / React Native',
     lastUpdated: '2026-07-16',
-    sections: PLACEHOLDER_SECTIONS('No-Snooze Alarm'),
+    sections: PLACEHOLDER_SECTIONS('No Snooze Solen'),
     contactEmail: CONTACT_EMAIL,
   },
   {

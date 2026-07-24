@@ -44,7 +44,12 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `(function() {
-  const theme = localStorage.getItem('nx-theme') || 'dark';
+  // Theme toggle is temporarily hidden (see Navbar.tsx) pending light-mode
+  // token completion. Forcing 'dark' here overrides any 'light' preference
+  // a user saved before the toggle was hidden. Restore the commented-out
+  // line below when the toggle is re-enabled.
+  // const theme = localStorage.getItem('nx-theme') || 'dark';
+  const theme = 'dark';
   document.documentElement.setAttribute('data-theme', theme);
 })();`,
           }}

@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import NxButton from '@/components/ui/NxButton';
+import BookingCalendar from '@/components/booking/BookingCalendar';
+import { formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { CONTACT } from '@/constants';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -11,15 +13,15 @@ import { CONTACT } from '@/constants';
 type Step = 1 | 2 | 3 | 4;
 
 interface FormData {
-  name:    string;
-  email:   string;
-  phone:   string;
-  service: string;
+  name:     string;
+  email:    string;
+  phone:    string;
+  service:  string;
+  date:     string;
+  timeSlot: string;
 }
 
 // ── Constants ──────────────────────────────────────────────────────────────────
-
-const FEE = 1000;
 
 const SERVICES = [
   { value: '',                   label: 'What do you need? (optional)' },
@@ -32,7 +34,7 @@ const SERVICES = [
   { value: 'Not sure yet',       label: "Not sure yet — let's talk" },
 ];
 
-const INITIAL: FormData = { name: '', email: '', phone: '', service: '' };
+const INITIAL: FormData = { name: '', email: '', phone: '', service: '', date: '', timeSlot: '' };
 
 const WHATSAPP = `https://wa.me/${CONTACT.phone}?text=${encodeURIComponent(
   "Hi, I tried to book a consultation on your site and need some help."
@@ -120,63 +122,59 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+// ── Back link ──────────────────────────────────────────────────────────────────
+
+function BackLink({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      data-hover
+      style={{
+        background:    'none',
+        border:        'none',
+        fontFamily:    'var(--font-mono)',
+        fontSize:      '0.6rem',
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        color:         'rgba(245,245,245,0.28)',
+        cursor:        'pointer',
+        padding:       '0.5rem',
+        transition:    'color 0.2s',
+        alignSelf:     'flex-start',
+      }}
+      onMouseEnter={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.6)')}
+      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.28)')}
+    >
+      {label}
+    </button>
+  );
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function BookingPage() {
   const router = useRouter();
 
-  const [step,         setStep]         = useState<Step>(1);
-  const [form,         setForm]         = useState<FormData>(INITIAL);
-  const [bookingId,    setBookingId]    = useState('');
-  const [mpesaMessage, setMpesaMessage] = useState('');
-  const [error,        setError]        = useState('');
-  const [submitting,   setSubmitting]   = useState(false);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? '';
-
-  // ── Poll for payment status (step 3) ────────────────────────────────────────
-  useEffect(() => {
-    if (step !== 3 || !bookingId) return;
-
-    let attempts = 0;
-    const MAX_ATTEMPTS = 40; // 40 × 3 s = 2 min
-
-    pollRef.current = setInterval(async () => {
-      attempts++;
-      try {
-        const res  = await fetch(`/api/booking?id=${bookingId}`);
-        const data = await res.json() as { status: string };
-
-        if (data.status === 'paid') {
-          clearInterval(pollRef.current!);
-          setStep(4);
-        } else if (data.status === 'failed') {
-          clearInterval(pollRef.current!);
-          setError('Payment was cancelled or failed. You can try again.');
-          setStep(2);
-        } else if (attempts >= MAX_ATTEMPTS) {
-          clearInterval(pollRef.current!);
-          setError('Payment timed out. Please try again or contact us on WhatsApp.');
-          setStep(2);
-        }
-      } catch {
-        // Network hiccup — keep polling silently
-      }
-    }, 3000);
-
-    return () => { if (pollRef.current) clearInterval(pollRef.current); };
-  }, [step, bookingId]);
+  const [step,       setStep]       = useState<Step>(1);
+  const [form,       setForm]       = useState<FormData>(INITIAL);
+  const [error,      setError]      = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [emailSent,  setEmailSent]  = useState(true);
 
   // ── Form helpers ─────────────────────────────────────────────────────────────
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setForm(p => ({ ...p, [e.target.name]: e.target.value }));
   }
 
-  const step1Valid = form.name.trim() && form.email.trim() && form.phone.trim();
+  function handleSlotSelect(date: string, timeSlot: string) {
+    setForm(p => ({ ...p, date, timeSlot }));
+  }
 
-  // ── Initiate payment ─────────────────────────────────────────────────────────
-  async function initiatePayment() {
+  const step1Valid = form.name.trim() && form.email.trim() && form.phone.trim();
+  const step2Valid = !!form.date && !!form.timeSlot;
+
+  // ── Submit booking ───────────────────────────────────────────────────────────
+  async function submitBooking() {
     setSubmitting(true);
     setError('');
     try {
@@ -185,11 +183,10 @@ export default function BookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(form),
       });
-      const data = await res.json() as { bookingId?: string; message?: string; error?: string };
-      if (!res.ok) throw new Error(data.error || 'Payment initiation failed.');
-      setBookingId(data.bookingId!);
-      setMpesaMessage(data.message || 'Check your phone for the M-Pesa prompt.');
-      setStep(3);
+      const data = await res.json() as { error?: string; emailSent?: boolean };
+      if (!res.ok) throw new Error(data.error || 'Could not save your booking.');
+      setEmailSent(data.emailSent !== false);
+      setStep(4);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
@@ -200,8 +197,8 @@ export default function BookingPage() {
   // ── Step titles ──────────────────────────────────────────────────────────────
   const stepTitle: Record<Step, string> = {
     1: 'TELL US ABOUT YOU.',
-    2: 'CONFIRM & PAY.',
-    3: 'CHECKING PAYMENT.',
+    2: 'PICK A DATE & TIME.',
+    3: 'CONFIRM YOUR BOOKING.',
     4: "YOU'RE BOOKED.",
   };
 
@@ -238,7 +235,7 @@ export default function BookingPage() {
               maxWidth:   '34rem',
             }}
           >
-            A KES {FEE.toLocaleString()} fee secures your slot — redeemable in full against your project cost if we proceed.
+            A free 30-minute consultation — no payment required. Pick a day and time that works for you.
           </p>
         </motion.div>
       </section>
@@ -309,7 +306,7 @@ export default function BookingPage() {
                   </div>
 
                   <div>
-                    <label style={labelSt}>M-Pesa Phone Number *</label>
+                    <label style={labelSt}>Phone Number *</label>
                     <input
                       name="phone" type="tel" required
                       placeholder="+254 7XX XXX XXX"
@@ -317,15 +314,6 @@ export default function BookingPage() {
                       onFocus={focusBorder} onBlur={blurBorder}
                       style={inputSt}
                     />
-                    <p style={{
-                      fontFamily:    'var(--font-mono)',
-                      fontSize:      '0.56rem',
-                      letterSpacing: '0.06em',
-                      color:         'rgba(245,245,245,0.25)',
-                      marginTop:     '0.35rem',
-                    }}>
-                      The M-Pesa payment prompt will be sent to this number
-                    </p>
                   </div>
 
                   <div>
@@ -368,10 +356,40 @@ export default function BookingPage() {
               </motion.div>
             )}
 
-            {/* ── Step 2: Confirm + pay ── */}
+            {/* ── Step 2: Pick date & time ── */}
             {step === 2 && (
               <motion.div
                 key="step2"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <BookingCalendar
+                    selectedDate={form.date || null}
+                    selectedTimeSlot={form.timeSlot || null}
+                    onSelect={handleSlotSelect}
+                  />
+
+                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <NxButton
+                      variant="primary" size="lg"
+                      onClick={() => setStep(3)}
+                      disabled={!step2Valid}
+                    >
+                      Continue →
+                    </NxButton>
+                    <BackLink label="← Edit details" onClick={() => setStep(1)} />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ── Step 3: Confirm booking ── */}
+            {step === 3 && (
+              <motion.div
+                key="step3"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
@@ -399,32 +417,8 @@ export default function BookingPage() {
                     <SummaryRow label="Email"   value={form.email} />
                     <SummaryRow label="Phone"   value={form.phone} />
                     <SummaryRow label="Service" value={form.service || 'General Consultation'} />
-                  </div>
-                  <div style={{
-                    borderTop:      '1px solid rgba(26,111,212,0.14)',
-                    marginTop:      '1.2rem',
-                    paddingTop:     '1.2rem',
-                    display:        'flex',
-                    justifyContent: 'space-between',
-                    alignItems:     'baseline',
-                  }}>
-                    <span style={{
-                      fontFamily:    'var(--font-mono)',
-                      fontSize:      '0.56rem',
-                      letterSpacing: '0.18em',
-                      textTransform: 'uppercase',
-                      color:         'rgba(245,245,245,0.3)',
-                    }}>
-                      Consultation Fee
-                    </span>
-                    <span style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize:   '2.2rem',
-                      color:      'var(--color-primary)',
-                      lineHeight: 1,
-                    }}>
-                      KES {FEE.toLocaleString()}
-                    </span>
+                    <SummaryRow label="Date"    value={formatDateLabel(form.date)} />
+                    <SummaryRow label="Time"    value={formatSlotLabel(form.timeSlot)} />
                   </div>
                 </div>
 
@@ -437,12 +431,9 @@ export default function BookingPage() {
                   borderLeft:   '2px solid rgba(26,111,212,0.2)',
                   paddingLeft:  '0.85rem',
                 }}>
-                  An M-Pesa STK prompt will be sent to{' '}
-                  <strong style={{ color: 'rgba(245,245,245,0.72)' }}>{form.phone}</strong>.
-                  Enter your PIN to confirm.{' '}
-                  <span style={{ color: 'rgba(245,245,245,0.3)' }}>
-                    The fee is redeemable against your project cost if we proceed.
-                  </span>
+                  This consultation is free — no payment is required.{' '}
+                  A confirmation will be sent to{' '}
+                  <strong style={{ color: 'rgba(245,245,245,0.72)' }}>{form.email}</strong>.
                 </p>
 
                 {error && (
@@ -463,108 +454,15 @@ export default function BookingPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
                   <NxButton
                     variant="primary" size="lg"
-                    onClick={initiatePayment}
+                    onClick={submitBooking}
                     disabled={submitting}
                     className="w-full"
                   >
-                    {submitting ? 'SENDING PROMPT…' : `PAY KES ${FEE.toLocaleString()} VIA M-PESA`}
+                    {submitting ? 'BOOKING…' : 'CONFIRM BOOKING'}
                   </NxButton>
 
-                  <button
-                    onClick={() => { setError(''); setStep(1); }}
-                    data-hover
-                    style={{
-                      background:    'none',
-                      border:        'none',
-                      fontFamily:    'var(--font-mono)',
-                      fontSize:      '0.6rem',
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      color:         'rgba(245,245,245,0.28)',
-                      cursor:        'pointer',
-                      padding:       '0.5rem',
-                      transition:    'color 0.2s',
-                      alignSelf:     'flex-start',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.6)')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.28)')}
-                  >
-                    ← Edit details
-                  </button>
+                  <BackLink label="← Change date/time" onClick={() => { setError(''); setStep(2); }} />
                 </div>
-              </motion.div>
-            )}
-
-            {/* ── Step 3: Waiting for payment ── */}
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                style={{ textAlign: 'center', padding: '0.5rem 0 1rem' }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-                  <div style={{ position: 'relative', width: '72px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div className="pulse-ring" style={{ position: 'absolute', inset: 0, border: '1px solid rgba(26,111,212,0.35)' }} />
-                    <div className="pulse-ring pulse-ring--delay" style={{ position: 'absolute', inset: '10px', border: '1px solid rgba(26,111,212,0.5)' }} />
-                    <div style={{
-                      width:          '30px',
-                      height:         '30px',
-                      background:     'rgba(26,111,212,0.12)',
-                      border:         '1px solid rgba(26,111,212,0.45)',
-                      display:        'flex',
-                      alignItems:     'center',
-                      justifyContent: 'center',
-                    }}>
-                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', color: 'var(--color-primary)' }}>M</span>
-                    </div>
-                  </div>
-                </div>
-
-                <p style={{
-                  fontFamily:   'var(--font-display)',
-                  fontSize:     '1.4rem',
-                  color:        'var(--color-text)',
-                  marginBottom: '0.75rem',
-                  lineHeight:   1,
-                }}>
-                  WAITING FOR PAYMENT
-                </p>
-
-                <p style={{
-                  fontFamily:   'var(--font-body)',
-                  fontSize:     '0.85rem',
-                  color:        'rgba(245,245,245,0.5)',
-                  lineHeight:   1.8,
-                  marginBottom: '0.5rem',
-                }}>
-                  {mpesaMessage}
-                </p>
-
-                <p style={{
-                  fontFamily:    'var(--font-mono)',
-                  fontSize:      '0.58rem',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color:         'rgba(245,245,245,0.22)',
-                  marginBottom:  '2.25rem',
-                }}>
-                  Checking automatically every 3 seconds…
-                </p>
-
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgba(245,245,245,0.28)', lineHeight: 1.7 }}>
-                  Didn&apos;t get the prompt?{' '}
-                  <a
-                    href={WHATSAPP}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#25d366', textDecoration: 'none' }}
-                  >
-                    Contact us on WhatsApp →
-                  </a>
-                </p>
               </motion.div>
             )}
 
@@ -599,12 +497,25 @@ export default function BookingPage() {
                       ✓
                     </span>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(26,111,212,0.7)' }}>
-                      Payment Confirmed
+                      Booking Confirmed
                     </span>
                   </div>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgba(245,245,245,0.6)', lineHeight: 1.8, margin: 0 }}>
-                    KES {FEE.toLocaleString()} received. A confirmation email has been sent to{' '}
-                    <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>.
+                    You&apos;re booked for{' '}
+                    <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{formatDateLabel(form.date)}</strong> at{' '}
+                    <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{formatSlotLabel(form.timeSlot)}</strong>.
+                    {emailSent ? (
+                      <>
+                        A confirmation email has been sent to{' '}
+                        <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>.
+                      </>
+                    ) : (
+                      <>
+                        We couldn&apos;t confirm that the email to{' '}
+                        <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>{' '}
+                        went through — your booking is saved either way.
+                      </>
+                    )}
                   </p>
                 </div>
 
@@ -615,65 +526,20 @@ export default function BookingPage() {
                   lineHeight:   1.85,
                   marginBottom: '1.75rem',
                 }}>
-                  Now pick your time slot on Calendly. Slots available{' '}
-                  <strong style={{ color: 'rgba(245,245,245,0.78)' }}>Monday – Friday</strong>:
-                  <br />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', letterSpacing: '0.05em', color: 'rgba(245,245,245,0.45)' }}>
-                    12:00 PM – 12:45 PM &nbsp;·&nbsp; 3:00 PM – 3:45 PM
-                  </span>
-                </p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  See you then. Need to change anything?{' '}
                   <a
-                    href={`${calendlyUrl}?name=${encodeURIComponent(form.name)}&email=${encodeURIComponent(form.email)}`}
+                    href={WHATSAPP}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-hover
-                    style={{
-                      display:        'flex',
-                      alignItems:     'center',
-                      justifyContent: 'center',
-                      gap:            '0.75rem',
-                      padding:        '0.9rem 2rem',
-                      background:     'var(--color-primary)',
-                      fontFamily:     'var(--font-body)',
-                      fontWeight:     600,
-                      fontSize:       '0.88rem',
-                      letterSpacing:  '0.06em',
-                      textTransform:  'uppercase',
-                      color:          'var(--color-text)',
-                      textDecoration: 'none',
-                      clipPath:       'polygon(10px 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 10px)',
-                      transition:     'opacity 0.2s',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
-                    onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+                    style={{ color: '#25d366', textDecoration: 'none' }}
                   >
-                    PICK YOUR SLOT ON CALENDLY →
+                    Reach us on WhatsApp →
                   </a>
+                </p>
 
-                  <button
-                    onClick={() => router.push('/')}
-                    data-hover
-                    style={{
-                      background:    'none',
-                      border:        'none',
-                      fontFamily:    'var(--font-mono)',
-                      fontSize:      '0.58rem',
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      color:         'rgba(245,245,245,0.25)',
-                      cursor:        'pointer',
-                      padding:       '0.5rem',
-                      transition:    'color 0.2s',
-                      alignSelf:     'flex-start',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.55)')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.25)')}
-                  >
-                    Back to home →
-                  </button>
-                </div>
+                <NxButton variant="ghost" size="lg" onClick={() => router.push('/')}>
+                  Back to home
+                </NxButton>
               </motion.div>
             )}
 

@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import Contact from '@/components/sections/Contact';
 import NxButton from '@/components/ui/NxButton';
+import AmbientGeometry from '@/components/ui/AmbientGeometry';
+import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const stagger = {
   hidden:  {},
@@ -15,18 +17,27 @@ const item = {
 };
 
 export default function ContactPage() {
+  const { isMobile } = useBreakpoint();
+
   return (
     <main>
 
       {/* ── Hero ── */}
       <section
         className="relative overflow-hidden bg-[var(--color-bg)]"
-        style={{ padding: 'clamp(8rem, 12vw, 14rem) clamp(2rem, 7vw, 8rem) clamp(5rem, 8vw, 8rem)' }}
+        style={{
+          padding: 'clamp(8rem, 12vw, 14rem) clamp(2rem, 7vw, 8rem) clamp(5rem, 8vw, 8rem)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '2rem',
+        }}
       >
         <div className="grid-overlay absolute inset-0 z-0 pointer-events-none" aria-hidden />
 
         <motion.div
           className="relative z-[1]"
+          style={{ flex: isMobile ? '1 1 100%' : '0 1 640px', maxWidth: isMobile ? '100%' : '56%' }}
           variants={stagger}
           initial="hidden"
           animate="visible"
@@ -77,6 +88,13 @@ export default function ContactPage() {
             </NxButton>
           </motion.div>
         </motion.div>
+
+        {/* Ambient decorative geometry — right side, purely visual */}
+        {!isMobile && (
+          <div className="relative z-[1]" style={{ flex: '1 1 auto', alignSelf: 'stretch', minHeight: '420px' }}>
+            <AmbientGeometry />
+          </div>
+        )}
       </section>
 
       {/* ── Contact form (reused section component) ── */}
