@@ -159,6 +159,7 @@ export default function BookingPage() {
   const [form,       setForm]       = useState<FormData>(INITIAL);
   const [error,      setError]      = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [emailSent,  setEmailSent]  = useState(true);
 
   // ── Form helpers ─────────────────────────────────────────────────────────────
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -182,8 +183,9 @@ export default function BookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(form),
       });
-      const data = await res.json() as { error?: string };
+      const data = await res.json() as { error?: string; emailSent?: boolean };
       if (!res.ok) throw new Error(data.error || 'Could not save your booking.');
+      setEmailSent(data.emailSent !== false);
       setStep(4);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
@@ -502,8 +504,18 @@ export default function BookingPage() {
                     You&apos;re booked for{' '}
                     <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{formatDateLabel(form.date)}</strong> at{' '}
                     <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{formatSlotLabel(form.timeSlot)}</strong>.
-                    A confirmation email has been sent to{' '}
-                    <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>.
+                    {emailSent ? (
+                      <>
+                        A confirmation email has been sent to{' '}
+                        <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>.
+                      </>
+                    ) : (
+                      <>
+                        We couldn&apos;t confirm that the email to{' '}
+                        <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>{' '}
+                        went through — your booking is saved either way.
+                      </>
+                    )}
                   </p>
                 </div>
 
