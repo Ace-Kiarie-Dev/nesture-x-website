@@ -13,7 +13,7 @@ export interface PrivacyPolicy {
   contactEmail: string;
 }
 
-const CONTACT_EMAIL = 'Nesture-x@gmail.com';
+const CONTACT_EMAIL = 'nesturex@gmail.com';
 
 const PLACEHOLDER_SECTIONS = (appName: string): PrivacyPolicySection[] => [
   {
