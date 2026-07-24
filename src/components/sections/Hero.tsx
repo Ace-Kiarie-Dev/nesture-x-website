@@ -73,7 +73,7 @@ export default function Hero() {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: sectionPadding,
-        background: 'rgba(10,10,10,0.93)',
+        background: 'var(--color-bg)',
       }}
     >
       {/* z-1: Grid overlay */}
@@ -138,7 +138,7 @@ export default function Hero() {
               fontFamily: 'var(--font-grotesk), sans-serif',
               fontWeight: 300,
               fontSize: isMobile ? '0.9rem' : '1.05rem',
-              color: 'rgba(245,245,245,0.65)',
+              color: 'var(--color-text-secondary)',
               margin: 0,
               lineHeight: 1.6,
             }}
@@ -254,7 +254,7 @@ export default function Hero() {
                 style={{
                   fontFamily: 'var(--font-jetbrains), monospace',
                   fontSize: isTablet ? '0.55rem' : '0.6rem',
-                  color: 'rgba(245,245,245,0.4)',
+                  color: 'var(--color-text-muted)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.12em',
                   marginTop: '0.3rem',
@@ -284,7 +284,7 @@ export default function Hero() {
             style={{
               fontFamily: 'var(--font-jetbrains), monospace',
               fontSize: '0.65rem',
-              color: 'rgba(245,245,245,0.35)',
+              color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
             }}

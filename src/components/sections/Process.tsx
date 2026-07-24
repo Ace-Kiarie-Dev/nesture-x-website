@@ -58,14 +58,14 @@ export default function Process() {
   }, []);
 
   return (
-    <section ref={sectionRef} style={{ background: 'rgba(17,19,24,0.92)', padding: sectionPadding }}>
+    <section ref={sectionRef} style={{ background: 'var(--color-surface)', padding: sectionPadding }}>
       <div style={{ marginBottom: isMobile ? '2rem' : '4rem' }}>
         <div className="section-label" style={{ marginBottom: '1rem' }}>How We Work</div>
         <h2
           style={{
             fontFamily: 'var(--font-bebas), sans-serif',
             fontSize: 'clamp(3rem, 7vw, 6rem)',
-            color: '#f5f5f5',
+            color: 'var(--color-text)',
             lineHeight: 1,
             margin: 0,
           }}
@@ -107,7 +107,7 @@ function StepCard({
     <div
       className="reveal"
       style={{
-        background: '#111318',
+        background: 'var(--color-surface)',
         padding: isMobile ? '1.5rem' : '2.5rem 2rem',
         position: 'relative',
         overflow: 'hidden',
@@ -147,7 +147,7 @@ function StepCard({
           fontFamily: 'var(--font-grotesk), sans-serif',
           fontWeight: 600,
           fontSize: '1rem',
-          color: '#f5f5f5',
+          color: 'var(--color-text)',
           marginBottom: '0.75rem',
         }}
       >
@@ -158,7 +158,7 @@ function StepCard({
           fontFamily: 'var(--font-grotesk), sans-serif',
           fontWeight: 400,
           fontSize: '0.82rem',
-          color: 'rgba(245,245,245,0.5)',
+          color: 'var(--color-text-secondary)',
           lineHeight: 1.7,
         }}
       >

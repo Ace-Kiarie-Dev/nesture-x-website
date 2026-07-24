@@ -87,7 +87,8 @@ function ProductCard({ item }: { item: ProductCardData }) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg))',
+            // Hardcoded (not themed) — portfolio placeholder art stays dark in both themes
+            background: 'linear-gradient(135deg, #0d1b3e, #0a0a0a)',
           }}
         />
       )}

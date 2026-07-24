@@ -52,7 +52,7 @@ export default function MarqueeStrip() {
                 fontFamily: 'var(--font-bebas), sans-serif',
                 fontSize: isMobile ? '0.85rem' : '1rem',
                 letterSpacing: '0.15em',
-                color: 'rgba(245,245,245,0.35)',
+                color: 'var(--color-text-muted)',
                 whiteSpace: 'nowrap',
               }}
             >

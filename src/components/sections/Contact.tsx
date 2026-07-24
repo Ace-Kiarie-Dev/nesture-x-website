@@ -82,7 +82,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: '0.6rem',
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
-  color: 'rgba(245,245,245,0.40)',
+  color: 'var(--color-text-muted)',
   marginBottom: '0.5rem',
 };
 
@@ -175,7 +175,7 @@ export default function Contact() {
               fontFamily: 'var(--font-body)',
               fontSize: 'clamp(1rem, 1.3vw, 1.05rem)',
               lineHeight: 1.9,
-              color: 'rgba(245,245,245,0.55)',
+              color: 'var(--color-text-secondary)',
               marginBottom: '3.5rem',
             }}
             variants={item}
@@ -219,17 +219,17 @@ export default function Contact() {
                     style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: '0.95rem',
-                      color: 'rgba(245,245,245,0.70)',
+                      color: 'var(--color-text-secondary)',
                       textDecoration: 'none',
                       transition: 'color 0.2s',
                     }}
                     onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text)')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.70)')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-secondary)')}
                   >
                     {value}
                   </a>
                 ) : (
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: 'rgba(245,245,245,0.70)' }}>
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: 'var(--color-text-secondary)' }}>
                     {value}
                   </span>
                 )}
@@ -307,7 +307,7 @@ export default function Contact() {
               <p style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: '1rem',
-                color: 'rgba(245,245,245,0.60)',
+                color: 'var(--color-text-secondary)',
                 lineHeight: 1.85,
                 marginBottom: '2.5rem',
               }}>
@@ -363,15 +363,15 @@ export default function Contact() {
                   fontSize: '0.6rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  color: 'rgba(245,245,245,0.30)',
+                  color: 'var(--color-text-faint)',
                   background: 'none',
                   border: 'none',
                   padding: 0,
                   cursor: 'pointer',
                   transition: 'color 0.2s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.6)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.30)')}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-secondary)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-faint)')}
               >
                 Send another message ↗
               </button>
@@ -442,7 +442,7 @@ export default function Contact() {
                       name="service"
                       value={form.service}
                       onChange={handle}
-                      style={{ ...inputStyle, color: form.service ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'pointer' }}
+                      style={{ ...inputStyle, color: form.service ? 'var(--color-text)' : 'var(--color-text-muted)', cursor: 'pointer' }}
                       onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
                       onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
                     >
@@ -486,7 +486,7 @@ export default function Contact() {
                         name="budget"
                         value={form.budget}
                         onChange={handle}
-                        style={{ ...inputStyle, color: form.budget ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'pointer' }}
+                        style={{ ...inputStyle, color: form.budget ? 'var(--color-text)' : 'var(--color-text-muted)', cursor: 'pointer' }}
                         onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
                         onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
                       >
@@ -507,7 +507,7 @@ export default function Contact() {
                         name="timeline"
                         value={form.timeline}
                         onChange={handle}
-                        style={{ ...inputStyle, color: form.timeline ? 'var(--color-text)' : 'rgba(245,245,245,0.35)', cursor: 'pointer' }}
+                        style={{ ...inputStyle, color: form.timeline ? 'var(--color-text)' : 'var(--color-text-muted)', cursor: 'pointer' }}
                         onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
                         onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
                       >
@@ -547,7 +547,7 @@ export default function Contact() {
                     fontFamily: 'var(--font-body)',
                     fontSize: '0.82rem',
                     lineHeight: 1.7,
-                    color: 'rgba(245,245,245,0.28)',
+                    color: 'var(--color-text-faint)',
                     borderLeft: '2px solid rgba(26,111,212,0.2)',
                     paddingLeft: '0.85rem',
                   }}
@@ -575,7 +575,7 @@ export default function Contact() {
                     fontSize: '0.58rem',
                     letterSpacing: '0.12em',
                     textTransform: 'uppercase',
-                    color: 'rgba(245,245,245,0.25)',
+                    color: 'var(--color-text-faint)',
                     textAlign: 'center',
                   }}
                   variants={item}

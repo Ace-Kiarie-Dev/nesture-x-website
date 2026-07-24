@@ -8,11 +8,9 @@ import { Sun, Moon, Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '@/constants';
 import NxButton from '@/components/ui/NxButton';
 
-// Theme toggle is temporarily hidden pending completion of light-mode
-// tokens — 282 hardcoded rgba(245,245,245,*) text-color values across the
-// site don't yet respond to [data-theme='light'], which makes body copy
-// invisible in light mode. Flip this back to true once that work lands.
-const THEME_TOGGLE_VISIBLE = false;
+// Light-mode tokens have landed (see globals.css semantic text tokens) —
+// the toggle is back on.
+const THEME_TOGGLE_VISIBLE = true;
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -22,14 +20,8 @@ export default function Navbar() {
 
   // Sync theme from DOM on mount
   useEffect(() => {
-    // While the toggle is hidden, force 'dark' regardless of any stored
-    // preference — otherwise a user who previously switched to light mode
-    // would load into the broken (invisible-text) light mode with no way
-    // to switch back. Restore the commented-out lines when the toggle
-    // (and light mode) are re-enabled.
-    // const stored = localStorage.getItem('nx-theme') as 'dark' | 'light' | null;
-    // const initial = stored || 'dark';
-    const initial: 'dark' | 'light' = 'dark';
+    const stored = localStorage.getItem('nx-theme') as 'dark' | 'light' | null;
+    const initial = stored || 'dark';
     setTheme(initial);
     document.documentElement.setAttribute('data-theme', initial);
   }, []);
@@ -77,7 +69,7 @@ export default function Navbar() {
           padding: '0 2rem',
           overflow: 'visible',
           transition: 'all 300ms ease',
-          background: scrolled ? 'rgba(13, 27, 62, 0.85)' : 'transparent',
+          background: scrolled ? 'var(--color-nav-scrolled)' : 'transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled
@@ -88,9 +80,13 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="/" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', padding: 0 }}>
-          {/* TODO: swap based on theme */}
+          {/* TODO: replace with proper dark logo asset — logo-black.png was
+              already sitting in /public/images (unused) as the exact light-
+              theme counterpart to logo-white.png (same mark, dark wordmark),
+              so it's wired in here rather than a text-wordmark fallback.
+              Confirm with design that it's the intended light-theme lockup. */}
           <Image
-            src="/images/logo-white.png"
+            src={theme === 'light' ? '/images/logo-black.png' : '/images/logo-white.png'}
             alt="Nesture-X"
             width={220}
             height={60}
@@ -158,7 +154,7 @@ export default function Navbar() {
               style={{
                 width: '36px',
                 height: '36px',
-                border: '1px solid rgba(245, 245, 245, 0.2)',
+                border: '1px solid var(--color-border-subtle)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -175,7 +171,7 @@ export default function Navbar() {
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = 'rgba(245, 245, 245, 0.2)';
+                el.style.borderColor = 'var(--color-border-subtle)';
                 el.style.color = 'var(--color-text)';
               }}
             >
@@ -198,7 +194,7 @@ export default function Navbar() {
             style={{
               width: '40px',
               height: '40px',
-              border: '1px solid rgba(245, 245, 245, 0.3)',
+              border: '1px solid var(--color-border-subtle)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -218,7 +214,7 @@ export default function Navbar() {
           position: 'fixed',
           inset: 0,
           zIndex: 100,
-          background: 'rgba(10, 10, 10, 0.97)',
+          background: 'var(--color-bg)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -240,7 +236,7 @@ export default function Navbar() {
             right: '24px',
             width: '44px',
             height: '44px',
-            border: '1px solid rgba(245, 245, 245, 0.3)',
+            border: '1px solid var(--color-border-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
