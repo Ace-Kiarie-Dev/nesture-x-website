@@ -3,6 +3,8 @@
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
 const FEATURED = [
+  'TypeScript',
+  'Next.js',
   'React',
   'Node.js',
   'MongoDB Atlas',
@@ -13,20 +15,18 @@ const FEATURED = [
 ];
 
 const REGULAR = [
-  'Express.js',
   'Vanilla JavaScript',
   'HTML5/CSS3',
   'Tailwind CSS',
   'React Native',
   'Framer Motion',
   'Bootstrap 5',
-  'Vite',
   'Firebase',
-  'Adobe Photoshop',
-  'Adobe Illustrator',
   'GitHub',
-  'WhatsApp Business API',
+  'WhatsApp Integration',
 ];
+
+const DESIGN_TOOLS = ['Adobe Photoshop', 'Adobe Illustrator'];
 
 export default function TechStack() {
   const { isMobile, isTablet } = useBreakpoint();
@@ -57,6 +57,33 @@ export default function TechStack() {
           <Pill key={tech} label={tech} featured={false} isMobile={isMobile} />
         ))}
       </div>
+
+      {/* Design tools — visually separated from the dev stack above */}
+      <div
+        style={{
+          marginTop: '3rem',
+          paddingTop: '2rem',
+          borderTop: '1px solid rgba(245,245,245,0.08)',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-jetbrains), monospace',
+            fontSize: '0.62rem',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: 'rgba(245,245,245,0.35)',
+            marginBottom: '1rem',
+          }}
+        >
+          Design Tools
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+          {DESIGN_TOOLS.map(tool => (
+            <DesignPill key={tool} label={tool} isMobile={isMobile} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -86,6 +113,39 @@ function Pill({ label, featured, isMobile }: { label: string; featured: boolean;
         const el = e.currentTarget as HTMLElement;
         el.style.borderColor = featured ? 'rgba(26,111,212,0.5)' : 'rgba(26,111,212,0.2)';
         el.style.color = featured ? '#1a6fd4' : 'rgba(245,245,245,0.6)';
+        el.style.background = 'transparent';
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function DesignPill({ label, isMobile }: { label: string; isMobile: boolean }) {
+  return (
+    <span
+      data-hover
+      style={{
+        fontFamily: 'var(--font-jetbrains), monospace',
+        fontSize: isMobile ? '0.65rem' : '0.72rem',
+        letterSpacing: '0.08em',
+        border: '1px solid rgba(245,245,245,0.15)',
+        padding: isMobile ? '0.4rem 0.8rem' : '0.5rem 1rem',
+        color: 'rgba(245,245,245,0.45)',
+        cursor: 'default',
+        transition: 'border-color 0.3s, color 0.3s, background 0.3s',
+        display: 'inline-block',
+      }}
+      onMouseEnter={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = 'rgba(245,245,245,0.4)';
+        el.style.color = '#f5f5f5';
+        el.style.background = 'rgba(245,245,245,0.06)';
+      }}
+      onMouseLeave={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = 'rgba(245,245,245,0.15)';
+        el.style.color = 'rgba(245,245,245,0.45)';
         el.style.background = 'transparent';
       }}
     >

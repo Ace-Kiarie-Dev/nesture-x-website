@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Hero from '@/components/sections/Hero';
 import NxButton from '@/components/ui/NxButton';
 import MarqueeStrip from '@/components/sections/Marquee';
+import Solutions from '@/components/sections/Solutions';
 import Services from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
 import About from '@/components/sections/About';
@@ -18,6 +19,7 @@ export default function Home() {
     <main>
       <Hero />
       <MarqueeStrip />
+      <Solutions />
       <Services />
 
       {/* ── About teaser ── */}
