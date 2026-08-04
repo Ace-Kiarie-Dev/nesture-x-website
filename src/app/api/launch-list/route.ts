@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/mongodb';
+import { sendLaunchSignup } from '@/emails/send';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,6 +46,13 @@ export async function POST(req: NextRequest) {
         );
       }
       throw err;
+    }
+
+    // Confirmation email is a courtesy, not a requirement — never block the signup on it.
+    try {
+      await sendLaunchSignup({ to: email.trim(), productName: projectName.trim() });
+    } catch (emailErr) {
+      console.error('[launch-list] confirmation email failed:', emailErr);
     }
 
     return NextResponse.json({ success: true });
