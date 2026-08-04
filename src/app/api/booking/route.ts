@@ -2,32 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
+import { sendBookingConfirmation } from '@/emails/send';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ── Email templates ───────────────────────────────────────────────────────────
 // Relocated from api/mpesa/callback/route.ts — these used to fire only once
 // Safaricom confirmed payment; now the booking itself is the confirmation.
-
-function clientEmail(name: string, date: string, timeSlot: string): string {
-  return `
-Hey ${name},
-
-Your Nesture-X consultation booking is confirmed.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Date : ${formatDateLabel(date)}
-Time : ${formatSlotLabel(timeSlot)}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-If anything comes up and you need to reschedule, just reach us on WhatsApp.
-
-See you then,
-Peter Kiarie
-Founder, Nesture-X
-Nairobi, Kenya · +254 717 164 951
-  `.trim();
-}
 
 function peterEmail(name: string, email: string, phone: string, service: string, date: string, timeSlot: string): string {
   return `
@@ -85,12 +66,13 @@ export async function POST(req: NextRequest) {
     const bookingId = await createBooking(booking);
 
     const [clientResult, peterResult] = await Promise.allSettled([
-      resend.emails.send({
-        from:    'Nesture-X <bookings@nesturex.com>',
-        to:      booking.email,
-        replyTo: 'nesturex@gmail.com',
-        subject: 'Your Nesture-X Consultation is Confirmed ✓',
-        text:    clientEmail(booking.name, booking.date, booking.timeSlot),
+      sendBookingConfirmation({
+        to:         booking.email,
+        clientName: booking.name,
+        service:    booking.service,
+        date:       formatDateLabel(booking.date),
+        time:       formatSlotLabel(booking.timeSlot),
+        bookingRef: bookingId,
       }),
       resend.emails.send({
         from:    'Nesture-X Bookings <bookings@nesturex.com>',

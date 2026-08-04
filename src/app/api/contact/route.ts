@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { getDb } from '@/lib/mongodb';
+import { sendContactReply } from '@/emails/send';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -30,26 +31,6 @@ ${data.brief}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Reply directly to this email to respond to ${data.name}.
-  `.trim();
-}
-
-function autoReply(name: string): string {
-  return `
-Hey ${name},
-
-We've received your message — appreciate you taking the time to share what you're building.
-
-I'll personally take a look and get back to you shortly.
-
-If it's something we can help with, we'll map out the next steps together.
-
-— Peter
-Nesture-X
-
-────────────────────────────
-Nairobi, Kenya
-+254 717 164 951
-nesturex@gmail.com
   `.trim();
 }
 
@@ -90,23 +71,28 @@ export async function POST(req: NextRequest) {
       console.error('[contact] MongoDB insert failed:', dbErr);
     }
 
-    // ── 2. Internal notification email ────────────────────────────────────────
-    await resend.emails.send({
-      from:    'Nesture-X Inquiries <inquiries@nesturex.com>',
-      to:      'nesturex@gmail.com',
-      replyTo: email.trim(),
-      subject: `New Inquiry — ${service || 'General'} — ${name}`,
-      text:    internalEmail({ name, email, phone, service, brief, budget, timeline }),
-    });
+    // ── 2. Internal notification + auto-reply — email failure never blocks the lead ──
+    const [internalResult, replyResult] = await Promise.allSettled([
+      resend.emails.send({
+        from:    'Nesture-X Inquiries <inquiries@nesturex.com>',
+        to:      'nesturex@gmail.com',
+        replyTo: email.trim(),
+        subject: `New Inquiry — ${service || 'General'} — ${name}`,
+        text:    internalEmail({ name, email, phone, service, brief, budget, timeline }),
+      }),
+      sendContactReply({
+        to:         email.trim(),
+        clientName: name,
+        message:    brief,
+      }),
+    ]);
 
-    // ── 3. Auto-reply to the sender ───────────────────────────────────────────
-    await resend.emails.send({
-      from:    'Peter at Nesture-X <inquiries@nesturex.com>',
-      to:      email.trim(),
-      replyTo: 'nesturex@gmail.com',
-      subject: "Got it — we're looking at your idea 👀",
-      text:    autoReply(name),
-    });
+    if (internalResult.status === 'rejected') {
+      console.error('[contact] internal notification email failed:', internalResult.reason);
+    }
+    if (replyResult.status === 'rejected') {
+      console.error('[contact] auto-reply email failed:', replyResult.reason);
+    }
 
     return NextResponse.json({ success: true });
 
