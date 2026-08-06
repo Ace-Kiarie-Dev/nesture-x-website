@@ -14,6 +14,11 @@ import {
   fmtDate,
 } from '@/types/quote';
 import type { QuoteStatus, SavedQuote } from '@/services/quoteService';
+import type { Invoice, PaymentStatus } from '@/types/invoice';
+import type { SavedInvoice } from '@/services/invoiceService';
+import { createInvoice, updateInvoice, downloadInvoicePDF } from '@/services/invoiceClient';
+
+export type DocumentType = 'quotation' | 'invoice';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -54,6 +59,55 @@ export function blankQuote(): Quote {
     discountValue: 0,
     notes:         '50% deposit required to commence work. Balance due on delivery.',
     paymentTerms:  '',
+  };
+}
+
+// ── Invoice-only fields ───────────────────────────────────────────────────────
+// Everything else an invoice needs is shared with Quote (client, lines,
+// discount, notes, terms) and stored in the same `quote` state object below.
+
+export interface InvoiceExtra {
+  documentNumber: string; // '' until the server allocates one on save
+  issueDate:      string;
+  dueDate:        string;
+  paymentStatus:  PaymentStatus;
+  amountPaid:     number;
+  yourKraPin:     string;
+  buyerKraPin:    string;
+}
+
+function blankInvoiceExtra(): InvoiceExtra {
+  const d = today();
+  return {
+    documentNumber: '',
+    issueDate:      d,
+    dueDate:        plusDays(d, 14),
+    paymentStatus:  'unpaid',
+    amountPaid:     0,
+    yourKraPin:     '',
+    buyerKraPin:    '',
+  };
+}
+
+/** Combines the shared `quote` fields with invoice-only fields into an Invoice. */
+function toInvoicePayload(q: Quote, extra: InvoiceExtra): Invoice {
+  return {
+    documentNumber: extra.documentNumber,
+    issueDate:      extra.issueDate,
+    dueDate:        extra.dueDate,
+    clientName:     q.clientName,
+    clientCompany:  q.clientCompany,
+    clientEmail:    q.clientEmail,
+    clientPhone:    q.clientPhone,
+    lines:          q.lines,
+    discountType:   q.discountType,
+    discountValue:  q.discountValue,
+    notes:          q.notes,
+    paymentTerms:   q.paymentTerms,
+    paymentStatus:  extra.paymentStatus,
+    amountPaid:     extra.amountPaid,
+    yourKraPin:     extra.yourKraPin,
+    buyerKraPin:    extra.buyerKraPin,
   };
 }
 
@@ -249,6 +303,184 @@ function QuotePreview({ q }: { q: Quote }) {
   );
 }
 
+// ── Invoice HTML preview ──────────────────────────────────────────────────────
+
+const PAYMENT_STATUS_LABEL: Record<PaymentStatus, string> = {
+  unpaid:  'UNPAID',
+  partial: 'PARTIALLY PAID',
+  paid:    'PAID',
+};
+const PAYMENT_STATUS_HEX: Record<PaymentStatus, string> = {
+  unpaid:  '#e05c6b',
+  partial: '#d9a441',
+  paid:    '#1e9e5a',
+};
+
+function InvoicePreview({ inv }: { inv: Invoice }) {
+  const sub         = subtotal(inv.lines);
+  const disc        = discountAmount(sub, inv.discountType, inv.discountValue);
+  const total       = grandTotal(inv.lines, inv.discountType, inv.discountValue);
+  const balanceDue  = total - (inv.amountPaid || 0);
+  const statusColor = PAYMENT_STATUS_HEX[inv.paymentStatus];
+
+  const cell: React.CSSProperties = {
+    padding: '7px 10px', fontSize: '0.78rem', borderBottom: '1px solid #e8ecf5',
+  };
+
+  return (
+    <div style={{
+      background:   '#ffffff',
+      color:        '#111318',
+      fontFamily:   'var(--font-body), Helvetica, sans-serif',
+      fontSize:     '0.82rem',
+      minHeight:    '297mm',
+      width:        '100%',
+      maxWidth:     '620px',
+      margin:       '0 auto',
+      boxShadow:    '0 4px 40px rgba(0,0,0,0.35)',
+    }}>
+      <div style={{ background: '#0d1b3e', padding: '24px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <div style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.1em' }}>NESTURE-X</div>
+          <div style={{ color: 'rgba(184,206,240,0.65)', fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 3 }}>Creative Technology Agency · Nairobi</div>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ color: 'rgba(184,206,240,0.55)', fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Document</div>
+          <div style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 800, letterSpacing: '0.15em' }}>INVOICE</div>
+          <div style={{ color: 'rgba(184,206,240,0.7)', fontSize: '0.72rem', marginTop: 3 }}>{inv.documentNumber || 'NX-INV-XXXX-XXX (assigned on save)'}</div>
+        </div>
+      </div>
+      <div style={{ height: 3, background: '#1a6fd4' }} />
+      {(inv.yourKraPin || inv.buyerKraPin) && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', background: '#e8f0fc', padding: '6px 32px' }}>
+          <span style={{ fontSize: '0.68rem', color: '#0d1b3e' }}><b>Your KRA PIN:</b> {inv.yourKraPin || '—'}</span>
+          <span style={{ fontSize: '0.68rem', color: '#0d1b3e' }}><b>Buyer PIN:</b> {inv.buyerKraPin || '—'}</span>
+        </div>
+      )}
+      <div style={{ display: 'flex', padding: '18px 32px', borderBottom: '1px solid #dde3ef' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1a6fd4', fontWeight: 700, marginBottom: 6 }}>Billed To</div>
+          <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: 2 }}>{inv.clientName || '—'}</div>
+          {inv.clientCompany && <div style={{ color: '#555e72', fontSize: '0.8rem' }}>{inv.clientCompany}</div>}
+          {inv.clientEmail   && <div style={{ color: '#555e72', fontSize: '0.8rem' }}>{inv.clientEmail}</div>}
+          {inv.clientPhone   && <div style={{ color: '#555e72', fontSize: '0.8rem' }}>{inv.clientPhone}</div>}
+        </div>
+        <div style={{ width: 190 }}>
+          <div style={{ fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1a6fd4', fontWeight: 700, marginBottom: 6 }}>Invoice Details</div>
+          {[
+            { label: 'Invoice No.', value: inv.documentNumber || '—' },
+            { label: 'Issue Date',  value: fmtDate(inv.issueDate) || '—' },
+            { label: 'Due Date',    value: fmtDate(inv.dueDate) || '—' },
+          ].map(({ label, value }) => (
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid #eef0f5', fontSize: '0.78rem' }}>
+              <span style={{ color: '#888' }}>{label}</span>
+              <span style={{ fontWeight: 600 }}>{value}</span>
+            </div>
+          ))}
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: '0.78rem' }}>
+            <span style={{ color: '#888' }}>Status</span>
+            <span style={{ fontWeight: 700, color: statusColor }}>{PAYMENT_STATUS_LABEL[inv.paymentStatus]}</span>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: '0 32px 16px' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: '#0d1b3e' }}>
+              {['Description', 'Qty', 'Unit Price', 'Total'].map(h => (
+                <th key={h} style={{ padding: '7px 10px', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', fontWeight: 600, textAlign: h === 'Description' ? 'left' : 'right' }}>
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {inv.lines.map((line, i) => (
+              <tr key={line.id} style={{ background: i % 2 === 1 ? '#f7f9fd' : '#fff' }}>
+                <td style={cell}>{line.description || <span style={{ color: '#bbb' }}>—</span>}</td>
+                <td style={{ ...cell, textAlign: 'right', color: '#666' }}>{line.qty}</td>
+                <td style={{ ...cell, textAlign: 'right', color: '#666' }}>{line.unitPrice.toLocaleString('en-KE')}</td>
+                <td style={{ ...cell, textAlign: 'right', fontWeight: 600 }}>{(line.qty * line.unitPrice).toLocaleString('en-KE')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ padding: '0 32px 20px', display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ width: 230, borderTop: '2px solid #1a6fd4', paddingTop: 10 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: '0.82rem' }}>
+            <span style={{ color: '#888' }}>Subtotal</span>
+            <span>{fmt(sub)}</span>
+          </div>
+          {disc > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: '0.82rem' }}>
+              <span style={{ color: '#888' }}>Discount{inv.discountType === 'percent' ? ` (${inv.discountValue}%)` : ''}</span>
+              <span style={{ color: '#e05c6b' }}>− {fmt(disc)}</span>
+            </div>
+          )}
+          <div style={{ borderTop: '1px solid #dde3ef', marginTop: 6, marginBottom: 8 }} />
+          <div style={{ background: '#0d1b3e', padding: '8px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.82rem' }}>GRAND TOTAL</span>
+            <span style={{ color: '#1a6fd4', fontWeight: 700, fontSize: '1rem' }}>{fmt(total)}</span>
+          </div>
+          {inv.amountPaid > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: '0.8rem' }}>
+              <span style={{ color: '#888' }}>Amount Paid</span>
+              <span style={{ color: '#1e9e5a', fontWeight: 600 }}>{fmt(inv.amountPaid)}</span>
+            </div>
+          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: '0.82rem' }}>
+            <span style={{ fontWeight: 700 }}>Balance Due</span>
+            <span style={{ fontWeight: 700, color: statusColor }}>{fmt(balanceDue)}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* eTIMS placeholder — reserved for future KRA integration, left blank on purpose */}
+      <div style={{ margin: '0 32px 20px', padding: '10px 14px', border: '1px dashed #dde3ef', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.55rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', fontWeight: 700, marginBottom: 6 }}>eTIMS (Reserved)</div>
+          <div style={{ display: 'flex', fontSize: '0.7rem', color: '#888', marginBottom: 3 }}>
+            <span style={{ width: 130 }}>CU Invoice No.</span>
+            <span style={{ width: 120, borderBottom: '1px solid #dde3ef' }}>&nbsp;</span>
+          </div>
+          <div style={{ display: 'flex', fontSize: '0.7rem', color: '#888' }}>
+            <span style={{ width: 130 }}>Control Unit Serial</span>
+            <span style={{ width: 120, borderBottom: '1px solid #dde3ef' }}>&nbsp;</span>
+          </div>
+        </div>
+        <div style={{ width: 56, height: 56, border: '1px dashed #dde3ef', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 16 }}>
+          <span style={{ fontSize: '0.5rem', color: '#bbb', letterSpacing: '0.05em', textTransform: 'uppercase' }}>QR</span>
+        </div>
+      </div>
+
+      {(inv.notes || inv.paymentTerms) && (
+        <div style={{ padding: '12px 32px 16px', borderTop: '1px solid #dde3ef' }}>
+          {inv.notes && (
+            <>
+              <div style={{ fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1a6fd4', fontWeight: 700, marginBottom: 5 }}>Notes</div>
+              <p style={{ fontSize: '0.8rem', color: '#666', lineHeight: 1.7, margin: 0 }}>{inv.notes}</p>
+            </>
+          )}
+          {inv.paymentTerms && (
+            <div style={{ marginTop: inv.notes ? 10 : 0 }}>
+              <div style={{ fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1a6fd4', fontWeight: 700, marginBottom: 5 }}>Payment Terms</div>
+              <p style={{ fontSize: '0.8rem', color: '#666', lineHeight: 1.7, margin: 0 }}>{inv.paymentTerms}</p>
+            </div>
+          )}
+        </div>
+      )}
+      <div style={{ background: '#0d1b3e', padding: '10px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+        <div>
+          <div style={{ color: '#1a6fd4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Nesture-X</div>
+          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>Nairobi, Kenya · +254 717 164 951 · nesturex@gmail.com · nesturex.com</div>
+        </div>
+        <div style={{ color: 'rgba(184,206,240,0.55)', fontSize: '0.65rem' }}>Due {fmtDate(inv.dueDate) || '—'}</div>
+      </div>
+    </div>
+  );
+}
+
 // ── Status badge ──────────────────────────────────────────────────────────────
 
 const STATUS_COLORS: Record<QuoteStatus, { bg: string; color: string }> = {
@@ -293,13 +525,20 @@ function StatusBadge({ status, onChange }: { status: QuoteStatus; onChange: (s: 
 // ── Main QuoteForm component ──────────────────────────────────────────────────
 
 export interface QuoteFormProps {
-  mode:        'create' | 'edit';
-  initial?:    SavedQuote;
+  mode:            'create' | 'edit';
+  initial?:        SavedQuote;
+  initialInvoice?: SavedInvoice;
+  /** Only used in create mode with no `initial`/`initialInvoice` — preselects the dropdown. */
+  defaultDocType?: DocumentType;
 }
 
-export default function QuoteForm({ mode, initial }: QuoteFormProps) {
+export default function QuoteForm({ mode, initial, initialInvoice, defaultDocType }: QuoteFormProps) {
   const router = useRouter();
+  const [docType,     setDocType]     = useState<DocumentType>(
+    initialInvoice ? 'invoice' : (defaultDocType ?? 'quotation'),
+  );
   const [quote,       setQuote]       = useState<Quote | null>(null);
+  const [invoiceExtra, setInvoiceExtra] = useState<InvoiceExtra>(blankInvoiceExtra());
   const [status,      setStatus]      = useState<QuoteStatus>('draft');
   const [saving,      setSaving]      = useState(false);
   const [downloading, setDownloading] = useState(false);
@@ -313,7 +552,16 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
       .then(r => r.json())
       .then((d: { ok: boolean }) => {
         if (!d.ok) { router.replace('/admin'); return; }
-        if (initial) {
+        if (initialInvoice) {
+          setDocType('invoice');
+          const {
+            _id: _ignored, createdAt: _c, updatedAt: _u,
+            documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin,
+            ...shared
+          } = initialInvoice;
+          setQuote({ quoteNumber: '', date: '', expiryDate: '', ...shared });
+          setInvoiceExtra({ documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin });
+        } else if (initial) {
           const { _id: _ignored, status: s, createdAt: _c, updatedAt: _u, ...q } = initial;
           setQuote(q as Quote);
           setStatus(s);
@@ -329,6 +577,10 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
 
   const update = useCallback(<K extends keyof Quote>(key: K, value: Quote[K]) => {
     setQuote(prev => prev ? { ...prev, [key]: value } : prev);
+  }, []);
+
+  const updateInvoiceExtra = useCallback(<K extends keyof InvoiceExtra>(key: K, value: InvoiceExtra[K]) => {
+    setInvoiceExtra(prev => ({ ...prev, [key]: value }));
   }, []);
 
   function updateLine(id: string, field: keyof QuoteLine, value: string | number) {
@@ -380,24 +632,54 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
     }
   }
 
+  async function saveInvoice() {
+    if (!quote) return;
+    setSaving(true);
+    setSaveError('');
+    try {
+      const payload = toInvoicePayload(quote, invoiceExtra);
+      if (mode === 'create') {
+        const saved = await createInvoice(payload);
+        router.replace(`/admin/invoices/${saved._id}`);
+      } else {
+        const saved = await updateInvoice(initialInvoice!._id, payload);
+        setInvoiceExtra(prev => ({ ...prev, documentNumber: saved.documentNumber }));
+      }
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Save failed.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function saveDocument() {
+    if (docType === 'quotation') await saveQuote();
+    else await saveInvoice();
+  }
+
   async function downloadPDF() {
     if (!quote) return;
     setDownloading(true);
     setDlError('');
     try {
-      const res = await fetch('/api/admin/quote/pdf', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(quote),
-      });
-      if (!res.ok) throw new Error('PDF generation failed.');
-      const blob = await res.blob();
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
-      a.download = `${quote.quoteNumber}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
+      if (docType === 'quotation') {
+        const res = await fetch('/api/admin/quote/pdf', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(quote),
+        });
+        if (!res.ok) throw new Error('PDF generation failed.');
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `${quote.quoteNumber}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        if (!invoiceExtra.documentNumber) throw new Error('Save the invoice first to generate its number.');
+        await downloadInvoicePDF(toInvoicePayload(quote, invoiceExtra));
+      }
     } catch (err) {
       setDlError(err instanceof Error ? err.message : 'Download failed.');
     } finally {
@@ -438,22 +720,24 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           <button
-            onClick={() => router.push('/admin/quotes')}
+            onClick={() => router.push(docType === 'quotation' ? '/admin/quotes' : '/admin/invoices')}
             style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.35)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '0.4rem 0.6rem', transition: 'color 0.18s' }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)')}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)')}
           >
-            <ArrowLeft size={12} /> Quotes
+            <ArrowLeft size={12} /> {docType === 'quotation' ? 'Quotes' : 'Invoices'}
           </button>
           <span style={{ width: '1px', height: '18px', background: 'rgba(26,111,212,0.3)' }} />
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}>
-            {mode === 'create' ? 'New Quote' : `Edit · ${quote.quoteNumber}`}
+            {docType === 'quotation'
+              ? (mode === 'create' ? 'New Quote'   : `Edit · ${quote.quoteNumber}`)
+              : (mode === 'create' ? 'New Invoice' : `Edit · ${invoiceExtra.documentNumber}`)}
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <StatusBadge status={status} onChange={setStatus} />
+          {docType === 'quotation' && <StatusBadge status={status} onChange={setStatus} />}
           <button
-            onClick={saveQuote}
+            onClick={saveDocument}
             disabled={!isValid || saving}
             style={{
               background: isValid && !saving ? 'var(--color-primary)' : 'rgba(26,111,212,0.2)',
@@ -469,7 +753,8 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
           </button>
           <button
             onClick={downloadPDF}
-            disabled={!isValid || downloading}
+            disabled={!isValid || downloading || (docType === 'invoice' && !invoiceExtra.documentNumber)}
+            title={docType === 'invoice' && !invoiceExtra.documentNumber ? 'Save the invoice first to generate its number' : undefined}
             style={{
               background: 'transparent',
               border: '1px solid rgba(26,111,212,0.3)',
@@ -477,7 +762,7 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
               fontFamily: 'var(--font-mono)', fontSize: '0.58rem',
               letterSpacing: '0.12em', textTransform: 'uppercase',
               padding: '0.4rem 0.85rem', cursor: !isValid || downloading ? 'not-allowed' : 'pointer',
-              opacity: !isValid || downloading ? 0.5 : 1, transition: 'all 0.18s',
+              opacity: !isValid || downloading || (docType === 'invoice' && !invoiceExtra.documentNumber) ? 0.5 : 1, transition: 'all 0.18s',
               display: 'flex', alignItems: 'center', gap: '0.4rem',
             }}
             onMouseEnter={e => { if (isValid) { (e.currentTarget as HTMLElement).style.background = 'rgba(26,111,212,0.1)'; } }}
@@ -505,7 +790,7 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
             fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase',
             cursor: 'pointer', transition: 'all 0.18s',
           }}>
-            {tab === 'form' ? 'Quote Form' : 'Preview'}
+            {tab === 'form' ? (docType === 'quotation' ? 'Quote Form' : 'Invoice Form') : 'Preview'}
           </button>
         ))}
       </div>
@@ -515,6 +800,31 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
 
         {/* LEFT: Form */}
         <div className={activeTab === 'preview' ? 'hidden md:block' : ''} style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', overflowY: 'auto', borderRight: '1px solid rgba(26,111,212,0.1)' }}>
+
+          {/* Billing — document type */}
+          <div style={panelBg}>
+            <SectionHead title="Billing" />
+            <div>
+              <label style={lbl}>Document Type</label>
+              <div style={{ position: 'relative' }}>
+                <select
+                  value={docType}
+                  disabled={mode === 'edit'}
+                  onChange={e => setDocType(e.target.value as DocumentType)}
+                  style={{
+                    ...inp,
+                    cursor:  mode === 'edit' ? 'not-allowed' : 'pointer',
+                    opacity: mode === 'edit' ? 0.55 : 1,
+                    appearance: 'none', WebkitAppearance: 'none',
+                  } as React.CSSProperties}
+                >
+                  <option value="quotation" style={{ background: '#0d1b3e' }}>Quotation</option>
+                  <option value="invoice"   style={{ background: '#0d1b3e' }}>Invoice</option>
+                </select>
+                <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
+              </div>
+            </div>
+          </div>
 
           {/* Client details */}
           <div style={panelBg}>
@@ -528,14 +838,61 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
           </div>
 
           {/* Quote meta */}
-          <div style={panelBg}>
-            <SectionHead title="Quote Details" />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.85rem' }}>
-              <Field label="Quote Number" value={quote.quoteNumber} onChange={v => update('quoteNumber', v)} />
-              <Field label="Date"         value={quote.date}        onChange={v => update('date', v)}        type="date" />
-              <Field label="Valid Until"  value={quote.expiryDate}  onChange={v => update('expiryDate', v)}  type="date" />
+          {docType === 'quotation' ? (
+            <div style={panelBg}>
+              <SectionHead title="Quote Details" />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.85rem' }}>
+                <Field label="Quote Number" value={quote.quoteNumber} onChange={v => update('quoteNumber', v)} />
+                <Field label="Date"         value={quote.date}        onChange={v => update('date', v)}        type="date" />
+                <Field label="Valid Until"  value={quote.expiryDate}  onChange={v => update('expiryDate', v)}  type="date" />
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <div style={panelBg}>
+                <SectionHead title="Invoice Details" />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.85rem' }}>
+                  <div>
+                    <label style={lbl}>Invoice Number</label>
+                    <input
+                      value={invoiceExtra.documentNumber || '(assigned on save)'}
+                      readOnly
+                      disabled
+                      style={{ ...inp, opacity: 0.55, cursor: 'not-allowed' }}
+                    />
+                  </div>
+                  <Field label="Issue Date" value={invoiceExtra.issueDate} onChange={v => updateInvoiceExtra('issueDate', v)} type="date" />
+                  <Field label="Due Date"   value={invoiceExtra.dueDate}   onChange={v => updateInvoiceExtra('dueDate', v)}   type="date" />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginTop: '0.85rem' }}>
+                  <div>
+                    <label style={lbl}>Payment Status</label>
+                    <div style={{ position: 'relative' }}>
+                      <select
+                        value={invoiceExtra.paymentStatus}
+                        onChange={e => updateInvoiceExtra('paymentStatus', e.target.value as PaymentStatus)}
+                        style={{ ...inp, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' } as React.CSSProperties}
+                      >
+                        <option value="unpaid"  style={{ background: '#0d1b3e' }}>Unpaid</option>
+                        <option value="partial" style={{ background: '#0d1b3e' }}>Partial</option>
+                        <option value="paid"    style={{ background: '#0d1b3e' }}>Paid</option>
+                      </select>
+                      <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
+                    </div>
+                  </div>
+                  <Field label="Amount Paid (KES)" value={invoiceExtra.amountPaid} onChange={v => updateInvoiceExtra('amountPaid', Number(v))} type="number" placeholder="0" />
+                </div>
+              </div>
+
+              <div style={panelBg}>
+                <SectionHead title="Tax Info (KRA)" />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+                  <Field label="Your KRA PIN"         value={invoiceExtra.yourKraPin}  onChange={v => updateInvoiceExtra('yourKraPin', v)}  placeholder="P0XXXXXXXXX" />
+                  <Field label="Buyer PIN (optional)" value={invoiceExtra.buyerKraPin} onChange={v => updateInvoiceExtra('buyerKraPin', v)} placeholder="A0XXXXXXXXX" />
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Line items */}
           <div style={panelBg}>
@@ -602,7 +959,19 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
                 value: `− ${fmt(discountAmount(subtotal(quote.lines), quote.discountType, quote.discountValue))}`,
                 dim: true,
               }] : []),
-              { label: 'Total Due', value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue)), dim: false },
+              { label: docType === 'invoice' ? 'Grand Total' : 'Total Due', value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue)), dim: false },
+              ...(docType === 'invoice' ? [
+                ...(invoiceExtra.amountPaid > 0 ? [{
+                  label: 'Amount Paid',
+                  value: fmt(invoiceExtra.amountPaid),
+                  dim: true,
+                }] : []),
+                {
+                  label: 'Balance Due',
+                  value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue) - invoiceExtra.amountPaid),
+                  dim: false,
+                },
+              ] : []),
             ].map(({ label, value, dim }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0', borderBottom: '1px solid rgba(26,111,212,0.1)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
                 <span style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.58rem' }}>{label}</span>
@@ -615,7 +984,9 @@ export default function QuoteForm({ mode, initial }: QuoteFormProps) {
 
         {/* RIGHT: Preview */}
         <div className={activeTab === 'form' ? 'hidden md:block' : ''} style={{ background: '#111318', overflowY: 'auto', padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
-          <QuotePreview q={quote} />
+          {docType === 'quotation'
+            ? <QuotePreview q={quote} />
+            : <InvoicePreview inv={toInvoicePayload(quote, invoiceExtra)} />}
         </div>
 
       </div>
