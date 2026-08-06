@@ -67,47 +67,50 @@ export function blankQuote(): Quote {
 // discount, notes, terms) and stored in the same `quote` state object below.
 
 export interface InvoiceExtra {
-  documentNumber: string; // '' until the server allocates one on save
-  issueDate:      string;
-  dueDate:        string;
-  paymentStatus:  PaymentStatus;
-  amountPaid:     number;
-  yourKraPin:     string;
-  buyerKraPin:    string;
+  documentNumber:  string; // '' until the server allocates one on save
+  issueDate:       string;
+  dueDate:         string;
+  paymentStatus:   PaymentStatus;
+  amountPaid:      number;
+  yourKraPin:      string;
+  buyerKraPin:     string;
+  etimsCompliant:  boolean;
 }
 
 function blankInvoiceExtra(): InvoiceExtra {
   const d = today();
   return {
-    documentNumber: '',
-    issueDate:      d,
-    dueDate:        plusDays(d, 14),
-    paymentStatus:  'unpaid',
-    amountPaid:     0,
-    yourKraPin:     '',
-    buyerKraPin:    '',
+    documentNumber:  '',
+    issueDate:       d,
+    dueDate:         plusDays(d, 14),
+    paymentStatus:   'unpaid',
+    amountPaid:      0,
+    yourKraPin:      '',
+    buyerKraPin:     '',
+    etimsCompliant:  false,
   };
 }
 
 /** Combines the shared `quote` fields with invoice-only fields into an Invoice. */
 function toInvoicePayload(q: Quote, extra: InvoiceExtra): Invoice {
   return {
-    documentNumber: extra.documentNumber,
-    issueDate:      extra.issueDate,
-    dueDate:        extra.dueDate,
-    clientName:     q.clientName,
-    clientCompany:  q.clientCompany,
-    clientEmail:    q.clientEmail,
-    clientPhone:    q.clientPhone,
-    lines:          q.lines,
-    discountType:   q.discountType,
-    discountValue:  q.discountValue,
-    notes:          q.notes,
-    paymentTerms:   q.paymentTerms,
-    paymentStatus:  extra.paymentStatus,
-    amountPaid:     extra.amountPaid,
-    yourKraPin:     extra.yourKraPin,
-    buyerKraPin:    extra.buyerKraPin,
+    documentNumber:  extra.documentNumber,
+    issueDate:       extra.issueDate,
+    dueDate:         extra.dueDate,
+    clientName:      q.clientName,
+    clientCompany:   q.clientCompany,
+    clientEmail:     q.clientEmail,
+    clientPhone:     q.clientPhone,
+    lines:           q.lines,
+    discountType:    q.discountType,
+    discountValue:   q.discountValue,
+    notes:           q.notes,
+    paymentTerms:    q.paymentTerms,
+    paymentStatus:   extra.paymentStatus,
+    amountPaid:      extra.amountPaid,
+    yourKraPin:      extra.yourKraPin,
+    buyerKraPin:     extra.buyerKraPin,
+    etimsCompliant:  extra.etimsCompliant,
   };
 }
 
@@ -436,23 +439,26 @@ function InvoicePreview({ inv }: { inv: Invoice }) {
         </div>
       </div>
 
-      {/* eTIMS placeholder — reserved for future KRA integration, left blank on purpose */}
-      <div style={{ margin: '0 32px 20px', padding: '10px 14px', border: '1px dashed #dde3ef', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.55rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', fontWeight: 700, marginBottom: 6 }}>eTIMS (Reserved)</div>
-          <div style={{ display: 'flex', fontSize: '0.7rem', color: '#888', marginBottom: 3 }}>
-            <span style={{ width: 130 }}>CU Invoice No.</span>
-            <span style={{ width: 120, borderBottom: '1px solid #dde3ef' }}>&nbsp;</span>
+      {/* eTIMS placeholder — reserved for future KRA integration, left blank on purpose.
+          Only shown when the invoice is marked eTIMS-compliant. */}
+      {inv.etimsCompliant && (
+        <div style={{ margin: '0 32px 20px', padding: '10px 14px', border: '1px dashed #dde3ef', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.55rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', fontWeight: 700, marginBottom: 6 }}>eTIMS (Reserved)</div>
+            <div style={{ display: 'flex', fontSize: '0.7rem', color: '#888', marginBottom: 3 }}>
+              <span style={{ width: 130 }}>CU Invoice No.</span>
+              <span style={{ width: 120, borderBottom: '1px solid #dde3ef' }}>&nbsp;</span>
+            </div>
+            <div style={{ display: 'flex', fontSize: '0.7rem', color: '#888' }}>
+              <span style={{ width: 130 }}>Control Unit Serial</span>
+              <span style={{ width: 120, borderBottom: '1px solid #dde3ef' }}>&nbsp;</span>
+            </div>
           </div>
-          <div style={{ display: 'flex', fontSize: '0.7rem', color: '#888' }}>
-            <span style={{ width: 130 }}>Control Unit Serial</span>
-            <span style={{ width: 120, borderBottom: '1px solid #dde3ef' }}>&nbsp;</span>
+          <div style={{ width: 56, height: 56, border: '1px dashed #dde3ef', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 16 }}>
+            <span style={{ fontSize: '0.5rem', color: '#bbb', letterSpacing: '0.05em', textTransform: 'uppercase' }}>QR</span>
           </div>
         </div>
-        <div style={{ width: 56, height: 56, border: '1px dashed #dde3ef', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 16 }}>
-          <span style={{ fontSize: '0.5rem', color: '#bbb', letterSpacing: '0.05em', textTransform: 'uppercase' }}>QR</span>
-        </div>
-      </div>
+      )}
 
       {(inv.notes || inv.paymentTerms) && (
         <div style={{ padding: '12px 32px 16px', borderTop: '1px solid #dde3ef' }}>
@@ -556,11 +562,11 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
           setDocType('invoice');
           const {
             _id: _ignored, createdAt: _c, updatedAt: _u,
-            documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin,
+            documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin, etimsCompliant,
             ...shared
           } = initialInvoice;
           setQuote({ quoteNumber: '', date: '', expiryDate: '', ...shared });
-          setInvoiceExtra({ documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin });
+          setInvoiceExtra({ documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin, etimsCompliant });
         } else if (initial) {
           const { _id: _ignored, status: s, createdAt: _c, updatedAt: _u, ...q } = initial;
           setQuote(q as Quote);
@@ -890,6 +896,15 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
                   <Field label="Your KRA PIN"         value={invoiceExtra.yourKraPin}  onChange={v => updateInvoiceExtra('yourKraPin', v)}  placeholder="P0XXXXXXXXX" />
                   <Field label="Buyer PIN (optional)" value={invoiceExtra.buyerKraPin} onChange={v => updateInvoiceExtra('buyerKraPin', v)} placeholder="A0XXXXXXXXX" />
                 </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.85rem', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={invoiceExtra.etimsCompliant}
+                    onChange={e => updateInvoiceExtra('etimsCompliant', e.target.checked)}
+                    style={{ width: '14px', height: '14px', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
+                  />
+                  <span style={{ ...lbl, marginBottom: 0 }}>eTIMS compliant invoice</span>
+                </label>
               </div>
             </>
           )}

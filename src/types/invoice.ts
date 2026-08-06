@@ -23,8 +23,9 @@ export interface Invoice {
   notes:         string;
   paymentTerms:  string;
   // Invoice-only
-  paymentStatus: PaymentStatus;
-  amountPaid:    number;
-  yourKraPin:    string;
-  buyerKraPin:   string;
+  paymentStatus:   PaymentStatus;
+  amountPaid:      number;
+  yourKraPin:      string;
+  buyerKraPin:     string;
+  etimsCompliant:  boolean; // controls whether the reserved eTIMS block renders on the PDF
 }

@@ -534,25 +534,28 @@ export function InvoicePDF({ invoice }: { invoice: Invoice }) {
         </View>
 
         {/* ── eTIMS placeholder — reserved for future KRA integration ──
+            Only rendered when the invoice is marked eTIMS-compliant.
             Intentionally blank: no fake CU Invoice No., Control Unit Serial,
             or QR code until Nesture-X is registered on KRA eTIMS. Layout is
             fixed now so wiring in real values later needs no redesign. */}
-        <View style={s.etimsSection}>
-          <View style={s.etimsLeft}>
-            <Text style={s.etimsTitle}>eTIMS (Reserved)</Text>
-            <View style={s.etimsFieldRow}>
-              <Text style={s.etimsFieldLabel}>CU Invoice No.</Text>
-              <Text style={s.etimsFieldValue}> </Text>
+        {invoice.etimsCompliant ? (
+          <View style={s.etimsSection}>
+            <View style={s.etimsLeft}>
+              <Text style={s.etimsTitle}>eTIMS (Reserved)</Text>
+              <View style={s.etimsFieldRow}>
+                <Text style={s.etimsFieldLabel}>CU Invoice No.</Text>
+                <Text style={s.etimsFieldValue}> </Text>
+              </View>
+              <View style={s.etimsFieldRow}>
+                <Text style={s.etimsFieldLabel}>Control Unit Serial</Text>
+                <Text style={s.etimsFieldValue}> </Text>
+              </View>
             </View>
-            <View style={s.etimsFieldRow}>
-              <Text style={s.etimsFieldLabel}>Control Unit Serial</Text>
-              <Text style={s.etimsFieldValue}> </Text>
+            <View style={s.etimsQrBox}>
+              <Text style={s.etimsQrLabel}>QR</Text>
             </View>
           </View>
-          <View style={s.etimsQrBox}>
-            <Text style={s.etimsQrLabel}>QR</Text>
-          </View>
-        </View>
+        ) : null}
 
         {/* ── Notes ── */}
         {(invoice.notes || invoice.paymentTerms) ? (
