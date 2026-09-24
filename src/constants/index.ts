@@ -167,28 +167,3 @@ export const CLIENTS = [
   'Blefice',
   'Centron Technics',
 ] as const;
-
-// NX Originals
-export const NX_ORIGINALS = [
-  {
-    name: 'SHINKUSEN',
-    category: 'Faith × Anime × Streetwear',
-    description: 'A Kenya-based Christian apparel brand blending faith, anime culture, and streetwear.',
-    url: 'https://shinkusen.co.ke',
-    status: 'live' as const,
-  },
-  {
-    name: 'BetLedger',
-    category: 'Personal Finance / Mobile App',
-    description: 'A ledger-style app for tracking and analysing betting history.',
-    url: null,
-    status: 'in-development' as const,
-  },
-  {
-    name: 'Hikarani',
-    category: 'Faith & Community / Mobile App',
-    description: 'A faith-based app for spiritual growth and community connection.',
-    url: null,
-    status: 'in-development' as const,
-  },
-] as const;

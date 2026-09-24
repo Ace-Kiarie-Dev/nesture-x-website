@@ -6,11 +6,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import TiltedCard from '@/components/ui/TiltedCard';
 import StatusBadge from '@/components/ui/StatusBadge';
-import { NX_ORIGINALS } from '@/data/nxOriginals';
+import { getHomeFeaturedOriginals } from '@/data/nxOriginals';
 import { getProjectDestination } from '@/lib/getProjectDestination';
 import './NxOriginalsCarousel.css';
 
-const products = NX_ORIGINALS;
+const products = getHomeFeaturedOriginals();
 
 const AUTOPLAY_INTERVAL = 10000;
 const RESUME_DELAY = 8000;
