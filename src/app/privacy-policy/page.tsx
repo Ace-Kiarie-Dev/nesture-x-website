@@ -93,7 +93,7 @@ export default function PrivacyPolicyPage() {
               color: 'rgba(245,245,245,0.35)',
             }}
           >
-            Last updated: May 2025
+            Last updated: September 2026
           </p>
         </div>
       </section>
@@ -135,7 +135,7 @@ export default function PrivacyPolicyPage() {
           <p style={P_STYLE}>
             We may use standard browser cookies to remember site preferences such as your chosen
             colour theme. No tracking cookies are set by Nesture-X itself. If third-party
-            analytics or advertising scripts are loaded on the site (see section 4 below), those
+            analytics or advertising scripts are loaded on the site (see section 5 below), those
             services may set their own cookies governed by their respective privacy policies.
           </p>
 
@@ -149,7 +149,24 @@ export default function PrivacyPolicyPage() {
           </p>
 
           {/* 4 */}
-          <h2 style={H2_STYLE}>4. ADVERTISING — GOOGLE ADSENSE</h2>
+          <h2 style={H2_STYLE}>4. PRODUCT LAUNCH WAITLISTS</h2>
+          <p style={P_STYLE}>
+            When you join a waitlist for one of our products, such as BetLedger or SoraPesa, we
+            collect your email address, the product you signed up for, and how you found the page
+            (for example, a campaign or QR code link).
+          </p>
+          <p style={P_STYLE}>
+            We use this information only to confirm your signup and to let you know when that
+            product launches. We do not sell or share your email address with third parties for
+            marketing. Confirmation emails are sent through our email delivery provider, Resend.
+          </p>
+          <p style={P_STYLE}>
+            You can ask to be removed from any waitlist at any time by emailing nesturex@gmail.com,
+            and we will delete your details.
+          </p>
+
+          {/* 5 */}
+          <h2 style={H2_STYLE}>5. ADVERTISING — GOOGLE ADSENSE</h2>
           <p style={P_STYLE}>
             Once the Nesture-X website reaches the eligibility threshold for monetisation, we
             intend to participate in the Google AdSense programme. At that point, Google may
@@ -172,8 +189,8 @@ export default function PrivacyPolicyPage() {
             . Until AdSense is activated, no advertising cookies are present on this site.
           </p>
 
-          {/* 5 */}
-          <h2 style={H2_STYLE}>5. DATA SECURITY</h2>
+          {/* 6 */}
+          <h2 style={H2_STYLE}>6. DATA SECURITY</h2>
           <p style={P_STYLE}>
             We take reasonable measures to protect any personal information you provide. Our
             servers use HTTPS encryption for all data in transit. Contact form submissions are
@@ -182,8 +199,8 @@ export default function PrivacyPolicyPage() {
             industry-standard safeguards to minimise risk.
           </p>
 
-          {/* 6 */}
-          <h2 style={H2_STYLE}>6. THIRD-PARTY LINKS</h2>
+          {/* 7 */}
+          <h2 style={H2_STYLE}>7. THIRD-PARTY LINKS</h2>
           <p style={P_STYLE}>
             Our website may contain links to third-party websites (for example, partner or
             portfolio company sites). We are not responsible for the privacy practices of those
@@ -191,24 +208,24 @@ export default function PrivacyPolicyPage() {
             information.
           </p>
 
-          {/* 7 */}
-          <h2 style={H2_STYLE}>7. CHILDREN&apos;S PRIVACY</h2>
+          {/* 8 */}
+          <h2 style={H2_STYLE}>8. CHILDREN&apos;S PRIVACY</h2>
           <p style={P_STYLE}>
             Our services are not directed at children under the age of 13. We do not knowingly
             collect personal information from children. If you believe a child has provided us
             with personal information, please contact us and we will delete it promptly.
           </p>
 
-          {/* 8 */}
-          <h2 style={H2_STYLE}>8. CHANGES TO THIS POLICY</h2>
+          {/* 9 */}
+          <h2 style={H2_STYLE}>9. CHANGES TO THIS POLICY</h2>
           <p style={P_STYLE}>
             We may update this Privacy Policy from time to time. Changes will be posted on this
             page with an updated &quot;Last updated&quot; date. Continued use of the site after changes
             are posted constitutes your acceptance of the revised policy.
           </p>
 
-          {/* 9 */}
-          <h2 style={H2_STYLE}>9. CONTACT US</h2>
+          {/* 10 */}
+          <h2 style={H2_STYLE}>10. CONTACT US</h2>
           <p style={P_STYLE}>
             If you have any questions or concerns about this Privacy Policy or how your
             information is handled, please contact us at:
