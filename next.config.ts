@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     return [
       { source: '/tools/image-converter',  destination: '/tools/image-studio', permanent: true },
       { source: '/tools/image-compressor', destination: '/tools/image-studio', permanent: true },
+      { source: '/portfolio/status/betledger', destination: '/betledger', permanent: true },
     ];
   },
 };

@@ -15,6 +15,8 @@ export interface NxOriginal {
   status: string;
   statusDescription?: string;
   imageSrc: string;
+  // Absolute URL = external site; root-relative path = on-site landing page;
+  // null = falls back to /portfolio/status/[slug]. See getProjectDestination.
   link?: string | null;
 }
 
@@ -49,7 +51,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Testing',
     statusDescription: 'Coming to Play Store',
     imageSrc: '/images/originals/BetLedger-Card.webp',
-    link: null,
+    link: '/betledger',
   },
   {
     id: 'sorapesa',

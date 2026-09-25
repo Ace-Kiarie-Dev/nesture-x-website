@@ -55,7 +55,7 @@ function getItems(type: 'web' | 'mobile'): ProductCardData[] {
 
 function ProductCard({ item }: { item: ProductCardData }) {
   const [hovered, setHovered] = useState(false);
-  const { href, isExternal } = getProjectDestination(item.url, item.anchorId);
+  const { href, isExternal, isStatusPage } = getProjectDestination(item.url, item.anchorId);
 
   const inner = (
     <div
@@ -162,7 +162,7 @@ function ProductCard({ item }: { item: ProductCardData }) {
               color: 'var(--color-text)',
             }}
           >
-            {isExternal ? 'Visit Site' : 'View Status'}
+            {isExternal ? 'Visit Site' : isStatusPage ? 'View Status' : 'Learn More'}
           </span>
           <motion.span
             animate={{ x: hovered ? 4 : 0 }}

@@ -1,49 +1,10 @@
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
 import { notFound } from 'next/navigation';
 import { privacyPolicies } from '@/lib/legal/privacy-policies';
 import PrivacyCard from './PrivacyCard';
+import BetLedgerPolicy from './BetLedgerPolicy';
+import { renderParagraphs } from './renderText';
 import './privacy.css';
-
-const LINK_PATTERN = /(https?:\/\/[^\s]+(?<![.,;:!?)]))|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
-
-function linkifyText(text: string, keyPrefix: string): ReactNode[] {
-  const parts: ReactNode[] = [];
-  let lastIndex = 0;
-  let linkIndex = 0;
-  let match: RegExpExecArray | null;
-
-  LINK_PATTERN.lastIndex = 0;
-  while ((match = LINK_PATTERN.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(text.slice(lastIndex, match.index));
-    }
-    const value = match[0];
-    const href = match[1] ? value : `mailto:${value}`;
-    parts.push(
-      <a
-        key={`${keyPrefix}-link-${linkIndex++}`}
-        href={href}
-        className="nx-privacy-link"
-      >
-        {value}
-      </a>
-    );
-    lastIndex = LINK_PATTERN.lastIndex;
-  }
-  if (lastIndex < text.length) {
-    parts.push(text.slice(lastIndex));
-  }
-  return parts;
-}
-
-function renderParagraphs(text: string, keyPrefix: string, style: React.CSSProperties) {
-  return text.split('\n\n').map((paragraph, i) => (
-    <p key={`${keyPrefix}-p-${i}`} style={style}>
-      {linkifyText(paragraph, `${keyPrefix}-${i}`)}
-    </p>
-  ));
-}
 
 export async function generateStaticParams() {
   return privacyPolicies.map((p) => ({ app: p.slug }));
@@ -76,6 +37,11 @@ export default async function NxPrivPolicyPage({
   const { app } = await params;
   const policy = privacyPolicies.find((p) => p.slug === app);
   if (!policy) notFound();
+
+  // Themed policies get their product's own presentation; the rest keep NX styling.
+  if (policy.theme === 'betledger') {
+    return <BetLedgerPolicy policy={policy} />;
+  }
 
   return (
     <main
@@ -120,12 +86,15 @@ export default async function NxPrivPolicyPage({
         {policy.intro && (
           <div className="mt-8" style={{ marginBottom: '2rem' }}>
             {renderParagraphs(policy.intro, 'intro', {
-              fontFamily: 'var(--font-body)',
-              fontSize: '1.1rem',
-              fontWeight: 500,
-              lineHeight: 1.8,
-              color: 'rgba(245,245,245,0.9)',
-              marginBottom: '1.5rem',
+              linkClassName: 'nx-privacy-link',
+              style: {
+                fontFamily: 'var(--font-body)',
+                fontSize: '1.1rem',
+                fontWeight: 500,
+                lineHeight: 1.8,
+                color: 'rgba(245,245,245,0.9)',
+                marginBottom: '1.5rem',
+              },
             })}
           </div>
         )}
@@ -147,10 +116,13 @@ export default async function NxPrivPolicyPage({
               </h2>
               <div className="space-y-3">
                 {renderParagraphs(section.body, section.heading, {
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '0.95rem',
-                  lineHeight: 1.8,
-                  color: 'rgba(245,245,245,0.7)',
+                  linkClassName: 'nx-privacy-link',
+                  style: {
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '0.95rem',
+                    lineHeight: 1.8,
+                    color: 'rgba(245,245,245,0.7)',
+                  },
                 })}
               </div>
             </div>

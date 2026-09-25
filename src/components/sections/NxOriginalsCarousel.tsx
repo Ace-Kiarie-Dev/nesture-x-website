@@ -104,8 +104,9 @@ export default function NxOriginalsCarousel() {
             }}
           >
             {/* Same destination rule as the portfolio project cards: a live
-                link wins (e.g. SHINKUSEN → shinkusen.co.ke, external); everything
-                else goes to that project's shared status page. */}
+                link wins (e.g. SHINKUSEN → shinkusen.co.ke, external; BetLedger →
+                /betledger, on-site); everything else goes to that project's
+                shared status page. */}
             {destination.isExternal ? (
               <Link href={destination.href} target="_blank" rel="noopener noreferrer" style={{ cursor: 'pointer' }}>
                 {card}

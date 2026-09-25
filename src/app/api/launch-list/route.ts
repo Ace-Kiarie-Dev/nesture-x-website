@@ -19,7 +19,7 @@ async function ensureIndex(db: Awaited<ReturnType<typeof getDb>>) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, projectSlug, projectName } = await req.json() as Record<string, string>;
+    const { email, projectSlug, projectName, source } = await req.json() as Record<string, string>;
 
     if (!email?.trim() || !EMAIL_RE.test(email.trim())) {
       return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
         email:       email.trim().toLowerCase(),
         projectSlug: projectSlug.trim(),
         projectName: projectName.trim(),
+        // Optional attribution (utm_source) — callers that don't send it record 'direct'.
+        source:      typeof source === 'string' && source.trim() ? source.trim().slice(0, 64) : 'direct',
         createdAt:   new Date(),
       });
     } catch (err) {

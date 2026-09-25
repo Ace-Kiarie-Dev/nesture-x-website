@@ -13,14 +13,14 @@ const bebasNeue = Bebas_Neue({
 });
 
 const spaceGrotesk = Space_Grotesk({
-  weight: ['300', '400', '500', '600'],
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-grotesk',
   display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  weight: ['400', '500'],
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-jetbrains',
   display: 'swap',

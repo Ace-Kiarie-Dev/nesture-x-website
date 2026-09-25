@@ -11,6 +11,8 @@ export interface PrivacyPolicy {
   intro?: string;
   sections: PrivacyPolicySection[];
   contactEmail: string;
+  // Optional product theme for the policy page. Unset = standard NX styling.
+  theme?: 'betledger';
 }
 
 const CONTACT_EMAIL = 'nesturex@gmail.com';
@@ -49,24 +51,25 @@ const PLACEHOLDER_SECTIONS = (appName: string): PrivacyPolicySection[] => [
 export const privacyPolicies: PrivacyPolicy[] = [
   {
     slug: 'betledger',
-    appName: 'Bet Ledger',
-    platform: 'Android / React Native',
+    appName: 'BetLedger',
+    platform: 'Android',
     lastUpdated: '2026-07-18',
     contactEmail: 'nesturex@gmail.com',
+    theme: 'betledger',
     intro:
-      'Bet Ledger is a personal betting-record app. It helps you keep an honest record of the bets you place elsewhere, so you can see what your betting is actually costing you.\n\nBet Ledger does not accept bets, hold money, provide odds, offer tips or predictions, or connect to any betting platform. It is a record-keeping tool and nothing else.\n\nThis policy explains what personal data Bet Ledger collects, why, where it is stored, and what rights you have over it.',
+      'BetLedger is a personal betting-record app. It helps you keep an honest record of the bets you place elsewhere, so you can see what your betting is actually costing you.\n\nBetLedger does not accept bets, hold money, provide odds, offer tips or predictions, or connect to any betting platform. It is a record-keeping tool and nothing else.\n\nThis policy explains what personal data BetLedger collects, why, where it is stored, and what rights you have over it.',
     sections: [
       {
         heading: 'Who is responsible for your data',
         body: 'Data controller: Peter Kiarie (trading as Nesture-X), Nairobi, Kenya\n\nContact: nesturex@gmail.com\n\nThis policy is published at https://nesturex.com/legal/betledger/privacy',
       },
       {
-        heading: 'Who can use Bet Ledger',
-        body: 'Bet Ledger is intended only for people aged 18 years or older. It is not directed at children, and we do not knowingly collect personal data from anyone under 18. If you believe someone under 18 has created an account, contact nesturex@gmail.com and we will delete it.',
+        heading: 'Who can use BetLedger',
+        body: 'BetLedger is intended only for people aged 18 years or older. It is not directed at children, and we do not knowingly collect personal data from anyone under 18. If you believe someone under 18 has created an account, contact nesturex@gmail.com and we will delete it.',
       },
       {
         heading: 'What data we collect',
-        body: 'Bet Ledger collects only what it needs to work. There is no advertising, no analytics, no tracking, and no profiling.\n\nAccount information: When you sign in with Google, Firebase Authentication provides us with your email address, display name, and profile photo. We do not receive your Google password or have any access to your Google account beyond this.\n\nInformation you enter: Bet records (stake, odds, market, selection, sport, betting platform, outcome, and match time), a username you choose within the app, and a weekly budget you set for yourself.\n\nInformation the app derives: Bet Ledger calculates statistics from the bets you record, including profit and loss, win rate, and streaks. These are derived from your own entries; we do not obtain them from anywhere else.\n\nWhat we do not collect: We do not collect your phone number, location, contacts, financial account details, payment information, or your activity on betting platforms. Bet Ledger has no connection to Betika, SportPesa, Odibets, M-Cheza, or any other operator. It only knows what you type into it.',
+        body: 'BetLedger collects only what it needs to work. There is no advertising, no analytics, no tracking, and no profiling.\n\nAccount information: When you sign in with Google, Firebase Authentication provides us with your email address, display name, and profile photo. We do not receive your Google password or have any access to your Google account beyond this.\n\nInformation you enter: Bet records (stake, odds, market, selection, sport, betting platform, outcome, and match time), a username you choose within the app, and a weekly budget you set for yourself.\n\nInformation the app derives: BetLedger calculates statistics from the bets you record, including profit and loss, win rate, and streaks. These are derived from your own entries; we do not obtain them from anywhere else.\n\nWhat we do not collect: We do not collect your phone number, location, contacts, financial account details, payment information, or your activity on betting platforms. BetLedger has no connection to Betika, SportPesa, Odibets, M-Cheza, or any other operator. It only knows what you type into it.',
       },
       {
         heading: 'Why we process your data',
@@ -74,11 +77,11 @@ export const privacyPolicies: PrivacyPolicy[] = [
       },
       {
         heading: 'Where your data is stored',
-        body: 'Your data is stored using Google Firebase (Firebase Authentication and Cloud Firestore).\n\nYour Bet Ledger data is stored on servers located in Belgium (Google Cloud region europe-west1), not in Kenya.\n\nThis means your personal data is transferred outside Kenya. Under sections 48 and 49 of the Data Protection Act, 2019, we rely on the following safeguards for this transfer: Google is contractually bound, through the Firebase Data Processing and Security Terms, to protect the data it processes on our behalf; Belgium is within the European Union, where data protection standards are broadly comparable to those required under Kenyan law; and data is encrypted in transit and at rest. By using Bet Ledger, you acknowledge that your data is stored outside Kenya on this basis.',
+        body: 'Your data is stored using Google Firebase (Firebase Authentication and Cloud Firestore).\n\nYour BetLedger data is stored on servers located in Belgium (Google Cloud region europe-west1), not in Kenya.\n\nThis means your personal data is transferred outside Kenya. Under sections 48 and 49 of the Data Protection Act, 2019, we rely on the following safeguards for this transfer: Google is contractually bound, through the Firebase Data Processing and Security Terms, to protect the data it processes on our behalf; Belgium is within the European Union, where data protection standards are broadly comparable to those required under Kenyan law; and data is encrypted in transit and at rest. By using BetLedger, you acknowledge that your data is stored outside Kenya on this basis.',
       },
       {
         heading: 'Who we share your data with',
-        body: "We do not sell your data. We do not share it with advertisers. We do not share it with betting operators.\n\nThe only third party involved is Google (Firebase), which stores and processes data on our behalf as our data processor. Google does not use your Bet Ledger data for its own purposes. Firebase's own privacy information is available at https://firebase.google.com/support/privacy.\n\nWe may disclose your data if we are legally required to do so — for example, in response to a valid court order or a lawful demand from a Kenyan authority.",
+        body: "We do not sell your data. We do not share it with advertisers. We do not share it with betting operators.\n\nThe only third party involved is Google (Firebase), which stores and processes data on our behalf as our data processor. Google does not use your BetLedger data for its own purposes. Firebase's own privacy information is available at https://firebase.google.com/support/privacy.\n\nWe may disclose your data if we are legally required to do so — for example, in response to a valid court order or a lawful demand from a Kenyan authority.",
       },
       {
         heading: 'How long we keep your data',
@@ -90,11 +93,11 @@ export const privacyPolicies: PrivacyPolicy[] = [
       },
       {
         heading: 'Deleting your account and data',
-        body: 'In the app (immediate): Open Bet Ledger, go to Settings, tap Delete Account, confirm. Your bet history, statistics, username, budget, and sign-in record are permanently deleted straight away. This cannot be undone.\n\nBy email (if you no longer have the app): Email nesturex@gmail.com from the Google account address you signed up with, asking for your account to be deleted. We will delete it within 30 days of receiving your request.\n\nWhat deletion removes: Your Firebase Authentication record (your sign-in), your entire bet history, and your statistics, username, and weekly budget. Nothing is retained afterwards. Deleting your Bet Ledger account does not affect your Google account, which stays exactly as it was.',
+        body: 'In the app (immediate): Open BetLedger, go to Settings, tap Delete Account, confirm. Your bet history, statistics, username, budget, and sign-in record are permanently deleted straight away. This cannot be undone.\n\nBy email (if you no longer have the app): Email nesturex@gmail.com from the Google account address you signed up with, asking for your account to be deleted. We will delete it within 30 days of receiving your request.\n\nWhat deletion removes: Your Firebase Authentication record (your sign-in), your entire bet history, and your statistics, username, and weekly budget. Nothing is retained afterwards. Deleting your BetLedger account does not affect your Google account, which stays exactly as it was.',
       },
       {
         heading: 'How we protect your data',
-        body: 'All data is encrypted in transit (HTTPS/TLS) and at rest. Access is controlled by Firebase Security Rules, which restrict every record so that only the signed-in owner can read or write it. We use Google Sign-In rather than storing passwords, so there are no Bet Ledger passwords to leak. No Bet Ledger user data is accessible to other users of the app. No system is perfectly secure, but the app is built so that your betting records are visible to you and no one else.',
+        body: 'All data is encrypted in transit (HTTPS/TLS) and at rest. Access is controlled by Firebase Security Rules, which restrict every record so that only the signed-in owner can read or write it. We use Google Sign-In rather than storing passwords, so there are no BetLedger passwords to leak. No BetLedger user data is accessible to other users of the app. No system is perfectly secure, but the app is built so that your betting records are visible to you and no one else.',
       },
       {
         heading: 'Changes to this policy',
@@ -109,7 +112,7 @@ export const privacyPolicies: PrivacyPolicy[] = [
   {
     slug: 'hikarani',
     appName: 'Hikarani',
-    platform: 'Android / React Native',
+    platform: 'Android',
     lastUpdated: '2026-07-16',
     sections: PLACEHOLDER_SECTIONS('Hikarani'),
     contactEmail: CONTACT_EMAIL,
@@ -117,7 +120,7 @@ export const privacyPolicies: PrivacyPolicy[] = [
   {
     slug: 'kikota',
     appName: 'Kikota',
-    platform: 'Android / React Native',
+    platform: 'Android',
     lastUpdated: '2026-07-16',
     sections: PLACEHOLDER_SECTIONS('Kikota'),
     contactEmail: CONTACT_EMAIL,
@@ -125,7 +128,7 @@ export const privacyPolicies: PrivacyPolicy[] = [
   {
     slug: 'no-snooze-solen',
     appName: 'No Snooze Solen',
-    platform: 'Android / React Native',
+    platform: 'Android',
     lastUpdated: '2026-07-16',
     sections: PLACEHOLDER_SECTIONS('No Snooze Solen'),
     contactEmail: CONTACT_EMAIL,
@@ -133,7 +136,7 @@ export const privacyPolicies: PrivacyPolicy[] = [
   {
     slug: 'unnamed-game',
     appName: 'NX Game Project — Working Title',
-    platform: 'Android / React Native',
+    platform: 'Android',
     lastUpdated: '2026-07-16',
     sections: PLACEHOLDER_SECTIONS('NX Game Project'),
     contactEmail: CONTACT_EMAIL,

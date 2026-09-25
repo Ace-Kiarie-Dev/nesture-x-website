@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BetLedger - Track Every Bet. Know Your Numbers.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#061423',
+              navyCard: '#0B1E34',
+              navyElevated: '#102742',
+              navyBorder: '#1A375A',
+              teal: '#42DEC3',
+              tealMuted: 'rgba(66, 222, 195, 0.15)',
+              gold: '#FFB955',
+              coral: '#FFB5B2',
+              textMuted: '#94A3B8',
+              textSubtle: '#64748B'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #061423;
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .teal-glow {
+      box-shadow: 0 0 50px -5px rgba(66, 222, 195, 0.22);
+    }
+    .teal-glow-subtle {
+      box-shadow: 0 0 35px -8px rgba(66, 222, 195, 0.16);
+    }
+    .perspective-800 {
+      perspective: 800px;
+    }
+  </style>
+</head>
+<body class="bg-brand-navy text-white selection:bg-brand-teal selection:text-brand-navy">
+<!-- Top notice indicator for embedded agency flyer display (no site header) -->
+<div class="w-full bg-[#030B14] py-2 px-3 text-center border-b border-[#0F2238] text-[10px] font-mono tracking-widest text-brand-textSubtle uppercase">
+    Agency Showcase • Embedded Product Landing Page
+  </div>
+<main class="w-full max-w-[375px] mx-auto px-4 py-8 flex flex-col gap-16 relative">
+<!-- Ambient global radial glow effects -->
+<div class="absolute top-12 left-1/2 -translate-x-1/2 w-72 h-72 bg-brand-teal/15 rounded-full blur-[90px] pointer-events-none -z-10"></div>
+<div class="absolute top-[680px] -left-20 w-64 h-64 bg-brand-teal/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+<div class="absolute top-[1380px] -right-20 w-64 h-64 bg-brand-teal/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+<div class="absolute bottom-20 left-1/2 -translate-x-1/2 w-64 h-64 bg-brand-teal/12 rounded-full blur-[90px] pointer-events-none -z-10"></div>
+<!-- 1. HERO SECTION -->
+<section class="flex flex-col items-center text-center pt-2 relative z-10">
+<!-- Small gold pill with subtle border -->
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFB955]/10 border border-[#FFB955]/30 mb-5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse"></span>
+<span class="text-[10px] font-mono font-bold tracking-wider text-brand-gold uppercase">COMING SOON ON GOOGLE PLAY</span>
+</div>
+<!-- Headline -->
+<h1 class="text-[32px] font-extrabold tracking-tight leading-[1.15] mb-3">
+        Track Every Bet.<br/>
+<span class="text-brand-teal">Know Your Numbers.</span>
+</h1>
+<!-- Subtext -->
+<p class="text-xs leading-relaxed text-brand-textMuted px-2 mb-6 font-normal">
+        A simple bet tracker built for Kenyan sports bettors. Log your bets, see your real wins and losses, and understand your habits.
+      </p>
+<!-- Waitlist form with 48px tap targets -->
+<form class="w-full flex flex-col gap-2.5 mb-10" onsubmit="event.preventDefault(); alert('Karibu! You have secured priority early access to BetLedger.');">
+<div class="relative">
+<input class="w-full h-12 px-4 rounded-full bg-brand-navyCard border border-brand-teal/30 text-sm text-white placeholder-brand-textSubtle focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition-all" placeholder="Enter your phone or email..." required="" type="text"/>
+</div>
+<button class="w-full h-12 rounded-full bg-brand-teal text-brand-navy font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#34ceb4] active:scale-[0.99] transition-all shadow-lg shadow-brand-teal/20" type="submit">
+<span>Notify Me at Launch</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+<p class="text-[11px] text-brand-textSubtle flex items-center justify-center gap-1.5 mt-0.5 font-mono">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
+          Free early access for the first 500 Nairobi users
+        </p>
+</form>
+<!-- Fanned Deck of 3 Phone Mockups -->
+<div class="w-full relative py-6">
+<!-- Floating geometric accents around mockups -->
+<span class="absolute top-1 left-2 w-2 h-2 rounded-full bg-brand-teal animate-ping opacity-75"></span>
+<span class="absolute top-2 left-3 w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
+<span class="absolute top-8 right-3 w-3 h-3 rounded-full border border-brand-teal/50"></span>
+<span class="absolute bottom-10 left-0 w-2 h-2 border border-brand-teal/40 rotate-45"></span>
+<span class="absolute -bottom-2 right-6 w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+<!-- Radial glow directly behind the card stack -->
+<div class="absolute inset-0 bg-brand-teal/25 blur-3xl rounded-full -z-10 transform scale-90"></div>
+<div class="relative w-full h-[390px] flex justify-center items-center">
+<!-- Mockup Back Left: History Screen (Angled & Offset) -->
+<div class="absolute left-1 top-4 w-[230px] h-[330px] rounded-[22px] bg-[#07192C] border border-brand-teal/25 p-2 shadow-2xl -rotate-[10deg] opacity-70 transform -translate-x-2 pointer-events-none">
+<div class="w-full h-full bg-[#05111E] rounded-[16px] p-2.5 flex flex-col gap-2 overflow-hidden text-left border border-white/5">
+<div class="text-[9px] font-mono text-brand-textSubtle uppercase tracking-wider border-b border-white/5 pb-1">Bet History</div>
+<div class="flex flex-col gap-1.5 opacity-60">
+<div class="p-1.5 rounded bg-[#091D33] border border-[#142C4B] text-[9px]">
+<div class="text-white font-medium">Arsenal vs Chelsea</div>
+<div class="text-brand-teal font-mono font-bold">+KES 850</div>
+</div>
+<div class="p-1.5 rounded bg-[#091D33] border border-[#142C4B] text-[9px]">
+<div class="text-white font-medium">Real Madrid Away</div>
+<div class="text-brand-coral font-mono font-bold">-KES 1,500</div>
+</div>
+<div class="p-1.5 rounded bg-[#091D33] border border-[#142C4B] text-[9px]">
+<div class="text-white font-medium">Gor Mahia ML</div>
+<div class="text-brand-teal font-mono font-bold">+KES 920</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Mockup Back Right: Insights Screen (Angled & Offset) -->
+<div class="absolute right-1 top-4 w-[230px] h-[330px] rounded-[22px] bg-[#07192C] border border-brand-teal/25 p-2 shadow-2xl rotate-[10deg] opacity-70 transform translate-x-2 pointer-events-none">
+<div class="w-full h-full bg-[#05111E] rounded-[16px] p-2.5 flex flex-col gap-2 overflow-hidden text-left border border-white/5">
+<div class="text-[9px] font-mono text-brand-gold uppercase tracking-wider border-b border-white/5 pb-1">Smart Insights</div>
+<div class="p-2 rounded bg-[#091D33] border border-brand-teal/20 text-[9px] text-brand-textMuted flex flex-col gap-1">
+<span class="text-white font-bold">Win Rate 64.2%</span>
+<div class="w-full bg-[#0B1E34] h-1.5 rounded-full overflow-hidden">
+<div class="bg-brand-teal h-full w-[64%]"></div>
+</div>
+<span class="text-[8px] text-brand-teal font-mono">Singles ROI: +21.4%</span>
+</div>
+</div>
+</div>
+<!-- Mockup Front Center: Live Dashboard Screen -->
+<div class="relative z-10 w-[270px] rounded-[24px] bg-[#081729] p-2.5 border-2 border-brand-teal/40 teal-glow shadow-2xl">
+<!-- Screen glass frame -->
+<div class="w-full bg-[#061423] rounded-[18px] p-3 border border-[#142A45] flex flex-col gap-2.5 text-left">
+<!-- App Bar inside phone -->
+<div class="flex items-center justify-between pb-1.5 border-b border-[#0F243D]">
+<div class="flex items-center gap-1.5">
+<div class="w-5 h-5 rounded-[4px] bg-brand-teal/20 border border-brand-teal/40 flex items-center justify-center text-brand-teal font-black text-[10px]">
+                    B
+                  </div>
+<span class="text-xs font-bold text-white tracking-tight">BetLedger</span>
+<span class="text-[8px] font-mono bg-brand-teal/15 text-brand-teal px-1 rounded">KE</span>
+</div>
+<span class="text-[9px] font-mono text-brand-textMuted bg-[#0B1E34] px-1.5 py-0.5 rounded border border-brand-navyBorder">OCT 2024</span>
+</div>
+<!-- Net P/L Hero in Phone -->
+<div class="bg-gradient-to-br from-[#0C223A] to-[#0A1A2E] p-2.5 rounded-[8px] border border-brand-teal/30">
+<div class="flex justify-between items-center mb-0.5">
+<span class="text-[9px] uppercase font-mono text-brand-textMuted tracking-wider">NET PROFIT / LOSS</span>
+<span class="text-[9px] font-mono font-semibold px-1 py-0.2 rounded bg-brand-teal/20 text-brand-teal border border-brand-teal/30">+14.2% ROI</span>
+</div>
+<div class="text-xl font-black font-mono text-brand-teal tracking-tight">
+                  +KES 4,250
+                </div>
+<div class="flex items-center justify-between text-[9px] text-brand-textMuted mt-1.5 pt-1.5 border-t border-[#152E4D]">
+<span>Staked: <strong class="text-white font-mono">29,800</strong></span>
+<span>Won: <strong class="text-brand-teal font-mono">34,050</strong></span>
+</div>
+</div>
+<!-- P/L Line Chart with teal line -->
+<div class="bg-[#081B30] p-2 rounded-[6px] border border-[#142A45]">
+<div class="flex justify-between text-[8px] font-mono text-brand-textMuted mb-1">
+<span>30-Day P/L Trajectory</span>
+<span class="text-brand-teal font-semibold">Profitable</span>
+</div>
+<svg class="w-full h-8" fill="none" viewbox="0 0 240 40">
+<defs>
+<lineargradient id="heroChartGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#42DEC3" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#42DEC3" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,32 Q25,28 50,30 T100,20 T150,22 T190,10 T240,4 L240,40 L0,40 Z" fill="url(#heroChartGrad)"></path>
+<path d="M0,32 Q25,28 50,30 T100,20 T150,22 T190,10 T240,4" stroke="#42DEC3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="240" cy="4" fill="#42DEC3" r="2.5"></circle>
+</svg>
+</div>
+<!-- Recent Bets with Win (Teal) and Loss (Coral) dots -->
+<div class="flex flex-col gap-1.5">
+<span class="text-[9px] font-mono uppercase text-brand-textSubtle">Recent Activity</span>
+<!-- Win -->
+<div class="flex items-center justify-between p-1.5 rounded-[5px] bg-[#0A1D33] border border-[#132B47] text-[10px]">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_6px_#42DEC3]"></span>
+<div>
+<div class="font-medium text-white leading-tight">Arsenal vs Chelsea • Over 2.5</div>
+<div class="text-[8px] text-brand-textMuted font-mono">Odds 1.85</div>
+</div>
+</div>
+<span class="font-mono text-brand-teal font-bold text-[10px]">+850</span>
+</div>
+<!-- Loss -->
+<div class="flex items-center justify-between p-1.5 rounded-[5px] bg-[#0A1D33] border border-[#132B47] text-[10px]">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-coral shadow-[0_0_6px_#FFB5B2]"></span>
+<div>
+<div class="font-medium text-white leading-tight">Real Madrid • ML Away</div>
+<div class="text-[8px] text-brand-textMuted font-mono">Odds 2.10</div>
+</div>
+</div>
+<span class="font-mono text-brand-coral font-bold text-[10px]">-1,500</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. HIGHLIGHT CARDS ROW (2x2 grid on mobile) -->
+<section>
+<div class="grid grid-cols-2 gap-3">
+<!-- Card 1: Log -->
+<div class="p-3.5 rounded-[10px] bg-[#091D34]/80 backdrop-blur-md border border-brand-teal/25 flex flex-col justify-between h-[96px]">
+<span class="text-xs font-mono font-bold tracking-wider text-brand-teal uppercase">01</span>
+<div>
+<div class="text-base font-extrabold text-white leading-tight">Log</div>
+<div class="text-[11px] text-brand-textMuted leading-tight mt-0.5">Bets in seconds</div>
+</div>
+</div>
+<!-- Card 2: Track (SOLID TEAL SPECIAL ACCENT) -->
+<div class="p-3.5 rounded-[10px] bg-brand-teal border border-brand-teal shadow-lg shadow-brand-teal/25 flex flex-col justify-between h-[96px]">
+<span class="text-xs font-mono font-black tracking-wider text-brand-navy/60 uppercase">02</span>
+<div>
+<div class="text-base font-black text-brand-navy leading-tight">Track</div>
+<div class="text-[11px] font-semibold text-brand-navy/90 leading-tight mt-0.5">Real profit and loss</div>
+</div>
+</div>
+<!-- Card 3: Review -->
+<div class="p-3.5 rounded-[10px] bg-[#091D34]/80 backdrop-blur-md border border-brand-teal/25 flex flex-col justify-between h-[96px]">
+<span class="text-xs font-mono font-bold tracking-wider text-brand-teal uppercase">03</span>
+<div>
+<div class="text-base font-extrabold text-white leading-tight">Review</div>
+<div class="text-[11px] text-brand-textMuted leading-tight mt-0.5">Full bet history</div>
+</div>
+</div>
+<!-- Card 4: Learn -->
+<div class="p-3.5 rounded-[10px] bg-[#091D34]/80 backdrop-blur-md border border-brand-teal/25 flex flex-col justify-between h-[96px]">
+<span class="text-xs font-mono font-bold tracking-wider text-brand-teal uppercase">04</span>
+<div>
+<div class="text-base font-extrabold text-white leading-tight">Learn</div>
+<div class="text-[11px] text-brand-textMuted leading-tight mt-0.5">Smart insights</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. ZIGZAG FEATURE SECTION 1 -->
+<section class="flex flex-col gap-5">
+<div>
+<span class="text-[10px] font-mono text-brand-teal uppercase tracking-widest block mb-1">Fast Data Entry</span>
+<h2 class="text-2xl font-bold tracking-tight text-white">Log Every Bet in Seconds</h2>
+</div>
+<!-- Icon features -->
+<div class="flex flex-col gap-3">
+<div class="flex items-start gap-3 p-3 rounded-[8px] bg-[#0A1E35]/60 border border-brand-teal/20">
+<div class="w-8 h-8 rounded-full bg-brand-teal/15 text-brand-teal flex items-center justify-center shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-xs font-bold text-white">Quick Entry</h3>
+<p class="text-[11px] text-brand-textMuted leading-snug mt-0.5">Add stake, odds, and outcome in a few taps right after your bookmaker slip is placed.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-[8px] bg-[#0A1E35]/60 border border-brand-teal/20">
+<div class="w-8 h-8 rounded-full bg-brand-teal/15 text-brand-teal flex items-center justify-center shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 6h16M4 10h16M4 14h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-xs font-bold text-white">Any Market</h3>
+<p class="text-[11px] text-brand-textMuted leading-snug mt-0.5">Track singles, multibets, and any bet type across football, basketball, and tennis.</p>
+</div>
+</div>
+</div>
+<!-- Angled Phone Mockup: Add Bet Screen -->
+<div class="relative py-2 mt-1">
+<!-- Floating geometric elements -->
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-brand-teal/80"></span>
+<span class="absolute bottom-4 left-2 w-3 h-3 rounded-full border border-brand-teal/40"></span>
+<span class="absolute top-1/2 -left-1 w-1.5 h-1.5 bg-brand-gold rotate-45"></span>
+<div class="w-full bg-[#08182B] rounded-[22px] p-2.5 border border-brand-teal/35 shadow-xl teal-glow-subtle transform -rotate-1">
+<div class="w-full bg-[#061423] rounded-[16px] p-3.5 border border-[#142B47] flex flex-col gap-3">
+<div class="flex items-center justify-between pb-1.5 border-b border-[#0F243D]">
+<span class="text-[10px] font-mono font-bold text-brand-teal uppercase">New Ledger Entry</span>
+<span class="text-[9px] font-mono text-brand-textSubtle">KES / DECIMAL</span>
+</div>
+<!-- Bet Type Selector: Single / Multibet -->
+<div class="flex flex-col gap-1">
+<label class="text-[9px] font-mono text-brand-textSubtle uppercase">Bet Type</label>
+<div class="grid grid-cols-2 gap-1.5 p-1 rounded-[6px] bg-[#0A1E35] border border-[#153154]">
+<button class="py-1 text-[11px] font-bold rounded bg-brand-teal text-brand-navy shadow-sm text-center" type="button">Single</button>
+<button class="py-1 text-[11px] font-semibold text-brand-textMuted hover:text-white text-center" type="button">Multibet</button>
+</div>
+</div>
+<!-- Stake & Odds Inputs inside mockup -->
+<div class="grid grid-cols-2 gap-2">
+<div class="p-2 rounded-[6px] bg-[#091C32] border border-brand-teal/30 flex flex-col gap-0.5">
+<span class="text-[8px] font-mono text-brand-textSubtle uppercase">STAKE (KES)</span>
+<span class="text-sm font-mono font-bold text-white">1,000</span>
+</div>
+<div class="p-2 rounded-[6px] bg-[#091C32] border border-brand-teal/30 flex flex-col gap-0.5">
+<span class="text-[8px] font-mono text-brand-textSubtle uppercase">TOTAL ODDS</span>
+<span class="text-sm font-mono font-bold text-brand-teal">2.15</span>
+</div>
+</div>
+<div class="p-2 rounded-[6px] bg-[#091C32] border border-[#142C4B] flex justify-between items-center text-[10px] font-mono">
+<span class="text-brand-textMuted">Potential Payout:</span>
+<span class="text-white font-bold">KES 2,150</span>
+</div>
+<button class="w-full py-2.5 rounded-[6px] bg-brand-teal text-brand-navy font-bold text-xs tracking-wide shadow-md shadow-brand-teal/20" type="button">
+              Save Bet
+            </button>
+</div>
+</div>
+</div>
+<!-- Outlined Pill CTA -->
+<a class="w-full h-11 rounded-full border border-brand-teal text-brand-teal font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-1.5 hover:bg-brand-teal/10 transition-colors" href="#waitlist">
+<span>Join the Waitlist</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+</section>
+<!-- 4. ZIGZAG FEATURE SECTION 2 -->
+<section class="flex flex-col gap-5">
+<div>
+<span class="text-[10px] font-mono text-brand-teal uppercase tracking-widest block mb-1">Deep Analytics</span>
+<h2 class="text-2xl font-bold tracking-tight text-white">See Where Your Money Really Goes</h2>
+</div>
+<!-- Icon features -->
+<div class="flex flex-col gap-3">
+<div class="flex items-start gap-3 p-3 rounded-[8px] bg-[#0A1E35]/60 border border-brand-teal/20">
+<div class="w-8 h-8 rounded-full bg-brand-teal/15 text-brand-teal flex items-center justify-center shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-xs font-bold text-white">True P/L</h3>
+<p class="text-[11px] text-brand-textMuted leading-snug mt-0.5">Your real net position, calculated accurately—not just the flashy wins you remember.</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 rounded-[8px] bg-[#0A1E35]/60 border border-brand-teal/20">
+<div class="w-8 h-8 rounded-full bg-brand-teal/15 text-brand-teal flex items-center justify-center shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<h3 class="text-xs font-bold text-white">Insights</h3>
+<p class="text-[11px] text-brand-textMuted leading-snug mt-0.5">Spot clear patterns in your stakes, sports markets, and win-rate trends by competition.</p>
+</div>
+</div>
+</div>
+<!-- Angled Phone Mockup: Insights Screen with Bar Chart & Circular Win-Rate Ring -->
+<div class="relative py-2 mt-1">
+<!-- Floating geometric elements -->
+<span class="absolute top-2 left-2 w-2 h-2 rounded-full border border-brand-coral"></span>
+<span class="absolute bottom-2 right-3 w-2.5 h-2.5 rounded-full bg-brand-teal/70"></span>
+<span class="absolute top-1/3 -right-1 w-2 h-2 border border-brand-teal/50 rotate-12"></span>
+<div class="w-full bg-[#08182B] rounded-[22px] p-2.5 border border-brand-teal/35 shadow-xl teal-glow-subtle transform rotate-1">
+<div class="w-full bg-[#061423] rounded-[16px] p-3.5 border border-[#142B47] flex flex-col gap-3">
+<div class="flex items-center justify-between pb-1.5 border-b border-[#0F243D]">
+<span class="text-[10px] font-mono font-bold text-brand-teal uppercase">Habits &amp; Performance</span>
+<span class="text-[9px] font-mono bg-brand-teal/15 text-brand-teal px-1.5 py-0.2 rounded font-semibold">ALL TIME</span>
+</div>
+<!-- Top Row: Win-Rate Ring & Key Metric -->
+<div class="flex items-center gap-3 p-2.5 rounded-[8px] bg-[#0A1E34] border border-[#142C4B]">
+<!-- Circular win-rate SVG ring in teal and coral -->
+<div class="relative w-14 h-14 shrink-0 flex items-center justify-center">
+<svg class="w-14 h-14 -rotate-90" viewbox="0 0 40 40">
+<!-- Loss ring background (Coral) -->
+<circle cx="20" cy="20" fill="transparent" r="16" stroke="#FFB5B2" stroke-opacity="0.3" stroke-width="4"></circle>
+<!-- Win ring arc (Teal 64.2%) -->
+<circle cx="20" cy="20" fill="transparent" r="16" stroke="#42DEC3" stroke-dasharray="100.53" stroke-dashoffset="36" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-[10px] font-mono font-bold text-white">64%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] font-mono text-brand-textSubtle uppercase">Strike Rate</span>
+<span class="text-xs font-bold text-white">64.2% Profitable</span>
+<div class="flex items-center gap-2 mt-1 text-[9px] font-mono">
+<span class="flex items-center gap-1 text-brand-teal">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span> 18 Wins
+                  </span>
+<span class="flex items-center gap-1 text-brand-coral">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-coral"></span> 10 Losses
+                  </span>
+</div>
+</div>
+</div>
+<!-- League Breakdown Visual Bar Chart -->
+<div class="p-2.5 rounded-[8px] bg-[#0A1E34] border border-[#142C4B] flex flex-col gap-2">
+<span class="text-[9px] font-mono text-brand-textSubtle uppercase tracking-wider">Breakdown by Competition</span>
+<!-- League 1: Premier League -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-[10px]">
+<span class="text-white font-medium">Premier League</span>
+<span class="font-mono text-brand-teal font-bold">+KES 3,100</span>
+</div>
+<div class="w-full bg-[#061423] h-2 rounded-full overflow-hidden">
+<div class="bg-brand-teal h-full w-[78%] rounded-full"></div>
+</div>
+</div>
+<!-- League 2: Kenya Premier League (KPL) -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-[10px]">
+<span class="text-white font-medium">KPL (Kenya)</span>
+<span class="font-mono text-brand-teal font-bold">+KES 1,850</span>
+</div>
+<div class="w-full bg-[#061423] h-2 rounded-full overflow-hidden">
+<div class="bg-brand-teal h-full w-[54%] rounded-full"></div>
+</div>
+</div>
+<!-- League 3: La Liga -->
+<div class="flex flex-col gap-0.5">
+<div class="flex justify-between text-[10px]">
+<span class="text-white font-medium">La Liga</span>
+<span class="font-mono text-brand-coral font-bold">-KES 700</span>
+</div>
+<div class="w-full bg-[#061423] h-2 rounded-full overflow-hidden">
+<div class="bg-brand-coral h-full w-[28%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. RESPONSIBLE GAMING & FINAL CTA -->
+<section class="flex flex-col gap-6" id="waitlist">
+<!-- Muted 18+ Responsible Disclosure -->
+<div class="p-3.5 rounded-[8px] bg-[#071626] border border-brand-navyBorder flex items-start gap-3">
+<div class="w-7 h-7 rounded-full bg-[#0D243F] text-brand-teal flex items-center justify-center shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-1.5">
+<span class="text-[10px] font-mono tracking-wider font-bold text-brand-textMuted uppercase">RESPONSIBLE TRACKING</span>
+<span class="px-1.5 py-0.2 rounded bg-brand-coral/10 text-brand-coral text-[9px] font-mono font-bold border border-brand-coral/30">18+ ONLY</span>
+</div>
+<p class="text-xs text-brand-textMuted leading-relaxed">
+            BetLedger is a tracking tool, not a betting platform. We don't take bets or handle money. Bet responsibly. 18+ only.
+          </p>
+</div>
+</div>
+<!-- Final waitlist conversion block -->
+<div class="p-6 rounded-[12px] bg-gradient-to-b from-[#0A223B] to-[#071628] border border-brand-teal/40 text-center relative teal-glow-subtle">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/15 border border-brand-gold/30 mb-3">
+<span class="text-[9px] font-mono font-bold text-brand-gold uppercase tracking-wider">EARLY ACCESS • NAIROBI</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-white mb-2 leading-snug">
+          Be the first to know when BetLedger launches.
+        </h2>
+<p class="text-xs text-brand-textMuted mb-5 leading-relaxed">
+          Join hundreds of smart Kenyan bettors taking command of their figures before the next Premier League weekend.
+        </p>
+<!-- Repeat input & button (48px tap targets) -->
+<form class="w-full flex flex-col gap-2.5" onsubmit="event.preventDefault(); alert('Asante sana! We will notify you right at launch.');">
+<input class="w-full h-12 px-4 rounded-full bg-brand-navyCard border border-brand-teal/30 text-sm text-white placeholder-brand-textSubtle focus:outline-none focus:border-brand-teal transition-all" placeholder="Enter your phone or email..." required="" type="text"/>
+<button class="w-full h-12 rounded-full bg-brand-teal text-brand-navy font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#34ceb4] active:scale-[0.99] transition-all shadow-lg shadow-brand-teal/20" type="submit">
+<span>Notify Me at Launch</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+</form>
+<!-- Privacy link -->
+<div class="mt-4 pt-3 border-t border-[#132B47] text-center">
+<a class="text-[11px] font-mono text-brand-textSubtle hover:text-brand-teal underline transition-colors" href="#privacy">
+            Privacy Policy
+          </a>
+</div>
+</div>
+</section>
+</main>
+</body></html>

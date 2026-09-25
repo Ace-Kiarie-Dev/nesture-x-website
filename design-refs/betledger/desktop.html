@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BetLedger - Track Every Bet. Know Your Numbers.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#061423',
+              card: '#0a1b2d',
+              cardElevated: '#0f243d',
+              border: '#153250',
+              borderGlow: 'rgba(66, 222, 195, 0.35)',
+              teal: '#42DEC3',
+              tealGlow: 'rgba(66, 222, 195, 0.15)',
+              gold: '#FFB955',
+              coral: '#FFB5B2',
+              textMuted: '#94A3B8',
+              textSubtle: '#64748B'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          boxShadow: {
+            'teal-glow': '0 0 60px -10px rgba(66, 222, 195, 0.28)',
+            'teal-card': '0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(66, 222, 195, 0.2)',
+            'teal-sm': '0 0 25px -4px rgba(66, 222, 195, 0.35)',
+            'coral-sm': '0 0 25px -4px rgba(255, 181, 178, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #061423;
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .grid-matrix {
+      background-size: 32px 32px;
+      background-image: radial-gradient(rgba(66, 222, 195, 0.12) 1px, transparent 1px);
+    }
+    .neon-border {
+      position: relative;
+    }
+    .neon-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(66,222,195,0.6), rgba(66,222,195,0.05), rgba(255,185,85,0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events-none;
+    }
+    .card-fanned-left {
+      transform: perspective(1000px) rotateY(16deg) rotateZ(-6deg) translateX(-48px) scale(0.88);
+      filter: brightness(0.7) blur(0.5px);
+    }
+    .card-fanned-right {
+      transform: perspective(1000px) rotateY(-16deg) rotateZ(6deg) translateX(48px) scale(0.88);
+      filter: brightness(0.75) blur(0.5px);
+    }
+    .card-fanned-center {
+      transform: perspective(1000px) translateZ(40px);
+      z-index: 20;
+    }
+  </style>
+</head>
+<body class="bg-brand-navy text-white selection:bg-brand-teal selection:text-brand-navy relative">
+<!-- Top notice indicator denoting agency showcase integration -->
+<header class="w-full bg-[#030c17]/90 backdrop-blur-md py-2.5 px-8 text-center border-b border-brand-border/60 text-[11px] font-mono tracking-widest text-brand-textSubtle uppercase z-50 sticky top-0 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+<span>FINTECH SHOWCASE • BETLEDGER KENYA</span>
+</div>
+<div>EMBEDDED DESKTOP VIEWPORT (1440PX)</div>
+<div class="flex items-center gap-4 text-brand-teal">
+<span class="text-xs">KENYA SHILLINGS (KES)</span>
+</div>
+</header>
+<main class="w-full max-w-[1440px] mx-auto px-8 lg:px-16 py-12 flex flex-col gap-32 relative">
+<!-- Background Atmospheric Lighting & Geometry -->
+<div class="absolute top-10 left-1/4 w-[650px] h-[650px] bg-brand-teal/15 rounded-full blur-[170px] pointer-events-none -z-10"></div>
+<div class="absolute top-[850px] -right-20 w-[600px] h-[600px] bg-brand-teal/10 rounded-full blur-[180px] pointer-events-none -z-10"></div>
+<div class="absolute top-[1700px] -left-20 w-[550px] h-[550px] bg-brand-teal/8 rounded-full blur-[160px] pointer-events-none -z-10"></div>
+<div class="absolute bottom-40 right-1/4 w-[700px] h-[700px] bg-brand-teal/12 rounded-full blur-[190px] pointer-events-none -z-10"></div>
+<!-- Micro decorative geometric particle rings & grids -->
+<div class="absolute top-28 right-16 w-48 h-48 border border-brand-teal/20 rounded-full pointer-events-none opacity-40"></div>
+<div class="absolute top-36 right-24 w-32 h-32 border border-brand-teal/10 rounded-full border-dashed pointer-events-none"></div>
+<div class="absolute top-[480px] left-8 w-24 h-24 grid-matrix opacity-40 pointer-events-none"></div>
+<div class="absolute top-[1350px] right-12 w-32 h-32 grid-matrix opacity-35 pointer-events-none"></div>
+<!-- ============================================================ -->
+<!-- 1. HERO SECTION (2-Column Grid + Fanned Deck of 3 Mockups)  -->
+<!-- ============================================================ -->
+<section class="grid grid-cols-12 gap-8 items-center pt-4 relative">
+<!-- Left Column: Copy & Form -->
+<div class="col-span-12 lg:col-span-6 flex flex-col items-start z-10">
+<!-- Gold badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFB955]/10 border border-[#FFB955]/30 mb-8 backdrop-blur-sm">
+<span class="w-2 h-2 rounded-full bg-brand-gold animate-pulse"></span>
+<span class="text-[11px] font-mono font-bold tracking-widest text-brand-gold uppercase">COMING SOON ON GOOGLE PLAY</span>
+</div>
+<!-- Headline -->
+<h1 class="text-5xl lg:text-[62px] font-extrabold tracking-tight leading-[1.08] mb-6">
+          Track Every Bet.<br/>
+<span class="text-brand-teal drop-shadow-[0_0_24px_rgba(66,222,195,0.4)]">Know Your Numbers.</span>
+</h1>
+<!-- Subtext -->
+<p class="text-lg leading-relaxed text-brand-textMuted max-w-xl mb-10">
+          A simple bet tracker built for Kenyan sports bettors. Log your bets, see your real wins and losses, and understand your habits.
+        </p>
+<!-- Waitlist Form (Dark Glass Input + Teal Pill Button) -->
+<form class="w-full max-w-lg flex flex-col sm:flex-row items-center gap-2.5 p-1.5 rounded-full bg-[#0a1b2d]/80 border border-brand-border/80 backdrop-blur-xl shadow-2xl mb-4 group focus-within:border-brand-teal/70 transition-all" onsubmit="event.preventDefault(); alert('Karibu! You have been added to the BetLedger Nairobi priority waitlist.');">
+<div class="flex items-center gap-2 px-4 flex-1 w-full">
+<span class="material-symbols-outlined text-brand-textSubtle text-[20px]">mail</span>
+<input class="w-full bg-transparent border-none text-sm text-white placeholder-brand-textSubtle focus:outline-none focus:ring-0" placeholder="Enter your phone or email..." required="" type="email"/>
+</div>
+<button class="w-full sm:w-auto h-12 px-7 rounded-full bg-brand-teal text-[#031525] font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#52ebd2] active:scale-95 transition-all shadow-[0_0_20px_rgba(66,222,195,0.4)] shrink-0" type="submit">
+<span>Notify Me at Launch</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<p class="text-xs text-brand-textSubtle flex items-center gap-2 pl-2">
+<span class="material-symbols-outlined text-brand-teal text-[16px]">verified</span>
+          Early access reserved for the first 500 Nairobi users
+        </p>
+</div>
+<!-- Right Column: Fanned Deck of 3 High-Fidelity Phone Mockups -->
+<div class="col-span-12 lg:col-span-6 relative flex items-center justify-center min-h-[580px] select-none">
+<!-- Expansive soft teal radial glow behind cards -->
+<div class="absolute w-[440px] h-[440px] bg-brand-teal/25 rounded-full blur-[90px] pointer-events-none -z-10"></div>
+<div class="absolute w-[300px] h-[300px] border border-brand-teal/20 rounded-full pointer-events-none"></div>
+<div class="absolute w-[480px] h-[480px] border border-brand-teal/10 rounded-full pointer-events-none"></div>
+<!-- Phone Fan Container -->
+<div class="relative w-full max-w-[540px] h-[540px] flex items-center justify-center">
+<!-- Left Background Phone: Add Bet slip -->
+<div class="absolute w-[260px] bg-[#071728] rounded-[32px] p-3 border border-brand-border card-fanned-left transition-transform hover:scale-[0.92] hover:z-30 duration-300 shadow-2xl">
+<div class="w-full bg-[#05111e] rounded-[24px] p-3.5 flex flex-col gap-2.5 text-xs">
+<div class="flex items-center justify-between pb-2 border-b border-brand-border/60">
+<span class="font-mono text-[10px] text-brand-teal font-bold uppercase">QUICK LOG</span>
+<span class="text-[9px] font-mono text-brand-textSubtle">SLIP #8902</span>
+</div>
+<div class="space-y-1">
+<span class="text-[9px] font-mono text-brand-textSubtle uppercase">FIXTURE</span>
+<div class="bg-[#0b1e33] p-1.5 rounded text-[11px] font-semibold text-white truncate">Arsenal vs Chelsea</div>
+</div>
+<div class="grid grid-cols-2 gap-1.5">
+<div class="bg-[#0b1e33] p-1.5 rounded">
+<div class="text-[8px] font-mono text-brand-textSubtle">STAKE (KES)</div>
+<div class="text-[11px] font-mono font-bold text-white">1,000</div>
+</div>
+<div class="bg-[#0b1e33] p-1.5 rounded">
+<div class="text-[8px] font-mono text-brand-textSubtle">ODDS</div>
+<div class="text-[11px] font-mono font-bold text-brand-teal">1.85</div>
+</div>
+</div>
+<div class="mt-2 py-1.5 bg-brand-teal text-brand-navy rounded font-bold text-center text-[10px]">
+                CONFIRM BET
+              </div>
+</div>
+</div>
+<!-- Right Background Phone: Insights Preview -->
+<div class="absolute w-[260px] bg-[#071728] rounded-[32px] p-3 border border-brand-border card-fanned-right transition-transform hover:scale-[0.92] hover:z-30 duration-300 shadow-2xl">
+<div class="w-full bg-[#05111e] rounded-[24px] p-3.5 flex flex-col gap-2.5 text-xs">
+<div class="flex items-center justify-between pb-2 border-b border-brand-border/60">
+<span class="font-mono text-[10px] text-brand-gold font-bold uppercase">HABIT REPORT</span>
+<span class="text-[9px] font-mono text-brand-textSubtle">30 DAYS</span>
+</div>
+<div class="bg-[#0b1e33] p-2 rounded flex items-center justify-between">
+<span class="text-[10px] text-brand-textMuted">Win Rate</span>
+<span class="text-xs font-mono font-bold text-brand-teal">64.2%</span>
+</div>
+<div class="bg-[#0b1e33] p-2 rounded">
+<div class="text-[9px] font-mono text-brand-gold uppercase mb-1">PROFIT DRIVER</div>
+<p class="text-[10px] text-brand-textMuted leading-tight">Singles yields +21.4% ROI</p>
+</div>
+<div class="h-10 bg-[#08182a] rounded flex items-end justify-between px-2 pb-1 gap-1">
+<div class="w-3 bg-brand-teal/40 h-4 rounded-sm"></div>
+<div class="w-3 bg-brand-teal/60 h-6 rounded-sm"></div>
+<div class="w-3 bg-brand-teal h-8 rounded-sm"></div>
+<div class="w-3 bg-brand-coral h-5 rounded-sm"></div>
+<div class="w-3 bg-brand-teal h-7 rounded-sm"></div>
+</div>
+</div>
+</div>
+<!-- FRONT CENTER PHONE: Dashboard with Net P/L, Chart & Recent Bets -->
+<div class="w-[330px] bg-[#08192d] rounded-[38px] p-3.5 border-2 border-brand-border/90 card-fanned-center shadow-teal-glow">
+<div class="w-full bg-[#061423] rounded-[28px] p-4 border border-brand-border/70 flex flex-col gap-3">
+<!-- In-Mockup Header -->
+<div class="flex items-center justify-between pb-2.5 border-b border-brand-border/50">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-md bg-brand-teal/20 border border-brand-teal/40 flex items-center justify-center text-brand-teal font-extrabold text-xs">
+                    B
+                  </div>
+<div>
+<span class="text-xs font-bold text-white tracking-wide">BetLedger</span>
+<span class="text-[9px] font-mono bg-brand-teal/15 text-brand-teal px-1 py-0.2 rounded ml-1">KE</span>
+</div>
+</div>
+<div class="text-[10px] font-mono text-brand-textMuted bg-[#0c223a] px-2 py-0.5 rounded border border-brand-border/60">
+                  OCT 2024
+                </div>
+</div>
+<!-- Net P/L Card -->
+<div class="bg-gradient-to-br from-[#0c233c] to-[#081728] p-3.5 rounded-xl border border-brand-teal/40 shadow-inner">
+<div class="flex justify-between items-start mb-0.5">
+<span class="text-[10px] uppercase font-mono text-brand-textSubtle tracking-wider">NET PROFIT / LOSS</span>
+<span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-brand-teal/20 text-brand-teal border border-brand-teal/30">+14.2% ROI</span>
+</div>
+<div class="text-2xl font-black font-mono text-brand-teal tracking-tight">
+                  +KES 4,250
+                </div>
+<div class="flex items-center justify-between text-[11px] text-brand-textMuted mt-2 pt-2 border-t border-brand-border/40">
+<span>Staked: <strong class="text-white font-mono text-[10px]">29,800</strong></span>
+<span>Won: <strong class="text-brand-teal font-mono text-[10px]">34,050</strong></span>
+</div>
+</div>
+<!-- 30-Day P/L Trajectory Line Chart -->
+<div class="bg-[#081b30] p-2.5 rounded-lg border border-brand-border/60">
+<div class="flex justify-between text-[10px] font-mono text-brand-textMuted mb-1">
+<span>30-Day P/L Curve</span>
+<span class="text-brand-teal font-semibold">Positive</span>
+</div>
+<svg class="w-full h-12" fill="none" viewbox="0 0 280 48">
+<defs>
+<lineargradient id="heroChartGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#42DEC3" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#42DEC3" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,38 Q30,34 65,36 T130,22 T190,26 T240,12 T280,6 L280,48 L0,48 Z" fill="url(#heroChartGrad)"></path>
+<path d="M0,38 Q30,34 65,36 T130,22 T190,26 T240,12 T280,6" stroke="#42DEC3" stroke-linecap="round" stroke-width="2.2"></path>
+<circle cx="280" cy="6" fill="#42DEC3" r="3.5"></circle>
+</svg>
+</div>
+<!-- Recent Bets with status dots -->
+<div>
+<div class="flex items-center justify-between text-[10px] font-mono uppercase text-brand-textSubtle mb-1.5">
+<span>Recent Activity</span>
+<span>P / L</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<!-- Bet 1: Arsenal win -->
+<div class="flex items-center justify-between p-2 rounded bg-[#091e35] border border-brand-border/40 text-[11px]">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-brand-teal shadow-teal-sm"></span>
+<div>
+<div class="font-semibold text-white leading-none">Arsenal vs Chelsea</div>
+<div class="text-[9px] text-brand-textSubtle font-mono mt-0.5">Over 2.5 • 1.85</div>
+</div>
+</div>
+<div class="text-right font-mono">
+<div class="font-bold text-brand-teal">+850</div>
+<div class="text-[9px] text-brand-textSubtle">KES</div>
+</div>
+</div>
+<!-- Bet 2: Real Madrid loss -->
+<div class="flex items-center justify-between p-2 rounded bg-[#091e35] border border-brand-border/40 text-[11px]">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-brand-coral shadow-coral-sm"></span>
+<div>
+<div class="font-semibold text-white leading-none">Real Madrid</div>
+<div class="text-[9px] text-brand-textSubtle font-mono mt-0.5">ML Away • 2.10</div>
+</div>
+</div>
+<div class="text-right font-mono">
+<div class="font-bold text-brand-coral">-1,500</div>
+<div class="text-[9px] text-brand-textSubtle">KES</div>
+</div>
+</div>
+<!-- Bet 3: Gor Mahia win -->
+<div class="flex items-center justify-between p-2 rounded bg-[#091e35] border border-brand-border/40 text-[11px]">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-brand-teal shadow-teal-sm"></span>
+<div>
+<div class="font-semibold text-white leading-none">Gor Mahia vs Leopards</div>
+<div class="text-[9px] text-brand-textSubtle font-mono mt-0.5">Home Win • 1.92</div>
+</div>
+</div>
+<div class="text-right font-mono">
+<div class="font-bold text-brand-teal">+920</div>
+<div class="text-[9px] text-brand-textSubtle">KES</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- 2. HIGHLIGHT CARDS ROW (4 cards horizontally)                -->
+<!-- ============================================================ -->
+<section>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Card 1: Log -->
+<div class="p-6 rounded-2xl bg-brand-card/90 border border-brand-border/80 backdrop-blur-md hover:border-brand-teal/50 hover:-translate-y-1 transition-all group flex flex-col justify-between shadow-teal-card">
+<div class="flex items-center justify-between mb-8">
+<span class="text-xs font-mono text-brand-teal font-semibold uppercase tracking-wider">01 / SPEED</span>
+<span class="material-symbols-outlined text-brand-teal text-[22px] group-hover:scale-110 transition-transform">edit_note</span>
+</div>
+<div>
+<h3 class="text-3xl font-extrabold text-white mb-1">Log</h3>
+<p class="text-brand-textMuted text-sm">Bets in seconds</p>
+</div>
+</div>
+<!-- Card 2: Track (FILLED SOLID TEAL #42DEC3 with deep dark text) -->
+<div class="p-6 rounded-2xl bg-brand-teal text-[#041423] font-sans hover:-translate-y-1 transition-all flex flex-col justify-between shadow-[0_0_40px_rgba(66,222,195,0.45)]">
+<div class="flex items-center justify-between mb-8">
+<span class="text-xs font-mono font-bold uppercase tracking-wider text-[#05273a]">02 / CORE</span>
+<span class="material-symbols-outlined text-[#05273a] text-[24px]">query_stats</span>
+</div>
+<div>
+<h3 class="text-3xl font-extrabold text-[#031525] mb-1">Track</h3>
+<p class="text-[#0a3148] font-semibold text-sm">Real profit and loss</p>
+</div>
+</div>
+<!-- Card 3: Review -->
+<div class="p-6 rounded-2xl bg-brand-card/90 border border-brand-border/80 backdrop-blur-md hover:border-brand-teal/50 hover:-translate-y-1 transition-all group flex flex-col justify-between shadow-teal-card">
+<div class="flex items-center justify-between mb-8">
+<span class="text-xs font-mono text-brand-teal font-semibold uppercase tracking-wider">03 / ARCHIVE</span>
+<span class="material-symbols-outlined text-brand-teal text-[22px] group-hover:scale-110 transition-transform">receipt_long</span>
+</div>
+<div>
+<h3 class="text-3xl font-extrabold text-white mb-1">Review</h3>
+<p class="text-brand-textMuted text-sm">Full bet history</p>
+</div>
+</div>
+<!-- Card 4: Learn -->
+<div class="p-6 rounded-2xl bg-brand-card/90 border border-brand-border/80 backdrop-blur-md hover:border-brand-teal/50 hover:-translate-y-1 transition-all group flex flex-col justify-between shadow-teal-card">
+<div class="flex items-center justify-between mb-8">
+<span class="text-xs font-mono text-brand-teal font-semibold uppercase tracking-wider">04 / DISCIPLINE</span>
+<span class="material-symbols-outlined text-brand-teal text-[22px] group-hover:scale-110 transition-transform">insights</span>
+</div>
+<div>
+<h3 class="text-3xl font-extrabold text-white mb-1">Learn</h3>
+<p class="text-brand-textMuted text-sm">Smart insights</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- 3. ZIGZAG FEATURE SECTION 1 (Phone Left, Specs Right)       -->
+<!-- ============================================================ -->
+<section class="grid grid-cols-12 gap-12 lg:gap-16 items-center">
+<!-- Left: Angled floating phone mockup displaying Add Bet screen -->
+<div class="col-span-12 lg:col-span-6 flex justify-center relative">
+<!-- Glow & background wireframe decoration -->
+<div class="absolute w-[360px] h-[360px] bg-brand-teal/15 rounded-full blur-[110px] pointer-events-none"></div>
+<div class="absolute -top-6 -left-6 w-32 h-32 border border-brand-teal/20 rounded-xl pointer-events-none rotate-12"></div>
+<!-- Phone Frame -->
+<div class="w-[320px] bg-[#08182b] rounded-[36px] p-3.5 border border-brand-border/90 shadow-2xl relative z-10 rotate-[-3deg] hover:rotate-0 transition-transform duration-300">
+<div class="w-full bg-[#051322] rounded-[26px] p-5 border border-brand-border/70 flex flex-col gap-4">
+<div class="flex justify-between items-center pb-2 border-b border-brand-border/60">
+<span class="text-xs font-mono font-bold text-brand-teal">NEW BET ENTRY</span>
+<span class="text-[10px] font-mono text-brand-textSubtle">NAIROBI TIME</span>
+</div>
+<!-- Stake Field -->
+<div>
+<label class="text-[10px] font-mono text-brand-textSubtle uppercase block mb-1">STAKE IN KES</label>
+<div class="flex items-center justify-between bg-[#0a1e35] p-2.5 rounded-lg border border-brand-border">
+<span class="text-xs font-mono text-brand-teal">KES</span>
+<span class="text-base font-mono font-bold text-white">1,000</span>
+</div>
+</div>
+<!-- Odds Field -->
+<div>
+<label class="text-[10px] font-mono text-brand-textSubtle uppercase block mb-1">DECIMAL ODDS</label>
+<div class="flex items-center justify-between bg-[#0a1e35] p-2.5 rounded-lg border border-brand-border">
+<span class="text-xs font-mono text-brand-textMuted">@</span>
+<span class="text-base font-mono font-bold text-brand-teal">2.15</span>
+</div>
+</div>
+<!-- Market Selector -->
+<div>
+<label class="text-[10px] font-mono text-brand-textSubtle uppercase block mb-1">MARKET TYPE</label>
+<div class="grid grid-cols-2 gap-2 text-xs font-mono">
+<div class="p-2 rounded bg-brand-teal/15 border border-brand-teal text-brand-teal text-center font-bold">Single</div>
+<div class="p-2 rounded bg-[#0a1e35] border border-brand-border text-brand-textMuted text-center">Multibet</div>
+</div>
+</div>
+<!-- Potential Return Preview -->
+<div class="bg-[#07192d] p-3 rounded-lg border border-brand-border/50 flex justify-between items-center text-xs">
+<span class="text-brand-textSubtle font-mono text-[11px]">Potential Return:</span>
+<span class="font-mono font-bold text-white">KES 2,150</span>
+</div>
+<!-- Save Bet Button -->
+<button class="w-full py-3 bg-brand-teal text-brand-navy font-extrabold text-xs uppercase tracking-wider rounded-lg shadow-[0_0_15px_rgba(66,222,195,0.3)] mt-1" type="button">
+              Save to Ledger
+            </button>
+</div>
+</div>
+</div>
+<!-- Right: Specs and Copy -->
+<div class="col-span-12 lg:col-span-6 flex flex-col items-start">
+<span class="text-xs font-mono font-bold text-brand-teal tracking-widest uppercase mb-3 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
+          INTUITIVE SLIP LOGGING
+        </span>
+<h2 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+          Log Every Bet in Seconds
+        </h2>
+<p class="text-base text-brand-textMuted leading-relaxed mb-8 max-w-xl">
+          Friction kills discipline. BetLedger is designed for the adrenaline moments right after placing a slip on your favorite local sportsbook.
+        </p>
+<!-- Two Feature Points Side by Side -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full mb-10">
+<div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border/60">
+<div class="w-10 h-10 rounded-lg bg-brand-teal/15 text-brand-teal flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<h4 class="text-base font-bold text-white mb-1">Quick Entry</h4>
+<p class="text-xs text-brand-textMuted leading-relaxed">Add stake, odds, and outcome in a few taps without cumbersome clutter.</p>
+</div>
+<div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border/60">
+<div class="w-10 h-10 rounded-lg bg-brand-teal/15 text-brand-teal flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</div>
+<h4 class="text-base font-bold text-white mb-1">Any Market</h4>
+<p class="text-xs text-brand-textMuted leading-relaxed">Track singles, multibets, and any bet type across football, basketball, and more.</p>
+</div>
+</div>
+<!-- Outlined Teal Pill Button -->
+<a class="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-brand-teal text-brand-teal font-bold text-sm tracking-wide hover:bg-brand-teal hover:text-brand-navy transition-all" href="#waitlist">
+<span>Join the Waitlist</span>
+<span class="material-symbols-outlined text-[18px]">arrow_downward</span>
+</a>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- 4. ZIGZAG FEATURE SECTION 2 (Specs Left, Phone Right)        -->
+<!-- ============================================================ -->
+<section class="grid grid-cols-12 gap-12 lg:gap-16 items-center">
+<!-- Left: Specs and Copy -->
+<div class="col-span-12 lg:col-span-6 flex flex-col items-start order-2 lg:order-1">
+<span class="text-xs font-mono font-bold text-brand-teal tracking-widest uppercase mb-3 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
+          UNCOMPROMISING VISIBILITY
+        </span>
+<h2 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+          See Where Your Money Really Goes
+        </h2>
+<p class="text-base text-brand-textMuted leading-relaxed mb-8 max-w-xl">
+          It's easy to remember a 50-to-1 accumulator win while ignoring everyday leaks. BetLedger calculates your authentic margin with uncompromising honesty.
+        </p>
+<!-- Two Feature Points Side by Side -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+<div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border/60">
+<div class="w-10 h-10 rounded-lg bg-brand-teal/15 text-brand-teal flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+</div>
+<h4 class="text-base font-bold text-white mb-1">True P/L</h4>
+<p class="text-xs text-brand-textMuted leading-relaxed">Your real net position, not just the wins you remember from last month.</p>
+</div>
+<div class="p-4 rounded-xl bg-brand-card/70 border border-brand-border/60">
+<div class="w-10 h-10 rounded-lg bg-brand-teal/15 text-brand-teal flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<h4 class="text-base font-bold text-white mb-1">Insights</h4>
+<p class="text-xs text-brand-textMuted leading-relaxed">Spot patterns in your stakes, markets, and results to safeguard your wallet.</p>
+</div>
+</div>
+</div>
+<!-- Right: Angled Phone Mockup showing Insights Screen -->
+<div class="col-span-12 lg:col-span-6 flex justify-center relative order-1 lg:order-2">
+<div class="absolute w-[360px] h-[360px] bg-brand-teal/15 rounded-full blur-[110px] pointer-events-none"></div>
+<div class="absolute -bottom-6 -right-6 w-32 h-32 border border-brand-teal/20 rounded-xl pointer-events-none -rotate-12"></div>
+<!-- Phone Frame -->
+<div class="w-[320px] bg-[#08182b] rounded-[36px] p-3.5 border border-brand-border/90 shadow-2xl relative z-10 rotate-[3deg] hover:rotate-0 transition-transform duration-300">
+<div class="w-full bg-[#051322] rounded-[26px] p-5 border border-brand-border/70 flex flex-col gap-4">
+<div class="flex justify-between items-center pb-2 border-b border-brand-border/60">
+<span class="text-xs font-mono font-bold text-brand-teal">ANALYTICS &amp; LEAKS</span>
+<span class="text-[10px] font-mono text-brand-gold bg-brand-gold/15 px-1.5 py-0.5 rounded">OCT</span>
+</div>
+<!-- Monthly P/L Bar Chart -->
+<div class="bg-[#081b30] p-3 rounded-lg border border-brand-border/60">
+<div class="flex justify-between text-[10px] font-mono text-brand-textSubtle mb-2">
+<span>WEEKLY SPREAD</span>
+<span class="text-brand-teal">+KES 4,250 NET</span>
+</div>
+<div class="flex items-end justify-between h-16 pt-2 px-2 border-b border-brand-border/40 gap-2">
+<div class="flex flex-col items-center gap-1 flex-1">
+<div class="w-full bg-brand-teal/40 rounded-t h-7"></div>
+<span class="text-[8px] font-mono text-brand-textSubtle">W1</span>
+</div>
+<div class="flex flex-col items-center gap-1 flex-1">
+<div class="w-full bg-brand-coral rounded-t h-4"></div>
+<span class="text-[8px] font-mono text-brand-textSubtle">W2</span>
+</div>
+<div class="flex flex-col items-center gap-1 flex-1">
+<div class="w-full bg-brand-teal/70 rounded-t h-10"></div>
+<span class="text-[8px] font-mono text-brand-textSubtle">W3</span>
+</div>
+<div class="flex flex-col items-center gap-1 flex-1">
+<div class="w-full bg-brand-teal rounded-t h-12"></div>
+<span class="text-[8px] font-mono text-brand-textSubtle">W4</span>
+</div>
+</div>
+</div>
+<!-- Win-Rate Circular Progress & Breakdown -->
+<div class="bg-[#081b30] p-3 rounded-lg border border-brand-border/60 flex items-center justify-between">
+<div>
+<span class="text-[10px] font-mono text-brand-textSubtle uppercase block">STRIKE RATE</span>
+<div class="text-xl font-bold font-mono text-brand-teal">64.2%</div>
+<span class="text-[9px] text-brand-textMuted">18 Won • 10 Lost</span>
+</div>
+<!-- Mini SVG Ring -->
+<svg class="w-14 h-14 -rotate-90" viewbox="0 0 36 36">
+<path class="text-brand-coral" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-brand-teal" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="64.2, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+</div>
+<!-- Leak Detection Callout -->
+<div class="p-2.5 rounded bg-brand-coral/10 border border-brand-coral/30 text-xs">
+<div class="flex items-center gap-1.5 text-brand-coral font-bold text-[10px] font-mono uppercase mb-0.5">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                LEAK DETECTED
+              </div>
+<p class="text-[11px] text-brand-textMuted leading-tight">
+                Accas &gt; 4 legs yield <strong>-42% ROI</strong>. Singles yield <strong>+21.4% ROI</strong>.
+              </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- 5. RESPONSIBLE GAMING & FINAL CTA                           -->
+<!-- ============================================================ -->
+<section class="flex flex-col gap-10 max-w-4xl mx-auto w-full">
+<!-- Calm 18+ Responsible Gaming disclosure card with shield icon -->
+<div class="p-5 sm:p-6 rounded-2xl bg-[#071626]/90 border border-brand-border/70 flex items-center gap-4 sm:gap-6 backdrop-blur-md">
+<div class="w-12 h-12 rounded-xl bg-brand-cardElevated border border-brand-border flex items-center justify-center text-brand-teal shrink-0">
+<span class="material-symbols-outlined text-[26px]">verified_user</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="text-xs font-mono font-bold text-white uppercase tracking-wider">
+              RESPONSIBLE GAMING STATEMENT
+            </span>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-brand-coral/15 text-brand-coral border border-brand-coral/30">
+              18+ ONLY
+            </span>
+</div>
+<p class="text-xs sm:text-sm text-brand-textMuted leading-relaxed">
+            BetLedger is a tracking and personal budgeting utility, not a betting platform or bookmaker. We do not accept wagers, execute stakes, or facilitate cash transactions. Bet responsibly.
+          </p>
+</div>
+</div>
+<!-- Final conversion box -->
+<div class="p-10 sm:p-14 rounded-3xl bg-gradient-to-b from-[#0b213a] to-[#061423] border border-brand-border/90 text-center relative overflow-hidden shadow-teal-glow" id="waitlist">
+<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-brand-teal/15 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 mb-5">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+<span class="text-[11px] font-mono font-bold text-brand-gold uppercase tracking-wider">PRIORITY ACCESS • NAIROBI</span>
+</div>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
+          Be the first to know when BetLedger launches.
+        </h2>
+<p class="text-sm sm:text-base text-brand-textMuted max-w-xl mx-auto mb-8 leading-relaxed">
+          Join hundreds of smart bettors taking command of their figures before the next Premier League matchday.
+        </p>
+<!-- Form Repeat -->
+<form class="w-full max-w-md mx-auto flex flex-col sm:flex-row items-center gap-2.5 p-1.5 rounded-full bg-[#07192d]/80 border border-brand-border backdrop-blur-xl shadow-2xl mb-6 group focus-within:border-brand-teal/70 transition-all" onsubmit="event.preventDefault(); alert('Asante! You are on the BetLedger priority launch list.');">
+<div class="flex items-center gap-2 px-4 flex-1 w-full">
+<span class="material-symbols-outlined text-brand-textSubtle text-[18px]">mail</span>
+<input class="w-full bg-transparent border-none text-sm text-white placeholder-brand-textSubtle focus:outline-none focus:ring-0" placeholder="Enter your email address..." required="" type="email"/>
+</div>
+<button class="w-full sm:w-auto h-12 px-6 rounded-full bg-brand-teal text-[#031525] font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#52ebd2] active:scale-95 transition-all shadow-[0_0_20px_rgba(66,222,195,0.4)] shrink-0" type="submit">
+<span>Notify Me</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</form>
+<div class="pt-4 border-t border-brand-border/40 text-center">
+<a class="text-xs font-mono text-brand-textSubtle hover:text-brand-teal underline transition-colors" href="#">
+            Privacy Policy
+          </a>
+</div>
+</div>
+</section>
+</main>
+</body></html>
