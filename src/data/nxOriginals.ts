@@ -62,7 +62,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     statusDescription: 'Coming to Play Store',
     imageSrc: '/images/originals/SoraPesa-Card.webp',
-    link: null,
+    link: '/sorapesa',
   },
   {
     id: 'hikarani',

@@ -1,12 +1,9 @@
-'use client';
-
-import { useId, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
+import SharedFaq, { type FaqClasses, type FaqItem } from '@/components/product-landing/Faq';
 
 const PRIVACY_HREF = '/legal/betledger/privacy';
 
-const FAQS: { q: string; a: React.ReactNode }[] = [
+const FAQS: FaqItem[] = [
   {
     q: 'Is BetLedger a betting app?',
     a: "No. BetLedger is a tracking tool. You record bets you've placed elsewhere so you can see your real results. We don't take bets or handle money.",
@@ -35,63 +32,15 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
   },
 ];
 
+const CLASSES: FaqClasses = {
+  list:        'bl-faq-list',
+  item:        'bl-faq-item bl-glass bl-lift',
+  question:    'bl-faq-q',
+  chevron:     'bl-faq-chevron',
+  answer:      'bl-faq-a',
+  answerInner: 'bl-faq-a-inner',
+};
+
 export default function Faq() {
-  const [open, setOpen] = useState<number | null>(0);
-  const baseId = useId();
-  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
-
-  // Arrow/Home/End move focus between questions (WAI-ARIA accordion pattern).
-  // Enter and Space toggle natively because each header is a <button>.
-  function onKeyDown(e: React.KeyboardEvent<HTMLButtonElement>, i: number) {
-    const last = FAQS.length - 1;
-    const next =
-      e.key === 'ArrowDown' ? (i === last ? 0 : i + 1) :
-      e.key === 'ArrowUp'   ? (i === 0 ? last : i - 1) :
-      e.key === 'Home'      ? 0 :
-      e.key === 'End'       ? last :
-      null;
-    if (next === null) return;
-    e.preventDefault();
-    buttons.current[next]?.focus();
-  }
-
-  return (
-    <div className="bl-faq-list">
-      {FAQS.map((item, i) => {
-        const isOpen = open === i;
-        const btnId = `${baseId}-q-${i}`;
-        const panelId = `${baseId}-a-${i}`;
-        return (
-          <div key={item.q} className="bl-faq-item bl-glass bl-lift" data-open={isOpen}>
-            <h3>
-              <button
-                ref={el => { buttons.current[i] = el; }}
-                id={btnId}
-                type="button"
-                className="bl-faq-q"
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                onClick={() => setOpen(isOpen ? null : i)}
-                onKeyDown={e => onKeyDown(e, i)}
-              >
-                {item.q}
-                <ChevronDown size={20} className="bl-faq-chevron" aria-hidden="true" />
-              </button>
-            </h3>
-            <div
-              id={panelId}
-              role="region"
-              aria-labelledby={btnId}
-              className="bl-faq-a"
-              inert={!isOpen}
-            >
-              <div className="bl-faq-a-inner">
-                <p>{item.a}</p>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <SharedFaq items={FAQS} classes={CLASSES} />;
 }

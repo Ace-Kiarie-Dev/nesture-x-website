@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoraPesa — Mobile Landing Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            'sp-indigo': '#6366F1',
+            'sp-purple': '#8B5CF6',
+            'sp-navy': '#0B1F3A',
+            'sp-light-indigo': '#E0E7FF',
+            'sp-bg': '#F8FAFC',
+            'sp-muted': '#64748B',
+            'sp-emerald': '#10B981',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      background-color: #F8FAFC;
+      color: #0B1F3A;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .gradient-brand {
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(224, 231, 255, 0.85);
+    }
+    .phone-shadow {
+      box-shadow: 0 20px 40px -10px rgba(11, 31, 58, 0.22), 0 0 0 1px rgba(11, 31, 58, 0.06);
+    }
+    .floating-badge {
+      box-shadow: 0 12px 24px -6px rgba(99, 102, 241, 0.25);
+    }
+    /* Simple accordion interaction */
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+    details[open] summary svg {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body class="w-full flex justify-center bg-slate-100 py-0 sm:py-6">
+  <!-- Mobile Container: 375px Priority Frame -->
+  <main class="w-full max-w-[375px] bg-[#F8FAFC] relative min-h-screen shadow-2xl border-x border-slate-200 overflow-hidden">
+    
+    <!-- Background Gradient Orbs -->
+    <div class="absolute -top-16 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-indigo-300/35 to-purple-300/25 blur-3xl pointer-events-none"></div>
+    <div class="absolute top-[480px] -left-24 w-80 h-80 rounded-full bg-gradient-to-tr from-purple-200/40 to-indigo-200/30 blur-3xl pointer-events-none"></div>
+    <div class="absolute top-[1600px] -right-24 w-72 h-72 rounded-full bg-indigo-200/30 blur-3xl pointer-events-none"></div>
+
+    <!-- ==============================================
+         1. HERO SECTION
+         ============================================== -->
+    <section class="relative px-5 pt-8 pb-12 overflow-hidden">
+      <!-- Top Pill -->
+      <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sp-light-indigo/80 border border-indigo-200/60 mb-5">
+        <span class="w-2 h-2 rounded-full bg-sp-indigo animate-pulse"></span>
+        <span class="text-[11px] font-bold tracking-wider text-sp-indigo uppercase">COMING SOON ON GOOGLE PLAY</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-[34px] leading-[1.15] font-extrabold text-sp-navy tracking-tight mb-4">
+        Open the Door to <br>
+        <span class="text-gradient">Smarter Money.</span>
+      </h1>
+
+      <!-- Subtext -->
+      <p class="text-[15px] leading-relaxed text-sp-muted font-medium mb-6">
+        The money app for young Kenyans figuring out life. Track your salary, bills, and side hustles, and finally see where your money goes.
+      </p>
+
+      <!-- Waitlist Input Form -->
+      <form class="space-y-3 mb-3" onsubmit="event.preventDefault(); alert('Asante! You are on the VIP launch list.');">
+        <div class="relative">
+          <input 
+            type="email" 
+            required 
+            placeholder="Enter your email address" 
+            class="w-full h-12 px-4 rounded-full bg-white border border-sp-light-indigo focus:border-sp-indigo focus:outline-none text-[14px] text-sp-navy shadow-sm transition placeholder:text-slate-400"
+          >
+        </div>
+        <button 
+          type="submit" 
+          class="w-full h-12 rounded-full gradient-brand text-white font-bold text-[14px] flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 active:scale-[0.99] transition"
+        >
+          <span>Notify Me at Launch</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </form>
+      <p class="text-[12px] text-slate-500 font-medium text-center mb-8">
+        🔒 We'll only email you when SoraPesa launches.
+      </p>
+
+      <!-- Floating Visual Ornaments & Phone Canvas -->
+      <div class="relative mt-2 pt-4 pb-2 flex justify-center">
+        <!-- Abstract Curved Gradient Wave Backdrop -->
+        <div class="absolute -top-4 w-[330px] h-[340px] rounded-[48px] bg-gradient-to-tr from-sp-indigo/20 via-sp-purple/20 to-transparent rotate-6 pointer-events-none"></div>
+        <div class="absolute top-2 w-[310px] h-[350px] rounded-[40px] bg-gradient-to-bl from-sp-purple/15 to-sp-light-indigo/50 -rotate-3 pointer-events-none"></div>
+
+        <!-- Floating 3D Graphic Accents -->
+        <!-- Coin with KES -->
+        <div class="absolute -top-3 -left-1 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-white/95 border border-indigo-100 shadow-md floating-badge -rotate-6">
+          <div class="w-7 h-7 rounded-full bg-amber-400 text-amber-900 font-black text-[10px] flex items-center justify-center border-2 border-white shadow-inner">
+            KES
+          </div>
+          <span class="text-[11px] font-bold text-sp-navy">+ KES 36,500</span>
+        </div>
+
+        <!-- Padlock Tag -->
+        <div class="absolute top-28 -right-2 z-20 p-2.5 rounded-2xl bg-white/95 border border-indigo-100 shadow-md floating-badge rotate-6">
+          <svg class="w-5 h-5 text-sp-indigo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+
+        <!-- Receipt Accent -->
+        <div class="absolute bottom-10 -left-2 z-20 px-2.5 py-1.5 rounded-xl bg-white/95 border border-indigo-100 shadow-md floating-badge rotate-3 flex items-center gap-1.5">
+          <span class="text-sm">🧾</span>
+          <span class="text-[11px] font-bold text-sp-navy">Auto-sorted</span>
+        </div>
+
+        <!-- Cupcake Accent for Hustles -->
+        <div class="absolute -bottom-2 right-4 z-20 px-2.5 py-1.5 rounded-xl bg-white/95 border border-indigo-100 shadow-md floating-badge -rotate-6 flex items-center gap-1.5">
+          <span class="text-sm">🧁</span>
+          <span class="text-[11px] font-bold text-sp-purple">Side Hustle</span>
+        </div>
+
+        <!-- Phone Frame: 280px realistic mock -->
+        <div class="relative z-10 w-[275px] rounded-[36px] bg-[#0B1F3A] p-2.5 phone-shadow">
+          <!-- Dynamic Notch -->
+          <div class="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-2 flex items-center justify-center">
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 mr-2"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-900/60"></div>
+          </div>
+
+          <!-- Phone Screen Inner Content -->
+          <div class="bg-white rounded-[28px] p-4 text-sp-navy overflow-hidden">
+            <!-- App Header -->
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <span class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Welcome back</span>
+                <h4 class="text-[15px] font-bold text-sp-navy">Hi, Wanjiru 👋</h4>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-indigo-50 border border-sp-light-indigo flex items-center justify-center text-sp-indigo font-bold text-xs">
+                W
+              </div>
+            </div>
+
+            <!-- Gradient Card -->
+            <div class="rounded-2xl gradient-brand p-3.5 text-white mb-3 shadow-sm">
+              <span class="text-[10px] font-medium opacity-90 block">Available this month</span>
+              <div class="text-[20px] font-extrabold tracking-tight mt-0.5">KES 36,500</div>
+              <div class="text-[11px] opacity-80 mt-1 font-medium flex items-center gap-1">
+                <span>of KES 65,000 salary</span>
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+              </div>
+            </div>
+
+            <!-- Short List: Committed items -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-0.5">
+                <span>Key commitments</span>
+                <span>Active</span>
+              </div>
+
+              <!-- Item 1: Rent -->
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-lg bg-indigo-100 text-sp-indigo flex items-center justify-center text-[10px]">🏠</div>
+                  <div>
+                    <div class="text-[12px] font-bold text-sp-navy">Rent</div>
+                    <div class="text-[10px] text-slate-400">Due in 5 days</div>
+                  </div>
+                </div>
+                <span class="text-[12px] font-bold text-slate-700">KES 15,000</span>
+              </div>
+
+              <!-- Item 2: Internet -->
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-lg bg-purple-100 text-sp-purple flex items-center justify-center text-[10px]">⚡</div>
+                  <div>
+                    <div class="text-[12px] font-bold text-sp-navy">Internet (Wi-Fi)</div>
+                    <div class="text-[10px] text-slate-400">Monthly auto-pay</div>
+                  </div>
+                </div>
+                <span class="text-[12px] font-bold text-slate-700">KES 2,500</span>
+              </div>
+
+              <!-- Item 3: Savings -->
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px]">🌱</div>
+                  <div>
+                    <div class="text-[12px] font-bold text-sp-navy">Rainy Day Fund</div>
+                    <div class="text-[10px] text-slate-400">Saved safely</div>
+                  </div>
+                </div>
+                <span class="text-[12px] font-bold text-emerald-600">+ KES 8,000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         2. THE PROBLEM SECTION
+         ============================================== -->
+    <section class="px-5 py-10 bg-white/70 border-y border-indigo-50 relative">
+      <div class="inline-block p-2 rounded-2xl bg-indigo-50 text-sp-indigo mb-3 text-lg">
+        🤔
+      </div>
+      <h2 class="text-[26px] leading-[1.25] font-extrabold text-sp-navy mb-3">
+        Salary came in.<br>Then… where did it go?
+      </h2>
+      <p class="text-[15px] leading-relaxed text-sp-muted font-medium">
+        Salary, M-Pesa, cash, bills, fees, side hustles. It's a lot to keep track of. SoraPesa brings it all into one clear picture.
+      </p>
+
+      <!-- Quick Micro-Visual Pills -->
+      <div class="grid grid-cols-2 gap-2 mt-5">
+        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+          <span class="text-[11px] text-slate-400 font-semibold block uppercase">Without SoraPesa</span>
+          <span class="text-[13px] font-bold text-red-500">End of month mystery</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-center">
+          <span class="text-[11px] text-sp-indigo font-semibold block uppercase">With SoraPesa</span>
+          <span class="text-[13px] font-bold text-sp-navy">Total peace of mind</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         3. HOW IT WORKS (Stacked 4 Steps)
+         ============================================== -->
+    <section class="px-5 py-12 relative">
+      <div class="text-center mb-8">
+        <span class="text-[11px] font-bold tracking-widest text-sp-indigo uppercase">HOW IT WORKS</span>
+        <h2 class="text-[24px] font-extrabold text-sp-navy mt-1">Four simple steps to clarity</h2>
+      </div>
+
+      <div class="space-y-6 relative">
+        <!-- Connecting Vertical Line -->
+        <div class="absolute left-[23px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-sp-indigo via-sp-purple to-indigo-100"></div>
+
+        <!-- Step 1 -->
+        <div class="relative flex items-start gap-4 z-10">
+          <div class="w-12 h-12 rounded-2xl gradient-brand text-white font-extrabold text-sm flex items-center justify-center shrink-0 shadow-md shadow-indigo-300">
+            01
+          </div>
+          <div class="pt-1">
+            <h3 class="text-[17px] font-bold text-sp-navy">Track</h3>
+            <p class="text-[14px] text-sp-muted font-medium mt-0.5">What came in, what went out.</p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative flex items-start gap-4 z-10">
+          <div class="w-12 h-12 rounded-2xl gradient-brand text-white font-extrabold text-sm flex items-center justify-center shrink-0 shadow-md shadow-indigo-300">
+            02
+          </div>
+          <div class="pt-1">
+            <h3 class="text-[17px] font-bold text-sp-navy">Understand</h3>
+            <p class="text-[14px] text-sp-muted font-medium mt-0.5">See exactly where it went.</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative flex items-start gap-4 z-10">
+          <div class="w-12 h-12 rounded-2xl gradient-brand text-white font-extrabold text-sm flex items-center justify-center shrink-0 shadow-md shadow-indigo-300">
+            03
+          </div>
+          <div class="pt-1">
+            <h3 class="text-[17px] font-bold text-sp-navy">Learn</h3>
+            <p class="text-[14px] text-sp-muted font-medium mt-0.5">Spot your spending patterns.</p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative flex items-start gap-4 z-10">
+          <div class="w-12 h-12 rounded-2xl gradient-brand text-white font-extrabold text-sm flex items-center justify-center shrink-0 shadow-md shadow-indigo-300">
+            04
+          </div>
+          <div class="pt-1">
+            <h3 class="text-[17px] font-bold text-sp-navy">Guide</h3>
+            <p class="text-[14px] text-sp-muted font-medium mt-0.5">Make better money decisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         4. SIGNATURE FEATURE: WHERE DID MY SALARY GO?
+         ============================================== -->
+    <section class="px-5 py-10 bg-indigo-50/40 border-t border-indigo-100/60">
+      <div class="mb-6">
+        <span class="text-[11px] font-bold text-sp-indigo uppercase tracking-wider">SIGNATURE FEATURE</span>
+        <h2 class="text-[25px] leading-tight font-extrabold text-sp-navy mt-1">See the Story of Your Salary</h2>
+        <p class="text-[14px] leading-relaxed text-sp-muted font-medium mt-2">
+          When your salary lands, SoraPesa shows what's already committed and what's truly yours to spend, then tracks it through the month.
+        </p>
+      </div>
+
+      <!-- Feature Phone Mockup: Salary Breakdown -->
+      <div class="w-full rounded-[30px] bg-sp-navy p-3 phone-shadow">
+        <!-- Bezel top -->
+        <div class="w-16 h-3 bg-slate-900 rounded-full mx-auto mb-2"></div>
+
+        <div class="bg-white rounded-[22px] p-4 text-sp-navy">
+          <div class="text-center pb-3 border-b border-slate-100">
+            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Monthly Inflow</span>
+            <div class="text-[22px] font-extrabold text-sp-navy mt-0.5">Salary: KES 65,000</div>
+          </div>
+
+          <!-- Split Bar Visual -->
+          <div class="mt-4 mb-3">
+            <div class="flex justify-between text-[11px] font-bold mb-1.5">
+              <span class="text-slate-500">Committed (44%)</span>
+              <span class="text-sp-indigo">Remaining (56%)</span>
+            </div>
+            <div class="w-full h-3 rounded-full bg-slate-100 flex overflow-hidden p-0.5 border border-slate-200">
+              <div class="h-full rounded-l-full bg-slate-400" style="width: 44%;"></div>
+              <div class="h-full rounded-r-full gradient-brand" style="width: 56%;"></div>
+            </div>
+          </div>
+
+          <!-- Remaining Box Highlighted -->
+          <div class="rounded-xl gradient-brand p-3 text-white text-center mb-3">
+            <span class="text-[10px] font-semibold opacity-90 uppercase tracking-wider">Truly Yours To Spend</span>
+            <div class="text-[20px] font-extrabold">Remaining: KES 36,500</div>
+          </div>
+
+          <!-- Committed List Breakdown -->
+          <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-100 space-y-1.5 text-[12px]">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Committed KES 28,500</div>
+            <div class="flex justify-between font-medium text-slate-600">
+              <span>🏠 Rent</span>
+              <span class="font-bold text-slate-800">KES 15,000</span>
+            </div>
+            <div class="flex justify-between font-medium text-slate-600">
+              <span>📶 Internet</span>
+              <span class="font-bold text-slate-800">KES 2,500</span>
+            </div>
+            <div class="flex justify-between font-medium text-slate-600">
+              <span>💡 Bills & Utilities</span>
+              <span class="font-bold text-slate-800">KES 3,000</span>
+            </div>
+            <div class="flex justify-between font-medium text-slate-600">
+              <span>💰 Savings</span>
+              <span class="font-bold text-emerald-600">KES 8,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         5. FEATURE CARDS (3 Solid Colors: Indigo, Purple, Navy)
+         ============================================== -->
+    <section class="px-5 py-12 space-y-4">
+      <div class="text-center mb-6">
+        <span class="text-[11px] font-bold text-sp-indigo uppercase tracking-wider">CORE CAPABILITIES</span>
+        <h2 class="text-[24px] font-extrabold text-sp-navy mt-1">Built for your daily flow</h2>
+      </div>
+
+      <!-- Indigo Card -->
+      <div class="p-6 rounded-[22px] bg-sp-indigo text-white shadow-lg shadow-indigo-500/20">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <h3 class="text-[19px] font-bold mb-2">M-Pesa Statement Import</h3>
+        <p class="text-[14px] text-white/90 leading-relaxed font-medium">
+          Import your last 1 to 3 months of statements. SoraPesa sorts your transactions automatically, and you review the rest.
+        </p>
+      </div>
+
+      <!-- Purple Card -->
+      <div class="p-6 rounded-[22px] bg-sp-purple text-white shadow-lg shadow-purple-500/20">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+          </svg>
+        </div>
+        <h3 class="text-[19px] font-bold mb-2">Side Hustle Tracking</h3>
+        <p class="text-[14px] text-white/90 leading-relaxed font-medium">
+          Log orders, revenue, and costs for your business, and see your real profit.
+        </p>
+      </div>
+
+      <!-- Deep Navy Card -->
+      <div class="p-6 rounded-[22px] bg-sp-navy text-white shadow-lg shadow-slate-900/20">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h3 class="text-[19px] font-bold mb-2">Bills and Recurring Costs</h3>
+        <p class="text-[14px] text-white/90 leading-relaxed font-medium">
+          SoraPesa spots your regular payments so you always know what's coming.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         6. SIDE HUSTLE SPOTLIGHT
+         ============================================== -->
+    <section class="px-5 py-10 bg-white relative">
+      <div class="mb-6">
+        <span class="text-[11px] font-bold text-sp-purple uppercase tracking-wider">HUSTLE SMARTER</span>
+        <h2 class="text-[25px] leading-tight font-extrabold text-sp-navy mt-1">
+          Your Side Hustle Is a Business. Track It Like One.
+        </h2>
+        <p class="text-[14px] leading-relaxed text-sp-muted font-medium mt-2">
+          From baking to design to reselling, see your revenue, costs, and real profit for every order.
+        </p>
+      </div>
+
+      <!-- Side Hustle Phone Card with 3D Cupcake accent -->
+      <div class="relative pt-3 pb-2 flex justify-center">
+        <!-- Floating 3D Cupcake Badge -->
+        <div class="absolute -top-1 -right-1 z-20 px-3 py-2 rounded-2xl bg-white border border-purple-200 shadow-xl floating-badge rotate-12 flex items-center gap-2">
+          <span class="text-xl">🧁</span>
+          <div>
+            <div class="text-[10px] font-bold uppercase text-sp-purple">Fresh Batch</div>
+            <div class="text-[11px] font-extrabold text-sp-navy">12 Cupcakes</div>
+          </div>
+        </div>
+
+        <!-- Phone screen mockup -->
+        <div class="w-[275px] rounded-[34px] bg-sp-navy p-2.5 phone-shadow">
+          <div class="w-16 h-3 bg-slate-900 rounded-full mx-auto mb-2"></div>
+          
+          <div class="bg-white rounded-[24px] p-4 text-sp-navy">
+            <!-- Business Header -->
+            <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
+              <div>
+                <span class="text-[10px] font-bold text-sp-purple uppercase tracking-wider">Category</span>
+                <h4 class="text-[15px] font-extrabold text-sp-navy">Baking Business</h4>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-purple-50 text-sp-purple font-bold text-[10px]">Active</span>
+            </div>
+
+            <!-- Order Details -->
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 mb-3">
+              <div class="text-[11px] font-bold text-slate-700">Order #024 · 12 cupcakes</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">Custom vanilla + buttercream order</div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="space-y-2 text-[12px]">
+              <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                <span class="text-slate-500 font-medium">Revenue</span>
+                <span class="font-extrabold text-sp-navy">KES 3,600</span>
+              </div>
+              <div class="py-1 border-b border-slate-100">
+                <div class="flex justify-between items-center text-slate-500 font-medium">
+                  <span>Costs (Total)</span>
+                  <span class="font-bold text-slate-700">KES 2,000</span>
+                </div>
+                <div class="text-[10px] text-slate-400 mt-0.5 pl-1">
+                  • Ingredients: KES 1,200<br>
+                  • Packaging: KES 400<br>
+                  • Delivery: KES 400
+                </div>
+              </div>
+            </div>
+
+            <!-- Profit Highlight -->
+            <div class="mt-3 p-3 rounded-xl gradient-brand text-white text-center">
+              <span class="text-[10px] font-semibold opacity-90 uppercase tracking-wider block">Net Business Profit</span>
+              <div class="text-[18px] font-extrabold">Profit: KES 1,600</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         7. INSIGHTS SECTION
+         ============================================== -->
+    <section class="px-5 py-12 bg-gradient-to-b from-sp-bg to-indigo-50/50 relative overflow-hidden">
+      <div class="text-center mb-8">
+        <span class="text-[11px] font-bold text-sp-indigo uppercase tracking-wider">SMART DISCOVERY</span>
+        <h2 class="text-[24px] font-extrabold text-sp-navy mt-1">Insights That Actually Make Sense</h2>
+      </div>
+
+      <!-- Layered & Rotated Floating Cards -->
+      <div class="space-y-3.5 relative py-2">
+        <!-- Card 1 -->
+        <div class="glass-card p-4 rounded-2xl shadow-sm -rotate-2 transform transition hover:rotate-0">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-indigo-100 text-sp-indigo flex items-center justify-center text-sm font-bold shrink-0">
+              🚗
+            </div>
+            <p class="text-[13px] font-bold text-sp-navy leading-snug">
+              "You spent 24% more on transport this month."
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card p-4 rounded-2xl shadow-md rotate-2 transform transition hover:rotate-0 border-indigo-200">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-purple-100 text-sp-purple flex items-center justify-center text-sm font-bold shrink-0">
+              💸
+            </div>
+            <p class="text-[13px] font-bold text-sp-navy leading-snug">
+              "You've paid KES 640 in transaction fees this month."
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card p-4 rounded-2xl shadow-sm -rotate-1 transform transition hover:rotate-0">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold shrink-0">
+              💡
+            </div>
+            <p class="text-[13px] font-bold text-sp-navy leading-snug">
+              "Your electricity bill usually averages KES 2,100."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-6">
+        <p class="text-[13px] font-semibold text-sp-muted">
+          No judgement. Just clear numbers.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         8. PRIVACY BAND (Calm Deep Navy)
+         ============================================== -->
+    <section class="px-6 py-12 bg-sp-navy text-white relative">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-indigo-200 text-[11px] font-semibold mb-4">
+        <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        <span>Zero SMS Interception</span>
+      </div>
+
+      <h2 class="text-[25px] leading-tight font-extrabold mb-6">
+        Your Money. Your Data. Your Control.
+      </h2>
+
+      <div class="space-y-4">
+        <!-- Point 1 -->
+        <div class="flex items-start gap-3.5">
+          <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <p class="text-[14px] text-slate-200 font-medium leading-relaxed">
+            We never read your SMS messages.
+          </p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="flex items-start gap-3.5">
+          <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <p class="text-[14px] text-slate-200 font-medium leading-relaxed">
+            You choose exactly which statements to import.
+          </p>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="flex items-start gap-3.5">
+          <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <p class="text-[14px] text-slate-200 font-medium leading-relaxed">
+            Delete your data or account anytime.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         9. FAQ SECTION (Accordion, thin indigo borders)
+         ============================================== -->
+    <section class="px-5 py-12 bg-sp-bg">
+      <div class="text-center mb-8">
+        <span class="text-[11px] font-bold text-sp-indigo uppercase tracking-wider">FREQUENT QUESTIONS</span>
+        <h2 class="text-[24px] font-extrabold text-sp-navy mt-1">Got questions? We're clear.</h2>
+      </div>
+
+      <div class="space-y-3">
+        <!-- FAQ Item 1 -->
+        <details class="group bg-white rounded-2xl border border-sp-light-indigo p-4 transition-all">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-bold text-[14px] text-sp-navy">
+            <span>Is SoraPesa a bank or mobile money service?</span>
+            <svg class="w-4 h-4 text-sp-indigo transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="pt-3 text-[13px] text-sp-muted leading-relaxed font-medium">
+            No. SoraPesa is strictly a personal finance tracking and insight tool. We do not hold deposits, issue loans, or process monetary transactions.
+          </div>
+        </details>
+
+        <!-- FAQ Item 2 -->
+        <details class="group bg-white rounded-2xl border border-sp-light-indigo p-4 transition-all">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-bold text-[14px] text-sp-navy">
+            <span>Does SoraPesa read my SMS messages?</span>
+            <svg class="w-4 h-4 text-sp-indigo transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="pt-3 text-[13px] text-sp-muted leading-relaxed font-medium">
+            Never. We do not request or utilize Android SMS permissions. You maintain 100% control by manually uploading your exported M-Pesa PDF statements whenever you choose.
+          </div>
+        </details>
+
+        <!-- FAQ Item 3 -->
+        <details class="group bg-white rounded-2xl border border-sp-light-indigo p-4 transition-all">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-bold text-[14px] text-sp-navy">
+            <span>Is my financial data safe?</span>
+            <svg class="w-4 h-4 text-sp-indigo transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="pt-3 text-[13px] text-sp-muted leading-relaxed font-medium">
+            Yes. All imported data is encrypted at rest and in transit. Your numbers are never sold or shared with advertisers or third parties.
+          </div>
+        </details>
+
+        <!-- FAQ Item 4 -->
+        <details class="group bg-white rounded-2xl border border-sp-light-indigo p-4 transition-all">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-bold text-[14px] text-sp-navy">
+            <span>When is SoraPesa launching?</span>
+            <svg class="w-4 h-4 text-sp-indigo transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="pt-3 text-[13px] text-sp-muted leading-relaxed font-medium">
+            We are rolling out our early Android Beta in Kenya in Q3. Sign up via the waitlist above to receive early access.
+          </div>
+        </details>
+
+        <!-- FAQ Item 5 -->
+        <details class="group bg-white rounded-2xl border border-sp-light-indigo p-4 transition-all">
+          <summary class="flex justify-between items-center cursor-pointer list-none font-bold text-[14px] text-sp-navy">
+            <span>Is it free?</span>
+            <svg class="w-4 h-4 text-sp-indigo transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="pt-3 text-[13px] text-sp-muted leading-relaxed font-medium">
+            The core statement parsing and salary breakdown features are completely free for early community members.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         10. FINAL CTA
+         ============================================== -->
+    <section class="px-5 py-12 relative overflow-hidden">
+      <!-- Glow & Floating Elements -->
+      <div class="rounded-[28px] gradient-brand p-6 text-white text-center relative overflow-hidden shadow-2xl shadow-indigo-500/30">
+        <!-- Floating decorative items inside card -->
+        <div class="absolute -top-3 -right-2 w-9 h-9 rounded-full bg-amber-300 text-amber-900 font-extrabold text-[10px] flex items-center justify-center border-2 border-white/80 shadow-md rotate-12">
+          KES
+        </div>
+        <div class="absolute -bottom-2 -left-1 p-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 -rotate-12">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+
+        <h2 class="text-[23px] font-extrabold leading-snug mb-3">
+          Be the first to know when SoraPesa launches.
+        </h2>
+        <p class="text-[13px] text-white/85 font-medium mb-6">
+          Join fellow Kenyans taking control of their money narrative.
+        </p>
+
+        <!-- Notification Form -->
+        <form class="space-y-3" onsubmit="event.preventDefault(); alert('You will be notified!');">
+          <input 
+            type="email" 
+            required 
+            placeholder="Enter your email" 
+            class="w-full h-12 px-4 rounded-full bg-white/95 text-sp-navy font-medium placeholder:text-slate-400 text-[14px] focus:outline-none focus:ring-2 focus:ring-white shadow-inner"
+          >
+          <button 
+            type="submit" 
+            class="w-full h-12 rounded-full bg-white text-sp-indigo font-extrabold text-[14px] shadow-lg active:scale-95 transition"
+          >
+            Notify Me
+          </button>
+        </form>
+
+        <div class="mt-4">
+          <a href="#privacy" class="text-[11px] text-white/80 underline font-semibold hover:text-white">
+            Privacy Policy
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

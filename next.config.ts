@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       { source: '/tools/image-converter',  destination: '/tools/image-studio', permanent: true },
       { source: '/tools/image-compressor', destination: '/tools/image-studio', permanent: true },
       { source: '/portfolio/status/betledger', destination: '/betledger', permanent: true },
+      { source: '/portfolio/status/sorapesa', destination: '/sorapesa', permanent: true },
     ];
   },
 };
