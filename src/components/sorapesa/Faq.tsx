@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import SharedFaq, { type FaqClasses, type FaqItem } from '@/components/product-landing/Faq';
 
-export const PRIVACY_HREF = '/legal/sorapesa/privacy';
+// The SoraPesa app policy isn't written yet; link the site-wide policy until it exists.
+export const PRIVACY_HREF = '/privacy-policy';
 
 const FAQS: FaqItem[] = [
   {
@@ -14,14 +14,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Is my financial data safe?',
-    a: (
-      <>
-        You stay in control of what goes into SoraPesa, and you can delete your data or your account
-        at any time. Our{' '}
-        <Link href={PRIVACY_HREF} className="sp-link">Privacy Policy</Link>
-        {' '}explains exactly what we collect and how it&apos;s used.
-      </>
-    ),
+    a: "You stay in control of what goes into SoraPesa, and you'll be able to delete your data or your account at any time. We'll publish the full SoraPesa privacy policy before launch.",
   },
   {
     q: 'When is SoraPesa launching?',
