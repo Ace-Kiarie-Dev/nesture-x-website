@@ -109,7 +109,7 @@ export default function PrivacyPolicyPage() {
 
           <p style={P_STYLE}>
             This Privacy Policy explains how Nesture-X (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) collects, uses, and
-            protects information when you visit our website at nesture-x.com or use any of our
+            protects information when you visit our website at nesturex.com or use any of our
             free online tools. By using the site you agree to the practices described here.
           </p>
 
@@ -117,8 +117,8 @@ export default function PrivacyPolicyPage() {
           <h2 style={H2_STYLE}>1. INFORMATION WE COLLECT</h2>
           <p style={P_STYLE}>
             We do not require you to create an account or provide personal information to use our
-            free tools. When you use tools such as the Image Converter, Image Compressor, QR Code
-            Generator, Invoice Generator, or Color Palette Generator, any files or data you
+            free tools. When you use tools such as the Image Studio, QR Code Generator, Invoice
+            Generator, or Color Palette Generator, any files or data you
             upload or enter are processed entirely within your browser session or in temporary
             server memory and are discarded immediately after the operation completes. We do not
             store, log, or retain any uploaded files or generated outputs.
@@ -137,6 +137,12 @@ export default function PrivacyPolicyPage() {
             colour theme. No tracking cookies are set by Nesture-X itself. If third-party
             analytics or advertising scripts are loaded on the site (see section 5 below), those
             services may set their own cookies governed by their respective privacy policies.
+          </p>
+          <p style={P_STYLE}>
+            We use Vercel Analytics and Vercel Speed Insights to understand how visitors use our
+            website and how it performs, such as which pages are viewed, page load performance, and
+            general device and location information. Neither service uses cookies or collects
+            personal information that identifies you.
           </p>
 
           {/* 3 */}
