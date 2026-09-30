@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
       { source: '/portfolio/status/betledger', destination: '/betledger', permanent: true },
       { source: '/portfolio/status/sorapesa', destination: '/sorapesa', permanent: true },
       { source: '/portfolio/status/kikota', destination: '/kikota', permanent: true },
+      { source: '/portfolio/status/matatu-dash', destination: '/matatu-dash', permanent: true },
     ];
   },
 };

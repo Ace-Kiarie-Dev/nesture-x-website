@@ -1,0 +1,799 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Matatu Dash theme (design-refs/matatu-dash/ Stitch output, brand values as
+   source of truth). Every token and rule here is scoped under .theme-matatu so
+   nothing leaks into the global NX design system. Values are hardcoded (never
+   derived from NX vars), so the page always renders dark regardless of
+   [data-theme].
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-matatu {
+  /* Brand */
+  --md-navy:        #061423;
+  --md-surface:     #0c2035;
+  --md-surface-2:   #132b45;
+  --md-gold:        #ffc629;
+  --md-gold-edge:   #b88a00;   /* chunky button bottom edge */
+  --md-coral:       #ff4d5a;
+  --md-teal:        #42dec3;   /* small accents only */
+  --md-light:       #f5f7fa;
+
+  /* Derived */
+  --md-text-body:   #c5d0de;
+  --md-text-muted:  #8fa1b8;
+  --md-ink:         #0a0a0a;   /* hazard stripe dark + text on gold */
+  --md-border:      rgba(245, 247, 250, 0.08);
+  --md-border-2:    rgba(245, 247, 250, 0.14);
+  --md-gold-soft:   rgba(255, 198, 41, 0.12);
+  --md-coral-soft:  rgba(255, 77, 90, 0.14);
+  --md-teal-soft:   rgba(66, 222, 195, 0.12);
+
+  --md-hazard: repeating-linear-gradient(
+    -45deg,
+    var(--md-gold) 0 12px,
+    var(--md-ink) 12px 24px
+  );
+
+  /* Type */
+  --md-font-display: var(--font-md-display), 'Arial Black', sans-serif;
+  --md-font-body:    var(--font-md-body), system-ui, sans-serif;
+
+  /* Radii — chunky, rounded game UI */
+  --md-radius-sm: 8px;
+  --md-radius:    12px;
+  --md-radius-lg: 20px;
+
+  color-scheme: dark;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--md-navy);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 80% 0%, rgba(255, 198, 41, 0.08), transparent 70%),
+    radial-gradient(ellipse 50% 30% at 0% 45%, rgba(66, 222, 195, 0.05), transparent 70%),
+    radial-gradient(ellipse 50% 30% at 100% 80%, rgba(255, 77, 90, 0.05), transparent 70%);
+  color: var(--md-light);
+  font-family: var(--md-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Same as BetLedger and Kikota: in dark mode, pull the page up behind the
+   transparent fixed navbar so there's no seam. In light mode the navbar keeps
+   its own light backdrop. */
+[data-theme='dark'] .theme-matatu.md-under-nav {
+  margin-top: -80px;
+  padding-top: 80px;
+}
+
+.theme-matatu ::selection { background: var(--md-gold); color: var(--md-ink); }
+.theme-matatu :focus-visible { outline: 2px solid var(--md-gold); outline-offset: 3px; }
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+
+.theme-matatu .md-main { display: flex; flex-direction: column; }
+
+.theme-matatu .md-section { position: relative; padding: 3.5rem 1.25rem; }
+@media (min-width: 768px)  { .theme-matatu .md-section { padding: 4.5rem 2rem; } }
+@media (min-width: 1024px) { .theme-matatu .md-section { padding: 5.5rem 3rem; } }
+
+.theme-matatu .md-container { position: relative; width: 100%; max-width: 76rem; margin: 0 auto; }
+
+.theme-matatu .md-split { display: grid; gap: 2.5rem; align-items: center; }
+.theme-matatu .md-split-copy { display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; }
+.theme-matatu .md-split-visual { position: relative; min-width: 0; }
+@media (min-width: 1024px) {
+  .theme-matatu .md-split { grid-template-columns: 1fr 1fr; gap: 4rem; }
+}
+
+.theme-matatu .md-panel {
+  position: relative;
+  padding: 2rem 1.25rem;
+  background: linear-gradient(160deg, var(--md-surface), #081a2c);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius-lg);
+  overflow: hidden;
+}
+@media (min-width: 768px) { .theme-matatu .md-panel { padding: 3rem; } }
+
+.theme-matatu .md-card {
+  background: var(--md-surface);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius);
+}
+
+/* ── Type ───────────────────────────────────────────────────────────────── */
+
+.theme-matatu .md-h1,
+.theme-matatu .md-h2,
+.theme-matatu .md-h3,
+.theme-matatu .md-board-title,
+.theme-matatu .md-faq-q {
+  font-family: var(--md-font-display);
+  font-style: italic;
+  text-transform: uppercase;
+  color: var(--md-light);
+}
+
+.theme-matatu .md-h1 {
+  font-size: 44px;
+  line-height: 44px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+}
+@media (min-width: 768px)  { .theme-matatu .md-h1 { font-size: 60px; line-height: 58px; } }
+@media (min-width: 1280px) { .theme-matatu .md-h1 { font-size: 72px; line-height: 70px; } }
+
+.theme-matatu .md-h2 {
+  font-size: 30px;
+  line-height: 32px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+@media (min-width: 1024px) { .theme-matatu .md-h2 { font-size: 44px; line-height: 46px; } }
+
+.theme-matatu .md-h3 {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 0;
+}
+@media (min-width: 1024px) { .theme-matatu .md-h3 { font-size: 20px; line-height: 24px; } }
+.theme-matatu .md-h3--sm { font-size: 14px; line-height: 18px; letter-spacing: 0.02em; }
+
+.theme-matatu .md-h1 .md-gold,
+.theme-matatu .md-h2 .md-gold { display: block; color: var(--md-gold); }
+
+.theme-matatu .md-lead {
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--md-text-body);
+  max-width: 36rem;
+}
+@media (min-width: 1024px) { .theme-matatu .md-lead { font-size: 18px; line-height: 28px; } }
+
+.theme-matatu .md-body { font-size: 15px; line-height: 23px; color: var(--md-text-body); }
+.theme-matatu .md-body--sm { font-size: 14px; line-height: 20px; }
+
+.theme-matatu .md-head { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+.theme-matatu .md-head--center { align-items: center; text-align: center; }
+.theme-matatu .md-head--center .md-lead { margin: 0 auto; }
+@media (min-width: 1024px) { .theme-matatu .md-head { margin-bottom: 3rem; } }
+
+/* Gold bar + progress track beside the heading */
+.theme-matatu .md-head--track { flex-direction: row; align-items: center; gap: 1rem; }
+.theme-matatu .md-head--track .md-h2 { position: relative; padding-left: 1.25rem; white-space: nowrap; }
+.theme-matatu .md-head--track .md-h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 8px;
+  background: var(--md-gold);
+  transform: skewX(-12deg);
+}
+.theme-matatu .md-track {
+  flex: 1;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--md-surface-2);
+  overflow: hidden;
+}
+.theme-matatu .md-track span { display: block; width: 20%; height: 100%; background: var(--md-gold); }
+
+/* ── Pills, tags, chips ─────────────────────────────────────────────────── */
+
+.theme-matatu .md-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 7px 16px;
+  border-radius: 9999px;
+  font-family: var(--md-font-display);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.theme-matatu .md-pill--gold {
+  background: var(--md-gold);
+  color: var(--md-ink);
+  box-shadow: 0 3px 0 var(--md-gold-edge);
+}
+.theme-matatu .md-pill--coral {
+  align-self: flex-start;
+  background: var(--md-coral-soft);
+  border: 1px solid rgba(255, 77, 90, 0.45);
+  color: var(--md-coral);
+}
+.theme-matatu .md-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--md-coral);
+  animation: md-blink 1.2s ease-in-out infinite;
+}
+@keyframes md-blink { 50% { opacity: 0.25; } }
+
+.theme-matatu .md-tag {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--md-font-display);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.theme-matatu .md-tag--coral { background: var(--md-coral);   color: var(--md-ink); }
+.theme-matatu .md-tag--gold  { background: var(--md-gold);    color: var(--md-ink); }
+.theme-matatu .md-tag--teal  { background: var(--md-teal);    color: var(--md-ink); }
+.theme-matatu .md-tag--muted { background: var(--md-surface-2); color: var(--md-light); border: 1px solid var(--md-border-2); }
+
+.theme-matatu .md-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.theme-matatu .md-chip {
+  padding: 8px 16px;
+  border-radius: var(--md-radius-sm);
+  background: var(--md-surface-2);
+  border: 1px solid var(--md-border);
+  font-family: var(--md-font-display);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--md-light);
+}
+.theme-matatu .md-chip[data-active='true'] {
+  background: var(--md-gold);
+  border-color: var(--md-gold);
+  color: var(--md-ink);
+  box-shadow: 0 3px 0 var(--md-gold-edge);
+}
+
+.theme-matatu .md-checklist { display: flex; flex-direction: column; gap: 0.75rem; }
+.theme-matatu .md-checklist li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 15px; line-height: 22px; color: var(--md-light); }
+.theme-matatu .md-check {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 5px;
+  background: var(--md-gold-soft);
+  border: 1.5px solid var(--md-gold);
+  color: var(--md-gold);
+}
+
+/* Tone helpers */
+.theme-matatu .md-tone--teal  { background: var(--md-teal-soft);  color: var(--md-teal); }
+.theme-matatu .md-tone--gold  { background: var(--md-gold-soft);  color: var(--md-gold); }
+.theme-matatu .md-tone--coral { background: var(--md-coral-soft); color: var(--md-coral); }
+.theme-matatu .md-tone-text--teal  { color: var(--md-teal); }
+.theme-matatu .md-tone-text--gold  { color: var(--md-gold); }
+.theme-matatu .md-tone-text--coral { color: var(--md-coral); }
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+
+/* Chunky game button: solid face with a darker bottom edge that presses in */
+.theme-matatu .md-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--md-radius);
+  font-family: var(--md-font-display);
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.2s;
+}
+.theme-matatu .md-btn--gold {
+  background: var(--md-gold);
+  color: var(--md-ink);
+  box-shadow: 0 5px 0 var(--md-gold-edge);
+}
+.theme-matatu .md-btn--gold:hover:not(:disabled) { filter: brightness(1.06); }
+.theme-matatu .md-btn--gold:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--md-gold-edge); }
+.theme-matatu .md-btn--gold:disabled { opacity: 0.7; cursor: wait; }
+
+.theme-matatu .md-text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.5rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.theme-matatu .md-text-link:hover { color: var(--md-gold); }
+
+/* ── Waitlist form ──────────────────────────────────────────────────────── */
+
+.theme-matatu .md-form { width: 100%; max-width: 32rem; }
+.theme-matatu .md-form-row { display: flex; flex-direction: column; gap: 0.75rem; }
+@media (min-width: 640px) {
+  .theme-matatu .md-form-row { flex-direction: row; align-items: stretch; }
+}
+
+.theme-matatu .md-input-wrap {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0 1rem;
+  border-radius: var(--md-radius);
+  background: var(--md-surface);
+  border: 1.5px solid var(--md-border-2);
+  color: var(--md-text-muted);
+  transition: border-color 0.2s;
+}
+.theme-matatu .md-input-wrap:focus-within { border-color: var(--md-gold); }
+.theme-matatu .md-input-wrap[data-invalid='true'] { border-color: var(--md-coral); }
+
+.theme-matatu .md-input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--md-light);
+  font-family: var(--md-font-body);
+  font-size: 16px; /* below 640px: 16px stops iOS zoom-on-focus */
+}
+@media (min-width: 640px) { .theme-matatu .md-input { font-size: 15px; } }
+.theme-matatu .md-input::placeholder { color: var(--md-text-muted); opacity: 1; }
+.theme-matatu .md-input:focus-visible { outline: none; }
+
+.theme-matatu .md-form-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.875rem;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--md-text-muted);
+}
+.theme-matatu .md-form-note svg { color: var(--md-teal); flex-shrink: 0; }
+
+.theme-matatu .md-form-error { margin-top: 0.75rem; font-size: 13px; line-height: 20px; color: var(--md-coral); }
+
+.theme-matatu .md-form-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: var(--md-radius);
+  background: var(--md-gold-soft);
+  border: 1px solid rgba(255, 198, 41, 0.4);
+  color: var(--md-light);
+  font-size: 15px;
+  line-height: 24px;
+  text-align: left;
+}
+.theme-matatu .md-form-success svg { color: var(--md-gold); flex-shrink: 0; margin-top: 2px; }
+
+.theme-matatu .md-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  border: 2px solid rgba(10, 10, 10, 0.3);
+  border-top-color: var(--md-ink);
+  animation: md-spin 0.7s linear infinite;
+}
+@keyframes md-spin { to { transform: rotate(360deg); } }
+
+/* ── Game art + CONCEPT ART badge ───────────────────────────────────────── */
+
+.theme-matatu .md-art { position: relative; }
+.theme-matatu .md-art img { display: block; width: 100%; height: auto; }
+
+.theme-matatu .md-concept {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(6, 20, 35, 0.85);
+  border: 1px solid rgba(255, 198, 41, 0.5);
+  font-family: var(--md-font-display);
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--md-gold);
+  pointer-events: none;
+}
+
+/* Hazard-stripe frame around the key art */
+.theme-matatu .md-hazard-frame {
+  padding: 8px;
+  border-radius: var(--md-radius-lg);
+  background: var(--md-hazard);
+  box-shadow: 0 24px 60px -20px rgba(255, 198, 41, 0.3);
+}
+.theme-matatu .md-art--key { border-radius: 14px; overflow: hidden; background: var(--md-surface); }
+
+/* ── 1. Hero ────────────────────────────────────────────────────────────── */
+
+.theme-matatu .md-hero { padding-top: 2rem; }
+.theme-matatu .md-hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+.theme-matatu .md-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.theme-matatu .md-hero-logo { width: 220px; height: auto; }
+.theme-matatu .md-hero-copy .md-form { max-width: 28rem; }
+.theme-matatu .md-hero-copy .md-form-note { justify-content: center; }
+
+@media (min-width: 1024px) {
+  .theme-matatu .md-hero { padding-top: 3.5rem; }
+  .theme-matatu .md-hero-grid { grid-template-columns: 1fr 1.05fr; gap: 3.5rem; }
+  .theme-matatu .md-hero-copy { align-items: flex-start; text-align: left; gap: 1.5rem; }
+  .theme-matatu .md-hero-logo { width: 300px; }
+  .theme-matatu .md-hero-copy .md-form-note { justify-content: flex-start; }
+}
+
+/* ── 2. How to play ─────────────────────────────────────────────────────── */
+
+.theme-matatu .md-play-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 560px)  { .theme-matatu .md-play-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .theme-matatu .md-play-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; } }
+
+.theme-matatu .md-play-card { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.5rem; }
+.theme-matatu .md-icon-tile {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 0.25rem;
+  border-radius: var(--md-radius);
+}
+
+/* ── 3. The streets ─────────────────────────────────────────────────────── */
+
+.theme-matatu .md-lanes { display: flex; flex-direction: column; }
+
+/* Dashed road markings between lanes */
+.theme-matatu .md-lane-dashes {
+  display: block;
+  height: 6px;
+  margin: 1.25rem 1.5rem;
+  border-radius: 9999px;
+  background: repeating-linear-gradient(90deg, rgba(255, 198, 41, 0.75) 0 44px, transparent 44px 96px);
+}
+@media (min-width: 1024px) { .theme-matatu .md-lane-dashes { margin: 1.75rem 2rem; } }
+
+.theme-matatu .md-lane {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.25rem;
+  background: linear-gradient(180deg, var(--md-surface), #0a1c30);
+}
+.theme-matatu .md-lane-copy { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
+.theme-matatu .md-lane-title { font-size: 22px; line-height: 26px; }
+.theme-matatu .md-lane-media { min-width: 0; }
+.theme-matatu .md-art--lane {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--md-radius);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 60%, var(--md-surface-2), #081a2c 70%);
+}
+.theme-matatu .md-art--lane img { width: 100%; height: 100%; object-fit: contain; }
+
+@media (min-width: 1024px) {
+  .theme-matatu .md-lane { grid-template-columns: 1.2fr 1fr; gap: 2.5rem; padding: 2rem; }
+  .theme-matatu .md-lane-title { font-size: 28px; line-height: 32px; }
+  /* Alternate sides: even lanes put the image on the left, copy right-aligned */
+  .theme-matatu .md-lane[data-flip='true'] { grid-template-columns: 1fr 1.2fr; }
+  .theme-matatu .md-lane[data-flip='true'] .md-lane-media { order: -1; }
+  .theme-matatu .md-lane[data-flip='true'] .md-lane-copy { align-items: flex-end; text-align: right; }
+  .theme-matatu .md-lane[data-flip='true'] .md-tag { align-self: flex-end; }
+}
+
+/* Safe island: road, black/yellow kerb, pavement, kerb, road */
+.theme-matatu .md-island {
+  display: grid;
+  grid-template-rows: 1fr 14px 1.3fr 14px 1fr;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--md-radius);
+  overflow: hidden;
+}
+.theme-matatu .md-island-road {
+  position: relative;
+  background: #1b2430;
+}
+.theme-matatu .md-island-road::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, rgba(245, 247, 250, 0.55) 0 28px, transparent 28px 60px);
+}
+.theme-matatu .md-island-kerb {
+  background: repeating-linear-gradient(90deg, var(--md-gold) 0 22px, var(--md-ink) 22px 44px);
+}
+.theme-matatu .md-island-pave {
+  background-color: #6b7382;
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.22) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.22) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── 4. It gets harder ──────────────────────────────────────────────────── */
+
+.theme-matatu .md-speed {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 198, 41, 0.1), transparent 45%),
+    linear-gradient(160deg, var(--md-surface), #081a2c);
+}
+
+.theme-matatu .md-speedbar {
+  position: relative;
+  height: 14px;
+  margin-bottom: 1.5rem;
+  border-radius: 9999px;
+  background: var(--md-surface-2);
+  overflow: hidden;
+}
+.theme-matatu .md-speedbar-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--md-teal) 0%, var(--md-teal) 22%, var(--md-gold) 45%, var(--md-gold) 58%, var(--md-coral) 85%);
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 18px, transparent 18px 22px);
+  mask: repeating-linear-gradient(90deg, #000 0 18px, transparent 18px 22px);
+}
+
+.theme-matatu .md-tiers { display: grid; gap: 1rem; }
+@media (min-width: 768px) { .theme-matatu .md-tiers { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.theme-matatu .md-tier { display: flex; flex-direction: column; gap: 0.625rem; padding: 1.25rem 1.5rem 1.5rem; }
+.theme-matatu .md-tier-bar { display: block; height: 6px; margin-bottom: 0.5rem; border-radius: 9999px; }
+.theme-matatu .md-tier-name { font-size: 24px; line-height: 28px; font-style: italic; font-weight: 900; }
+.theme-matatu .md-tier--teal  .md-tier-bar  { background: var(--md-teal); }
+.theme-matatu .md-tier--gold  .md-tier-bar  { background: var(--md-hazard); background-size: auto; }
+.theme-matatu .md-tier--coral .md-tier-bar  { background: var(--md-coral); }
+.theme-matatu .md-tier--teal  .md-tier-name { color: var(--md-teal); }
+.theme-matatu .md-tier--gold  .md-tier-name { color: var(--md-gold); }
+.theme-matatu .md-tier--coral .md-tier-name { color: var(--md-coral); }
+
+/* ── 5. Build your own runner ───────────────────────────────────────────── */
+
+.theme-matatu .md-art--lineup {
+  border-radius: var(--md-radius-lg);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 70%, rgba(255, 198, 41, 0.14), transparent 70%),
+    linear-gradient(180deg, var(--md-surface), #081a2c);
+  border: 1px solid var(--md-border);
+}
+
+/* ── 6. Sounds of the city ──────────────────────────────────────────────── */
+
+.theme-matatu .md-sound { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.theme-matatu .md-wave {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  height: 96px;
+  padding: 1rem;
+  border-radius: var(--md-radius);
+  background: rgba(6, 20, 35, 0.6);
+  border: 1px solid var(--md-border);
+}
+.theme-matatu .md-wave span {
+  flex: 1;
+  max-width: 6px;
+  min-height: 8%;
+  border-radius: 9999px;
+  background: var(--md-gold);
+  transform-origin: center;
+  animation: md-wave 1.2s ease-in-out infinite;
+}
+@keyframes md-wave {
+  0%, 100% { transform: scaleY(0.45); }
+  50%      { transform: scaleY(1); }
+}
+
+.theme-matatu .md-sound-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+@media (min-width: 768px) { .theme-matatu .md-sound-chips { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.theme-matatu .md-sound-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--md-radius);
+  background: var(--md-surface-2);
+  border: 1px solid var(--md-border);
+  font-family: var(--md-font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* ── 7. Climb the leaderboard ───────────────────────────────────────────── */
+
+.theme-matatu .md-board-features { display: grid; gap: 0.75rem; }
+@media (min-width: 640px) { .theme-matatu .md-board-features { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.theme-matatu .md-board-feature { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.25rem; }
+
+.theme-matatu .md-board {
+  padding: 1.5rem 1.25rem;
+  border-radius: var(--md-radius-lg);
+  background: var(--md-surface);
+  border: 1px solid var(--md-border);
+  border-top: 4px solid var(--md-gold);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+}
+@media (min-width: 768px) { .theme-matatu .md-board { padding: 1.75rem 1.5rem; } }
+.theme-matatu .md-board-title {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--md-border);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 900;
+}
+.theme-matatu .md-board-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+.theme-matatu .md-board-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 52px;
+  padding: 0.625rem 1rem;
+  border-radius: var(--md-radius-sm);
+  background: var(--md-surface-2);
+}
+.theme-matatu .md-board-rank {
+  width: 26px;
+  font-family: var(--md-font-display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--md-text-muted);
+}
+.theme-matatu .md-board-row[data-rank='1'] .md-board-rank { color: var(--md-gold); }
+.theme-matatu .md-board-row[data-rank='2'] .md-board-rank { color: var(--md-light); }
+.theme-matatu .md-board-row[data-rank='3'] .md-board-rank { color: var(--md-coral); }
+.theme-matatu .md-board-name { flex: 1; min-width: 0; font-size: 14px; font-weight: 700; color: var(--md-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.theme-matatu .md-board-dist { font-family: var(--md-font-display); font-weight: 800; font-size: 14px; color: var(--md-light); }
+.theme-matatu .md-board-row[data-rank='1'] .md-board-dist { color: var(--md-gold); }
+.theme-matatu .md-board-row--you {
+  background: var(--md-gold-soft);
+  border-left: 4px solid var(--md-gold);
+}
+.theme-matatu .md-board-row--you .md-board-name { color: var(--md-gold); }
+
+/* ── 8. FAQ (single column on mobile, two columns from 1024px) ──────────── */
+
+.theme-matatu .md-faq-list { display: grid; gap: 1rem; }
+@media (min-width: 1024px) {
+  .theme-matatu .md-faq-list { grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+}
+.theme-matatu .md-faq-item {
+  background: var(--md-surface);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.theme-matatu .md-faq-item[data-open='true'] { border-color: rgba(255, 198, 41, 0.45); }
+
+.theme-matatu .md-faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  min-height: 64px;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 800;
+  font-style: normal;
+  text-align: left;
+  cursor: pointer;
+}
+@media (min-width: 768px) { .theme-matatu .md-faq-q { font-size: 18px; line-height: 24px; } }
+.theme-matatu .md-faq-item[data-open='true'] .md-faq-q { color: var(--md-gold); }
+.theme-matatu .md-faq-q:focus-visible { outline-offset: -3px; border-radius: var(--md-radius); }
+.theme-matatu .md-faq-chevron { flex-shrink: 0; color: var(--md-gold); transition: transform 0.25s; }
+.theme-matatu .md-faq-item[data-open='true'] .md-faq-chevron { transform: rotate(180deg); }
+
+.theme-matatu .md-faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.28s ease; }
+.theme-matatu .md-faq-item[data-open='true'] .md-faq-a { grid-template-rows: 1fr; }
+.theme-matatu .md-faq-a-inner { overflow: hidden; }
+.theme-matatu .md-faq-a p { padding: 0 1.5rem 1.5rem; font-size: 15px; line-height: 24px; color: var(--md-text-body); }
+
+/* ── 9. Final CTA ───────────────────────────────────────────────────────── */
+
+.theme-matatu .md-final { padding-top: 6rem; }
+
+.theme-matatu .md-final-card {
+  position: relative;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 8px;
+  border-radius: 24px;
+  background: var(--md-hazard);
+  box-shadow: 0 30px 80px -30px rgba(255, 198, 41, 0.35);
+}
+.theme-matatu .md-final-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 5.5rem 1.25rem 2.5rem;
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(-45deg, rgba(245, 247, 250, 0.025) 0 18px, transparent 18px 36px),
+    var(--md-navy);
+  text-align: center;
+}
+.theme-matatu .md-final-inner .md-form { max-width: 30rem; }
+@media (min-width: 768px) {
+  .theme-matatu .md-final-inner { padding: 4rem 3rem 3rem; }
+}
+
+/* The runner hops out over the card's top edge */
+.theme-matatu .md-final-card .md-art--hop {
+  position: absolute;
+  z-index: 2;
+  top: -4.5rem;
+  left: 50%;
+  width: 150px;
+  transform: translateX(-50%) rotate(-6deg);
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.5));
+}
+/* Badge sits in the empty space beside the runner, never over the art's face */
+.theme-matatu .md-final-card .md-art--hop .md-concept { top: 32%; right: -88px; transform: rotate(6deg); }
+@media (min-width: 768px) {
+  .theme-matatu .md-final-card .md-art--hop { top: -5.5rem; left: auto; right: -1.5rem; width: 220px; transform: rotate(-6deg); }
+  .theme-matatu .md-final-card .md-art--hop .md-concept { top: auto; bottom: 38%; right: auto; left: -76px; }
+}
+
+.theme-matatu .md-kicker {
+  font-family: var(--md-font-display);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--md-gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-matatu *,
+  .theme-matatu *::before,
+  .theme-matatu *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -82,7 +82,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'In Development',
     imageSrc: '/images/originals/MatatuDash-Card.webp',
-    link: null,
+    link: '/matatu-dash',
   },
   {
     id: 'no-snooze-solen',

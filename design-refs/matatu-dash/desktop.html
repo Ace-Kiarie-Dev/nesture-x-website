@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_blank" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:ital,wght@0,700;0,800;0,900;1,900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-surface": "#d6e4f9", "on-tertiary-container": "#006355", "surface": "#061423", "on-primary-container": "#6f5300", "inverse-primary": "#785a00", "on-background": "#d6e4f9", "on-tertiary-fixed-variant": "#005045", "secondary-container": "#a80025", "primary-container": "#ffc629", "on-primary-fixed": "#251a00", "on-error-container": "#ffdad6", "surface-variant": "#293646", "tertiary-fixed": "#65fade", "surface-container-low": "#0f1c2c", "surface-container-high": "#1e2b3b", "surface-container-highest": "#293646", "tertiary-container": "#4ce5ca", "on-tertiary": "#00382f", "on-error": "#690005", "secondary-fixed-dim": "#ffb3b2", "surface-container": "#132030", "background": "#061423", "outline-variant": "#4f4633", "error-container": "#93000a", "inverse-on-surface": "#243142", "primary-fixed-dim": "#f6be1f", "on-secondary-container": "#ffb2b1", "on-tertiary-fixed": "#00201b", "tertiary-fixed-dim": "#40ddc2", "on-primary-fixed-variant": "#5a4300", "outline": "#9b8f79", "inverse-surface": "#d6e4f9", "on-secondary": "#680013", "secondary": "#ffb3b2", "error": "#ffb4ab", "secondary-fixed": "#ffdad9", "on-secondary-fixed": "#410008", "on-surface-variant": "#d3c5ac", "tertiary": "#89ffe6", "primary-fixed": "#ffdf9a", "surface-tint": "#f6be1f", "on-secondary-fixed-variant": "#92001f", "surface-dim": "#061423", "surface-bright": "#2d3a4b", "primary": "#ffe8bb", "on-primary": "#3f2e00", "surface-container-lowest": "#020f1e" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-mobile": "1.25rem", "space-md": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter-mobile": "1rem", "space-lg": "1.5rem", "gutter": "1.5rem", "space-xl": "2.5rem", "margin": "3rem" }, "fontFamily": { "label-lg": [ "Montserrat" ], "body-sm": [ "Inter" ], "headline-xl-mobile": [ "Montserrat" ], "headline-lg-mobile": [ "Montserrat" ], "label-md": [ "Montserrat" ], "headline-xl": [ "Montserrat" ], "label-sm": [ "Montserrat" ], "headline-sm": [ "Montserrat" ], "headline-lg": [ "Montserrat" ], "headline-md": [ "Montserrat" ], "body-md": [ "Inter" ], "body-lg": [ "Inter" ] }, "fontSize": { "label-lg": [ "16px", { "lineHeight": "20px", "letterSpacing": "0.04em", "fontWeight": "800" } ], "body-sm": [ "14px", { "lineHeight": "20px", "fontWeight": "500" } ], "headline-xl-mobile": [ "36px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "900" } ], "headline-lg-mobile": [ "28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "900" } ], "label-md": [ "13px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "800" } ], "headline-xl": [ "56px", { "lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "900" } ], "label-sm": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "700" } ], "headline-sm": [ "22px", { "lineHeight": "28px", "fontWeight": "800" } ], "headline-lg": [ "40px", { "lineHeight": "46px", "letterSpacing": "-0.01em", "fontWeight": "900" } ], "headline-md": [ "28px", { "lineHeight": "34px", "fontWeight": "800" } ], "body-md": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "body-lg": [ "18px", { "lineHeight": "28px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen"><main class="w-full bg-surface relative"><div class="flex flex-col w-full">
+<!-- Top Hazard Road Stripe -->
+<div class="w-full h-3 bg-repeat-x flex" style="background: repeating-linear-gradient(45deg, #ffc629, #ffc629 14px, #061423 14px, #061423 28px);"></div>
+<!-- SECTION 1: HERO SECTION -->
+<section class="w-full max-w-[1400px] mx-auto px-8 pt-8 pb-16">
+<div class="grid grid-cols-12 gap-8 items-center">
+<!-- Left Column: Branding, Slanted Headlines, Pre-Reg -->
+<div class="col-span-12 lg:col-span-6 flex flex-col items-start pr-0 lg:pr-4">
+<!-- Logo -->
+<div class="mb-4">
+<img alt="Matatu Dash Logo" class="h-20 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]" src="https://lh3.googleusercontent.com/aida/AEtjO1Xg4U_i6xIkiQDRTYsa0bpUeIKfaKOcpc0uok1sjvZSEeIYivwxHx6Tetfhwq1UrbqPBSWBwOUrs1X8mJ8Yn1lMUPLA8rI6i90mK1erl8fjF_njbCZKpYWqq2kgtGXVyKGeDh-8KaIySizNapXHNMoPcetxEe0aDvtmIUrgZHpJOWk9OTgzhFNOxvSxJD3wSZMuyxITjj9zwTTKLH-wQMiRxBh3mp9PC5_bxXJzW7hls8JrdBIfKtGliQHa"/>
+</div>
+<!-- Gold Pill Status -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-wider mb-5 shadow-sm transform -rotate-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>COMING TO GOOGLE PLAY</span>
+</div>
+<!-- Aggressive Slanted Headline -->
+<div class="transform -skew-x-6 origin-left mb-4">
+<h1 class="font-headline-xl text-headline-xl font-black italic tracking-tight uppercase leading-none drop-shadow-[4px_4px_0px_#020f1e]">
+<span class="text-on-surface block">SURVIVE</span>
+<span class="text-primary-container block drop-shadow-[4px_4px_0px_#6f5300]">NAIROBI'S STREETS.</span>
+</h1>
+</div>
+<!-- Subtext -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-8 font-medium">
+          Hop through matatu lanes, dodge bodabodas, and weave past hawkers. How far can you go before the street catches up?
+        </p>
+<!-- Email Pre-registration Form -->
+<div class="w-full max-w-lg">
+<form class="flex flex-col sm:flex-row gap-3 p-1.5 bg-surface-container-lowest rounded-2xl shadow-xl" onsubmit="event.preventDefault(); document.getElementById('hero-feedback').classList.remove('hidden');">
+<div class="relative flex-1 flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline">mail</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-xl bg-surface-container text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-tertiary-container transition-all" placeholder="Enter your email address" required="" type="email"/>
+</div>
+<button class="px-6 py-4 bg-primary-container text-on-primary-container font-label-lg text-label-lg uppercase rounded-xl transform hover:-translate-y-1 active:translate-y-0.5 transition-transform flex items-center justify-center gap-2 whitespace-nowrap shadow-[0_6px_0_#997300] active:shadow-[0_2px_0_#997300]" type="submit">
+<span>GET NOTIFIED</span>
+<span class="material-symbols-outlined text-lg">bolt</span>
+</button>
+</form>
+<p class="hidden text-tertiary-fixed font-label-sm text-label-sm mt-2 flex items-center gap-1.5" id="hero-feedback">
+<span class="material-symbols-outlined text-sm">check_circle</span> You're queued for Nairobi's high-speed launch!
+          </p>
+<p class="font-body-sm text-body-sm text-outline mt-2 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+            We'll only email you when Matatu Dash launches. No spam, pure asphalt.
+          </p>
+</div>
+</div>
+<!-- Right Column: Stylized Key Art Canvas -->
+<div class="col-span-12 lg:col-span-6 relative">
+<div class="relative rounded-2xl bg-surface-container-low p-3 shadow-2xl overflow-hidden group">
+<!-- Background angled speed streaks -->
+<div class="absolute -right-20 -top-20 w-80 h-80 bg-tertiary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -left-10 -bottom-10 w-60 h-60 bg-secondary-container/20 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Concept Art Badge (Top-Right) -->
+<div class="absolute top-6 right-6 z-20 px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded-md text-primary-fixed-dim font-label-sm text-label-sm uppercase tracking-widest shadow-md">
+            CONCEPT ART
+          </div>
+<!-- Key Art Display Box -->
+<div class="relative w-full h-[440px] rounded-xl overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Dynamic 3D stylized low-poly arcade scene of a Nairobi street with a customized vibrant pink and neon-yellow Rongai matatu minibus drifting with motion blur, speed lines, a jumping character over zebra crossing tarmac, electric teal billboards in background, Nairobi skyline under dusk lighting, vibrant energetic video game screenshot style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI8UeFgT0PgphbHBDTZ4QRM1F8rkDA75NZYAV7TcQ7LAS9r0TWumK9Ta-ZWUZM7K4V3fspasN4ag1wdRrUb80j256JrswxdHILEIGN9IV53EOU00Tyq4PDHwiOZ6s6a0Gy6v7XMQ1U5zoChGo3iWWrgc5JxEvIo6GLumCzzzLQXJZyLsM_IKMflq_kT93kk8A6YcpKUIukwO4gfmZP70VJA64mHE80S7t6IWdrK2mMXMmdErrTzeLFXA"/>
+<!-- In-game UI telemetry HUD overlays inside art -->
+<div class="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between pointer-events-none">
+<div class="flex items-center gap-2 bg-surface-container-lowest/80 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wide">NAIROBI CBD RUNWAY</span>
+</div>
+<div class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-3 py-1 rounded-lg uppercase shadow-sm">
+                ARCADE PHYSICS
+              </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- DASHED ROAD STRIP SEPARATOR -->
+<div class="w-full max-w-[1400px] mx-auto px-8 py-4 flex items-center justify-center gap-4">
+<div class="w-8 h-1.5 bg-on-surface-variant/40 rounded-full"></div>
+<div class="w-8 h-1.5 bg-on-surface-variant/40 rounded-full"></div>
+<div class="w-8 h-1.5 bg-on-surface-variant/40 rounded-full"></div>
+<div class="w-8 h-1.5 bg-primary-container rounded-full"></div>
+<div class="w-8 h-1.5 bg-on-surface-variant/40 rounded-full"></div>
+<div class="w-8 h-1.5 bg-on-surface-variant/40 rounded-full"></div>
+<div class="w-8 h-1.5 bg-on-surface-variant/40 rounded-full"></div>
+</div>
+<!-- SECTION 2: HOW TO PLAY -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-12">
+<!-- Header with hazard stripe -->
+<div class="flex items-center gap-4 mb-8">
+<div class="w-4 h-10 bg-primary-container transform -skew-x-12"></div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6">
+        HOW TO PLAY
+      </h2>
+<div class="flex-1 h-1 bg-surface-container-high ml-4 rounded-full overflow-hidden">
+<div class="w-32 h-full bg-primary-container"></div>
+</div>
+</div>
+<!-- 4 Cards in ONE Horizontal Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-tertiary-container/15 flex items-center justify-center text-tertiary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">sports_gymnastics</span>
+</div>
+<div class="font-label-sm text-label-sm text-tertiary uppercase tracking-widest mb-1">01 / HOP</div>
+<h3 class="font-headline-sm text-headline-sm font-extrabold text-on-surface uppercase mb-2">TAP TO HOP</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Jump forward over asphalt gaps, drain ditches, and potholes with split-second timing.</p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-variant/30 flex justify-between items-center text-outline font-label-sm text-label-sm uppercase">
+<span>Action</span>
+<span class="text-tertiary">Quick Tap</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary-fixed-dim mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">swipe</span>
+</div>
+<div class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-widest mb-1">02 / STEER</div>
+<h3 class="font-headline-sm text-headline-sm font-extrabold text-on-surface uppercase mb-2">SWIPE TO SIDESTEP</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Flick left or right to switch lanes in a blink and slip through oncoming gridlock.</p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-variant/30 flex justify-between items-center text-outline font-label-sm text-label-sm uppercase">
+<span>Action</span>
+<span class="text-primary-fixed-dim">Flick Left/Right</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-secondary-container/30 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">airport_shuttle</span>
+</div>
+<div class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-1">03 / EVADE</div>
+<h3 class="font-headline-sm text-headline-sm font-extrabold text-on-surface uppercase mb-2">DODGE TRAFFIC</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Incoming speed demons don't brake for anyone. Keep your eyes locked downroad.</p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-variant/30 flex justify-between items-center text-outline font-label-sm text-label-sm uppercase">
+<span>Hazard</span>
+<span class="text-secondary">High Impact</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-xl flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="w-14 h-14 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">emoji_events</span>
+</div>
+<div class="font-label-sm text-label-sm text-primary uppercase tracking-widest mb-1">04 / WIN</div>
+<h3 class="font-headline-sm text-headline-sm font-extrabold text-on-surface uppercase mb-2">BEAT HIGH SCORE</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Rack up metres, scoop coins, and claim supreme Nairobi street bragging rights.</p>
+</div>
+<div class="mt-6 pt-4 border-t border-surface-variant/30 flex justify-between items-center text-outline font-label-sm text-label-sm uppercase">
+<span>Reward</span>
+<span class="text-primary">Global Rank</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: THE STREETS -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-16">
+<div class="text-center max-w-3xl mx-auto mb-14">
+<div class="inline-block px-3 py-1 rounded bg-surface-container-high text-tertiary-fixed font-label-sm text-label-sm uppercase tracking-widest mb-3">
+        URBAN HAZARDS
+      </div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6">
+        EVERY LANE IS A NEW CHALLENGE
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">
+        Nairobi roads are alive. Each lane brings its own rhythm, unpredictable speed spikes, and reflex timing.
+      </p>
+</div>
+<!-- 4 Alternating Lane Strips -->
+<div class="space-y-6">
+<!-- Lane 1: Matatu Lane (Text Left, Image Right) -->
+<div class="bg-surface-container-low rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden">
+<div class="flex-1 flex flex-col items-start">
+<div class="px-3 py-1 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase tracking-wider mb-3">
+            FAST &amp; RELENTLESS
+          </div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-on-surface uppercase mb-3">
+            LANE 01 // MATATU LANE
+          </h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">
+            Time your hop or get flattened. Souped-up custom minibuses blaze through with thumping bass and zero regard for speed limits.
+          </p>
+<div class="flex items-center gap-4 text-outline font-label-sm text-label-sm">
+<span class="flex items-center gap-1 text-secondary"><span class="material-symbols-outlined text-base">speed</span> 120 KM/H Max</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-base">warning</span> High Frequency</span>
+</div>
+</div>
+<div class="w-full lg:w-[460px] h-48 rounded-xl overflow-hidden relative bg-surface-container-highest shadow-inner">
+<div class="absolute top-3 right-3 z-10 px-2.5 py-1 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-primary-fixed-dim font-label-sm text-label-sm">
+            CONCEPT ART
+          </div>
+<img class="w-full h-full object-cover" data-alt="Stylized game asset art of an aggressive customized Kenyan Matatu bus painted in vibrant grafitti colors speeding down an asphalt corridor with speed streaks and neon headlight beams in isometric arcade view." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnOEl469mM9LVWRC_bjutB88NYZvbZ0XG_ZwrK3ds3v0H9SgDHQtR4vZHRL7r_PzaYP0k1YZUUGGu-J_3HiQO5sO6D_Padb91wWxzbiC3ZEbMe6uK75vhsOV8uYAEZ2sEww07252kZhyFbdoYxhldVtISe4ue03txHM2_BSEoIMySA3RPd0Ni4uOJAxypySNVyX-4M4tfcQlo6BS0c0_jjdaDOOox009OHw1Vk3HWWF27RjChTkGTXWQ"/>
+</div>
+</div>
+<!-- Broken Road Markings Separator -->
+<div class="flex items-center justify-between px-8 py-1 opacity-70">
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+</div>
+<!-- Lane 2: Bodaboda Lane (Image Left, Text Right) -->
+<div class="bg-surface-container-low rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row-reverse items-center gap-8 relative overflow-hidden">
+<div class="flex-1 flex flex-col items-start lg:items-end text-left lg:text-right">
+<div class="px-3 py-1 rounded-md bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-wider mb-3">
+            ZIG-ZAG RUN
+          </div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-on-surface uppercase mb-3">
+            LANE 02 // BODABODA LANE
+          </h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4 max-w-xl">
+            They zig. They zag. Nobody knows where they are going. Motorcycle couriers weave unpredictably between gridlocked lanes.
+          </p>
+<div class="flex items-center gap-4 text-outline font-label-sm text-label-sm">
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-base">alt_route</span> Swerve Physics</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-base">directions_bike</span> Rapid Spawns</span>
+</div>
+</div>
+<div class="w-full lg:w-[460px] h-48 rounded-xl overflow-hidden relative bg-surface-container-highest shadow-inner">
+<div class="absolute top-3 right-3 z-10 px-2.5 py-1 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-primary-fixed-dim font-label-sm text-label-sm">
+            CONCEPT ART
+          </div>
+<img class="w-full h-full object-cover" data-alt="Stylized game asset art of two Nairobi motorcycle bodaboda riders swerving sharply across broken lane stripes carrying stacked luggage boxes, cartoon arcade 3D modeling style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd5nN3OMAccwBpBds_tt6ijLa65vq_qK3uou0XLOjE8g4DnVD4opz99JPEppOMv6ALR7XLTt1YqAbmsRqA-EEO9NJ69TxEyL67lBg7y9BkranFeWnvNcgiUB7IkYABZaC-KvZzM3tcj2u9ryllUL0KG_945USvtdeSzYt0Ws8PCmbwESgwThI52cPkY8bWjcXpVVDBdPc8h7H0n53L87gzjVh4AIaA9ersgw8t0rVWcOna9lheL8nNyg"/>
+</div>
+</div>
+<!-- Broken Road Markings Separator -->
+<div class="flex items-center justify-between px-8 py-1 opacity-70">
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+</div>
+<!-- Lane 3: Hawker Row (Text Left, Image Right) -->
+<div class="bg-surface-container-low rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden">
+<div class="flex-1 flex flex-col items-start">
+<div class="px-3 py-1 rounded-md bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm uppercase tracking-wider mb-3">
+            SLOW OBSTACLES
+          </div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-on-surface uppercase mb-3">
+            LANE 03 // HAWKER ROW
+          </h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4">
+            Slow moving fruit mkokoteni carts and umbrella stalls. Easy to underestimate until you get trapped between two oncoming vans.
+          </p>
+<div class="flex items-center gap-4 text-outline font-label-sm text-label-sm">
+<span class="flex items-center gap-1 text-tertiary"><span class="material-symbols-outlined text-base">storefront</span> Stationary Blocks</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-base">local_shipping</span> Heavy Mass</span>
+</div>
+</div>
+<div class="w-full lg:w-[460px] h-48 rounded-xl overflow-hidden relative bg-surface-container-highest shadow-inner">
+<div class="absolute top-3 right-3 z-10 px-2.5 py-1 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-primary-fixed-dim font-label-sm text-label-sm">
+            CONCEPT ART
+          </div>
+<img class="w-full h-full object-cover" data-alt="Stylized game illustration showing wooden hand-pulled mkokoteni carts loaded with colourful fruits and striped market umbrellas lining the asphalt road shoulder, arcade isometric render." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi03gYcHZYOZQXncULw2CfVlvFUd5Yj72FKkRW6_Q-YbFSKlJDsavojaQf0eiC_FR5EN8bvFqtSIdqsZi3M2V1aj5Pz8yD8g6To-BIzy-j3d4qOmSrnOSBvCuSl9WbMBlKU3fJG6M8dJUrg6SFQadyGd4D-hK1tCx1ziK_mnmvH-M0OpbTwAH51sm8psOjOkq9V7nQ0z2K0-zWiyQ45Ocj7QQxsV7xLkc0IKRTryTOppVJ1J5nXaAb4w"/>
+</div>
+</div>
+<!-- Broken Road Markings Separator -->
+<div class="flex items-center justify-between px-8 py-1 opacity-70">
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+<div class="w-16 h-2 bg-primary-container rounded"></div>
+</div>
+<!-- Lane 4: Safe Island (Image Left, Text Right) -->
+<div class="bg-surface-container-low rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row-reverse items-center gap-8 relative overflow-hidden">
+<div class="flex-1 flex flex-col items-start lg:items-end text-left lg:text-right">
+<div class="px-3 py-1 rounded-md bg-surface-variant text-on-surface font-label-sm text-label-sm uppercase tracking-wider mb-3">
+            REFUGE
+          </div>
+<h3 class="font-headline-md text-headline-md font-extrabold text-on-surface uppercase mb-3">
+            LANE 04 // SAFE ISLAND
+          </h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4 max-w-xl">
+            Catch your breath on the central concrete curb divider. It will not last long before the lane sweepers force you forward.
+          </p>
+<div class="flex items-center gap-4 text-outline font-label-sm text-label-sm">
+<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-base">timer</span> 5s Max Resting</span>
+<span>•</span>
+<span class="flex items-center gap-1 text-tertiary"><span class="material-symbols-outlined text-base">shield</span> Collision Shield</span>
+</div>
+</div>
+<div class="w-full lg:w-[460px] h-48 rounded-xl overflow-hidden relative bg-surface-container-highest shadow-inner">
+<div class="absolute top-3 right-3 z-10 px-2.5 py-1 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-primary-fixed-dim font-label-sm text-label-sm">
+            CONCEPT ART
+          </div>
+<img class="w-full h-full object-cover" data-alt="Stylized game asset showing a raised concrete pedestrian median strip with yellow curb paint, street lamps, and resting runner waiting to jump into chaotic highway traffic, arcade game environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKw4hcexBfOVFql-nFzeiOxNc_6WwqAzqNOqjTwcZ7qx9EcLB2aiOQJ8895mwsiYkJ9iogh_YuEBL9i7asdBiuzB9-YB01OCyzUOSvfdo1DeJ225iDHIa6VaBHr6hYy68loqvCJHJNMzONKB4jRvGmi9BE2RtWiPpiJX8z45ZThmJx0Zy8pOCMswXvggkZUiuLDWoD4Ih6pMPRcdWtMf6CbpFg0kHOATjADnp8zVnoVm1Y1JNfE8aRZA"/>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: IT GETS HARDER -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-16">
+<div class="bg-surface-container-lowest rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+<!-- Angled speed backdrop accent -->
+<div class="absolute -right-32 -top-32 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+<div>
+<div class="inline-flex items-center gap-2 text-secondary font-label-sm text-label-sm uppercase tracking-widest mb-2">
+<span class="material-symbols-outlined text-base">trending_up</span> VELOCITY ACCELERATION
+          </div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6">
+            THE FURTHER YOU GO, THE FASTER IT GETS
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mt-2">
+            The distance ticker climbs, horns blare louder, and traffic density turns ruthlessly chaotic.
+          </p>
+</div>
+<!-- Telemetry Pill -->
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-xl shadow-lg border-b-2 border-primary-container">
+<span class="w-3 h-3 rounded-full bg-secondary animate-ping"></span>
+<span class="font-label-lg text-label-lg font-black italic text-on-surface uppercase">
+            SPEED: <span class="text-primary-container">3.4X MULTIPLIER</span>
+</span>
+</div>
+</div>
+<!-- Wide 3-Stage Progress Bar -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<!-- Stage 1 -->
+<div class="bg-surface-container-low p-6 rounded-2xl relative overflow-hidden flex flex-col justify-between">
+<div class="h-2 w-full bg-tertiary-container rounded-full mb-4"></div>
+<div>
+<div class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider mb-1">STAGE 01 // 0 - 500M</div>
+<h4 class="font-headline-sm text-headline-sm font-extrabold text-on-surface uppercase mb-2">CHILL</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Manageable single-lane matatus and predictable hawker positions. Perfect for warming up the reflexes.</p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/30 flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-outline">AVG VELOCITY</span>
+<span class="text-tertiary font-bold">40 KM/H</span>
+</div>
+</div>
+<!-- Stage 2 -->
+<div class="bg-surface-container-low p-6 rounded-2xl relative overflow-hidden flex flex-col justify-between">
+<div class="h-2 w-full rounded-full mb-4" style="background: repeating-linear-gradient(45deg, #ffc629, #ffc629 8px, #061423 8px, #061423 16px);"></div>
+<div>
+<div class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-wider mb-1">STAGE 02 // 500 - 1500M</div>
+<h4 class="font-headline-sm text-headline-sm font-extrabold text-on-surface uppercase mb-2">RUSH HOUR</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sudden bodaboda swerves, overlapping convoy lanes, and closing gaps that require split-second hops.</p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/30 flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-outline">AVG VELOCITY</span>
+<span class="text-primary-container font-bold">80 KM/H</span>
+</div>
+</div>
+<!-- Stage 3 -->
+<div class="bg-surface-container-low p-6 rounded-2xl relative overflow-hidden flex flex-col justify-between">
+<div class="h-2 w-full bg-secondary-container rounded-full mb-4"></div>
+<div>
+<div class="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-1">STAGE 03 // 1500M+</div>
+<h4 class="font-headline-sm text-headline-sm font-extrabold text-secondary uppercase mb-2">MADNESS</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Buses run red lights. Pedestrians dash randomly. Pure arcade overdrive reflex test where one slip is game over.</p>
+</div>
+<div class="mt-4 pt-3 border-t border-surface-variant/30 flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-outline">AVG VELOCITY</span>
+<span class="text-secondary font-bold">120+ KM/H</span>
+</div>
+</div>
+</div>
+<!-- Alert Note Bar -->
+<div class="flex items-center gap-3 bg-surface-container-high px-4 py-3 rounded-xl text-on-surface">
+<span class="material-symbols-outlined text-secondary">error</span>
+<span class="font-body-sm text-body-sm">
+<strong>Street Warning:</strong> Speed scaling is dynamic. Surviving past 2,000 metres unlocks exclusive custom runner neon skins.
+        </span>
+</div>
+</div>
+</section>
+<!-- SECTION 5: BUILD YOUR OWN RUNNER -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-16">
+<div class="grid grid-cols-12 gap-8 items-center">
+<!-- Left Column: Customizer Details & Selectors -->
+<div class="col-span-12 lg:col-span-5 flex flex-col items-start">
+<div class="inline-block px-3 py-1 rounded bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm uppercase tracking-widest mb-3">
+          AVATAR WORKSHOP
+        </div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6 mb-4">
+          BUILD YOUR OWN RUNNER
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
+          Pick your body style, outfit, accessories, and colors, then take your unique character to the streets with flair.
+        </p>
+<!-- Customizer Interactive Selector Chips -->
+<div class="flex flex-wrap gap-2 mb-6">
+<button class="px-4 py-2 bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase rounded-lg shadow-[0_3px_0_#997300]" type="button">
+            OUTFIT
+          </button>
+<button class="px-4 py-2 bg-surface-container text-on-surface font-label-sm text-label-sm uppercase rounded-lg hover:bg-surface-variant transition-colors" type="button">
+            BODY
+          </button>
+<button class="px-4 py-2 bg-surface-container text-on-surface font-label-sm text-label-sm uppercase rounded-lg hover:bg-surface-variant transition-colors" type="button">
+            ACCESSORY
+          </button>
+<button class="px-4 py-2 bg-surface-container text-on-surface font-label-sm text-label-sm uppercase rounded-lg hover:bg-surface-variant transition-colors" type="button">
+            COLOUR
+          </button>
+</div>
+<!-- Quick feature bullets -->
+<div class="space-y-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-xl">check_box</span>
+<span class="font-body-md text-body-md text-on-surface">50+ Mix-and-match urban clothing items</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-xl">check_box</span>
+<span class="font-body-md text-body-md text-on-surface">Unlocked through gameplay distance achievements</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-xl">check_box</span>
+<span class="font-body-md text-body-md text-on-surface">Zero pay-to-win boosts — pure aesthetic flex</span>
+</div>
+</div>
+</div>
+<!-- Right Column: 4-Character Lineup Display Side-by-Side -->
+<div class="col-span-12 lg:col-span-7">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Character 1 -->
+<div class="bg-surface-container-low rounded-2xl p-4 shadow-xl flex flex-col justify-between group hover:bg-surface-container transition-all">
+<div class="relative w-full h-44 rounded-xl overflow-hidden bg-surface-container-highest mb-3">
+<div class="absolute top-2 right-2 z-10 px-2 py-0.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-[10px] font-label-sm text-primary-fixed-dim">
+                CONCEPT ART
+              </div>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Stylized low-poly 3D game runner character named Street Hopper wearing a yellow hoodie, backward cap, and high top sneakers, arcade hopper aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJbT7pjySC6DUD-NhgFfN53c6x4vWJA_akb035VCiXhl_Dtc-qO4Bo3NwlFWVYo_G3bDNhkDXifUJTpISCdKDuGBqF2uWrV9ANJrw3b2bKy3ccAmX-CcGXE9UnPZPRaFsbf0n0eXshKHpXKow7o0B7uvjtszSUUYUgwJboazoCKTDeFdbXwUXCZ1ZufiBF-SSUINN-SwPhdijDbVirrTm01GC2W4xm6NXr9qxO-n8N7HY_gkIsWGpa5g"/>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase text-on-surface mb-1">STREET HOPPER</h4>
+<p class="font-body-sm text-body-sm text-tertiary">Agile • Fast hops</p>
+</div>
+</div>
+<!-- Character 2 -->
+<div class="bg-surface-container-low rounded-2xl p-4 shadow-xl flex flex-col justify-between group hover:bg-surface-container transition-all">
+<div class="relative w-full h-44 rounded-xl overflow-hidden bg-surface-container-highest mb-3">
+<div class="absolute top-2 right-2 z-10 px-2 py-0.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-[10px] font-label-sm text-primary-fixed-dim">
+                CONCEPT ART
+              </div>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Stylized low-poly 3D character named Boda Rider wearing a high-visibility neon reflective vest and red helmet, Nairobi motorcycle rider cartoon aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWK0PMy8NDYS2qAMNF5MsViyKADf5BNhGK1ivcQkAzs4FY_BlW4OBALY4hGJQJxJHRgTEs4f9SKEOFEfIAFrKbp73jPyg8weGdkPKHKl831MnPKw00Ys8WKj5xkvxrbH9tiBCEPA4_Cn55IWbAL0liXW5fTyAS_NSJ3WYqotfRh5WfHTvRz7s43CCx5v4g3dFtltp3O4UWgh7DtEfAeje5g7YmiL0uWfLrGgnl56t06SH-zR4zW9Ml5Q"/>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase text-on-surface mb-1">BODA RIDER</h4>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim">Reflective Vest</p>
+</div>
+</div>
+<!-- Character 3 -->
+<div class="bg-surface-container-low rounded-2xl p-4 shadow-xl flex flex-col justify-between group hover:bg-surface-container transition-all">
+<div class="relative w-full h-44 rounded-xl overflow-hidden bg-surface-container-highest mb-3">
+<div class="absolute top-2 right-2 z-10 px-2 py-0.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-[10px] font-label-sm text-primary-fixed-dim">
+                CONCEPT ART
+              </div>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Stylized 3D character named City Sleeker wearing sharp dark designer shades and smart urban blazer, arcade cartoon hopper style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv1TfgyGpEB_iVU3PoYSo-2qgzKmqpAOyTBfvMnMvj8cqWbFf2YUxNlz5wnfoZE6jwaZ1-YMEv1ebg9gvICWAEJGDOugnu474skSurrP-Omd8fSW6V1trURAPrqHjyA8xzSpZI2AHpwMhONNtnjupkYkX_A-tLRLlLqKHOXK4fDqhvJkCNy1Yh97vG38XBBioU9JMqD8LMCUeIaqSgcJhxR2JQcafYw6BmOiAHOhmW0zBS9kiZm9Js1Q"/>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase text-on-surface mb-1">CITY SLEEKER</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sharp Shades</p>
+</div>
+</div>
+<!-- Character 4 -->
+<div class="bg-surface-container-low rounded-2xl p-4 shadow-xl flex flex-col justify-between group hover:bg-surface-container transition-all">
+<div class="relative w-full h-44 rounded-xl overflow-hidden bg-surface-container-highest mb-3">
+<div class="absolute top-2 right-2 z-10 px-2 py-0.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded text-[10px] font-label-sm text-primary-fixed-dim">
+                CONCEPT ART
+              </div>
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Stylized 3D character named Varsity Runner wearing athletic track jacket with Kenya national colors and speed sneakers, arcade cartoon runner." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5pHe00npEY58MtbTs9MiCvy9j8-C8I2WnvDbkP3GChe6a55bCEvqE2-EnQOMBeLcRnKHB9AubyFS_KKg-2cb9I5UrUihmN1kYmQQHGOq4W0KnqYr0Fb4CCbFsuI_42JM60ScdbUb-os4Z_LfKaIX6kkeBfyjTEsuIhEWO_1MWjLgndJ7dN48JXGH5McbyggeRmSzPwPsmbPwiq4WPNhYgaYnrhLb8rWws3jnosvqE7_53rKE6ucQ5WQ"/>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold uppercase text-on-surface mb-1">VARSITY RUNNER</h4>
+<p class="font-body-sm text-body-sm text-secondary">Speed Sneakers</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: SOUNDED BY THE REAL STREETS -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-16">
+<div class="bg-surface-container-lowest rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+<div class="max-w-2xl mb-8">
+<div class="inline-flex items-center gap-2 text-tertiary font-label-sm text-label-sm uppercase tracking-widest mb-2">
+<span class="material-symbols-outlined text-base">graphic_eq</span> 100% FIELD-RECORDED AUDIO
+        </div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6">
+          SOUNDED BY THE REAL STREETS
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+          We're recording real Nairobi sounds for Matatu Dash: conductors calling out routes, bodaboda hoots, hawkers, and tropical rain on the tarmac.
+        </p>
+</div>
+<!-- Full-Width Acoustic Audio Visualizer Waveform -->
+<div class="w-full h-24 bg-surface-container-low rounded-xl px-6 flex items-center justify-between gap-1 sm:gap-2 mb-8 overflow-hidden shadow-inner">
+<!-- SVG Visualizer Waveform -->
+<svg class="w-full h-16" preserveaspectratio="none" viewbox="0 0 1000 80">
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="10" x2="10" y1="40" y2="40"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="25" x2="25" y1="30" y2="50"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="40" x2="40" y1="20" y2="60"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="55" x2="55" y1="15" y2="65"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="70" x2="70" y1="35" y2="45"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="85" x2="85" y1="10" y2="70"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="100" x2="100" y1="25" y2="55"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="115" x2="115" y1="5" y2="75"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="130" x2="130" y1="28" y2="52"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="145" x2="145" y1="12" y2="68"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="160" x2="160" y1="30" y2="50"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="175" x2="175" y1="18" y2="62"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="190" x2="190" y1="8" y2="72"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="205" x2="205" y1="22" y2="58"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="220" x2="220" y1="36" y2="44"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="235" x2="235" y1="14" y2="66"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="250" x2="250" y1="26" y2="54"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="265" x2="265" y1="10" y2="70"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="280" x2="280" y1="4" y2="76"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="295" x2="295" y1="20" y2="60"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="310" x2="310" y1="32" y2="48"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="325" x2="325" y1="16" y2="64"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="340" x2="340" y1="6" y2="74"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="355" x2="355" y1="24" y2="56"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="370" x2="370" y1="12" y2="68"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="385" x2="385" y1="30" y2="50"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="400" x2="400" y1="18" y2="62"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="415" x2="415" y1="2" y2="78"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="430" x2="430" y1="15" y2="65"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="445" x2="445" y1="28" y2="52"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="460" x2="460" y1="8" y2="72"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="475" x2="475" y1="22" y2="58"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="490" x2="490" y1="34" y2="46"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="505" x2="505" y1="10" y2="70"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="520" x2="520" y1="4" y2="76"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="535" x2="535" y1="18" y2="62"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="550" x2="550" y1="30" y2="50"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="565" x2="565" y1="14" y2="66"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="580" x2="580" y1="24" y2="56"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="595" x2="595" y1="8" y2="72"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="610" x2="610" y1="20" y2="60"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="625" x2="625" y1="6" y2="74"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="640" x2="640" y1="28" y2="52"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="655" x2="655" y1="12" y2="68"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="670" x2="670" y1="35" y2="45"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="685" x2="685" y1="16" y2="64"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="700" x2="700" y1="2" y2="78"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="715" x2="715" y1="22" y2="58"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="730" x2="730" y1="10" y2="70"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="745" x2="745" y1="26" y2="54"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="760" x2="760" y1="14" y2="66"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="775" x2="775" y1="32" y2="48"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="790" x2="790" y1="8" y2="72"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="805" x2="805" y1="20" y2="60"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="820" x2="820" y1="4" y2="76"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="835" x2="835" y1="18" y2="62"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="850" x2="850" y1="30" y2="50"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="865" x2="865" y1="12" y2="68"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="880" x2="880" y1="24" y2="56"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="895" x2="895" y1="10" y2="70"></line>
+<line stroke="#ffb3b2" stroke-linecap="round" stroke-width="4" x1="910" x2="910" y1="2" y2="78"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="925" x2="925" y1="16" y2="64"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="940" x2="940" y1="28" y2="52"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="955" x2="955" y1="14" y2="66"></line>
+<line stroke="#4ce5ca" stroke-linecap="round" stroke-width="4" x1="970" x2="970" y1="22" y2="58"></line>
+<line stroke="#ffc629" stroke-linecap="round" stroke-width="4" x1="985" x2="985" y1="36" y2="44"></line>
+</svg>
+</div>
+<!-- 4 Sound Chips Row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-2xl">campaign</span>
+<div>
+<div class="font-label-sm text-label-sm uppercase text-outline">CONDUCTORS</div>
+<div class="font-label-md text-label-md font-bold text-on-surface">"Town Tao!"</div>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-container text-2xl">volume_up</span>
+<div>
+<div class="font-label-sm text-label-sm uppercase text-outline">BODABODAS</div>
+<div class="font-label-md text-label-md font-bold text-on-surface">"Piiii-piii!"</div>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-2xl">record_voice_over</span>
+<div>
+<div class="font-label-sm text-label-sm uppercase text-outline">HAWKERS</div>
+<div class="font-label-md text-label-md font-bold text-on-surface">"Bamba Mia!"</div>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary text-2xl">cloudy_snowing</span>
+<div>
+<div class="font-label-sm text-label-sm uppercase text-outline">ASPHALT RAIN</div>
+<div class="font-label-md text-label-md font-bold text-on-surface">"Wet Tarmac"</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 7: CLIMB THE LEADERBOARD -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-16">
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Left Column: Header + 3 Feature Cards -->
+<div class="col-span-12 lg:col-span-7 flex flex-col">
+<div class="inline-block px-3 py-1 rounded bg-surface-container text-primary-fixed-dim font-label-sm text-label-sm uppercase tracking-widest mb-3 self-start">
+          STREET RANKINGS
+        </div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6 mb-3">
+          CLIMB THE LEADERBOARD
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-8">
+          Compete against players across the country and the world. Distance equals street cred.
+        </p>
+<!-- 3 Feature Cards in a Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-low p-5 rounded-2xl shadow-lg flex flex-col justify-between">
+<span class="material-symbols-outlined text-tertiary text-3xl mb-3">public</span>
+<div>
+<h4 class="font-label-md text-label-md font-extrabold uppercase text-on-surface mb-1">GLOBAL BOARD</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">See how you rank against everyone across the continent.</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low p-5 rounded-2xl shadow-lg flex flex-col justify-between">
+<span class="material-symbols-outlined text-primary-container text-3xl mb-3">military_tech</span>
+<div>
+<h4 class="font-label-md text-label-md font-extrabold uppercase text-on-surface mb-1">PERSONAL BEST</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Beat your own record, run after run, and unlock bonus badges.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low p-5 rounded-2xl shadow-lg flex flex-col justify-between">
+<span class="material-symbols-outlined text-secondary text-3xl mb-3">lock_open</span>
+<div>
+<h4 class="font-label-md text-label-md font-extrabold uppercase text-on-surface mb-1">UNLOCKABLES</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Earn new character skins, custom horns, and dash trails.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Leaderboard Live Mockup -->
+<div class="col-span-12 lg:col-span-5">
+<div class="bg-surface-container-low rounded-2xl p-6 shadow-2xl border-t-4 border-primary-container">
+<div class="flex items-center justify-between pb-4 mb-4 border-b border-surface-variant/40">
+<div>
+<div class="font-headline-sm text-headline-sm font-extrabold uppercase text-on-surface">NAIROBI TOP DASHERS</div>
+<div class="font-label-sm text-label-sm text-outline uppercase tracking-wider">THIS WEEK</div>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-secondary-container/40 text-secondary rounded-full font-label-sm text-label-sm font-bold uppercase">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+              LIVE
+            </div>
+</div>
+<!-- Weekly Rankings List -->
+<div class="space-y-3">
+<!-- Rank 1 -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-primary-container font-black">#1</span>
+<div>
+<div class="font-label-md text-label-md font-bold text-on-surface">Wanjiku_Speedster</div>
+<div class="font-body-sm text-body-sm text-outline">Thika Road Circuit</div>
+</div>
+</div>
+<div class="flex items-center gap-1 font-label-md text-label-md font-black text-primary-container">
+<span>14,820m</span>
+<span>👑</span>
+</div>
+</div>
+<!-- Rank 2 -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container/60">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface font-black">#2</span>
+<div>
+<div class="font-label-md text-label-md font-bold text-on-surface">Omondi_Hop</div>
+<div class="font-body-sm text-body-sm text-outline">Jogoo Road</div>
+</div>
+</div>
+<div class="flex items-center gap-1 font-label-md text-label-md font-black text-on-surface">
+<span>12,450m</span>
+<span>🥈</span>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container/60">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant font-black">#3</span>
+<div>
+<div class="font-label-md text-label-md font-bold text-on-surface">Kip_Bodas</div>
+<div class="font-body-sm text-body-sm text-outline">Ngong Road Express</div>
+</div>
+</div>
+<div class="flex items-center gap-1 font-label-md text-label-md font-black text-on-surface-variant">
+<span>11,200m</span>
+<span>🥉</span>
+</div>
+</div>
+<!-- Rank 4 -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container/40">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-outline font-black">#4</span>
+<div>
+<div class="font-label-md text-label-md font-bold text-on-surface">Mwangi_Dash</div>
+<div class="font-body-sm text-body-sm text-outline">Waiyaki Way</div>
+</div>
+</div>
+<div class="font-label-md text-label-md font-black text-outline">
+                9,840m
+              </div>
+</div>
+<!-- Rank 5 (Player) -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-primary-container/10 border-l-4 border-primary-container">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-primary font-black">#5</span>
+<div>
+<div class="font-label-md text-label-md font-bold text-primary">You (Ready to dash?)</div>
+<div class="font-body-sm text-body-sm text-primary-fixed-dim">Join the grid</div>
+</div>
+</div>
+<div class="font-label-md text-label-md font-black text-primary">
+                ---
+              </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 8: FAQ -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-16">
+<div class="text-center max-w-2xl mx-auto mb-12">
+<div class="inline-block px-3 py-1 rounded bg-surface-container text-tertiary-fixed font-label-sm text-label-sm uppercase tracking-widest mb-3">
+        GAME INTEL
+      </div>
+<h2 class="font-headline-lg text-headline-lg font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6">
+        FREQUENTLY ASKED QUESTIONS
+      </h2>
+</div>
+<!-- 2 Columns of Chunky Accordion Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Left Column -->
+<div class="space-y-4">
+<!-- Q1 (Expanded) -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-lg">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm font-extrabold uppercase text-primary-container">
+              IS MATATU DASH FREE TO PLAY?
+            </h3>
+<span class="material-symbols-outlined text-primary-container text-2xl shrink-0">expand_less</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-3">
+            100% free to play at launch with zero pay-to-win mechanics. All character upgrades, skins, and outfits are unlocked strictly through distance survived and milestone achievements.
+          </p>
+</div>
+<!-- Q2 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-lg">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm font-extrabold uppercase text-on-surface">
+              WHICH PHONES WILL IT WORK ON?
+            </h3>
+<span class="material-symbols-outlined text-outline text-2xl shrink-0">expand_more</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">
+            Optimized for Android 8.0 and above, maintaining buttery smooth 60fps on budget smartphones as well as flagship devices.
+          </p>
+</div>
+</div>
+<!-- Right Column -->
+<div class="space-y-4">
+<!-- Q3 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-lg">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm font-extrabold uppercase text-on-surface">
+              WHEN IS IT LAUNCHING?
+            </h3>
+<span class="material-symbols-outlined text-outline text-2xl shrink-0">expand_more</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">
+            Pre-registration is open now. Early beta rollout begins next quarter exclusively on Google Play, with participants receiving the Founder's Gold Hopper outfit.
+          </p>
+</div>
+<!-- Q4 -->
+<div class="bg-surface-container-low p-6 rounded-2xl shadow-lg">
+<div class="flex items-start justify-between gap-4">
+<h3 class="font-headline-sm text-headline-sm font-extrabold uppercase text-on-surface">
+              IS IT AVAILABLE ON IPHONE?
+            </h3>
+<span class="material-symbols-outlined text-outline text-2xl shrink-0">expand_more</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">
+            The iOS version is currently in development and will follow shortly after the initial Android release. You can sign up with your email to get notified when iOS testing opens.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 9: FINAL CTA -->
+<section class="w-full max-w-[1400px] mx-auto px-8 py-20">
+<div class="max-w-4xl mx-auto bg-surface-container-lowest rounded-3xl p-10 sm:p-14 shadow-2xl relative overflow-hidden text-center border-4 border-primary-container">
+<!-- Dynamic speed stripes background pattern -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background: repeating-linear-gradient(45deg, #ffc629, #ffc629 20px, transparent 20px, transparent 40px);"></div>
+<!-- Leaping Concept Art Character Silhouette Pill Badge -->
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-high text-primary-container font-label-md text-label-md uppercase tracking-widest mb-6 shadow-md">
+<span class="material-symbols-outlined text-lg">bolt</span>
+        HOP • DODGE • KEEP GOING
+        <span class="px-2 py-0.5 bg-surface-container-lowest rounded text-[10px] text-tertiary">CONCEPT ART</span>
+</div>
+<!-- Massive Slanted CTA Headline -->
+<h2 class="font-headline-xl text-headline-xl font-black italic uppercase tracking-tight text-on-surface transform -skew-x-6 mb-4">
+        READY TO DASH?
+      </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto mb-8 font-medium">
+        Be the first to play when Matatu Dash launches. Sign up to receive the exclusive Rongai Graffiti Skin at release.
+      </p>
+<!-- Email Capture Input + Chunky 3D Push Button -->
+<div class="max-w-lg mx-auto mb-6">
+<form class="flex flex-col sm:flex-row gap-3 p-1.5 bg-surface-container-low rounded-2xl shadow-xl" onsubmit="event.preventDefault(); document.getElementById('final-feedback').classList.remove('hidden');">
+<div class="relative flex-1 flex items-center">
+<span class="material-symbols-outlined absolute left-4 text-outline">mail</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-xl bg-surface-container text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" placeholder="Enter your email" required="" type="email"/>
+</div>
+<button class="px-8 py-4 bg-primary-container text-on-primary-container font-label-lg text-label-lg uppercase rounded-xl transform hover:-translate-y-1 active:translate-y-0.5 transition-transform flex items-center justify-center gap-2 whitespace-nowrap shadow-[0_6px_0_#997300] active:shadow-[0_2px_0_#997300]" type="submit">
+<span>GET NOTIFIED</span>
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+</button>
+</form>
+<p class="hidden text-tertiary-fixed font-label-sm text-label-sm mt-3 flex items-center justify-center gap-1.5" id="final-feedback">
+<span class="material-symbols-outlined text-sm">check_circle</span> You're officially on the launch VIP list!
+        </p>
+</div>
+<!-- Discrete Footer Sub-link -->
+<div class="flex items-center justify-center gap-4 text-outline font-label-sm text-label-sm">
+<a class="hover:text-on-surface transition-colors" href="#privacy">Privacy Policy</a>
+<span>•</span>
+<span>© Matatu Dash Nairobi. All rights reserved.</span>
+</div>
+</div>
+</section>
+<!-- Bottom Hazard Road Stripe -->
+<div class="w-full h-3 bg-repeat-x flex" style="background: repeating-linear-gradient(45deg, #ffc629, #ffc629 14px, #061423 14px, #061423 28px);"></div>
+</div></main></body></html>
