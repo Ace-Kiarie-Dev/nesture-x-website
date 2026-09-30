@@ -40,7 +40,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'web',
     status: 'In Development',
     imageSrc: '/images/originals/Kikota-Card.webp',
-    link: null,
+    link: '/kikota',
   },
   {
     id: 'betledger',

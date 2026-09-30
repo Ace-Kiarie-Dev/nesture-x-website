@@ -35,6 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/tools`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${base}/betledger`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${base}/sorapesa`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.7 },
+    { url: `${base}/kikota`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.7 },
     ...toolEntries,
     { url: `${base}/privacy-policy`, lastModified: now, changeFrequency: 'yearly' as const, priority: 0.3 },
   ];
