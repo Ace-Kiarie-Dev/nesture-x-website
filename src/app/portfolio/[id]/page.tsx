@@ -13,8 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!item) return {};
   const displayClient = item.client === 'Various Clients' ? 'Nesture-X Client Work' : item.client;
   return {
-    title: `${displayClient} — ${item.type} | Nesture-X`,
+    title: `${displayClient} — ${item.type}`,
     description: item.description,
+    alternates: {
+      canonical: `/portfolio/${id}`,
+    },
   };
 }
 

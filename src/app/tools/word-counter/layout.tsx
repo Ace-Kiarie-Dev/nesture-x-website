@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Word & Character Counter — Reading Time & Keyword Density | Nesture-X',
+  title: 'Word & Character Counter — Reading Time & Keyword Density',
   description:
-    'Free online word counter. Count words, characters, sentences, paragraphs and reading time. Includes keyword density analysis, speaking time and character limit checker.',
+    'Free online word counter. Count words, characters, sentences, paragraphs and reading time, with keyword density, speaking time and a character limit check.',
   keywords: [
     'word counter online',
     'character counter',
@@ -17,28 +17,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Word & Character Counter — Reading Time & Keyword Density | Nesture-X',
     description:
-      'Free online word counter. Count words, characters, sentences, paragraphs and reading time. Includes keyword density analysis, speaking time and character limit checker.',
+      'Free online word counter. Count words, characters, sentences, paragraphs and reading time, with keyword density, speaking time and a character limit check.',
     url: 'https://nesturex.com/tools/word-counter',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/word-counter.png',
-        width: 1200,
-        height: 630,
-        alt: 'Word & Character Counter — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Word & Character Counter — Reading Time & Keyword Density | Nesture-X',
     description:
-      'Free online word counter. Count words, characters, sentences, paragraphs and reading time. Includes keyword density analysis, speaking time and character limit checker.',
-    images: ['https://nesturex.com/og/tools/word-counter.png'],
+      'Free online word counter. Count words, characters, sentences, paragraphs and reading time, with keyword density, speaking time and a character limit check.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/word-counter',
+    canonical: '/tools/word-counter',
   },
 };
 

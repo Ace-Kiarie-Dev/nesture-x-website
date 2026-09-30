@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'PDF Studio — Compress, Merge, Split & Protect PDFs Free | Nesture-X',
+  title: 'PDF Studio — Compress, Merge, Split & Protect PDFs Free',
   description:
-    'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files — all in one place, no account needed.',
+    'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files, all in one place with no account.',
   keywords: [
     'compress PDF online free',
     'merge PDF files',
@@ -17,28 +17,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'PDF Studio — Compress, Merge, Split & Protect PDFs Free | Nesture-X',
     description:
-      'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files — all in one place, no account needed.',
+      'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files, all in one place with no account.',
     url: 'https://nesturex.com/tools/pdf-studio',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/pdf-studio.png',
-        width: 1200,
-        height: 630,
-        alt: 'PDF Studio — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PDF Studio — Compress, Merge, Split & Protect PDFs Free | Nesture-X',
     description:
-      'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files — all in one place, no account needed.',
-    images: ['https://nesturex.com/og/tools/pdf-studio.png'],
+      'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files, all in one place with no account.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/pdf-studio',
+    canonical: '/tools/pdf-studio',
   },
 };
 

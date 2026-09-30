@@ -1,35 +1,27 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Nesture-X',
+  title: 'Privacy Policy',
   description:
-    'Privacy policy for Nesture-X and the Nesture-X Free Tools Hub. No file storage, no account required. Learn how we handle data and our Google AdSense disclosure.',
+    'Privacy policy for Nesture-X and the Free Tools Hub. No file storage and no account required. How we handle your data, plus our Google AdSense disclosure.',
   keywords: ['Nesture-X privacy policy'],
   openGraph: {
     title: 'Privacy Policy | Nesture-X',
     description:
-      'Privacy policy for Nesture-X and the Nesture-X Free Tools Hub. No file storage, no account required. Learn how we handle data and our Google AdSense disclosure.',
+      'Privacy policy for Nesture-X and the Free Tools Hub. No file storage and no account required. How we handle your data, plus our Google AdSense disclosure.',
     url: 'https://nesturex.com/privacy-policy',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/privacy-policy.png',
-        width: 1200,
-        height: 630,
-        alt: 'Privacy Policy — Nesture-X',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Privacy Policy | Nesture-X',
     description:
-      'Privacy policy for Nesture-X and the Nesture-X Free Tools Hub. No file storage, no account required. Learn how we handle data and our Google AdSense disclosure.',
-    images: ['https://nesturex.com/og/tools/privacy-policy.png'],
+      'Privacy policy for Nesture-X and the Free Tools Hub. No file storage and no account required. How we handle your data, plus our Google AdSense disclosure.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/privacy-policy',
+    canonical: '/privacy-policy',
   },
 };
 

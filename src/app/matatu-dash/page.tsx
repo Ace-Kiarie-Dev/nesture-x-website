@@ -20,9 +20,10 @@ const inter = Inter({
   display: 'swap',
 });
 
-const TITLE = 'Matatu Dash — Nairobi Street Hopper Game | Nesture-X';
+const TITLE = 'Matatu Dash — Nairobi Street Hopper Game';
+const SHARE_TITLE = `${TITLE} | Nesture-X`;
 const DESCRIPTION =
-  'Hop through matatu lanes, dodge bodabodas, and weave past hawkers in Matatu Dash, a free endless hopper game set on the streets of Nairobi. Coming soon to Google Play.';
+  'Hop through matatu lanes, dodge bodabodas, and weave past hawkers in Matatu Dash, a free endless hopper game set in Nairobi. Coming soon to Google Play.';
 const PAGE_URL = 'https://nesturex.com/matatu-dash';
 const OG_IMAGE = 'https://nesturex.com/images/originals/MatatuDash-Card.webp';
 
@@ -38,10 +39,11 @@ export const metadata: Metadata = {
     'Android game Kenya',
   ],
   openGraph: {
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     url: PAGE_URL,
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
     images: [
       {
@@ -54,12 +56,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },
   alternates: {
-    canonical: PAGE_URL,
+    canonical: '/matatu-dash',
   },
 };
 

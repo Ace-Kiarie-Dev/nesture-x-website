@@ -11,9 +11,10 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-const TITLE = 'SoraPesa — Money App for Young Kenyans | Nesture-X';
+const TITLE = 'SoraPesa — Money App for Young Kenyans';
+const SHARE_TITLE = `${TITLE} | Nesture-X`;
 const DESCRIPTION =
-  'Track your salary, bills, and side hustles in one place. SoraPesa is a Kenya-first money app that helps young adults see where their money goes and make better money decisions. Coming soon to Google Play.';
+  'SoraPesa is a Kenya-first money app for young adults. Track your salary, bills, and side hustles in one place and see where your money goes. Coming soon.';
 const PAGE_URL = 'https://nesturex.com/sorapesa';
 const OG_IMAGE = 'https://nesturex.com/images/originals/SoraPesa-Card.webp';
 
@@ -29,10 +30,11 @@ export const metadata: Metadata = {
     'side hustle tracker Kenya',
   ],
   openGraph: {
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     url: PAGE_URL,
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
     images: [
       {
@@ -45,12 +47,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },
   alternates: {
-    canonical: PAGE_URL,
+    canonical: '/sorapesa',
   },
 };
 

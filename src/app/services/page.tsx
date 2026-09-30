@@ -4,9 +4,12 @@ import NxButton from '@/components/ui/NxButton';
 import { CONTACT } from '@/constants';
 
 export const metadata: Metadata = {
-  title: 'Services | Nesture-X',
+  title: 'Web, App, Design & M-Pesa Services in Kenya',
   description:
-    "Web development, mobile apps, graphic design, print & branding, and digital marketing from Nairobi's creative technology agency.",
+    'Websites, web apps, mobile apps, M-Pesa integration, logo and brand design, large-format printing, and digital marketing for Kenyan businesses.',
+  alternates: {
+    canonical: '/services',
+  },
 };
 
 const STATS = [

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Logo Text Previewer — See Your Brand Name in Any Font Free | Nesture-X',
+  title: 'Logo Text Previewer — See Your Brand Name in Any Font Free',
   description:
-    'Preview your brand name across 25 fonts and 4 layouts before commissioning a logo. Download as PNG or SVG. Free brand typography tool by Nesture-X — Nairobi\'s creative tech agency.',
+    'Preview your brand name in 25 fonts and 4 layouts before commissioning a logo, then download it as PNG or SVG. A free brand typography tool by Nesture-X.',
   keywords: [
     'logo text previewer',
     'brand name font preview',
@@ -16,28 +16,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Logo Text Previewer — See Your Brand Name in Any Font Free | Nesture-X',
     description:
-      'Preview your brand name across 25 fonts and 4 layouts before commissioning a logo. Download as PNG or SVG. Free brand typography tool by Nesture-X — Nairobi\'s creative tech agency.',
+      'Preview your brand name in 25 fonts and 4 layouts before commissioning a logo, then download it as PNG or SVG. A free brand typography tool by Nesture-X.',
     url: 'https://nesturex.com/tools/logo-text-preview',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/logo-text-preview.png',
-        width: 1200,
-        height: 630,
-        alt: 'Logo Text Previewer — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Logo Text Previewer — See Your Brand Name in Any Font Free | Nesture-X',
     description:
-      'Preview your brand name across 25 fonts and 4 layouts before commissioning a logo. Download as PNG or SVG. Free brand typography tool by Nesture-X — Nairobi\'s creative tech agency.',
-    images: ['https://nesturex.com/og/tools/logo-text-preview.png'],
+      'Preview your brand name in 25 fonts and 4 layouts before commissioning a logo, then download it as PNG or SVG. A free brand typography tool by Nesture-X.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/logo-text-preview',
+    canonical: '/tools/logo-text-preview',
   },
 };
 

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Nesture-X Admin',
+  // Absolute so the root "%s | Nesture-X" template doesn't apply.
+  title: { absolute: 'Nesture-X Admin' },
   robots: 'noindex, nofollow',
 };
 

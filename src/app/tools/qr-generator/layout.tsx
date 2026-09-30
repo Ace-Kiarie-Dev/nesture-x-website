@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'QR Code Generator — Free with Logo & SVG Export | Nesture-X',
+  title: 'QR Code Generator — Free with Logo & SVG Export',
   description:
-    'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, choose error correction level and download as PNG or SVG — no account needed.',
+    'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, set error correction and download PNG or SVG. No account needed.',
   keywords: [
     'QR code generator free',
     'generate QR code',
@@ -16,28 +16,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'QR Code Generator — Free with Logo & SVG Export | Nesture-X',
     description:
-      'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, choose error correction level and download as PNG or SVG — no account needed.',
+      'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, set error correction and download PNG or SVG. No account needed.',
     url: 'https://nesturex.com/tools/qr-generator',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/qr-generator.png',
-        width: 1200,
-        height: 630,
-        alt: 'QR Code Generator — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'QR Code Generator — Free with Logo & SVG Export | Nesture-X',
     description:
-      'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, choose error correction level and download as PNG or SVG — no account needed.',
-    images: ['https://nesturex.com/og/tools/qr-generator.png'],
+      'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, set error correction and download PNG or SVG. No account needed.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/qr-generator',
+    canonical: '/tools/qr-generator',
   },
 };
 

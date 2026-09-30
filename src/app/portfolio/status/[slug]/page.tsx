@@ -50,7 +50,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = findProject(slug);
   if (!project) return {};
-  return { title: `${project.title} | Nesture-X` };
+  return { title: project.title };
 }
 
 export default async function StatusPage({

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Image Studio — Convert, Compress, Resize & Edit Images Free | Nesture-X',
+  title: 'Image Studio — Convert, Compress, Resize & Edit Images Free',
   description:
-    'Free online image editor. Convert between JPG, PNG, WebP, AVIF and 5 more formats. Compress, resize, rotate, flip and adjust images — no upload limit beyond 4MB, no account needed.',
+    'Free online image editor. Convert JPG, PNG, WebP, AVIF and 5 more formats, then compress, resize, rotate and flip images. Files up to 4MB, no sign-up.',
   keywords: [
     'image converter online free',
     'convert image to webp',
@@ -18,28 +18,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Image Studio — Convert, Compress, Resize & Edit Images Free | Nesture-X',
     description:
-      'Free online image editor. Convert between JPG, PNG, WebP, AVIF and 5 more formats. Compress, resize, rotate, flip and adjust images — no upload limit beyond 4MB, no account needed.',
+      'Free online image editor. Convert JPG, PNG, WebP, AVIF and 5 more formats, then compress, resize, rotate and flip images. Files up to 4MB, no sign-up.',
     url: 'https://nesturex.com/tools/image-studio',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/image-studio.png',
-        width: 1200,
-        height: 630,
-        alt: 'Image Studio — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Image Studio — Convert, Compress, Resize & Edit Images Free | Nesture-X',
     description:
-      'Free online image editor. Convert between JPG, PNG, WebP, AVIF and 5 more formats. Compress, resize, rotate, flip and adjust images — no upload limit beyond 4MB, no account needed.',
-    images: ['https://nesturex.com/og/tools/image-studio.png'],
+      'Free online image editor. Convert JPG, PNG, WebP, AVIF and 5 more formats, then compress, resize, rotate and flip images. Files up to 4MB, no sign-up.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/image-studio',
+    canonical: '/tools/image-studio',
   },
 };
 

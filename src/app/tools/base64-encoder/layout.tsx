@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Base64 Encoder & Decoder — Text & File, URL-Safe | Nesture-X',
+  title: 'Base64 Encoder & Decoder — Text & File, URL-Safe',
   description:
-    'Free online Base64 encoder and decoder. Encode text or files to Base64, decode Base64 strings, copy as data URI, URL-safe mode for developers. No account, no file storage.',
+    'Free online Base64 encoder and decoder. Encode text or files, decode Base64 strings, copy as a data URI, and use URL-safe mode. No account or file storage.',
   keywords: [
     'Base64 encoder',
     'Base64 decoder',
@@ -17,28 +17,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Base64 Encoder & Decoder — Text & File, URL-Safe | Nesture-X',
     description:
-      'Free online Base64 encoder and decoder. Encode text or files to Base64, decode Base64 strings, copy as data URI, URL-safe mode for developers. No account, no file storage.',
+      'Free online Base64 encoder and decoder. Encode text or files, decode Base64 strings, copy as a data URI, and use URL-safe mode. No account or file storage.',
     url: 'https://nesturex.com/tools/base64-encoder',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/base64-encoder.png',
-        width: 1200,
-        height: 630,
-        alt: 'Base64 Encoder & Decoder — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Base64 Encoder & Decoder — Text & File, URL-Safe | Nesture-X',
     description:
-      'Free online Base64 encoder and decoder. Encode text or files to Base64, decode Base64 strings, copy as data URI, URL-safe mode for developers. No account, no file storage.',
-    images: ['https://nesturex.com/og/tools/base64-encoder.png'],
+      'Free online Base64 encoder and decoder. Encode text or files, decode Base64 strings, copy as a data URI, and use URL-safe mode. No account or file storage.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/base64-encoder',
+    canonical: '/tools/base64-encoder',
   },
 };
 

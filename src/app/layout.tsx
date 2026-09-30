@@ -27,8 +27,24 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Nesture-X | Creative Technology Agency',
-  description: 'Nairobi-based creative technology agency building world-class digital experiences. Web development, graphic design, and digital marketing.',
+  // Resolves every relative canonical and OG/Twitter image URL site-wide.
+  metadataBase: new URL('https://nesturex.com'),
+  title: {
+    default: 'Nesture-X | Creative Technology Agency in Nairobi',
+    template: '%s | Nesture-X',
+  },
+  description:
+    'Nesture-X is a Nairobi creative tech agency building websites, web apps, and mobile apps with M-Pesa integration, plus branding, design, and printing.',
+  // Site-wide share defaults. The image comes from app/opengraph-image.tsx and
+  // app/twitter-image.tsx; segments with their own image files override it.
+  openGraph: {
+    siteName: 'Nesture-X',
+    locale: 'en_KE',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default function RootLayout({

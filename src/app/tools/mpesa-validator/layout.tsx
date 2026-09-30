@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'M-Pesa Validator — Validate Till, Paybill & Phone Numbers Free | Nesture-X',
+  title: 'M-Pesa Validator — Validate Till, Paybill & Phone Numbers Free',
   description:
-    'Free M-Pesa validation tool for Kenyan businesses. Validate and normalise M-Pesa phone numbers, Till numbers and Paybill numbers instantly — with format conversion and network detection.',
+    'Free M-Pesa validator for Kenyan businesses. Check and normalise phone, Till and Paybill numbers instantly, with format conversion and network detection.',
   keywords: [
     'M-Pesa validator',
     'validate M-Pesa number',
@@ -16,28 +16,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'M-Pesa Validator — Validate Till, Paybill & Phone Numbers Free | Nesture-X',
     description:
-      'Free M-Pesa validation tool for Kenyan businesses. Validate and normalise M-Pesa phone numbers, Till numbers and Paybill numbers instantly — with format conversion and network detection.',
+      'Free M-Pesa validator for Kenyan businesses. Check and normalise phone, Till and Paybill numbers instantly, with format conversion and network detection.',
     url: 'https://nesturex.com/tools/mpesa-validator',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/mpesa-validator.png',
-        width: 1200,
-        height: 630,
-        alt: 'M-Pesa Validator — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'M-Pesa Validator — Validate Till, Paybill & Phone Numbers Free | Nesture-X',
     description:
-      'Free M-Pesa validation tool for Kenyan businesses. Validate and normalise M-Pesa phone numbers, Till numbers and Paybill numbers instantly — with format conversion and network detection.',
-    images: ['https://nesturex.com/og/tools/mpesa-validator.png'],
+      'Free M-Pesa validator for Kenyan businesses. Check and normalise phone, Till and Paybill numbers instantly, with format conversion and network detection.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/mpesa-validator',
+    canonical: '/tools/mpesa-validator',
   },
 };
 

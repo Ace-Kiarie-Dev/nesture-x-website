@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Free Invoice Generator — PDF Invoices with M-Pesa Details | Nesture-X',
+  title: 'Free Invoice Generator — PDF Invoices with M-Pesa Details',
   description:
-    'Create professional PDF invoices free online. Add your logo, line items, VAT, discounts, M-Pesa till number and bank details. Download instantly — no account, no watermark.',
+    'Create professional PDF invoices free online with your logo, line items, VAT, M-Pesa till number and bank details. Download instantly, with no watermark.',
   keywords: [
     'free invoice generator',
     'create invoice online',
@@ -17,28 +17,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Invoice Generator — PDF Invoices with M-Pesa Details | Nesture-X',
     description:
-      'Create professional PDF invoices free online. Add your logo, line items, VAT, discounts, M-Pesa till number and bank details. Download instantly — no account, no watermark.',
+      'Create professional PDF invoices free online with your logo, line items, VAT, M-Pesa till number and bank details. Download instantly, with no watermark.',
     url: 'https://nesturex.com/tools/invoice-generator',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/invoice-generator.png',
-        width: 1200,
-        height: 630,
-        alt: 'Free Invoice Generator — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Free Invoice Generator — PDF Invoices with M-Pesa Details | Nesture-X',
     description:
-      'Create professional PDF invoices free online. Add your logo, line items, VAT, discounts, M-Pesa till number and bank details. Download instantly — no account, no watermark.',
-    images: ['https://nesturex.com/og/tools/invoice-generator.png'],
+      'Create professional PDF invoices free online with your logo, line items, VAT, M-Pesa till number and bank details. Download instantly, with no watermark.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/invoice-generator',
+    canonical: '/tools/invoice-generator',
   },
 };
 

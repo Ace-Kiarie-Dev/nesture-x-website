@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Color Palette Generator — Export CSS, Tailwind & JSON Free | Nesture-X',
+  title: 'Color Palette Generator — Export CSS, Tailwind & JSON Free',
   description:
-    'Generate beautiful colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. Free online colour palette tool for designers and developers.',
+    'Generate colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. A free palette tool for designers and developers.',
   keywords: [
     'color palette generator',
     'colour palette from hex',
@@ -16,28 +16,20 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Color Palette Generator — Export CSS, Tailwind & JSON Free | Nesture-X',
     description:
-      'Generate beautiful colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. Free online colour palette tool for designers and developers.',
+      'Generate colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. A free palette tool for designers and developers.',
     url: 'https://nesturex.com/tools/color-palette',
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
-    images: [
-      {
-        url: 'https://nesturex.com/og/tools/color-palette.png',
-        width: 1200,
-        height: 630,
-        alt: 'Color Palette Generator — Nesture-X Free Tools',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Color Palette Generator — Export CSS, Tailwind & JSON Free | Nesture-X',
     description:
-      'Generate beautiful colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. Free online colour palette tool for designers and developers.',
-    images: ['https://nesturex.com/og/tools/color-palette.png'],
+      'Generate colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. A free palette tool for designers and developers.',
   },
   alternates: {
-    canonical: 'https://nesturex.com/tools/color-palette',
+    canonical: '/tools/color-palette',
   },
 };
 

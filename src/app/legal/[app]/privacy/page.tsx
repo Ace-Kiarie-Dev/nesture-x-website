@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!policy) return {};
 
   return {
-    title: `${policy.appName} Privacy Policy | Nesture-X`,
+    title: `${policy.appName} Privacy Policy`,
     robots: {
       index: false,
       follow: false,

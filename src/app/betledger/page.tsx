@@ -11,9 +11,10 @@ const inter = Inter({
   display: 'swap',
 });
 
-const TITLE = 'BetLedger — Bet Tracker for Kenyan Sports Bettors | Nesture-X';
+const TITLE = 'BetLedger — Bet Tracker for Kenyan Sports Bettors';
+const SHARE_TITLE = `${TITLE} | Nesture-X`;
 const DESCRIPTION =
-  'Track every bet and know your real numbers. BetLedger is a simple bet tracker for Kenyan sports bettors. Log bets, see true profit and loss, and understand your habits. Coming soon to Google Play.';
+  'BetLedger is a bet tracker for Kenyan sports bettors. Log every bet, see your true profit and loss, and understand your habits. Coming soon to Google Play.';
 const PAGE_URL = 'https://nesturex.com/betledger';
 const OG_IMAGE = 'https://nesturex.com/images/originals/BetLedger-Card.webp';
 
@@ -29,10 +30,11 @@ export const metadata: Metadata = {
     'bet ledger',
   ],
   openGraph: {
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     url: PAGE_URL,
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
     images: [
       {
@@ -45,12 +47,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },
   alternates: {
-    canonical: PAGE_URL,
+    canonical: '/betledger',
   },
 };
 

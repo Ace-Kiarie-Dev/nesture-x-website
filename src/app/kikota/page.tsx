@@ -20,9 +20,10 @@ const inter = Inter({
   display: 'swap',
 });
 
-const TITLE = 'Kikota — Gym Management Software for Kenya | Nesture-X';
+const TITLE = 'Kikota — Gym Management Software for Kenya';
+const SHARE_TITLE = `${TITLE} | Nesture-X`;
 const DESCRIPTION =
-  'Run your gym, not your paperwork. Kikota brings QR check-ins, M-Pesa payments, and attendance reports into one dashboard, plus a fitness network with cross-gym tournaments and leaderboards. Coming soon.';
+  'Kikota is gym management software for Kenya: QR check-ins, M-Pesa payments, and attendance reports in one dashboard, plus a fitness network. Coming soon.';
 const PAGE_URL = 'https://nesturex.com/kikota';
 const OG_IMAGE = 'https://nesturex.com/images/originals/Kikota-Card.webp';
 
@@ -38,10 +39,11 @@ export const metadata: Metadata = {
     'gym attendance tracking',
   ],
   openGraph: {
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     url: PAGE_URL,
     siteName: 'Nesture-X',
+    locale: 'en_KE',
     type: 'website',
     images: [
       {
@@ -54,12 +56,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: TITLE,
+    title: SHARE_TITLE,
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },
   alternates: {
-    canonical: PAGE_URL,
+    canonical: '/kikota',
   },
 };
 
