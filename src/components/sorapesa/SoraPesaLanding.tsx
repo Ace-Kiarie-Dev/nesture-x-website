@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   Bus,
@@ -73,6 +74,17 @@ export default function SoraPesaLanding() {
         <div className="sp-orb sp-orb--hero" aria-hidden="true" />
         <div className="sp-container sp-hero-grid">
           <div className="sp-hero-copy">
+            <div className="sp-lockup">
+              <Image
+                src="/images/originals/sorapesa-icon.png"
+                alt="SoraPesa logo"
+                width={414}
+                height={503}
+                className="sp-lockup-icon"
+                priority
+              />
+              <span className="sp-lockup-name">Sora<span className="sp-gradient-text">Pesa</span></span>
+            </div>
             <span className="sp-pill"><span className="sp-pill-dot" aria-hidden="true" />Coming soon on Google Play</span>
             <h1 id="sp-hero-title" className="sp-h1">
               Open the Door to{' '}

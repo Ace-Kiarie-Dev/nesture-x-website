@@ -397,6 +397,28 @@
   .theme-betledger .bl-hero-copy .bl-form-note { justify-content: flex-start; }
 }
 
+/* Brand lockup above the hero pill — icon matches the policy letterhead */
+.theme-betledger .bl-lockup { display: inline-flex; align-items: center; gap: 0.625rem; }
+.theme-betledger .bl-lockup-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--bl-radius-md);
+  border: 1px solid var(--bl-stroke);
+}
+.theme-betledger .bl-lockup-name {
+  font-family: var(--bl-font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--bl-text);
+}
+@media (min-width: 1024px) {
+  .theme-betledger .bl-lockup-icon { width: 40px; height: 40px; }
+  .theme-betledger .bl-lockup-name { font-size: 28px; }
+}
+
 .theme-betledger .bl-hero-visual {
   position: relative;
   display: flex;

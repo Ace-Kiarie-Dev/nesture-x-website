@@ -468,6 +468,22 @@
   .theme-sorapesa .sp-hero-copy { gap: 1.5rem; }
 }
 
+/* Brand lockup above the hero pill — follows .sp-hero-copy alignment */
+.theme-sorapesa .sp-lockup { display: inline-flex; align-items: center; gap: 0.625rem; }
+.theme-sorapesa .sp-lockup-icon { width: auto; height: 32px; }
+.theme-sorapesa .sp-lockup-name {
+  font-family: var(--sp-font);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--sp-navy);
+}
+@media (min-width: 1024px) {
+  .theme-sorapesa .sp-lockup-icon { height: 40px; }
+  .theme-sorapesa .sp-lockup-name { font-size: 28px; }
+}
+
 /* ── Problem ────────────────────────────────────────────────────────────── */
 
 .theme-sorapesa .sp-problem { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }

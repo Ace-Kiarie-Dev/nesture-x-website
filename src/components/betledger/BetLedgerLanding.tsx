@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Zap,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import WaitlistForm from './WaitlistForm';
 import Faq from './Faq';
@@ -46,6 +47,17 @@ export default function BetLedgerLanding() {
       {/* ── 1. Hero ─────────────────────────────────────────────────────── */}
       <section className="bl-hero" aria-labelledby="bl-hero-title">
         <div className="bl-hero-copy">
+          <div className="bl-lockup">
+            <Image
+              src="/images/originals/Bet-ledger-icon.png"
+              alt="BetLedger logo"
+              width={40}
+              height={40}
+              className="bl-lockup-icon"
+              priority
+            />
+            <span className="bl-lockup-name">BetLedger</span>
+          </div>
           <span className="bl-pill bl-pill--gold bl-pill--dot">Coming soon on Google Play</span>
           <h1 id="bl-hero-title" className="bl-h1">
             Track Every Bet.
