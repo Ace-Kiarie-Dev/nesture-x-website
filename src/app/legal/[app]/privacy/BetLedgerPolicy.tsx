@@ -31,7 +31,7 @@ export default function BetLedgerPolicy({ policy }: { policy: PrivacyPolicy }) {
             width={56}
             height={56}
             className="bl-policy-icon"
-            priority
+            preload
           />
           <h1>
             <span className="bl-policy-brand">BetLedger</span>

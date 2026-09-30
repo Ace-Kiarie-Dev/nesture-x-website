@@ -110,7 +110,7 @@ export default function KikotaLanding() {
                 width={356}
                 height={324}
                 className="kk-lockup-icon"
-                priority
+                preload
               />
               <span className="kk-lockup-name">Kikota</span>
             </div>

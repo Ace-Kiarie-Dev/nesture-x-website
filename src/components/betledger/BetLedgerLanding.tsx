@@ -54,7 +54,7 @@ export default function BetLedgerLanding() {
               width={40}
               height={40}
               className="bl-lockup-icon"
-              priority
+              preload
             />
             <span className="bl-lockup-name">BetLedger</span>
           </div>

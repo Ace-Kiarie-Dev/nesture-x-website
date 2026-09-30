@@ -81,7 +81,7 @@ export default function SoraPesaLanding() {
                 width={414}
                 height={503}
                 className="sp-lockup-icon"
-                priority
+                preload
               />
               <span className="sp-lockup-name">Sora<span className="sp-gradient-text">Pesa</span></span>
             </div>

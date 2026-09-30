@@ -123,7 +123,7 @@ function ImageViewer({ item }: { item: PortfolioItem }) {
         src={getFileSrc(item)}
         alt={`${item.client} — ${item.type}`}
         fill
-        priority
+        preload
         sizes="(max-width: 767px) 100vw, 40vw"
         style={{ objectFit: 'contain' }}
       />
