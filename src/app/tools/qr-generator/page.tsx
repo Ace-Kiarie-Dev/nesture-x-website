@@ -191,7 +191,7 @@ export default function QrGeneratorPage() {
             <label htmlFor="qr-text" style={LABEL}>URL or Text</label>
             <input
               id="qr-text" type="text" value={text} onChange={e => setText(e.target.value)}
-              placeholder="https://nesture-x.com" style={INPUT_BASE}
+              placeholder="https://nesturex.com" style={INPUT_BASE}
               onFocus={e => (e.target.style.borderColor = 'var(--color-primary)')}
               onBlur={e  => (e.target.style.borderColor = 'rgba(255,255,255,0.12)')}
             />
