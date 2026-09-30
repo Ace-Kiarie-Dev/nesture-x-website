@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import NxButton from '@/components/ui/NxButton';
 import NxOriginalsCarousel from './NxOriginalsCarousel';
@@ -107,22 +107,25 @@ export default function Hero() {
         {/* Headline */}
         <h1 style={{ margin: 0, lineHeight: 0.92 }}>
           {headlineLines.map((line, i) => (
-            <motion.span
-              key={line.text}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.1 + 0.1, ease: 'easeOut' }}
-              style={{
-                display: 'block',
-                fontFamily: 'var(--font-bebas), sans-serif',
-                fontSize: headlineFontSize,
-                lineHeight: 0.92,
-                color: line.outline ? 'transparent' : 'var(--color-text)',
-                WebkitTextStroke: line.outline ? '1px var(--color-primary)' : undefined,
-              }}
-            >
-              {line.text}
-            </motion.span>
+            <Fragment key={line.text}>
+              {/* Space between block lines: invisible, but the text reads "CREATE. DISCOVER. EXPLORE." */}
+              {i > 0 && ' '}
+              <motion.span
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: i * 0.1 + 0.1, ease: 'easeOut' }}
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-bebas), sans-serif',
+                  fontSize: headlineFontSize,
+                  lineHeight: 0.92,
+                  color: line.outline ? 'transparent' : 'var(--color-text)',
+                  WebkitTextStroke: line.outline ? '1px var(--color-primary)' : undefined,
+                }}
+              >
+                {line.text}
+              </motion.span>
+            </Fragment>
           ))}
         </h1>
 

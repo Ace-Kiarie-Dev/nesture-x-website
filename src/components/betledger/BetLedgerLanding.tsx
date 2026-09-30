@@ -60,7 +60,7 @@ export default function BetLedgerLanding() {
           </div>
           <span className="bl-pill bl-pill--gold bl-pill--dot">Coming soon on Google Play</span>
           <h1 id="bl-hero-title" className="bl-h1">
-            Track Every Bet.
+            Track Every Bet.{" "}
             <span className="bl-h1-accent">Know Your Numbers.</span>
           </h1>
           <p className="bl-lead">

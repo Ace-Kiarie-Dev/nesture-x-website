@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { JsonLd, breadcrumbList } from '@/lib/jsonLd';
 
 export const metadata: Metadata = {
   title: 'UTM Link Builder — Free UTM Generator with Bulk Export',
@@ -61,6 +62,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <JsonLd
+        data={breadcrumbList([
+          { name: 'Home', path: '/' },
+          { name: 'Free Tools', path: '/tools' },
+          { name: jsonLd.name, path: '/tools/utm-builder' },
+        ])}
       />
       {children}
     </>

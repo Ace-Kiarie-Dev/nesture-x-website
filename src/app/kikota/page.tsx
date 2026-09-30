@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import { Barlow_Condensed, Inter } from 'next/font/google';
 import KikotaLanding from '@/components/kikota/KikotaLanding';
 import '@/components/kikota/kikota.css';
@@ -65,10 +66,31 @@ export const metadata: Metadata = {
   },
 };
 
+// Structured data: the app itself (no offers or ratings until it launches) and its breadcrumb.
+const APP_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Kikota',
+  description: DESCRIPTION,
+  url: PAGE_URL,
+  image: OG_IMAGE,
+  operatingSystem: 'Web',
+  applicationCategory: 'BusinessApplication',
+  publisher: { '@id': `${SITE_URL}/#organization` },
+};
+
+const BREADCRUMB_JSON_LD = breadcrumbList([
+  { name: 'Home', path: '/' },
+  { name: 'Kikota', path: '/kikota' },
+]);
+
 export default function KikotaPage() {
   return (
-    <div className={`theme-kikota kk-under-nav ${barlow.variable} ${inter.variable} flex-1`}>
-      <KikotaLanding />
-    </div>
+    <>
+      <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
+      <div className={`theme-kikota kk-under-nav ${barlow.variable} ${inter.variable} flex-1`}>
+        <KikotaLanding />
+      </div>
+    </>
   );
 }

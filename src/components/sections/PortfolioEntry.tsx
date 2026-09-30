@@ -199,18 +199,26 @@ interface EntryPanelProps {
   sublabel?: string;
   backgroundPattern?: React.CSSProperties;
   visual?: React.ReactNode;
+  /** Real URL for crawlers and new-tab clicks; a plain click uses onClick. */
+  href: string;
   onClick: () => void;
 }
 
-function EntryPanel({ label, sublabel, backgroundPattern, visual, onClick }: EntryPanelProps) {
+function EntryPanel({ label, sublabel, backgroundPattern, visual, href, onClick }: EntryPanelProps) {
   const [hovered, setHovered] = useState(false);
   const { isMobile } = useBreakpoint();
 
   return (
-    <motion.div
+    <motion.a
+      href={href}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      onClick={onClick}
+      onClick={e => {
+        // Let modified clicks open a new tab; a plain click keeps the in-page transition.
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+        onClick();
+      }}
       animate={{
         backgroundColor: hovered ? 'rgba(26,111,212,0.06)' : 'rgba(10,10,10,0)',
       }}
@@ -223,6 +231,8 @@ function EntryPanel({ label, sublabel, backgroundPattern, visual, onClick }: Ent
         justifyContent: 'center',
         cursor: 'pointer',
         overflow: 'hidden',
+        color: 'inherit',
+        textDecoration: 'none',
       }}
     >
       {backgroundPattern && (
@@ -255,6 +265,7 @@ function EntryPanel({ label, sublabel, backgroundPattern, visual, onClick }: Ent
         {label}
         {sublabel && (
           <>
+            {' '}
             <br />
             {sublabel}
           </>
@@ -275,7 +286,7 @@ function EntryPanel({ label, sublabel, backgroundPattern, visual, onClick }: Ent
       >
         <ChevronRight size={28} aria-hidden />
       </motion.div>
-    </motion.div>
+    </motion.a>
   );
 }
 
@@ -345,6 +356,7 @@ function PortfolioEntryInner() {
             label="DESIGN"
             sublabel="WORK"
             backgroundPattern={noisePattern}
+            href="/portfolio?view=design"
             onClick={() => goTo('design')}
           />
 
@@ -361,6 +373,7 @@ function PortfolioEntryInner() {
             label="DIGITAL"
             sublabel="PRODUCTS"
             backgroundPattern={gridPattern}
+            href="/portfolio?view=digital"
             onClick={() => goTo('digital')}
           />
         </motion.div>
@@ -396,6 +409,7 @@ function PortfolioEntryInner() {
               sublabel="APPS"
               backgroundPattern={gridPattern}
               visual={<BrowserChromeMotif />}
+              href="/portfolio?view=digital&type=web"
               onClick={() => goToDigitalType('web')}
             />
 
@@ -413,6 +427,7 @@ function PortfolioEntryInner() {
               sublabel="APPS"
               backgroundPattern={noisePattern}
               visual={<PhoneViewportMotif />}
+              href="/portfolio?view=digital&type=mobile"
               onClick={() => goToDigitalType('mobile')}
             />
           </div>

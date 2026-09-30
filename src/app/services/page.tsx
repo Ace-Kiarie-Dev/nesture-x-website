@@ -59,7 +59,7 @@ export default function ServicesPage() {
               }}
             >
               SERVICES
-            </span>
+            </span>{" "}
             <span
               style={{
                 display: 'block',
@@ -71,7 +71,7 @@ export default function ServicesPage() {
               }}
             >
               &amp;
-            </span>
+            </span>{" "}
             <span
               style={{
                 display: 'block',

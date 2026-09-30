@@ -224,7 +224,7 @@ export default function BookingClient() {
               marginBottom: '1.5rem',
             }}
           >
-            BOOK YOUR<br />CONSULTATION.
+            BOOK YOUR <br />CONSULTATION.
           </h1>
           <p
             style={{

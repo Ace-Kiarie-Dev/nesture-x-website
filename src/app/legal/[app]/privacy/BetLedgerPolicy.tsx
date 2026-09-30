@@ -34,7 +34,7 @@ export default function BetLedgerPolicy({ policy }: { policy: PrivacyPolicy }) {
             preload
           />
           <h1>
-            <span className="bl-policy-brand">BetLedger</span>
+            <span className="bl-policy-brand">BetLedger</span>{" "}
             <span className="bl-policy-title">Privacy Policy</span>
           </h1>
         </header>

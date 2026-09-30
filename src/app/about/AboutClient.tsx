@@ -138,7 +138,7 @@ export default function AboutClient() {
             }}
             variants={item}
           >
-            WHO<br />WE ARE
+            WHO <br />WE ARE
           </motion.h1>
 
           {/* Opening statement */}

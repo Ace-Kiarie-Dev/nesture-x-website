@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import { Inter } from 'next/font/google';
 import BetLedgerLanding from '@/components/betledger/BetLedgerLanding';
 import '@/components/betledger/betledger.css';
@@ -56,10 +57,31 @@ export const metadata: Metadata = {
   },
 };
 
+// Structured data: the app itself (no offers or ratings until it launches) and its breadcrumb.
+const APP_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'BetLedger',
+  description: DESCRIPTION,
+  url: PAGE_URL,
+  image: OG_IMAGE,
+  operatingSystem: 'Android',
+  applicationCategory: 'FinanceApplication',
+  publisher: { '@id': `${SITE_URL}/#organization` },
+};
+
+const BREADCRUMB_JSON_LD = breadcrumbList([
+  { name: 'Home', path: '/' },
+  { name: 'BetLedger', path: '/betledger' },
+]);
+
 export default function BetLedgerPage() {
   return (
-    <div className={`theme-betledger bl-under-nav ${inter.variable} flex-1`}>
-      <BetLedgerLanding />
-    </div>
+    <>
+      <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
+      <div className={`theme-betledger bl-under-nav ${inter.variable} flex-1`}>
+        <BetLedgerLanding />
+      </div>
+    </>
   );
 }

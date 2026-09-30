@@ -1,16 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SERVICES } from '@/constants';
 import NxButton from '@/components/ui/NxButton';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 
 
+type Service = (typeof SERVICES)[number];
+
 export default function Services() {
   const [activeTab, setActiveTab] = useState(0);
+  // The panel currently on screen. It lags activeTab while the old panel's
+  // exit animation plays, so the switch looks exactly like AnimatePresence
+  // mode="wait": old panel animates out, then the new one animates in.
+  const [shownTab, setShownTab] = useState(0);
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
-  const service = SERVICES[activeTab];
+  const uid = useId();
+  const tabId = (svc: Service) => `${uid}-tab-${svc.id}`;
+  const panelId = (svc: Service) => `${uid}-panel-${svc.id}`;
 
   const sectionPadding = isMobile ? '4rem 1.5rem' : isTablet ? '5rem 2rem' : '7rem 3rem';
 
@@ -46,6 +54,8 @@ export default function Services() {
       {/* Mobile / Tablet: horizontal scrollable tabs */}
       {!isDesktop && (
         <div
+          role="tablist"
+          aria-label="Services"
           style={{
             overflowX: 'auto',
             display: 'flex',
@@ -60,6 +70,10 @@ export default function Services() {
             return (
               <button
                 key={svc.id}
+                id={tabId(svc)}
+                role="tab"
+                aria-selected={active}
+                aria-controls={panelId(svc)}
                 onClick={() => setActiveTab(i)}
                 data-hover
                 style={{
@@ -98,12 +112,16 @@ export default function Services() {
       >
         {/* Desktop: sticky vertical tab nav */}
         {isDesktop && (
-          <nav style={{ position: 'sticky', top: '100px' }}>
+          <nav role="tablist" aria-label="Services" aria-orientation="vertical" style={{ position: 'sticky', top: '100px' }}>
             {SERVICES.map((svc, i) => {
               const active = i === activeTab;
               return (
                 <button
                   key={svc.id}
+                  id={tabId(svc)}
+                  role="tab"
+                  aria-selected={active}
+                  aria-controls={panelId(svc)}
                   onClick={() => setActiveTab(i)}
                   data-hover
                   style={{
@@ -184,129 +202,159 @@ export default function Services() {
           </nav>
         )}
 
-        {/* Content panel — AnimatePresence transitions */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={service.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-          >
-            {/* Visual block */}
-            <div
-              style={{
-                height: '200px',
-                background: service.gradient,
-                border: '1px solid rgba(26,111,212,0.15)',
-                position: 'relative',
-                overflow: 'hidden',
-                marginBottom: '2rem',
-              }}
-            >
-              {/* Ghost text */}
+        {/* Content panels: every service is in the HTML. Hidden panels use the
+            hidden attribute; the visible one animates exactly as before. */}
+        <div>
+          {SERVICES.map((svc, i) => {
+            const shown = i === shownTab;
+            return (
               <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: 'var(--font-bebas), sans-serif',
-                  fontSize: 'clamp(3rem, 8vw, 5.5rem)',
-                  color: 'rgba(26,111,212,0.07)',
-                  letterSpacing: '0.1em',
-                  userSelect: 'none',
-                }}
+                key={svc.id}
+                id={panelId(svc)}
+                role="tabpanel"
+                aria-labelledby={tabId(svc)}
+                hidden={!shown}
               >
-                {service.visual}
+                {shown ? (
+                  <AnimatePresence mode="wait" onExitComplete={() => setShownTab(activeTab)}>
+                    {i === activeTab && (
+                      <motion.div
+                        key={svc.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
+                      >
+                        <ServicePanel service={svc} isDesktop={isDesktop} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                ) : (
+                  <ServicePanel service={svc} isDesktop={isDesktop} />
+                )}
               </div>
-
-              {/* Animated bottom line */}
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  height: '2px',
-                  background: 'var(--color-primary)',
-                }}
-              />
-
-              {/* Dot accent — circular element, border-radius allowed */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '1rem',
-                  right: '1rem',
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: 'var(--color-primary)',
-                }}
-              />
-            </div>
-
-            {/* Headline */}
-            <h3
-              style={{
-                fontFamily: 'var(--font-bebas), sans-serif',
-                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                color: 'var(--color-text)',
-                marginBottom: '0.75rem',
-                lineHeight: 1,
-              }}
-            >
-              {service.headline}
-            </h3>
-
-            {/* Description */}
-            <p
-              style={{
-                fontFamily: 'var(--font-grotesk), sans-serif',
-                fontWeight: 300,
-                fontSize: '1rem',
-                color: 'var(--color-text-secondary)',
-                lineHeight: 1.8,
-                maxWidth: '520px',
-                marginBottom: '2rem',
-                borderLeft: '2px solid rgba(26,111,212,0.3)',
-                paddingLeft: '1rem',
-              }}
-            >
-              {service.description}
-            </p>
-
-            {/* Features grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
-                gap: '0.6rem',
-                marginBottom: '2.5rem',
-              }}
-            >
-              {service.features.map(feature => (
-                <FeatureItem key={feature} text={feature} />
-              ))}
-            </div>
-
-            {/* CTA row */}
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-              <NxButton variant="primary" size="md" href="/services">
-                See Full Details
-              </NxButton>
-              <NxButton variant="ghost" size="md" href="#contact">
-                Get a Quote
-              </NxButton>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            );
+          })}
+        </div>
       </div>
     </section>
+  );
+}
+
+function ServicePanel({ service, isDesktop }: { service: Service; isDesktop: boolean }) {
+  return (
+    <>
+      {/* Visual block */}
+      <div
+        style={{
+          height: '200px',
+          background: service.gradient,
+          border: '1px solid rgba(26,111,212,0.15)',
+          position: 'relative',
+          overflow: 'hidden',
+          marginBottom: '2rem',
+        }}
+      >
+        {/* Ghost text */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'var(--font-bebas), sans-serif',
+            fontSize: 'clamp(3rem, 8vw, 5.5rem)',
+            color: 'rgba(26,111,212,0.07)',
+            letterSpacing: '0.1em',
+            userSelect: 'none',
+          }}
+        >
+          {service.visual}
+        </div>
+
+        {/* Animated bottom line */}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: '100%' }}
+          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            height: '2px',
+            background: 'var(--color-primary)',
+          }}
+        />
+
+        {/* Dot accent — circular element, border-radius allowed */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            right: '1rem',
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            background: 'var(--color-primary)',
+          }}
+        />
+      </div>
+
+      {/* Headline */}
+      <h3
+        style={{
+          fontFamily: 'var(--font-bebas), sans-serif',
+          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+          color: 'var(--color-text)',
+          marginBottom: '0.75rem',
+          lineHeight: 1,
+        }}
+      >
+        {service.headline}
+      </h3>
+
+      {/* Description */}
+      <p
+        style={{
+          fontFamily: 'var(--font-grotesk), sans-serif',
+          fontWeight: 300,
+          fontSize: '1rem',
+          color: 'var(--color-text-secondary)',
+          lineHeight: 1.8,
+          maxWidth: '520px',
+          marginBottom: '2rem',
+          borderLeft: '2px solid rgba(26,111,212,0.3)',
+          paddingLeft: '1rem',
+        }}
+      >
+        {service.description}
+      </p>
+
+      {/* Features grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
+          gap: '0.6rem',
+          marginBottom: '2.5rem',
+        }}
+      >
+        {service.features.map(feature => (
+          <FeatureItem key={feature} text={feature} />
+        ))}
+      </div>
+
+      {/* CTA row */}
+      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <NxButton variant="primary" size="md" href="/services">
+          See Full Details
+        </NxButton>
+        <NxButton variant="ghost" size="md" href="#contact">
+          Get a Quote
+        </NxButton>
+      </div>
+    </>
   );
 }
 

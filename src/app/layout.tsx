@@ -4,6 +4,8 @@ import "./globals.css";
 import ClientShell from "@/components/layout/ClientShell";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { JsonLd, SITE_URL } from "@/lib/jsonLd";
+import { CONTACT } from "@/constants";
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -47,6 +49,31 @@ export const metadata: Metadata = {
   },
 };
 
+// Site-wide structured data. sameAs is left out until the social profiles are
+// confirmed; LocalBusiness is intentionally not used yet.
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const siteJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': ORGANIZATION_ID,
+    name: 'Nesture-X',
+    url: SITE_URL,
+    logo: `${SITE_URL}/images/logo-square.png`,
+    email: CONTACT.email,
+    telephone: CONTACT.phone,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: 'Nesture-X',
+    url: SITE_URL,
+    publisher: { '@id': ORGANIZATION_ID },
+    inLanguage: 'en-KE',
+  },
+];
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -69,6 +96,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+        <JsonLd data={siteJsonLd} />
         <ClientShell>
           {children}
         </ClientShell>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import { Montserrat } from 'next/font/google';
 import SoraPesaLanding from '@/components/sorapesa/SoraPesaLanding';
 import '@/components/sorapesa/sorapesa.css';
@@ -56,10 +57,31 @@ export const metadata: Metadata = {
   },
 };
 
+// Structured data: the app itself (no offers or ratings until it launches) and its breadcrumb.
+const APP_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: 'SoraPesa',
+  description: DESCRIPTION,
+  url: PAGE_URL,
+  image: OG_IMAGE,
+  operatingSystem: 'Android',
+  applicationCategory: 'FinanceApplication',
+  publisher: { '@id': `${SITE_URL}/#organization` },
+};
+
+const BREADCRUMB_JSON_LD = breadcrumbList([
+  { name: 'Home', path: '/' },
+  { name: 'SoraPesa', path: '/sorapesa' },
+]);
+
 export default function SoraPesaPage() {
   return (
-    <div className={`theme-sorapesa ${montserrat.variable} flex-1`}>
-      <SoraPesaLanding />
-    </div>
+    <>
+      <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
+      <div className={`theme-sorapesa ${montserrat.variable} flex-1`}>
+        <SoraPesaLanding />
+      </div>
+    </>
   );
 }

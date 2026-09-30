@@ -169,7 +169,7 @@ function RelatedCard({ item }: { item: PortfolioItem }) {
         <div className="relative aspect-[4/3] overflow-hidden" style={{ background: 'var(--color-bg)' }}>
           {isGif && imgSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={imgSrc} alt="" className="w-full h-full object-cover block" />
+            <img src={imgSrc} alt={`${item.client} — ${item.type}`} className="w-full h-full object-cover block" />
           ) : imgSrc ? (
             <Image
               src={imgSrc}

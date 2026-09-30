@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import { Inter, Montserrat } from 'next/font/google';
 import MatatuDashLanding from '@/components/matatu-dash/MatatuDashLanding';
 import '@/components/matatu-dash/matatu-dash.css';
@@ -65,10 +66,36 @@ export const metadata: Metadata = {
   },
 };
 
+// Structured data: the game (free, so a price-0 offer; no ratings until it launches) and its breadcrumb.
+const APP_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: 'Matatu Dash',
+  description: DESCRIPTION,
+  url: PAGE_URL,
+  image: OG_IMAGE,
+  gamePlatform: 'Android',
+  applicationCategory: 'GameApplication',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'KES',
+  },
+  publisher: { '@id': `${SITE_URL}/#organization` },
+};
+
+const BREADCRUMB_JSON_LD = breadcrumbList([
+  { name: 'Home', path: '/' },
+  { name: 'Matatu Dash', path: '/matatu-dash' },
+]);
+
 export default function MatatuDashPage() {
   return (
-    <div className={`theme-matatu md-under-nav ${montserrat.variable} ${inter.variable} flex-1`}>
-      <MatatuDashLanding />
-    </div>
+    <>
+      <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
+      <div className={`theme-matatu md-under-nav ${montserrat.variable} ${inter.variable} flex-1`}>
+        <MatatuDashLanding />
+      </div>
+    </>
   );
 }

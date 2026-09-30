@@ -50,7 +50,8 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = findProject(slug);
   if (!project) return {};
-  return { title: project.title };
+  // Thin placeholder pages: reachable, links followed, but kept out of the index.
+  return { title: project.title, robots: { index: false, follow: true } };
 }
 
 export default async function StatusPage({
