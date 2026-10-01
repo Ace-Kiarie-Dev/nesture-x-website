@@ -40,7 +40,7 @@ const jsonLd = {
   name: 'Password Generator',
   url: 'https://nesturex.com/tools/password-generator',
   description:
-    'Generate cryptographically secure passwords and passphrases free online. Customise length, character sets, bulk generate up to 20 passwords — powered by Web Crypto API, nothing stored.',
+    'Generate secure passwords and passphrases free online. Set length and character sets, or bulk generate up to 20. Uses the Web Crypto API, nothing stored.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -48,11 +48,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

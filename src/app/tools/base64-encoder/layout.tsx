@@ -41,7 +41,7 @@ const jsonLd = {
   name: 'Base64 Encoder & Decoder',
   url: 'https://nesturex.com/tools/base64-encoder',
   description:
-    'Free online Base64 encoder and decoder. Encode text or files to Base64, decode Base64 strings, copy as data URI, URL-safe mode for developers. No account, no file storage.',
+    'Free online Base64 encoder and decoder. Encode text or files, decode Base64 strings, copy as a data URI, and use URL-safe mode. No account or file storage.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -49,11 +49,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

@@ -40,7 +40,7 @@ const jsonLd = {
   name: 'QR Code Generator',
   url: 'https://nesturex.com/tools/qr-generator',
   description:
-    'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, choose error correction level and download as PNG or SVG — no account needed.',
+    'Generate free QR codes for any URL or text. Customise colours, add a center logo overlay, set error correction and download PNG or SVG. No account needed.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -48,11 +48,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

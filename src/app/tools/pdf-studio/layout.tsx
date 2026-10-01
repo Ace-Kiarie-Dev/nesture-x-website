@@ -41,7 +41,7 @@ const jsonLd = {
   name: 'PDF Studio',
   url: 'https://nesturex.com/tools/pdf-studio',
   description:
-    'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files — all in one place, no account needed.',
+    'Free online PDF tools. Compress PDF file size, merge multiple PDFs, split pages, rotate and password protect PDF files, all in one place with no account.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -49,11 +49,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

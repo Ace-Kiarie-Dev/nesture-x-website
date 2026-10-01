@@ -41,7 +41,7 @@ const jsonLd = {
   name: 'Word & Character Counter',
   url: 'https://nesturex.com/tools/word-counter',
   description:
-    'Free online word counter. Count words, characters, sentences, paragraphs and reading time. Includes keyword density analysis, speaking time and character limit checker.',
+    'Free online word counter. Count words, characters, sentences, paragraphs and reading time, with keyword density, speaking time and a character limit check.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -49,11 +49,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

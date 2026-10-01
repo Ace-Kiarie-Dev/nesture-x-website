@@ -42,7 +42,7 @@ const jsonLd = {
   name: 'Image Studio',
   url: 'https://nesturex.com/tools/image-studio',
   description:
-    'Free online image editor. Convert between JPG, PNG, WebP, AVIF and 5 more formats. Compress, resize, rotate, flip and adjust images — no upload limit beyond 4MB, no account needed.',
+    'Free online image editor. Convert JPG, PNG, WebP, AVIF and 5 more formats, then compress, resize, rotate and flip images. Files up to 4MB, no sign-up.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -50,11 +50,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

@@ -40,7 +40,7 @@ const jsonLd = {
   name: 'Color Palette Generator',
   url: 'https://nesturex.com/tools/color-palette',
   description:
-    'Generate beautiful colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. Free online colour palette tool for designers and developers.',
+    'Generate colour palettes from any base colour. Export as CSS variables, Tailwind config, JSON or PNG. A free palette tool for designers and developers.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -48,11 +48,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

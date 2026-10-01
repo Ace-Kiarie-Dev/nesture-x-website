@@ -41,7 +41,7 @@ const jsonLd = {
   name: 'UTM Link Builder',
   url: 'https://nesturex.com/tools/utm-builder',
   description:
-    'Build UTM tracking links instantly with presets for Google Ads, social media, email and WhatsApp. Bulk mode exports CSV. Free UTM generator with link history — no account needed.',
+    'Build UTM tracking links instantly with presets for Google Ads, social, email and WhatsApp. Bulk mode exports CSV. A free UTM generator, no account needed.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -49,11 +49,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

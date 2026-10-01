@@ -40,7 +40,7 @@ const jsonLd = {
   name: 'Logo Text Previewer',
   url: 'https://nesturex.com/tools/logo-text-preview',
   description:
-    "Preview your brand name across 25 fonts and 4 layouts before commissioning a logo. Download as PNG or SVG. Free brand typography tool by Nesture-X — Nairobi's creative tech agency.",
+    'Preview your brand name in 25 fonts and 4 layouts before commissioning a logo, then download it as PNG or SVG. A free brand typography tool by Nesture-X.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
   offers: {
@@ -48,11 +48,7 @@ const jsonLd = {
     price: '0',
     priceCurrency: 'USD',
   },
-  provider: {
-    '@type': 'Organization',
-    name: 'Nesture-X',
-    url: 'https://nesturex.com',
-  },
+  provider: { '@id': 'https://nesturex.com/#organization' },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
