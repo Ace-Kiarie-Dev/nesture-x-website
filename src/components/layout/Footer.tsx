@@ -2,6 +2,10 @@
 
 import Link from 'next/link';
 import { useBreakpoint } from '@/lib/useBreakpoint';
+import { activeSocialLinks } from '@/constants';
+import { SocialIcon } from './SocialIcons';
+
+const SOCIAL_LINKS = activeSocialLinks();
 
 const NAV = [
   { label: 'About', href: '#about' },
@@ -68,16 +72,66 @@ export default function Footer() {
         ))}
       </nav>
 
-      {/* Copyright */}
+      {/* Social links + copyright */}
       <div
         style={{
-          fontFamily: 'var(--font-jetbrains), monospace',
-          fontSize: '0.62rem',
-          color: 'var(--color-text-faint)',
-          letterSpacing: '0.1em',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: isMobile ? 'flex-start' : 'flex-end',
+          gap: isMobile ? '0.5rem' : '0.75rem',
         }}
       >
-        © 2025 NESTURE-X. NAIROBI, KENYA.
+        {SOCIAL_LINKS.length > 0 && (
+          <ul
+            style={{
+              display: 'flex',
+              listStyle: 'none',
+              margin: isMobile ? '0 0 0 -13px' : '0 -9px 0 0',
+              padding: 0,
+            }}
+          >
+            {SOCIAL_LINKS.map(link => (
+              <li key={link.network}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  aria-label={`Nesture-X on ${link.label}`}
+                  title={link.label}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: isMobile ? 44 : 36,
+                    height: isMobile ? 44 : 36,
+                    color: 'var(--color-text-muted)',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.color = 'var(--color-text)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.color = 'var(--color-text-muted)';
+                  }}
+                >
+                  <SocialIcon network={link.network} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* Copyright */}
+        <div
+          style={{
+            fontFamily: 'var(--font-jetbrains), monospace',
+            fontSize: '0.62rem',
+            color: 'var(--color-text-faint)',
+            letterSpacing: '0.1em',
+          }}
+        >
+          © 2025 NESTURE-X. NAIROBI, KENYA.
+        </div>
       </div>
     </footer>
   );

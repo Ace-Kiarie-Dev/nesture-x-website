@@ -124,6 +124,32 @@ export const CONTACT = {
   location: 'Nairobi, Kenya',
 } as const;
 
+// Social profiles. An empty string means "not set" and is skipped everywhere.
+export type SocialNetwork = 'instagram' | 'tiktok' | 'x' | 'youtube' | 'linkedin';
+
+export const SOCIAL: Record<SocialNetwork, string> = {
+  instagram: 'https://www.instagram.com/nesture_x',
+  tiktok: 'https://www.tiktok.com/@nesture.x',
+  x: 'https://x.com/Nesturex',
+  youtube: 'https://www.youtube.com/@nesture-x',
+  linkedin: '',
+};
+
+export const SOCIAL_LABELS: Record<SocialNetwork, string> = {
+  instagram: 'Instagram',
+  tiktok: 'TikTok',
+  x: 'X',
+  youtube: 'YouTube',
+  linkedin: 'LinkedIn',
+};
+
+/** Social profiles that have a URL set, in display order. */
+export function activeSocialLinks(): { network: SocialNetwork; label: string; url: string }[] {
+  return (Object.keys(SOCIAL) as SocialNetwork[])
+    .filter((network) => SOCIAL[network].trim() !== '')
+    .map((network) => ({ network, label: SOCIAL_LABELS[network], url: SOCIAL[network] }));
+}
+
 // Portfolio Companies (Equity Partners)
 export const PORTFOLIO_COMPANIES = [
   {

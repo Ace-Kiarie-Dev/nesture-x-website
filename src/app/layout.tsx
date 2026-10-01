@@ -5,7 +5,7 @@ import ClientShell from "@/components/layout/ClientShell";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JsonLd, SITE_URL } from "@/lib/jsonLd";
-import { CONTACT } from "@/constants";
+import { CONTACT, activeSocialLinks } from "@/constants";
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   },
 };
 
-// Site-wide structured data. sameAs is left out until the social profiles are
-// confirmed; LocalBusiness is intentionally not used yet.
+// Site-wide structured data. sameAs lists only the social profiles that are set;
+// the address is city-level only. LocalBusiness is intentionally not used yet.
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const siteJsonLd = [
   {
@@ -62,6 +62,16 @@ const siteJsonLd = [
     logo: `${SITE_URL}/images/logo-square.png`,
     email: CONTACT.email,
     telephone: CONTACT.phone,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Nairobi',
+      addressCountry: 'KE',
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Nairobi' },
+      { '@type': 'Country', name: 'Kenya' },
+    ],
+    sameAs: activeSocialLinks().map((link) => link.url),
   },
   {
     '@context': 'https://schema.org',
