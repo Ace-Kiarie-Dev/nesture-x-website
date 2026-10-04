@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SharedFaq, { type FaqClasses, type FaqItem } from '@/components/product-landing/Faq';
+import { BETLEDGER_PLAY_URL } from '@/constants';
 
 const PRIVACY_HREF = '/legal/betledger/privacy';
 
@@ -14,11 +15,19 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Is it free?',
-    a: "Pricing details will be shared at launch. Join the waitlist and you'll be the first to know.",
+    a: 'Yes. BetLedger is free to download and use, with no in-app purchases.',
   },
   {
-    q: 'When is it launching?',
-    a: "BetLedger is currently in testing. Join the waitlist and we'll let you know the moment it's live on Google Play.",
+    q: 'Where can I get BetLedger?',
+    a: (
+      <>
+        BetLedger is available now on{' '}
+        <a href={BETLEDGER_PLAY_URL} target="_blank" rel="noopener noreferrer" className="bl-link">
+          Google Play
+        </a>
+        {' '}for Android phones.
+      </>
+    ),
   },
   {
     q: 'Is my data private?',

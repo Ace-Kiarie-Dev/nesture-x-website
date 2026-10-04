@@ -193,3 +193,10 @@ export const CLIENTS = [
   'Blefice',
   'Centron Technics',
 ] as const;
+
+// BetLedger on Google Play. Site links carry a referrer so Play Console can
+// attribute installs to the website; structured data uses the clean URL.
+export const BETLEDGER_PLAY_URL =
+  'https://play.google.com/store/apps/details?id=com.nesture.betledger&referrer=utm_source%3Dnesturex%26utm_medium%3Dwebsite%26utm_campaign%3Dbetledger';
+export const BETLEDGER_PLAY_URL_CLEAN =
+  'https://play.google.com/store/apps/details?id=com.nesture.betledger';

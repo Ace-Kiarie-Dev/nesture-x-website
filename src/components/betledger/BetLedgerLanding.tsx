@@ -1,5 +1,5 @@
 import {
-  ArrowDown,
+  ArrowUpRight,
   BookOpen,
   Layers,
   LineChart,
@@ -12,7 +12,8 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import WaitlistForm from './WaitlistForm';
+import { BETLEDGER_PLAY_URL } from '@/constants';
+import GooglePlayBadge from './GooglePlayBadge';
 import Faq from './Faq';
 import {
   AnalyticsPhone,
@@ -58,7 +59,7 @@ export default function BetLedgerLanding() {
             />
             <span className="bl-lockup-name">BetLedger</span>
           </div>
-          <span className="bl-pill bl-pill--gold bl-pill--dot">Coming soon on Google Play</span>
+          <span className="bl-pill bl-pill--gold bl-pill--dot">Now on Google Play</span>
           <h1 id="bl-hero-title" className="bl-h1">
             Track Every Bet.{" "}
             <span className="bl-h1-accent">Know Your Numbers.</span>
@@ -67,10 +68,8 @@ export default function BetLedgerLanding() {
             A simple bet tracker built for Kenyan sports bettors. Log your bets, see your real
             wins and losses, and understand your habits.
           </p>
-          <WaitlistForm
-            buttonLabel="Notify Me at Launch"
-            note="We'll only contact you when BetLedger launches."
-          />
+          <GooglePlayBadge />
+          <p className="bl-play-note">Free on Android. No ads, no in-app purchases.</p>
         </div>
 
         <div className="bl-hero-visual">
@@ -121,9 +120,15 @@ export default function BetLedgerLanding() {
               body="Track singles, multibets, and any bet type across football, basketball, and more."
             />
           </div>
-          <a href="#waitlist" className="bl-btn bl-btn--ghost" style={{ marginTop: '0.5rem' }}>
-            Join the Waitlist
-            <ArrowDown size={18} aria-hidden="true" />
+          <a
+            href={BETLEDGER_PLAY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bl-btn bl-btn--ghost"
+            style={{ marginTop: '0.5rem' }}
+          >
+            Get BetLedger
+            <ArrowUpRight size={18} aria-hidden="true" />
           </a>
         </div>
         <div className="bl-zig-visual">
@@ -188,14 +193,13 @@ export default function BetLedgerLanding() {
 
       {/* ── 7. Final CTA ────────────────────────────────────────────────── */}
       <section className="bl-narrow" aria-labelledby="bl-cta-title">
-        <div id="waitlist" className="bl-cta bl-glass">
-          <span className="bl-pill bl-pill--gold bl-pill--dot">Early Access</span>
-          <h2 id="bl-cta-title" className="bl-h2">Be the first to know when BetLedger launches.</h2>
+        <div id="download" className="bl-cta bl-glass">
+          <span className="bl-pill bl-pill--gold bl-pill--dot">Now Available</span>
+          <h2 id="bl-cta-title" className="bl-h2">Start tracking your bets today.</h2>
           <p className="bl-lead">
-            Join the waitlist and we&apos;ll notify you as soon as BetLedger is available on
-            Google Play.
+            Download BetLedger free on Google Play and see your real numbers.
           </p>
-          <WaitlistForm buttonLabel="Notify Me" />
+          <GooglePlayBadge />
           <div className="bl-cta-foot">
             <Link href="/legal/betledger/privacy" className="bl-text-link">Privacy Policy</Link>
           </div>

@@ -397,6 +397,30 @@
   .theme-betledger .bl-hero-copy .bl-form-note { justify-content: flex-start; }
 }
 
+/* Google Play badge. The official PNG carries 41px of clear space on a 250px-tall
+   canvas; --bl-badge-h sizes the visible badge and the negative margin keeps that
+   transparent space from adding extra layout gap. */
+.theme-betledger .bl-play-badge {
+  --bl-badge-h: 52px;
+  --bl-badge-img-h: calc(var(--bl-badge-h) * 250 / 168);
+  display: inline-block;
+  line-height: 0;
+  margin: calc(var(--bl-badge-img-h) * -41 / 250);
+  border-radius: 10px;
+}
+.theme-betledger .bl-play-badge img { height: var(--bl-badge-img-h); width: auto; }
+.theme-betledger .bl-play-badge:focus-visible {
+  outline: 2px solid var(--bl-teal);
+  outline-offset: calc(var(--bl-badge-img-h) * -41 / 250 + 2px);
+}
+@media (min-width: 768px) { .theme-betledger .bl-play-badge { --bl-badge-h: 56px; } }
+.theme-betledger .bl-play-note {
+  margin-top: -0.75rem;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--bl-text-muted);
+}
+
 /* Brand lockup above the hero pill — icon matches the policy letterhead */
 .theme-betledger .bl-lockup { display: inline-flex; align-items: center; gap: 0.625rem; }
 .theme-betledger .bl-lockup-icon {

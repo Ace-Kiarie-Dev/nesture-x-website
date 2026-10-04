@@ -9,6 +9,7 @@ import { getNxOriginalsByCategory } from '@/data/nxOriginals';
 import { slugify } from '@/lib/slugify';
 import { getProjectDestination } from '@/lib/getProjectDestination';
 import { DEV_PROJECTS } from '@/data/devProjects';
+import { LIVE_GREEN, LIVE_TEXT, isLiveStatus } from '@/components/ui/StatusBadge';
 
 // ─── Shared card shape ─────────────────────────────────────────────────────────
 // Normalises both data sources (NX Originals + WebDevGrid client sites) into
@@ -56,6 +57,7 @@ function getItems(type: 'web' | 'mobile'): ProductCardData[] {
 function ProductCard({ item }: { item: ProductCardData }) {
   const [hovered, setHovered] = useState(false);
   const { href, isExternal, isStatusPage } = getProjectDestination(item.url, item.anchorId);
+  const live = isLiveStatus(item.badge);
 
   const inner = (
     <div
@@ -95,21 +97,24 @@ function ProductCard({ item }: { item: ProductCardData }) {
 
       {item.badge && (
         <div
+          className={live ? 'nx-live-badge nx-live-label' : undefined}
           style={{
             position: 'absolute',
             top: '1rem',
             right: '1rem',
             fontFamily: 'var(--font-jetbrains), monospace',
-            fontSize: '0.55rem',
+            fontSize: live ? '0.65rem' : '0.55rem',
+            fontWeight: live ? 700 : undefined,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: 'var(--color-primary)',
-            border: '1px solid var(--color-primary)',
+            color: live ? LIVE_TEXT : 'var(--color-primary)',
+            border: `1px solid ${live ? LIVE_GREEN : 'var(--color-primary)'}`,
             padding: '0.25rem 0.65rem',
             background: 'rgba(10,10,10,0.8)',
             zIndex: 2,
           }}
         >
+          {live && <span className="nx-live-dot" aria-hidden="true" />}
           {item.badge}
         </div>
       )}

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import { Inter } from 'next/font/google';
+import { BETLEDGER_PLAY_URL_CLEAN } from '@/constants';
 import BetLedgerLanding from '@/components/betledger/BetLedgerLanding';
 import '@/components/betledger/betledger.css';
 
@@ -15,7 +16,7 @@ const inter = Inter({
 const TITLE = 'BetLedger — Bet Tracker for Kenyan Sports Bettors';
 const SHARE_TITLE = `${TITLE} | Nesture-X`;
 const DESCRIPTION =
-  'BetLedger is a bet tracker for Kenyan sports bettors. Log every bet, see your true profit and loss, and understand your habits. Coming soon to Google Play.';
+  'BetLedger is a free bet tracker for Kenyan sports bettors. Log every bet, see your true profit and loss, and understand your habits. On Google Play now.';
 const PAGE_URL = 'https://nesturex.com/betledger';
 const OG_IMAGE = 'https://nesturex.com/images/originals/BetLedger-Card.webp';
 
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Structured data: the app itself (no offers or ratings until it launches) and its breadcrumb.
+// Structured data: the app itself (free on Google Play, no ratings yet) and its breadcrumb.
 const APP_JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'MobileApplication',
@@ -67,6 +68,9 @@ const APP_JSON_LD = {
   image: OG_IMAGE,
   operatingSystem: 'Android',
   applicationCategory: 'FinanceApplication',
+  downloadUrl: BETLEDGER_PLAY_URL_CLEAN,
+  installUrl: BETLEDGER_PLAY_URL_CLEAN,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KES' },
   publisher: { '@id': `${SITE_URL}/#organization` },
 };
 

@@ -149,7 +149,7 @@ export default function PrivacyPolicyPage() {
           {/* 4 */}
           <h2 style={H2_STYLE}>4. PRODUCT LAUNCH WAITLISTS</h2>
           <p style={P_STYLE}>
-            When you join a waitlist for one of our products, such as BetLedger or SoraPesa, we
+            When you join a waitlist for one of our products, such as SoraPesa, Kikota, or Matatu Dash, we
             collect your email address, the product you signed up for, and how you found the page
             (for example, a campaign or QR code link).
           </p>

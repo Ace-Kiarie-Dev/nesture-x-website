@@ -200,6 +200,46 @@ canvas {
   100% { transform: translateX(-50%); }
 }
 
+/* "Live" status badge — green with a breathing glow and a pinging dot.
+   Colours are hardcoded: badges sit on dark card art in both themes. */
+.nx-live-badge {
+  animation: liveGlow 2.4s ease-in-out infinite;
+}
+.nx-live-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+}
+.nx-live-dot {
+  position: relative;
+  width: 0.6em;
+  height: 0.6em;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+.nx-live-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: livePing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes liveGlow {
+  0%, 100% { box-shadow: 0 0 6px rgba(34, 197, 94, 0.35), inset 0 0 4px rgba(34, 197, 94, 0.15); }
+  50%      { box-shadow: 0 0 16px rgba(34, 197, 94, 0.7), inset 0 0 8px rgba(34, 197, 94, 0.3); }
+}
+@keyframes livePing {
+  0%   { transform: scale(1); opacity: 0.8; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nx-live-badge { animation: none; box-shadow: 0 0 12px rgba(34, 197, 94, 0.55); }
+  .nx-live-dot::after { animation: none; display: none; }
+}
+
 /* ── NxButton neo-brutalist lift system ── */
 .nx-btn-wrapper {
   position: relative;
