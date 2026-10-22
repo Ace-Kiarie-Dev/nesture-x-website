@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 import { ArrowLeft } from 'lucide-react';
 import {
@@ -22,9 +23,11 @@ export async function generateMetadata({ params }: { params: Promise<{ doc: stri
   if (!isSoloStandoffDoc(doc)) return {};
   const loaded = await loadSoloStandoffDoc(doc);
   const title = loaded?.title ?? SOLO_STANDOFF_DOCS[doc];
+  // The documents' own titles usually name the game already
+  const named = /solo standoff/i.test(title);
   return {
-    title: { absolute: `${title} | Solo Standoff` },
-    description: `${title} for Solo Standoff, a puzzle game by Nesture-X.`,
+    title: { absolute: named ? title : `${title} | Solo Standoff` },
+    description: `${title}. Solo Standoff is a puzzle game by Nesture-X.`,
     alternates: { canonical: `/solo-standoff/${doc}` },
   };
 }
@@ -48,7 +51,8 @@ export default async function SoloStandoffLegalPage({ params }: { params: Promis
           {loaded.lastUpdated && <p className="ss-legal-updated">Last updated: {loaded.lastUpdated}</p>}
         </header>
         <article className="ss-prose">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{loaded.body}</ReactMarkdown>
+          {/* Single newlines are line breaks, as written (e.g. the contact address blocks) */}
+          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{loaded.body}</ReactMarkdown>
         </article>
       </div>
     </main>

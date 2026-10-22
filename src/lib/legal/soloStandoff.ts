@@ -7,7 +7,7 @@ import path from 'node:path';
 
 export const SOLO_STANDOFF_DOCS = {
   privacy: 'Privacy Policy',
-  terms: 'Terms of Service',
+  terms: 'Terms of Use',
   'delete-account': 'Delete Your Account',
 } as const;
 

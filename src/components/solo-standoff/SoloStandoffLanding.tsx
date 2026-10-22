@@ -302,7 +302,7 @@ export default function SoloStandoffLanding() {
           <nav aria-label="Solo Standoff legal">
             <ul className="ss-strip-links">
               <li><Link href="/solo-standoff/privacy">Privacy policy</Link></li>
-              <li><Link href="/solo-standoff/terms">Terms of service</Link></li>
+              <li><Link href="/solo-standoff/terms">Terms of use</Link></li>
               <li><Link href="/solo-standoff/delete-account">Delete your account</Link></li>
             </ul>
           </nav>
