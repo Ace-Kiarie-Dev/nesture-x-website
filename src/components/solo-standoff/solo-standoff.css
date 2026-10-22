@@ -1063,3 +1063,94 @@
   font-size: 0.9rem;
   color: var(--ss-muted);
 }
+
+/* ── Legal pages ────────────────────────────────────────────────────────── */
+
+.theme-ss .ss-legal {
+  padding: 3rem 1rem 5rem;
+  background:
+    radial-gradient(ellipse 60% 30% at 0% 0%, rgba(242, 169, 59, 0.12), transparent 70%),
+    var(--ss-bg);
+}
+.theme-ss .ss-legal-inner {
+  max-width: 70ch;
+  margin: 0 auto;
+}
+.theme-ss .ss-legal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--ss-teal);
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+.theme-ss .ss-legal-back:hover { color: var(--ss-gold); }
+.theme-ss .ss-legal-head {
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--ss-border);
+}
+.theme-ss .ss-legal-updated {
+  margin-top: 0.75rem;
+  color: var(--ss-muted);
+  font-size: 0.95rem;
+}
+
+.theme-ss .ss-prose {
+  color: var(--ss-text);
+  overflow-wrap: anywhere;
+}
+.theme-ss .ss-prose > * + * { margin-top: 1.1em; }
+.theme-ss .ss-prose h2,
+.theme-ss .ss-prose h3,
+.theme-ss .ss-prose h4 {
+  font-family: var(--ss-font-display);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ss-text);
+  margin-top: 2em;
+}
+.theme-ss .ss-prose h2 { font-size: 1.6rem; color: var(--ss-gold); }
+.theme-ss .ss-prose h3 { font-size: 1.25rem; }
+.theme-ss .ss-prose h4 { font-size: 1.08rem; }
+.theme-ss .ss-prose ul,
+.theme-ss .ss-prose ol { padding-left: 1.4em; }
+.theme-ss .ss-prose ul { list-style: disc; }
+.theme-ss .ss-prose ol { list-style: decimal; }
+.theme-ss .ss-prose li + li { margin-top: 0.4em; }
+.theme-ss .ss-prose li::marker { color: var(--ss-amber); }
+.theme-ss .ss-prose a {
+  color: var(--ss-teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.theme-ss .ss-prose a:hover { color: var(--ss-gold); }
+.theme-ss .ss-prose strong { color: #fff; font-weight: 700; }
+.theme-ss .ss-prose blockquote {
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--ss-amber);
+  background: var(--ss-panel);
+  border-radius: 0 10px 10px 0;
+}
+.theme-ss .ss-prose code {
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+  background: var(--ss-panel-2);
+  font-size: 0.92em;
+}
+.theme-ss .ss-prose hr { border: 0; border-top: 2px solid var(--ss-border); margin: 2em 0; }
+.theme-ss .ss-prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.theme-ss .ss-prose th,
+.theme-ss .ss-prose td {
+  border: 1px solid var(--ss-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.theme-ss .ss-prose th { background: var(--ss-panel-2); }
