@@ -1,5 +1,17 @@
 import Image from 'next/image';
-import { Boxes, CalendarDays, CloudUpload, Flame, ShieldCheck, Star } from 'lucide-react';
+import Link from 'next/link';
+import {
+  BadgeCheck,
+  Boxes,
+  BrainCircuit,
+  CalendarDays,
+  CloudUpload,
+  Flame,
+  Puzzle,
+  ShieldCheck,
+  Star,
+} from 'lucide-react';
+import { SOLO_STANDOFF_SUPPORT_EMAIL } from '@/constants';
 import DemoBoard from './DemoBoard';
 import MechanicsGrid from './MechanicsGrid';
 import PlayBadge from './PlayBadge';
@@ -37,6 +49,35 @@ const FEATURES = [
     Icon: CloudUpload,
     title: 'Back up with Google',
     body: 'Play as a guest, or keep your progress and restore it on a new phone.',
+  },
+];
+
+const STACK = [
+  'React Native',
+  'Expo',
+  'TypeScript',
+  'Supabase',
+  'Postgres',
+  'Edge Functions',
+  'Google Sign-In',
+  'AdMob',
+];
+
+const HIGHLIGHTS = [
+  {
+    Icon: BrainCircuit,
+    title: 'A custom puzzle solver.',
+    body: 'It finds the shortest solution to every level and powers hints.',
+  },
+  {
+    Icon: Puzzle,
+    title: 'A level generator.',
+    body: 'It builds and grades new puzzles, including the daily ones, so no two players get a stale one.',
+  },
+  {
+    Icon: BadgeCheck,
+    title: 'Server-verified scores.',
+    body: 'Every clear is replayed on the server before it counts on a ranking.',
   },
 ];
 
@@ -196,6 +237,84 @@ export default function SoloStandoffLanding() {
           <ScreenshotCarousel />
         </div>
       </section>
+
+      {/* ── 6. Built by Nesture-X ───────────────────────────────────────── */}
+      <section className="ss-section" aria-labelledby="ss-built-title">
+        <div className="ss-wrap ss-built">
+          <div className="ss-built-copy">
+            <span className="ss-eyebrow">Built by Nesture-X</span>
+            <h2 id="ss-built-title" className="ss-h2">
+              Shipped in-house, from sketch to store
+            </h2>
+            <p className="ss-lead">
+              Solo Standoff was designed, built and shipped in-house by Peter Kiarie at Nesture-X,
+              from the first sketch to the Play Store.
+            </p>
+            <ul className="ss-chips" aria-label="Tech stack">
+              {STACK.map((tech) => (
+                <li key={tech}>{tech}</li>
+              ))}
+            </ul>
+            <ul className="ss-highlights">
+              {HIGHLIGHTS.map(({ Icon, title, body }) => (
+                <li key={title}>
+                  <span className="ss-feature-icon">
+                    <Icon size={20} aria-hidden="true" />
+                  </span>
+                  <p>
+                    <strong>{title}</strong> {body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="ss-built-side">
+            <Image
+              src={`${ART}/characters/agent_lean_gold.webp`}
+              alt=""
+              width={807}
+              height={1200}
+              sizes="(min-width: 960px) 300px, 55vw"
+              className="ss-built-art"
+            />
+            <div className="ss-card ss-cta">
+              <h3 className="ss-h3">Have an app or game in mind?</h3>
+              <Link href="/contact" className="ss-btn ss-btn--amber">
+                Talk to Nesture-X →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. Footer strip ─────────────────────────────────────────────── */}
+      <footer className="ss-strip">
+        <div className="ss-wrap ss-strip-inner">
+          <Image
+            src={`${ART}/brand/logo_nx_gaming.webp`}
+            alt="NX Gaming"
+            width={1200}
+            height={152}
+            sizes="180px"
+            className="ss-strip-logo"
+          />
+          <nav aria-label="Solo Standoff legal">
+            <ul className="ss-strip-links">
+              <li><Link href="/solo-standoff/privacy">Privacy policy</Link></li>
+              <li><Link href="/solo-standoff/terms">Terms of service</Link></li>
+              <li><Link href="/solo-standoff/delete-account">Delete your account</Link></li>
+            </ul>
+          </nav>
+          <p className="ss-strip-support">
+            Support: <span className="ss-select-all">{SOLO_STANDOFF_SUPPORT_EMAIL}</span>{' '}
+            <a href={`mailto:${SOLO_STANDOFF_SUPPORT_EMAIL}`}>Email us</a>
+          </p>
+          <p className="ss-strip-legal">
+            © 2026 Nesture-X · NX Gaming. Solo Standoff is a Nesture-X game.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }
