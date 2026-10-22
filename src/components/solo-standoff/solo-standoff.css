@@ -444,3 +444,366 @@
   color: var(--ss-muted);
   margin-top: -0.2rem;
 }
+
+/* ── Shared card ────────────────────────────────────────────────────────── */
+
+.theme-ss .ss-card {
+  position: relative;
+  border: 2px solid var(--ss-border);
+  border-radius: var(--ss-radius-lg);
+  background: linear-gradient(180deg, var(--ss-panel-2) 0%, var(--ss-panel) 100%);
+  box-shadow: 0 6px 0 var(--ss-edge);
+  padding: 1.5rem;
+}
+.theme-ss .ss-card p { color: var(--ss-muted); }
+
+.theme-ss .ss-section--panel {
+  background:
+    radial-gradient(ellipse 60% 40% at 90% 0%, rgba(42, 212, 196, 0.07), transparent 70%),
+    #0a1d22;
+  border-top: 2px solid var(--ss-border);
+  border-bottom: 2px solid var(--ss-border);
+}
+
+/* ── 2. How to play ─────────────────────────────────────────────────────── */
+
+.theme-ss .ss-rules {
+  list-style: none;
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 820px) {
+  .theme-ss .ss-rules { grid-template-columns: repeat(3, 1fr); }
+}
+
+.theme-ss .ss-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 1.25rem;
+  overflow: hidden;
+}
+.theme-ss .ss-rule-n {
+  position: absolute;
+  top: 0.9rem;
+  left: 1.25rem;
+  font-family: var(--ss-font-display);
+  font-weight: 800;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--ss-amber);
+  text-shadow: 0 3px 0 var(--ss-edge);
+}
+.theme-ss .ss-rule-art {
+  align-self: center;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5));
+}
+/* Full-body pose art is tall; crop it to the same footprint */
+.theme-ss .ss-rule-art--pose {
+  object-fit: cover;
+  object-position: center 8%;
+  width: 120px;
+}
+
+/* ── 3. Mechanics ───────────────────────────────────────────────────────── */
+
+.theme-ss .ss-mech-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .theme-ss .ss-mech-grid { gap: 1.25rem; }
+}
+@media (min-width: 960px) {
+  .theme-ss .ss-mech-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.theme-ss .ss-mech {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem 0.6rem 1rem;
+  border: 2px solid var(--ss-border);
+  border-radius: var(--ss-radius-lg);
+  background: linear-gradient(180deg, var(--ss-panel-2) 0%, var(--ss-panel) 100%);
+  box-shadow: 0 6px 0 var(--ss-edge);
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+@media (hover: hover) {
+  .theme-ss .ss-mech:hover { border-color: rgba(242, 169, 59, 0.6); transform: translateY(-2px); }
+}
+.theme-ss .ss-mech .ss-h3,
+.theme-ss .ss-mech p { padding: 0 0.35rem; }
+.theme-ss .ss-mech .ss-h3 { font-size: 1.2rem; margin-top: 0.35rem; }
+.theme-ss .ss-mech p { font-size: 0.92rem; line-height: 1.45; color: var(--ss-muted); }
+@media (min-width: 640px) {
+  .theme-ss .ss-mech { padding: 0.75rem 0.75rem 1.25rem; }
+  .theme-ss .ss-mech p { font-size: 1rem; }
+}
+
+/* The scene: a short strip of rooftop tiles. */
+.theme-ss .ss-scene {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  background:
+    linear-gradient(90deg, rgba(127, 211, 176, 0.1) 1px, transparent 1px) 0 0 / 25% 100%,
+    linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.25)),
+    #0f2a30;
+  box-shadow: inset 0 0 0 1px rgba(127, 211, 176, 0.12);
+}
+
+.theme-ss .ss-scene-art {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 58%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+.theme-ss .ss-scene-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.5));
+}
+.theme-ss .ss-scene-art--mirror  { width: 44%; }
+.theme-ss .ss-scene-art--wall    { width: 46%; left: 60%; }
+.theme-ss .ss-scene-art--barrel  { width: 46%; }
+.theme-ss .ss-scene-art--turntable { width: 64%; top: 60%; }
+.theme-ss .ss-scene-art--thug,
+.theme-ss .ss-scene-art--armored,
+.theme-ss .ss-scene-art--hostage { width: 72%; top: 48%; left: 58%; }
+
+/* Bullets and effects are invisible until the card plays. */
+.theme-ss .ss-scene-bullet,
+.theme-ss .ss-scene-spark,
+.theme-ss .ss-burst {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.theme-ss .ss-scene-bullet {
+  left: 0;
+  top: 50%;
+  width: 16%;
+  height: 4px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, rgba(255, 230, 160, 0), #ffe6a0 55%, #fff7de);
+  box-shadow: 0 0 8px 2px rgba(255, 204, 77, 0.6);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+.theme-ss .ss-scene-spark {
+  width: 22%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid #ffe6a0;
+  box-shadow: 0 0 12px rgba(255, 204, 77, 0.8);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+.theme-ss .ss-burst {
+  left: 50%;
+  top: 52%;
+  width: 40%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 6px solid #ff8a2a;
+  background: radial-gradient(circle, rgba(255, 204, 77, 0.65), rgba(242, 120, 40, 0.25) 55%, transparent 70%);
+  box-shadow: 0 0 24px rgba(255, 138, 42, 0.8);
+  transform: translate(-50%, -50%) scale(0.2);
+  z-index: 3;
+}
+
+/* Portal: drawn, since the game draws portals in code too. */
+.theme-ss .ss-portal {
+  position: absolute;
+  top: 54%;
+  width: 26%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 4px solid var(--ss-teal);
+  transform: translate(-50%, -50%) scaleY(0.55);
+  box-shadow: 0 0 16px rgba(42, 212, 196, 0.55), inset 0 0 14px rgba(42, 212, 196, 0.5);
+  background: radial-gradient(circle, rgba(42, 212, 196, 0.35), rgba(7, 23, 28, 0.9) 70%);
+}
+.theme-ss .ss-portal--a { left: 30%; }
+.theme-ss .ss-portal--b { left: 72%; }
+.theme-ss .ss-mech--portal .ss-scene-bullet { top: 48%; }
+
+.theme-ss .ss-turn-arrow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 14%;
+  color: var(--ss-danger);
+  transform: translate(-50%, -50%) scaleY(0.6);
+  z-index: 2;
+}
+.theme-ss .ss-turn-arrow path { transform-origin: 3px 0; transform-box: view-box; }
+
+.theme-ss .ss-crack {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  fill: none;
+  stroke: #f4fbff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px rgba(42, 212, 196, 0.9));
+}
+
+/* ── Mechanic animations: run while the card has .is-playing ─────────────── */
+
+/* Mirror: travels in, bends 90 degrees off the blade */
+.theme-ss .ss-mech--mirror .ss-scene-spark { left: 50%; top: 50%; width: 30%; }
+.theme-ss .ss-mech--mirror.is-playing .ss-scene-bullet { animation: ss-mirror-shot 1s linear; }
+.theme-ss .ss-mech--mirror.is-playing .ss-scene-spark { animation: ss-spark 1s ease-out; }
+@keyframes ss-mirror-shot {
+  0%      { opacity: 1; left: -8%;  top: 50%; transform: translate(-50%, -50%) rotate(0deg); }
+  49.9%   { opacity: 1; left: 50%;  top: 50%; transform: translate(-50%, -50%) rotate(0deg); }
+  50%     { opacity: 1; left: 50%;  top: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
+  100%    { opacity: 1; left: 50%;  top: -12%; transform: translate(-50%, -50%) rotate(-90deg); }
+}
+
+/* Wall: hits, stops, small spark */
+.theme-ss .ss-mech--wall .ss-scene-spark { left: 39%; top: 50%; }
+.theme-ss .ss-mech--wall.is-playing .ss-scene-bullet { animation: ss-wall-shot 0.9s linear; }
+.theme-ss .ss-mech--wall.is-playing .ss-scene-spark { animation: ss-spark 0.9s ease-out; }
+@keyframes ss-wall-shot {
+  0%   { opacity: 1; left: -8%; }
+  50%  { opacity: 1; left: 36%; }
+  55%, 100% { opacity: 0; left: 36%; }
+}
+
+/* Barrel: shake, then an orange burst ring */
+.theme-ss .ss-mech--barrel.is-playing .ss-scene-art { animation: ss-shake 1.2s ease-in-out; }
+.theme-ss .ss-mech--barrel.is-playing .ss-burst { animation: ss-burst 1.2s ease-out; }
+.theme-ss .ss-mech--barrel.is-playing .ss-scene-bullet { animation: ss-barrel-shot 1.2s linear; }
+@keyframes ss-barrel-shot {
+  0%   { opacity: 1; left: -8%; }
+  20%  { opacity: 1; left: 34%; }
+  22%, 100% { opacity: 0; left: 34%; }
+}
+@keyframes ss-shake {
+  0%, 20%, 55%, 100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(-54%, -50%) rotate(-4deg); }
+  30% { transform: translate(-46%, -51%) rotate(4deg); }
+  35% { transform: translate(-54%, -49%) rotate(-5deg); }
+  40% { transform: translate(-46%, -51%) rotate(5deg); }
+  45% { transform: translate(-52%, -50%) rotate(-3deg); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
+}
+@keyframes ss-burst {
+  0%, 50% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  56%     { opacity: 1; transform: translate(-50%, -50%) scale(0.9); }
+  100%    { opacity: 0; transform: translate(-50%, -50%) scale(2.6); }
+}
+
+/* Portal: vanishes into one ring, exits the other */
+.theme-ss .ss-mech--portal.is-playing .ss-scene-bullet { animation: ss-portal-shot 1.2s linear; }
+.theme-ss .ss-mech--portal.is-playing .ss-portal--a { animation: ss-portal-pulse 1.2s ease-out; }
+.theme-ss .ss-mech--portal.is-playing .ss-portal--b { animation: ss-portal-pulse 1.2s ease-out 0.42s; }
+@keyframes ss-portal-shot {
+  0%    { opacity: 1; left: -8%;  transform: translate(-50%, -50%) scaleX(1); }
+  30%   { opacity: 1; left: 30%;  transform: translate(-50%, -50%) scaleX(0.1); }
+  30.1%, 44.9% { opacity: 0; left: 30%; }
+  45%   { opacity: 1; left: 72%;  transform: translate(-50%, -50%) scaleX(0.1); }
+  55%   { opacity: 1; left: 82%;  transform: translate(-50%, -50%) scaleX(1); }
+  100%  { opacity: 1; left: 112%; transform: translate(-50%, -50%) scaleX(1); }
+}
+@keyframes ss-portal-pulse {
+  0%   { box-shadow: 0 0 16px rgba(42, 212, 196, 0.55), inset 0 0 14px rgba(42, 212, 196, 0.5); }
+  30%  { box-shadow: 0 0 34px rgba(42, 212, 196, 1), inset 0 0 22px rgba(255, 255, 255, 0.7); }
+  100% { box-shadow: 0 0 16px rgba(42, 212, 196, 0.55), inset 0 0 14px rgba(42, 212, 196, 0.5); }
+}
+
+/* Turntable: quarter turn, springy easing */
+.theme-ss .ss-mech--turntable.is-playing .ss-turn-arrow path { animation: ss-quarter 0.9s cubic-bezier(0.34, 1.7, 0.5, 1) forwards; }
+.theme-ss .ss-mech--turntable.is-playing .ss-scene-art { animation: ss-wobble 0.9s ease-out; }
+@keyframes ss-quarter {
+  0%       { transform: rotate(0deg); }
+  70%, 85% { transform: rotate(90deg); }
+  100%     { transform: rotate(90deg); }
+}
+@keyframes ss-wobble {
+  0%, 100% { transform: translate(-50%, -50%); }
+  30% { transform: translate(-50%, -50%) scale(1.05, 0.96); }
+  60% { transform: translate(-50%, -50%) scale(0.98, 1.02); }
+}
+
+/* Thug: recoil */
+.theme-ss .ss-mech--thug.is-playing .ss-scene-bullet { animation: ss-body-shot 1s linear; }
+.theme-ss .ss-mech--thug.is-playing .ss-scene-art { animation: ss-recoil 1s ease-out; }
+@keyframes ss-body-shot {
+  0%   { opacity: 1; left: -8%; top: 46%; }
+  30%  { opacity: 1; left: 46%; top: 46%; }
+  31%, 100% { opacity: 0; left: 46%; top: 46%; }
+}
+@keyframes ss-recoil {
+  0%, 30% { transform: translate(-50%, -50%); }
+  38%     { transform: translate(-38%, -50%) rotate(10deg); }
+  60%     { transform: translate(-46%, -50%) rotate(-2deg); }
+  100%    { transform: translate(-50%, -50%); }
+}
+
+/* Armored thug: a crack flashes across the armor */
+.theme-ss .ss-mech--armored.is-playing .ss-scene-bullet { animation: ss-body-shot 1.1s linear; }
+.theme-ss .ss-mech--armored.is-playing .ss-scene-art { animation: ss-jolt 1.1s ease-out; }
+.theme-ss .ss-mech--armored.is-playing .ss-crack { animation: ss-crack 1.1s ease-out; }
+.theme-ss .ss-crack polyline { stroke-dasharray: 80; stroke-dashoffset: 0; }
+.theme-ss .ss-mech--armored.is-playing .ss-crack polyline { animation: ss-crack-draw 1.1s ease-out; }
+@keyframes ss-jolt {
+  0%, 30%, 100% { transform: translate(-50%, -50%); }
+  36% { transform: translate(-45%, -50%); }
+  48% { transform: translate(-50%, -50%); }
+}
+@keyframes ss-crack {
+  0%, 30% { opacity: 0; }
+  34%, 44% { opacity: 1; }
+  52%     { opacity: 0.3; }
+  60%     { opacity: 1; }
+  100%    { opacity: 0; }
+}
+@keyframes ss-crack-draw {
+  0%, 30% { stroke-dashoffset: 80; }
+  42%, 100% { stroke-dashoffset: 0; }
+}
+
+/* Hostage: shake with a red outline flash */
+.theme-ss .ss-mech--hostage.is-playing .ss-scene-bullet { animation: ss-body-shot 1.1s linear; }
+.theme-ss .ss-mech--hostage.is-playing .ss-scene-art { animation: ss-shake 1.1s ease-in-out; }
+.theme-ss .ss-mech--hostage.is-playing .ss-scene-art img { animation: ss-red-outline 1.1s ease-out; }
+@keyframes ss-red-outline {
+  0%, 28%, 100% { filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.5)); }
+  34%, 50%, 66% {
+    filter: drop-shadow(2px 0 0 #e2574c) drop-shadow(-2px 0 0 #e2574c)
+            drop-shadow(0 2px 0 #e2574c) drop-shadow(0 -2px 0 #e2574c);
+  }
+  42%, 58% { filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.5)); }
+}
+
+@keyframes ss-spark {
+  0%, 49% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  52%     { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
+  100%    { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-ss .ss-mech.is-playing * { animation: none !important; }
+}
