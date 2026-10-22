@@ -30,7 +30,7 @@ type Piece = {
 const PIECES: Piece[] = [
   { id: 'barrel', row: 0, col: 1, src: `${ART}/props/prop_barrel.webp`, alt: 'Barrel', kind: 'prop', scale: 0.82 },
   { id: 'wall', row: 2, col: 0, src: `${ART}/props/prop_wall_block.webp`, alt: 'Wall', kind: 'prop', scale: 0.9 },
-  { id: 'armored', row: 1, col: 4, src: `${ART}/characters/armored_thug_down.webp`, alt: 'Armored thug', kind: 'sprite' },
+  { id: 'thug2', row: 1, col: 4, src: `${ART}/characters/thug_down.webp`, alt: 'Thug', kind: 'sprite' },
   { id: 'hostage', row: 2, col: 2, src: `${ART}/characters/hostage_down.webp`, alt: 'Hostage', kind: 'sprite' },
   { id: 'thug', row: 2, col: 4, src: `${ART}/characters/skull_thug_down.webp`, alt: 'Thug', kind: 'sprite' },
   { id: 'mirror', row: 4, col: 4, src: `${ART}/props/prop_mirror_blade.webp`, alt: 'Mirror', kind: 'prop', scale: 0.96 },
@@ -41,8 +41,8 @@ const PIECES: Piece[] = [
 const TILE_MS = 140;
 const T_MIRROR = 3.6 * TILE_MS;
 const T_THUG = T_MIRROR + 2 * TILE_MS;
-const T_ARMORED = T_THUG + TILE_MS;
-const T_CLEAR = T_ARMORED + 650;
+const T_THUG2 = T_THUG + TILE_MS;
+const T_CLEAR = T_THUG2 + 650;
 
 const centre = (n: number) => (n + 0.5) * TILE;
 // Bullets fly at gun height, a little above the tile centre.
@@ -96,14 +96,14 @@ export default function DemoBoard() {
     if (phase !== 'ready') return;
     setTaps(1);
     if (reduceMotion) {
-      setDown({ thug: true, armored: true });
+      setDown({ thug: true, thug2: true });
       setPhase('clear');
       return;
     }
     setPhase('firing');
     at(T_MIRROR, () => setMirrorFlash((n) => n + 1));
     at(T_THUG, () => hit('thug', 2, 4));
-    at(T_ARMORED, () => hit('armored', 1, 4));
+    at(T_THUG2, () => hit('thug2', 1, 4));
     at(T_CLEAR, () => setPhase('clear'));
   }
 
@@ -131,7 +131,7 @@ export default function DemoBoard() {
             <small>Mission</small>12
           </span>
           <span className="ss-hud-chip">
-            <small>Par</small>2 taps
+            <small>Par</small>1 tap
           </span>
           <span className="ss-hud-chip ss-hud-chip--amber">
             <small>Taps</small>
@@ -174,7 +174,7 @@ export default function DemoBoard() {
                 }}
                 animate={
                   isDown
-                    ? { rotate: 78, y: '22%', x: '6%', opacity: 0.4 }
+                    ? { rotate: -78, y: '22%', x: '-6%', opacity: 0.4 } // fall inward, away from the board edge
                     : { rotate: 0, y: 0, x: 0, opacity: 1 }
                 }
                 transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 18 }}
@@ -217,13 +217,13 @@ export default function DemoBoard() {
                 opacity: [1, 1, 1, 0],
               }}
               transition={{
-                duration: T_ARMORED / 1000,
+                duration: T_THUG2 / 1000,
                 ease: 'linear',
-                times: [0, T_MIRROR / T_ARMORED, T_THUG / T_ARMORED, 1],
+                times: [0, T_MIRROR / T_THUG2, T_THUG / T_THUG2, 1],
                 rotate: {
-                  duration: T_ARMORED / 1000,
+                  duration: T_THUG2 / 1000,
                   ease: 'linear',
-                  times: [0, T_MIRROR / T_ARMORED, (T_MIRROR + 20) / T_ARMORED, 1],
+                  times: [0, T_MIRROR / T_THUG2, (T_MIRROR + 20) / T_THUG2, 1],
                 },
               }}
             />
