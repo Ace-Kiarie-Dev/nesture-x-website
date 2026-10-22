@@ -200,3 +200,8 @@ export const BETLEDGER_PLAY_URL =
   'https://play.google.com/store/apps/details?id=com.nesture.betledger&referrer=utm_source%3Dnesturex%26utm_medium%3Dwebsite%26utm_campaign%3Dbetledger';
 export const BETLEDGER_PLAY_URL_CLEAN =
   'https://play.google.com/store/apps/details?id=com.nesture.betledger';
+
+// Solo Standoff on Google Play. null until launch: the page shows a
+// "Coming soon" badge. Set the store URL here to swap in the real Play badge.
+export const SOLO_STANDOFF_PLAY_URL: string | null = null;
+export const SOLO_STANDOFF_SUPPORT_EMAIL = 'support@nesturex.com';

@@ -99,7 +99,8 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `(function() {
-  const theme = localStorage.getItem('nx-theme') || 'dark';
+  const forceDark = location.pathname.indexOf('/solo-standoff') === 0;
+  const theme = forceDark ? 'dark' : localStorage.getItem('nx-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', theme);
 })();`,
           }}

@@ -26,6 +26,18 @@ export default function Navbar() {
     document.documentElement.setAttribute('data-theme', initial);
   }, []);
 
+  // Product pages that wear their own dark skin: always dark, no toggle.
+  // The stored preference is left alone and restored on the way out.
+  const forceDark = pathname.startsWith('/solo-standoff');
+  useEffect(() => {
+    if (!forceDark) return;
+    document.documentElement.setAttribute('data-theme', 'dark');
+    return () => {
+      document.documentElement.setAttribute('data-theme', localStorage.getItem('nx-theme') || 'dark');
+    };
+  }, [forceDark]);
+  const effectiveTheme = forceDark ? 'dark' : theme;
+
   // Scroll listener
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -86,7 +98,7 @@ export default function Navbar() {
               so it's wired in here rather than a text-wordmark fallback.
               Confirm with design that it's the intended light-theme lockup. */}
           <Image
-            src={theme === 'light' ? '/images/logo-black.png' : '/images/logo-white.png'}
+            src={effectiveTheme === 'light' ? '/images/logo-black.png' : '/images/logo-white.png'}
             alt="Nesture-X"
             width={220}
             height={60}
@@ -146,7 +158,7 @@ export default function Navbar() {
           </div>
 
           {/* Theme toggle — temporarily hidden, see THEME_TOGGLE_VISIBLE above */}
-          {THEME_TOGGLE_VISIBLE && (
+          {THEME_TOGGLE_VISIBLE && !forceDark && (
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
