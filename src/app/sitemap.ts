@@ -54,6 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/kikota`, lastModified: SITE_UPDATED, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${base}/matatu-dash`, lastModified: SITE_UPDATED, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${base}/solo-standoff`, lastModified: '2026-10-22', changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${base}/nx-gaming/2048`, lastModified: '2026-10-23', changeFrequency: 'monthly' as const, priority: 0.7 },
     ...toolEntries,
     ...portfolioEntries,
     { url: `${base}/privacy-policy`, lastModified: SITE_UPDATED, changeFrequency: 'yearly' as const, priority: 0.3 },
