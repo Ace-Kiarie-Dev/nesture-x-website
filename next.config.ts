@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
         source: '/nx-gaming/2048/sw.js',
         headers: [{ key: 'Service-Worker-Allowed', value: '/nx-gaming/2048' }],
       },
+      {
+        // Same for Flappy Horror at /nx-gaming/flappy-horror.
+        source: '/nx-gaming/flappy-horror/sw.js',
+        headers: [{ key: 'Service-Worker-Allowed', value: '/nx-gaming/flappy-horror' }],
+      },
     ];
   },
 };
