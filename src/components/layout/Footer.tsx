@@ -1,16 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useBreakpoint } from '@/lib/useBreakpoint';
 import { activeSocialLinks } from '@/constants';
 import { SocialIcon } from './SocialIcons';
 
 const SOCIAL_LINKS = activeSocialLinks();
 
-const NAV = [
+// showActive: highlight the link while on that route (and its sub-routes).
+const NAV: { label: string; href: string; showActive?: boolean }[] = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#portfolio' },
+  { label: 'Games', href: '/nx-gaming', showActive: true },
   { label: 'Contact', href: '#contact' },
   { label: 'Free Tools', href: '/tools' },
   { label: 'Privacy Policy', href: '/privacy-policy' },
@@ -19,6 +22,7 @@ const NAV = [
 
 export default function Footer() {
   const { isMobile } = useBreakpoint();
+  const pathname = usePathname();
 
   return (
     <footer
@@ -47,29 +51,34 @@ export default function Footer() {
 
       {/* Nav links */}
       <nav style={{ display: 'flex', gap: isMobile ? '1.5rem' : '2rem', flexWrap: 'wrap' }}>
-        {NAV.map(link => (
+        {NAV.map(link => {
+          const active = !!link.showActive && pathname.startsWith(link.href);
+          const idle = active ? 'var(--color-primary)' : 'var(--color-text-muted)';
+          return (
           <Link
             key={link.label}
             href={link.href}
+            aria-current={active ? 'page' : undefined}
             style={{
               fontFamily: 'var(--font-grotesk), sans-serif',
               fontSize: '0.75rem',
-              color: 'var(--color-text-muted)',
+              color: idle,
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
               textDecoration: 'none',
               transition: 'color 0.2s',
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLElement).style.color = 'var(--color-text)';
+              if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--color-text)';
             }}
             onMouseLeave={e => {
-              (e.currentTarget as HTMLElement).style.color = 'var(--color-text-muted)';
+              (e.currentTarget as HTMLElement).style.color = idle;
             }}
           >
             {link.label}
           </Link>
-        ))}
+          );
+        })}
       </nav>
 
       {/* Social links + copyright */}
