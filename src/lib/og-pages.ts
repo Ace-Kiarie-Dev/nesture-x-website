@@ -59,6 +59,12 @@ export const OG_PAGES = {
     alt: 'Nesture-X privacy policy',
   },
 
+  nxGaming: {
+    title: 'NX Gaming',
+    subtitle: 'Free browser games built in Nairobi. No sign-up, nothing to install.',
+    eyebrow: 'FREE GAMES',
+    alt: 'NX Gaming — free browser games by Nesture-X',
+  },
   imageStudio:       tool('Image Studio', 'Convert, compress, resize and edit images in your browser.'),
   pdfStudio:         tool('PDF Studio', 'Compress, merge, split, rotate and password protect PDFs.'),
   qrGenerator:       tool('QR Code Generator', 'Custom QR codes with your logo, downloaded as PNG or SVG.'),
