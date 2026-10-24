@@ -30,7 +30,7 @@
   color-scheme: dark;
   position: relative;
   overflow: hidden;
-  /* Neutral deep navy. The colour comes from the per-game ambient layers. */
+  /* Neutral deep navy. */
   background: linear-gradient(180deg, #0e1220 0%, #141a2a 100%);
   color: var(--nxg-text);
   font-family: var(--nxg-font-body);
@@ -87,23 +87,6 @@
   text-transform: uppercase;
   color: var(--nxg-muted);
 }
-
-/* ── Ambient tint ──────────────────────────────────────────────────────────
-   One layer per game (see ambientVars in NxGamingHub.tsx): a glow behind the
-   headline and one behind the card row, at most 30% alpha. Only opacity
-   animates, so switching games is a plain cross-fade. */
-.theme-nxg .nxg-ambient {
-  --amb-cx: 50%;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.7s ease;
-  background:
-    radial-gradient(38% 26% at var(--amb-hx) 18%, var(--amb-head), transparent 70%),
-    radial-gradient(46% 34% at var(--amb-cx) 64%, var(--amb-cards), transparent 70%);
-}
-.theme-nxg .nxg-ambient.is-on { opacity: 1; }
 
 /* NX Gaming logo, top-left under the site navbar. Absolutely placed so it adds no
    height. Its left edge lines up with the navbar's mark: the navbar pads 2rem and
@@ -444,7 +427,6 @@
 @media (min-width: 1080px) {
   .theme-nxg .nxg-hero { padding-top: 60px; gap: 18px; }
   .theme-nxg .nxg-hero-logo img { width: 150px; }
-  .theme-nxg .nxg-ambient { --amb-cx: var(--amb-cx-d); }
   .theme-nxg .nxg-eyebrow { font-size: 13px; }
   .theme-nxg .nxg-title { font-size: clamp(40px, 6.4vw, 88px); }
   .theme-nxg .nxg-lede { font-size: 18px; }
@@ -537,8 +519,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .theme-nxg .nxg-card,
-  .theme-nxg .nxg-art,
-  .theme-nxg .nxg-ambient { transition: none; }
+  .theme-nxg .nxg-art { transition: none; }
   .theme-nxg .nxg-card.is-sel .nxg-art,
   .theme-nxg .nxg-start .nxg-blink { animation: none; }
 }

@@ -3,18 +3,7 @@
 // Plain (non-'use client') module so the server page and the client hub can both
 // import it.
 
-import { COLORS } from '@/constants';
-
 export type GameStatus = 'live' | 'locked';
-
-// Hub background tint while this game is selected or hovered. Brand colours only:
-// the headline glow is always NX blue (keeps the blue headline text readable),
-// the card-row glow is NX blue or blue-grey. headX places the headline glow.
-export interface GameAmbient {
-  head: string;
-  cards: string;
-  headX: string;
-}
 
 export interface GameHero {
   src: string;
@@ -37,7 +26,6 @@ interface GameBase {
   glow: string;
   // Accent colour (hex) for the selected card's coloured shadow.
   accent: string;
-  ambient: GameAmbient;
   tags: readonly string[];
   blurb: string;
 }
@@ -72,7 +60,6 @@ export const NX_GAMES: readonly Game[] = [
     bg: 'linear-gradient(160deg,#8b7bff 0%,#3b2cb0 60%,#1a1450 100%)',
     glow: 'radial-gradient(70% 50% at 50% 38%,rgba(198,243,90,0.35),rgba(198,243,90,0))',
     accent: '#c6f35a',
-    ambient: { head: COLORS.blue, cards: COLORS.blue, headX: '38%' },
     tags: ['3×3 to 6×6', 'Works offline', '3 undos'],
     blurb:
       'Slide tiles, merge numbers and chase the 2048 tile. Undo three moves, share a score card, and pick up where you left off.',
@@ -89,7 +76,6 @@ export const NX_GAMES: readonly Game[] = [
     bg: 'linear-gradient(160deg,#1b4a4f 0%,#0b1f22 55%,#05080a 100%)',
     glow: 'radial-gradient(60% 45% at 78% 22%,rgba(227,38,58,0.55),rgba(227,38,58,0)),radial-gradient(60% 40% at 40% 55%,rgba(95,245,209,0.30),rgba(95,245,209,0))',
     accent: '#e3263a',
-    ambient: { head: COLORS.blue, cards: COLORS.blueGrey, headX: '46%' },
     tags: ['Souls and Phase', 'Blood Moon', 'Medals'],
     blurb:
       'Guide a little ghost through a graveyard of zombie hands, gather lost souls, phase through the dead and survive the Blood Moon.',
@@ -106,7 +92,6 @@ export const NX_GAMES: readonly Game[] = [
     bg: 'linear-gradient(160deg,#1a6fd4 0%,#123a7a 55%,#0d1b3e 100%)',
     glow: 'radial-gradient(60% 45% at 60% 40%,rgba(255,198,41,0.40),rgba(255,198,41,0))',
     accent: '#FFC629',
-    ambient: { head: COLORS.blue, cards: COLORS.blue, headX: '54%' },
     tags: ['Tap to fire', 'Grid puzzle', 'Mobile first'],
     blurb: 'Tap to fire on a grid and clear the board. Still in development. Follow us to catch the launch.',
   },
@@ -123,7 +108,6 @@ export const NX_GAMES: readonly Game[] = [
     bg: 'linear-gradient(160deg,#17566a 0%,#0b2a3f 55%,#061423 100%)',
     glow: 'radial-gradient(60% 45% at 50% 40%,rgba(66,222,195,0.40),rgba(66,222,195,0))',
     accent: '#42DEC3',
-    ambient: { head: COLORS.blue, cards: COLORS.blueGrey, headX: '62%' },
     tags: ['Hop and dodge', 'Nairobi streets', 'Android first'],
     blurb:
       'Hop. Dodge. Keep going. Cross Nairobi streets packed with matatus, bodabodas and hawkers. Still in development. Follow us to catch the launch.',

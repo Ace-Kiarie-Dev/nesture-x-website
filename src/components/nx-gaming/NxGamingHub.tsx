@@ -5,7 +5,6 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type FocusEvent,
   type KeyboardEvent,
   type PointerEvent,
 } from 'react';
@@ -62,19 +61,6 @@ function cardVars(game: Game, index: number, sel: number): CSSProperties {
   } as CSSProperties;
 }
 
-// One background tint layer per game. Only opacity changes between games (CSS
-// cross-fade); the gradients themselves never animate. The card-row glow sits
-// behind that game's card: its fan position on wide screens, centred on phones.
-// 4d / 38 = 30% / 22% alpha.
-function ambientVars(game: Game, index: number): CSSProperties {
-  return {
-    '--amb-head': `${game.ambient.head}4d`,
-    '--amb-cards': `${game.ambient.cards}38`,
-    '--amb-hx': game.ambient.headX,
-    '--amb-cx-d': `calc(50% + ${(index - (COUNT - 1) / 2) * 262}px)`,
-  } as CSSProperties;
-}
-
 function LockIcon() {
   return (
     <svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true">
@@ -102,9 +88,6 @@ function Pager({ sel, go, className }: { sel: number; go: (i: number) => void; c
 
 export default function NxGamingHub() {
   const [sel, setSel] = useState(0);
-  // Card under the mouse, or keyboard-focused (focus-visible). Touch never sets it.
-  const [hover, setHover] = useState<number | null>(null);
-  const ambient = hover ?? sel;
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   // Set when the selection moved by arrow key, so focus follows it.
   const focusOnChange = useRef(false);
@@ -114,16 +97,6 @@ export default function NxGamingHub() {
 
   const go = (i: number) => setSel(((i % COUNT) + COUNT) % COUNT);
   const cur = NX_GAMES[sel];
-
-  const onCardPointerEnter = (i: number) => (e: PointerEvent<HTMLButtonElement>) => {
-    if (e.pointerType === 'mouse') setHover(i);
-  };
-  const onCardPointerLeave = (e: PointerEvent<HTMLButtonElement>) => {
-    if (e.pointerType === 'mouse') setHover(null);
-  };
-  const onCardFocus = (i: number) => (e: FocusEvent<HTMLButtonElement>) => {
-    if (e.currentTarget.matches(':focus-visible')) setHover(i);
-  };
 
   useEffect(() => {
     if (!focusOnChange.current) return;
@@ -159,15 +132,6 @@ export default function NxGamingHub() {
   return (
     <main>
       <section className="nxg-stage-section">
-        {NX_GAMES.map((game, i) => (
-          <div
-            key={game.slug}
-            className={`nxg-ambient${i === ambient ? ' is-on' : ''}`}
-            style={ambientVars(game, i)}
-            aria-hidden="true"
-          />
-        ))}
-
         <Link href="/nx-gaming" className="nxg-hero-logo">
           <Image
             src={LOGO.src}
@@ -227,10 +191,6 @@ export default function NxGamingHub() {
                   if (swiped.current) swiped.current = false;
                   else go(i);
                 }}
-                onPointerEnter={onCardPointerEnter(i)}
-                onPointerLeave={onCardPointerLeave}
-                onFocus={onCardFocus(i)}
-                onBlur={() => setHover(null)}
                 aria-pressed={on}
                 aria-label={`${game.name}, ${live ? 'live' : 'locked'}`}
                 tabIndex={on ? 0 : -1}
