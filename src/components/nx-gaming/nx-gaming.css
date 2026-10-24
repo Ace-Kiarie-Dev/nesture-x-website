@@ -6,7 +6,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 .theme-nxg {
-  --nxg-bg:        #171c2b;
+  --nxg-bg:        #0e1220;
   --nxg-panel-hi:  #212843;
   --nxg-panel-lo:  #181d30;
   --nxg-btn-hi:    #232b47;
@@ -30,12 +30,8 @@
   color-scheme: dark;
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(60% 34% at 12% 6%, rgba(139, 123, 255, 0.3), rgba(23, 28, 43, 0) 70%),
-    radial-gradient(50% 30% at 92% 22%, rgba(26, 111, 212, 0.42), rgba(23, 28, 43, 0) 70%),
-    radial-gradient(60% 30% at 50% 62%, rgba(95, 245, 209, 0.12), rgba(23, 28, 43, 0) 70%),
-    radial-gradient(60% 30% at 20% 92%, rgba(255, 198, 41, 0.1), rgba(23, 28, 43, 0) 70%),
-    var(--nxg-bg);
+  /* Neutral deep navy. The colour comes from the per-game ambient layers. */
+  background: linear-gradient(180deg, #0e1220 0%, #141a2a 100%);
   color: var(--nxg-text);
   font-family: var(--nxg-font-body);
   font-size: 16px;
@@ -92,73 +88,43 @@
   color: var(--nxg-muted);
 }
 
-/* ---------- NX Gaming bar ----------
-   Shared by the hub (nesturex.com/nx-gaming) and every game page: keep the copies
-   identical. Always dark, whatever the page theme, because the logo's white letters
-   vanish on light backgrounds. */
-.nxg-bar {
-  box-sizing: content-box;
-  height: 52px;
-  padding: env(safe-area-inset-top, 0px) clamp(16px, 3vw, 40px) 0;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  background: rgba(11, 16, 32, 0.92);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  color-scheme: dark;
+/* ── Ambient tint ──────────────────────────────────────────────────────────
+   One layer per game (see ambientVars in NxGamingHub.tsx): a glow behind the
+   headline and one behind the card row, at most 30% alpha. Only opacity
+   animates, so switching games is a plain cross-fade. */
+.theme-nxg .nxg-ambient {
+  --amb-cx: 50%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  background:
+    radial-gradient(38% 26% at var(--amb-hx) 18%, var(--amb-head), transparent 70%),
+    radial-gradient(46% 34% at var(--amb-cx) 64%, var(--amb-cards), transparent 70%);
 }
-.nxg-bar__logo {
-  display: inline-flex; align-items: center;
-  min-height: 44px;
-  border-radius: 8px;
-}
-.nxg-bar__logo img { display: block; width: auto; height: 28px; }
-.nxg-bar__all {
-  display: inline-flex; align-items: center; gap: 8px;
-  min-height: 44px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.2s, border-color 0.2s;
-}
-.nxg-bar__all:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.24); }
-.nxg-bar__all svg { flex: none; width: 16px; height: 16px; }
-.nxg-bar__logo:focus-visible,
-.nxg-bar__all:focus-visible { outline: 2px solid #5b9cf0; outline-offset: 2px; }
-@media (max-width: 760px) {
-  .nxg-bar { height: 48px; }
-  .nxg-bar__logo img { height: 24px; }
-}
-/* Very narrow phones: icon-only button (the link keeps its aria-label). */
-@media (max-width: 359px) {
-  .nxg-bar__all { padding: 0 13px; }
-  .nxg-bar__all span { display: none; }
-}
-/* ---------- /NX Gaming bar ---------- */
+.theme-nxg .nxg-ambient.is-on { opacity: 1; }
 
-/* Hub use of the bar: it sits under the site navbar (so no safe-area padding) and
-   its content lines up with the page column. The logo is sized by width here. */
-.theme-nxg .nxg-hub-bar { padding: 0; }
-.theme-nxg .nxg-hub-bar__inner { width: 100%; display: flex; align-items: center; }
-.theme-nxg .nxg-hub-bar .nxg-bar__logo img { width: 130px; height: auto; }
-@media (min-width: 1080px) {
-  .theme-nxg .nxg-hub-bar .nxg-bar__logo img { width: 150px; }
+/* NX Gaming logo, top-left under the site navbar. Absolutely placed so it adds no
+   height. Its left edge lines up with the navbar's mark: the navbar pads 2rem and
+   its 220px logo box draws the mark 99px in. */
+.theme-nxg .nxg-hero-logo {
+  position: absolute;
+  top: 4px;
+  left: calc(2rem + 99px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  border-radius: 6px;
 }
+.theme-nxg .nxg-hero-logo img { display: block; width: 130px; height: auto; }
 
 /* ── Hero ──────────────────────────────────────────────────────────────── */
 
 .theme-nxg .nxg-hero {
   position: relative;
-  padding-top: 24px;
+  padding-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -201,17 +167,6 @@
   touch-action: pan-y;
 }
 
-.theme-nxg .nxg-stage-glow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 560px;
-  height: 460px;
-  margin-left: -280px;
-  margin-top: -210px;
-  pointer-events: none;
-  transition: background 0.4s;
-}
 
 .theme-nxg .nxg-card {
   position: absolute;
@@ -487,7 +442,9 @@
 /* ── Wide screens: fanned stage and side-by-side panels ────────────────── */
 
 @media (min-width: 1080px) {
-  .theme-nxg .nxg-hero { padding-top: clamp(28px, 3.5vw, 44px); gap: 18px; }
+  .theme-nxg .nxg-hero { padding-top: 60px; gap: 18px; }
+  .theme-nxg .nxg-hero-logo img { width: 150px; }
+  .theme-nxg .nxg-ambient { --amb-cx: var(--amb-cx-d); }
   .theme-nxg .nxg-eyebrow { font-size: 13px; }
   .theme-nxg .nxg-title { font-size: clamp(40px, 6.4vw, 88px); }
   .theme-nxg .nxg-lede { font-size: 18px; }
@@ -496,12 +453,6 @@
   .theme-nxg .nxg-pip { width: 26px; height: 12px; }
 
   .theme-nxg .nxg-stage { height: 560px; max-width: 1200px; margin: 0 auto; }
-  .theme-nxg .nxg-stage-glow {
-    width: 1000px;
-    height: 560px;
-    margin-left: -500px;
-    margin-top: -250px;
-  }
   .theme-nxg .nxg-card {
     top: 100px;
     width: 280px;
@@ -587,7 +538,7 @@
 @media (prefers-reduced-motion: reduce) {
   .theme-nxg .nxg-card,
   .theme-nxg .nxg-art,
-  .theme-nxg .nxg-stage-glow { transition: none; }
+  .theme-nxg .nxg-ambient { transition: none; }
   .theme-nxg .nxg-card.is-sel .nxg-art,
   .theme-nxg .nxg-start .nxg-blink { animation: none; }
 }
