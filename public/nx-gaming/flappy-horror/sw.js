@@ -9,7 +9,7 @@ const ASSETS = [
     self.registration.scope, "index.html", "style.css", "main.js", "manifest.webmanifest",
     "ghost.webp", "toppipe.webp", "bottompipe.webp", "flappybirdbg2.webp", "bg2.jpg",
     "fonts/rubik-wet-paint-latin.woff2", "fonts/space-grotesk-latin.woff2", "fonts/jetbrains-mono-latin.woff2",
-    "favicon.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png",
+    "nx-gaming-logo.webp", "favicon.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png",
 ];
 // ~2.4 MB, so it isn't precached; it's cached the first time it plays.
 const MUSIC = new URL("df.mp3", self.registration.scope.replace(/\/?$/, "/")).href;

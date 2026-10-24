@@ -1,10 +1,10 @@
 // Offline support: serve from cache, refresh the cache in the background.
 // Bump CACHE when shipping changes so old caches get cleared.
 const CACHE_PREFIX = "nx-2048-";
-const CACHE = CACHE_PREFIX + "v5";
+const CACHE = CACHE_PREFIX + "v6";
 // The scope is the page URL itself (with or without a trailing slash, depending on the host),
 // so the page is cached under the exact URL it's opened from rather than a redirect.
-const ASSETS = [self.registration.scope, "index.html", "style.css", "main.js", "brand.js", "icon.svg", "fav.png", "manifest.webmanifest", "logo_nx_gaming.webp", "og.png"];
+const ASSETS = [self.registration.scope, "index.html", "style.css", "main.js", "brand.js", "icon.svg", "fav.png", "manifest.webmanifest", "nx-gaming-logo.webp", "og.png"];
 
 self.addEventListener("install", (e) => {
     e.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)));

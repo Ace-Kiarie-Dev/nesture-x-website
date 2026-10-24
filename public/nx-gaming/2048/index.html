@@ -39,12 +39,17 @@
     <script src="main.js" defer></script>
 </head>
 <body>
-    <main class="app">
-        <div class="brand-bar">
-            <span class="brand"><img src="logo_nx_gaming.webp" alt="NX Gaming" width="1200" height="152"></span>
-            <span class="brand-note">Free to play · No sign-up</span>
-        </div>
+    <header class="nxg-bar">
+        <a class="nxg-bar__logo" href="https://nesturex.com/nx-gaming">
+            <img src="nx-gaming-logo.webp" alt="NX Gaming, all games" width="720" height="107">
+        </a>
+        <a class="nxg-bar__all" href="https://nesturex.com/nx-gaming" aria-label="All games">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+            <span>All games</span>
+        </a>
+    </header>
 
+    <main class="app">
         <header class="top">
             <h1 class="logo">2048</h1>
             <div class="scores">
@@ -174,5 +179,14 @@
     </dialog>
 
     <noscript><p class="noscript">2048 needs JavaScript to run.</p></noscript>
+    <script>
+        // On nesturex.com (and its previews) the hub is on the same host: keep the
+        // "all games" links there instead of jumping to the production domain.
+        (function () {
+            if (location.pathname.indexOf("/nx-gaming/") !== 0) return;
+            var links = document.querySelectorAll('a[href="https://nesturex.com/nx-gaming"]');
+            for (var i = 0; i < links.length; i++) links[i].setAttribute("href", "/nx-gaming");
+        })();
+    </script>
 </body>
 </html>

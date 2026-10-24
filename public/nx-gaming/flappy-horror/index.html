@@ -68,16 +68,15 @@
         <div class="atmos__flash"></div>
     </div>
 
-    <header class="topbar">
-        <a class="brand" href="https://nesturex.com/nx-gaming" aria-label="NX Gaming: all games">
-            <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true">
-                <path d="M6 40V8h6l14 20V8h6v32h-6L12 20v20z" fill="currentColor"/>
-                <path d="M30 8h7l5 8 5-8h1l-8 13 8 19h-7l-4-9-4 9h-1l7-17z" fill="var(--blood)"/>
-            </svg>
-            <span class="brand__name">NX&nbsp;GAMING</span>
-            <span class="brand__tag">presents</span>
+    <header class="topbar nxg-bar">
+        <a class="nxg-bar__logo" href="https://nesturex.com/nx-gaming">
+            <img src="nx-gaming-logo.webp" alt="NX Gaming, all games" width="720" height="107">
         </a>
         <div class="topbar__actions">
+            <a class="nxg-bar__all" href="https://nesturex.com/nx-gaming" aria-label="All games">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+                <span>All games</span>
+            </a>
             <button class="icon-btn" id="muteBtn" type="button" aria-pressed="false" title="Toggle sound (M)">
                 <svg viewBox="0 0 24 24" class="ico ico--on" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg>
                 <svg viewBox="0 0 24 24" class="ico ico--off" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l6 6M22 9l-6 6" fill="none"/></svg>
@@ -244,5 +243,14 @@
 
     <!-- preload="none": the ~2.4 MB track only downloads once a run starts (music.play() in main.js). -->
     <audio id="music" src="./df.mp3" loop preload="none"></audio>
+    <script>
+        // On nesturex.com (and its previews) the hub is on the same host: keep the
+        // "all games" links there instead of jumping to the production domain.
+        (function () {
+            if (location.pathname.indexOf("/nx-gaming/") !== 0) return;
+            var links = document.querySelectorAll('a[href="https://nesturex.com/nx-gaming"]');
+            for (var i = 0; i < links.length; i++) links[i].setAttribute("href", "/nx-gaming");
+        })();
+    </script>
 </body>
 </html>
