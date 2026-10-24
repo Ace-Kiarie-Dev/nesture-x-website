@@ -42,7 +42,7 @@ const HubRibbons = dynamic(() => import('./HubRibbons'), { ssr: false, loading: 
 
 // Per-card layout for both breakpoints, handed to CSS as custom properties so the
 // media query in nx-gaming.css picks one and the server render never depends on
-// the viewport. Numbers come straight from the mockups.
+// the viewport. Numbers come straight from the mockups. Shadows live in the CSS.
 function cardVars(game: Game, index: number, sel: number): CSSProperties {
   const on = index === sel;
 
@@ -62,19 +62,15 @@ function cardVars(game: Game, index: number, sel: number): CSSProperties {
     '--tf-d': `translate(${dx}px, ${dy}px) rotate(${rotD}deg) scale(${on ? 1.07 : 0.96})`,
     '--z-d': on ? 20 : 10 - Math.abs(index - sel),
     '--filter-d': on ? 'none' : 'brightness(0.78) saturate(0.85)',
-    '--shadow-d': on
-      ? `12px 14px 30px rgba(6,9,18,0.7),-8px -8px 22px rgba(255,255,255,0.06),0 26px 70px -18px ${game.accent}aa`
-      : '9px 11px 24px rgba(6,9,18,0.65),-6px -6px 18px rgba(255,255,255,0.05)',
     '--art-d': `${game.heroWidth.desktop}px`,
 
     '--tf-m': `translateX(${off * 176}px) translateY(${on ? -18 : 6}px) rotate(${off * 8}deg) scale(${on ? 1.04 : 0.86})`,
     '--z-m': 20 - ao,
     '--op-m': ao > 1 ? 0 : on ? 1 : 0.7,
-    '--shadow-m': on
-      ? `10px 12px 26px rgba(6,9,18,0.7),-7px -7px 18px rgba(255,255,255,0.06),0 22px 60px -16px ${game.accent}aa`
-      : '7px 9px 20px rgba(6,9,18,0.65),-5px -5px 14px rgba(255,255,255,0.05)',
     '--art-m': `${game.heroWidth.mobile}px`,
 
+    // Faint accent glow under the selected card (hex + ~35% alpha).
+    '--nxg-glow': `${game.accent}59`,
     background: game.bg,
   } as CSSProperties;
 }
@@ -334,7 +330,7 @@ export default function NxGamingHub() {
       </section>
 
       <section className="nxg-wrap nxg-about">
-        <div className="nxg-about-inner">
+        <div className="nxg-panel nxg-about-inner">
           <Image
             className="nxg-logo-sm"
             src={LOGO.src}

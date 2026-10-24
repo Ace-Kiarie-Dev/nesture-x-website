@@ -19,10 +19,18 @@
   /* Ribbon layer cap: measured ceiling is 0.33 ("Press start." at 3:1, 1440px). */
   --nxg-ribbon-op: 0.3;
 
-  /* Soft neumorphic raise / inset used by panels, buttons and tags. */
+  /* Soft neumorphic raise / inset used by panels, buttons and tags. Raised
+     surfaces are always opaque, so the ribbons never show through text.
+     pressed: a button held down (:active), deeper than the resting inset. */
   --nxg-raise:    9px 9px 22px rgba(6, 9, 18, 0.65), -7px -7px 18px rgba(255, 255, 255, 0.05);
+  --nxg-raise-lg: 14px 16px 34px rgba(6, 9, 18, 0.72), -9px -9px 24px rgba(255, 255, 255, 0.06);
   --nxg-raise-sm: 6px 6px 14px rgba(6, 9, 18, 0.6), -5px -5px 12px rgba(255, 255, 255, 0.055);
   --nxg-inset:    inset 3px 3px 7px rgba(6, 9, 18, 0.6), inset -2px -2px 6px rgba(255, 255, 255, 0.045);
+  --nxg-pressed:  inset 4px 4px 10px rgba(6, 9, 18, 0.78), inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+
+  /* Neumorphic shadows are too soft to show focus, so the ring is solid and
+     bright: 9.9:1 on the navy base, 7.6:1 or more on a panel. */
+  --nxg-focus: #8cc0ff;
 
   --nxg-font-display: var(--font-nxg-display), 'Arial Black', sans-serif;
   --nxg-font-body:    var(--font-nxg-body), system-ui, sans-serif;
@@ -49,7 +57,7 @@
 }
 
 .theme-nxg ::selection { background: var(--nxg-blue); color: #fff; }
-.theme-nxg :focus-visible { outline: 2px solid var(--nxg-blue-lit); outline-offset: 3px; }
+.theme-nxg :focus-visible { outline: 3px solid var(--nxg-focus); outline-offset: 3px; }
 .theme-nxg a { color: inherit; text-decoration: none; }
 
 .theme-nxg .nxg-wrap {
@@ -134,7 +142,14 @@
 .theme-nxg .nxg-lede { margin: 0; max-width: 520px; font-size: 16px; color: var(--nxg-muted); }
 
 .theme-nxg .nxg-unlocked { display: flex; align-items: center; gap: 10px; }
-.theme-nxg .nxg-pips { display: flex; gap: 3px; }
+.theme-nxg .nxg-pips {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 99px;
+  background: var(--nxg-bg);
+  box-shadow: var(--nxg-inset);
+}
 .theme-nxg .nxg-pip {
   width: 20px;
   height: 10px;
@@ -175,12 +190,15 @@
   transform: var(--tf-m);
   z-index: var(--z-m);
   opacity: var(--op-m);
-  box-shadow: var(--shadow-m);
+  box-shadow: var(--nxg-raise);
   transition: transform 0.45s var(--nxg-ease), opacity 0.3s, filter 0.3s, box-shadow 0.3s;
   -webkit-tap-highlight-color: transparent;
 }
 .theme-nxg .nxg-card.is-hidden-m { pointer-events: none; }
-.theme-nxg .nxg-card.is-sel { cursor: default; }
+.theme-nxg .nxg-card.is-sel {
+  cursor: default;
+  box-shadow: var(--nxg-raise-lg), 0 0 48px -6px var(--nxg-glow);
+}
 
 .theme-nxg .nxg-card-glow {
   position: absolute;
@@ -274,8 +292,10 @@
   background: linear-gradient(145deg, var(--nxg-btn-hi), var(--nxg-panel-lo));
   box-shadow: var(--nxg-raise-sm);
   font-family: inherit;
+  transition: box-shadow 0.15s;
 }
-.theme-nxg .nxg-btn-soft:active { box-shadow: var(--nxg-inset); }
+.theme-nxg .nxg-btn-soft:hover { box-shadow: var(--nxg-raise); }
+.theme-nxg .nxg-btn-soft:active { box-shadow: var(--nxg-pressed); }
 
 .theme-nxg .nxg-btn-blue {
   display: flex;
@@ -283,12 +303,16 @@
   justify-content: center;
   gap: 12px;
   border-radius: 999px;
+  /* Flat NX blue: white on it is 4.9:1. A lighter hover fill would drop below
+     AA, so hover lifts the shadow instead. */
   background: var(--nxg-blue);
   color: #fff;
   font-weight: 700;
-  transition: background 0.2s;
+  box-shadow: var(--nxg-raise-sm);
+  transition: box-shadow 0.15s;
 }
-.theme-nxg .nxg-btn-blue:hover { background: #2a7de0; }
+.theme-nxg .nxg-btn-blue:hover { box-shadow: var(--nxg-raise); }
+.theme-nxg .nxg-btn-blue:active { box-shadow: var(--nxg-pressed); }
 
 .theme-nxg .nxg-pager {
   position: relative;
@@ -310,7 +334,14 @@
   text-transform: inherit;
   font-weight: inherit;
 }
-.theme-nxg .nxg-pager-count { color: var(--nxg-muted); font-variant-numeric: tabular-nums; }
+.theme-nxg .nxg-pager-count {
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: var(--nxg-bg);
+  box-shadow: var(--nxg-inset);
+  color: var(--nxg-muted);
+  font-variant-numeric: tabular-nums;
+}
 .theme-nxg .nxg-pager-m { padding: 0 20px 28px; }
 .theme-nxg .nxg-pager-d { display: none; margin-top: 22px; }
 
@@ -419,7 +450,7 @@
   padding-top: 56px;
   padding-bottom: 64px;
 }
-.theme-nxg .nxg-about-inner { max-width: 760px; display: flex; flex-direction: column; gap: 12px; }
+.theme-nxg .nxg-about-inner { padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; }
 .theme-nxg .nxg-about h2 {
   margin: 0;
   font-family: var(--nxg-font-display);
@@ -427,7 +458,7 @@
   font-size: 19px;
   line-height: 1.25;
 }
-.theme-nxg .nxg-about p { margin: 0; font-size: 15px; color: var(--nxg-muted); }
+.theme-nxg .nxg-about p { margin: 0; max-width: 760px; font-size: 15px; color: var(--nxg-muted); }
 
 /* ── Wide screens: fanned stage and side-by-side panels ────────────────── */
 
@@ -451,7 +482,6 @@
     z-index: var(--z-d);
     opacity: 1;
     filter: var(--filter-d);
-    box-shadow: var(--shadow-d);
   }
   .theme-nxg .nxg-card.is-hidden-m { pointer-events: auto; }
   .theme-nxg .nxg-card:not(.is-sel):hover { filter: brightness(0.92) saturate(0.95); }
@@ -511,6 +541,7 @@
   .theme-nxg .nxg-book-note { display: inline; }
 
   .theme-nxg .nxg-about { padding-top: clamp(64px, 8vw, 104px); padding-bottom: clamp(64px, 8vw, 104px); }
+  .theme-nxg .nxg-about-inner { padding: clamp(24px, 4vw, 56px); }
   .theme-nxg .nxg-about h2 { font-size: 22px; line-height: 1.2; }
   .theme-nxg .nxg-about p { font-size: 16px; }
 }
@@ -526,7 +557,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .theme-nxg .nxg-card,
-  .theme-nxg .nxg-art { transition: none; }
+  .theme-nxg .nxg-art,
+  .theme-nxg .nxg-btn-soft,
+  .theme-nxg .nxg-btn-blue { transition: none; }
   .theme-nxg .nxg-card.is-sel .nxg-art,
   .theme-nxg .nxg-start .nxg-blink { animation: none; }
 }
