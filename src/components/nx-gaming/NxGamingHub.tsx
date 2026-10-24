@@ -7,6 +7,9 @@ import { NX_GAMES, LIVE_GAMES, isLive, type Game } from '@/lib/nx-gaming/games';
 import { SOCIAL } from '@/constants';
 
 const COUNT = NX_GAMES.length;
+
+// White "GA…ING" letters: only ever place the logo on the hub's dark surface.
+const LOGO = { src: '/images/NX-Gaming/nx-gaming-logo.webp', width: 720, height: 107 };
 const pad = (n: number) => String(n).padStart(2, '0');
 
 // Minimum horizontal travel (px) for a touch drag on the stage to count as a swipe.
@@ -123,11 +126,15 @@ export default function NxGamingHub() {
     <main>
       <section className="nxg-stage-section">
         <div className="nxg-wrap nxg-hero">
-          <p className="nxg-eyebrow">
-            <span className="nxg-eyebrow-dot" aria-hidden="true" />
-            NX Gaming · Nairobi
-            <span className="nxg-eyebrow-dot" aria-hidden="true" />
-          </p>
+          <Image
+            className="nxg-logo"
+            src={LOGO.src}
+            alt="NX Gaming"
+            width={LOGO.width}
+            height={LOGO.height}
+            sizes="(min-width: 1080px) 420px, 260px"
+            preload
+          />
           <h1 className="nxg-title">
             Pick a game.
             <br />
@@ -289,6 +296,14 @@ export default function NxGamingHub() {
 
       <section className="nxg-wrap nxg-about">
         <div className="nxg-about-inner">
+          <Image
+            className="nxg-logo-sm"
+            src={LOGO.src}
+            alt=""
+            width={LOGO.width}
+            height={LOGO.height}
+            sizes="160px"
+          />
           <h2>Free online games by NX Gaming</h2>
           <p>
             NX Gaming makes free browser games that run on phones, tablets and desktops. Play 2048, a sliding tile

@@ -75,12 +75,20 @@
   text-transform: uppercase;
   color: var(--nxg-muted);
 }
-.theme-nxg .nxg-eyebrow-dot {
-  display: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--nxg-blue);
+/* NX Gaming wordmark. Width only; the intrinsic size on the <img> keeps the
+   aspect ratio reserved, so nothing shifts while it loads. */
+.theme-nxg .nxg-logo {
+  display: block;
+  width: 260px;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 4px;
+}
+.theme-nxg .nxg-logo-sm {
+  display: block;
+  width: 160px;
+  height: auto;
+  margin-bottom: 8px;
 }
 
 .theme-nxg .nxg-label {
@@ -423,7 +431,7 @@
 @media (min-width: 1080px) {
   .theme-nxg .nxg-hero { padding-top: clamp(40px, 5vw, 64px); gap: 18px; }
   .theme-nxg .nxg-eyebrow { font-size: 13px; }
-  .theme-nxg .nxg-eyebrow-dot { display: inline-block; }
+  .theme-nxg .nxg-logo { width: 420px; margin-bottom: 8px; }
   .theme-nxg .nxg-title { font-size: clamp(40px, 6.4vw, 88px); }
   .theme-nxg .nxg-lede { font-size: 18px; }
   .theme-nxg .nxg-unlocked { gap: 12px; font-size: 12px; letter-spacing: 0.14em; }
