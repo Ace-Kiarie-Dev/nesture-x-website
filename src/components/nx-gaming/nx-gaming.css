@@ -1,0 +1,695 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   NX Gaming hub theme (docs/design-reference/hub-desktop.dc.html and
+   hub-phone.dc.html are the source of truth). Every token and rule is scoped
+   under .theme-nxg so nothing leaks into the global NX design system. Values are
+   hardcoded, so the hub always renders dark regardless of [data-theme].
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-nxg {
+  --nxg-bg:        #0e1220;
+  --nxg-panel-hi:  #212843;
+  --nxg-panel-lo:  #181d30;
+  --nxg-btn-hi:    #232b47;
+  --nxg-blue:      #1a6fd4;
+  --nxg-blue-lit:  #3d8ef0;
+  --nxg-text:      #f5f5f5;
+  --nxg-muted:     #b8cef0;
+  --nxg-ink:       #0a0a0a;
+  --nxg-border:    rgba(184, 206, 240, 0.16);
+  /* Ribbon layer cap: measured ceiling is 0.33 ("Press start." at 3:1, 1440px). */
+  --nxg-ribbon-op: 0.3;
+
+  /* Soft neumorphic raise / inset used by panels, buttons and tags. Raised
+     surfaces are always opaque, so the ribbons never show through text.
+     pressed: a button held down (:active), deeper than the resting inset. */
+  --nxg-raise:    9px 9px 22px rgba(6, 9, 18, 0.65), -7px -7px 18px rgba(255, 255, 255, 0.05);
+  --nxg-raise-lg: 14px 16px 34px rgba(6, 9, 18, 0.72), -9px -9px 24px rgba(255, 255, 255, 0.06);
+  --nxg-raise-sm: 6px 6px 14px rgba(6, 9, 18, 0.6), -5px -5px 12px rgba(255, 255, 255, 0.055);
+  --nxg-inset:    inset 3px 3px 7px rgba(6, 9, 18, 0.6), inset -2px -2px 6px rgba(255, 255, 255, 0.045);
+  --nxg-pressed:  inset 4px 4px 10px rgba(6, 9, 18, 0.78), inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+
+  /* Neumorphic shadows are too soft to show focus, so the ring is solid and
+     bright: 9.9:1 on the navy base, 7.6:1 or more on a panel. */
+  --nxg-focus: #8cc0ff;
+
+  --nxg-font-display: var(--font-nxg-display), 'Arial Black', sans-serif;
+  --nxg-font-body:    var(--font-nxg-body), system-ui, sans-serif;
+
+  --nxg-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  color-scheme: dark;
+  position: relative;
+  overflow: hidden;
+  /* Neutral deep navy. */
+  background: linear-gradient(180deg, #0e1220 0%, #141a2a 100%);
+  color: var(--nxg-text);
+  font-family: var(--nxg-font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Same as the other product pages: in dark mode, pull the page up behind the
+   transparent fixed navbar so there's no seam. */
+[data-theme='dark'] .theme-nxg.nxg-under-nav {
+  margin-top: -80px;
+  padding-top: 80px;
+}
+
+.theme-nxg ::selection { background: var(--nxg-blue); color: #fff; }
+.theme-nxg :focus-visible { outline: 3px solid var(--nxg-focus); outline-offset: 3px; }
+.theme-nxg a { color: inherit; text-decoration: none; }
+
+.theme-nxg .nxg-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .theme-nxg .nxg-wrap { padding-inline: clamp(20px, 4vw, 48px); }
+}
+
+/* Section eyebrow in the hero's label style ("Unlocked"), led by a lit pip. */
+.theme-nxg .nxg-eyebrow {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nxg-muted);
+}
+.theme-nxg .nxg-eyebrow::before {
+  content: '';
+  flex: none;
+  width: 20px;
+  height: 10px;
+  border-radius: 99px;
+  background: var(--nxg-blue);
+}
+/* Small NX Gaming wordmark above the closing section. Width only; the intrinsic
+   size on the <img> keeps the aspect ratio reserved, so nothing shifts. */
+.theme-nxg .nxg-logo-sm {
+  display: block;
+  width: 160px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.theme-nxg .nxg-label {
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nxg-muted);
+}
+
+/* NX Gaming logo, top-left under the site navbar. Absolutely placed so it adds no
+   height. Its left edge lines up with the navbar's mark: the navbar pads 2rem and
+   its 220px logo box draws the mark 99px in. */
+.theme-nxg .nxg-hero-logo {
+  position: absolute;
+  top: 4px;
+  left: calc(2rem + 99px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  border-radius: 6px;
+}
+.theme-nxg .nxg-hero-logo img { display: block; width: 130px; height: auto; }
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+
+/* Liquid ribbons behind the headline, cards and info panel. The layer's opacity
+   is capped so no ribbon, even pulled toward the pointer or surging, drops the
+   headline or lede below WCAG AA. */
+.theme-nxg .nxg-ribbons > svg { opacity: var(--nxg-ribbon-op); }
+/* Fade the ribbons and their vignette into the navy over the layer's last
+   quarter, so the hero has no hard bottom edge. */
+.theme-nxg .nxg-ribbons > [aria-hidden='true'] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 75%, transparent);
+  mask-image: linear-gradient(to bottom, #000 75%, transparent);
+}
+
+.theme-nxg .nxg-hero {
+  position: relative;
+  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+.theme-nxg .nxg-title {
+  margin: 0;
+  font-family: var(--nxg-font-display);
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.theme-nxg .nxg-title span { color: var(--nxg-blue-lit); }
+.theme-nxg .nxg-lede { margin: 0; max-width: 520px; font-size: 16px; color: var(--nxg-muted); }
+
+.theme-nxg .nxg-unlocked { display: flex; align-items: center; gap: 10px; }
+.theme-nxg .nxg-pips {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 99px;
+  background: var(--nxg-bg);
+  box-shadow: var(--nxg-inset);
+}
+.theme-nxg .nxg-pip {
+  width: 20px;
+  height: 10px;
+  border-radius: 99px;
+  box-sizing: border-box;
+  border: 1.5px dashed rgba(184, 206, 240, 0.5);
+}
+.theme-nxg .nxg-pip.is-on { background: var(--nxg-blue); border: 0; }
+
+/* ── Card stage ────────────────────────────────────────────────────────────
+   Phone and tablet: a 3-up carousel around the selected card. Wide screens:
+   all four cards fanned out. Both transforms are computed per card in JS and
+   handed over as custom properties; the media query picks one. */
+
+.theme-nxg .nxg-stage-section { position: relative; overflow: hidden; }
+
+.theme-nxg .nxg-stage {
+  position: relative;
+  height: 460px;
+  touch-action: pan-y;
+}
+
+
+.theme-nxg .nxg-card {
+  position: absolute;
+  top: 84px;
+  left: 50%;
+  width: 230px;
+  height: 340px;
+  margin-left: -115px;
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  color: var(--nxg-text);
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transform: var(--tf-m);
+  z-index: var(--z-m);
+  opacity: var(--op-m);
+  box-shadow: var(--nxg-raise);
+  transition: transform 0.45s var(--nxg-ease), opacity 0.3s, filter 0.3s, box-shadow 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-nxg .nxg-card.is-hidden-m { pointer-events: none; }
+.theme-nxg .nxg-card.is-sel {
+  cursor: default;
+  box-shadow: var(--nxg-raise-lg), 0 0 48px -6px var(--nxg-glow);
+}
+
+.theme-nxg .nxg-card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 27px;
+  overflow: hidden;
+}
+
+.theme-nxg .nxg-chip {
+  position: absolute;
+  top: 12px;
+  /* Above the hero art, which can overhang the top of the card. */
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-radius: 99px;
+}
+.theme-nxg .nxg-chip-slot {
+  left: 12px;
+  font-size: 12px;
+  padding: 2px 8px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.theme-nxg .nxg-chip-status {
+  right: 12px;
+  font-size: 10px;
+  padding: 3px 9px;
+  border: 1px solid var(--nxg-text);
+  background: var(--nxg-text);
+  color: var(--nxg-ink);
+}
+.theme-nxg .nxg-chip-status.is-locked {
+  border-color: var(--nxg-muted);
+  background: var(--nxg-ink);
+  color: var(--nxg-text);
+}
+
+.theme-nxg .nxg-art {
+  position: absolute;
+  bottom: 64px;
+  left: 50%;
+  width: var(--art-m);
+  margin-left: calc(var(--art-m) / -2);
+  pointer-events: none;
+  transition: transform 0.45s var(--nxg-ease);
+}
+.theme-nxg .nxg-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 14px rgba(0, 0, 0, 0.45));
+}
+.theme-nxg .nxg-card.is-sel .nxg-art { animation: nxg-bob 3.2s ease-in-out infinite; }
+
+.theme-nxg .nxg-card-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 36px 14px 13px;
+  border-radius: 0 0 27px 27px;
+  background: linear-gradient(to top, rgba(5, 8, 14, 0.92), rgba(5, 8, 14, 0));
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.theme-nxg .nxg-card-name {
+  font-family: var(--nxg-font-display);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.1;
+}
+.theme-nxg .nxg-card-kind { font-size: 10px; }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+
+.theme-nxg .nxg-btn-soft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--nxg-text);
+  background: linear-gradient(145deg, var(--nxg-btn-hi), var(--nxg-panel-lo));
+  box-shadow: var(--nxg-raise-sm);
+  font-family: inherit;
+  transition: box-shadow 0.15s;
+}
+.theme-nxg .nxg-btn-soft:hover { box-shadow: var(--nxg-raise); }
+.theme-nxg .nxg-btn-soft:active { box-shadow: var(--nxg-pressed); }
+
+.theme-nxg .nxg-btn-blue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 999px;
+  /* Flat NX blue: white on it is 4.9:1. A lighter hover fill would drop below
+     AA, so hover lifts the shadow instead. */
+  background: var(--nxg-blue);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: var(--nxg-raise-sm);
+  transition: box-shadow 0.15s;
+}
+.theme-nxg .nxg-btn-blue:hover { box-shadow: var(--nxg-raise); }
+.theme-nxg .nxg-btn-blue:active { box-shadow: var(--nxg-pressed); }
+
+.theme-nxg .nxg-pager {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.theme-nxg .nxg-pager .nxg-btn-soft {
+  min-height: 44px;
+  min-width: 84px;
+  padding: 0 14px;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-weight: inherit;
+}
+.theme-nxg .nxg-pager-count {
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: var(--nxg-bg);
+  box-shadow: var(--nxg-inset);
+  color: var(--nxg-muted);
+  font-variant-numeric: tabular-nums;
+}
+.theme-nxg .nxg-pager-m { padding: 0 20px 28px; }
+.theme-nxg .nxg-pager-d { display: none; margin-top: 22px; }
+
+/* ── Info panel ────────────────────────────────────────────────────────── */
+
+.theme-nxg .nxg-panel {
+  border-radius: 28px;
+  background: linear-gradient(145deg, var(--nxg-panel-hi), var(--nxg-panel-lo));
+  box-shadow: var(--nxg-raise);
+}
+
+.theme-nxg .nxg-info-section { position: relative; z-index: 20; padding-bottom: 32px; }
+.theme-nxg .nxg-info {
+  margin-top: -8px;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* Phones and tablets: the selected game's content and a hidden, inert copy
+   of every game share one grid cell, so the cell is always as tall as the
+   tallest game and nothing below the panel moves when the game changes.
+   Content sits at the top; shorter games leave space at the bottom. */
+.theme-nxg .nxg-info-stack { display: grid; }
+.theme-nxg .nxg-info-slide {
+  grid-area: 1 / 1;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.theme-nxg .nxg-info-sizer { visibility: hidden; }
+
+/* Emblem in its own column; head, tags and blurb share the second column so
+   they all start at the title's left edge. */
+.theme-nxg .nxg-info-main {
+  --emb: 52px;
+  --title-fs: 28px;
+  display: grid;
+  grid-template-columns: var(--emb) minmax(0, 1fr);
+  column-gap: 14px;
+  row-gap: 14px;
+  min-width: 0;
+}
+.theme-nxg .nxg-info-main > :not(.nxg-emblem) { grid-column: 2; }
+
+/* Selected game's emblem: round crop of the hero art, accent ring, soft raise,
+   LIVE dot or padlock over the bottom-right edge. The four crops are stacked
+   and cross-fade on selection. */
+.theme-nxg .nxg-emblem {
+  grid-column: 1;
+  grid-row: 1;
+  /* Centred on the title's first line (line-height 1.05), not on the title
+     and label together; the overhang stays inside the panel's padding. */
+  align-self: start;
+  margin-top: calc((var(--title-fs) * 1.05 - var(--emb)) / 2);
+  position: relative;
+  width: var(--emb);
+  height: var(--emb);
+}
+.theme-nxg .nxg-emblem-art {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--nxg-bg);
+  box-shadow: var(--nxg-raise-sm);
+}
+.theme-nxg .nxg-emblem-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+.theme-nxg .nxg-emblem-art img.is-on { opacity: 1; }
+.theme-nxg .nxg-emblem.is-locked .nxg-emblem-art img { filter: grayscale(0.7) brightness(0.6); }
+/* Accent ring, drawn over the art so the zoomed crop can't cover it. */
+.theme-nxg .nxg-emblem-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  border: 2px solid var(--nxg-accent);
+  transition: border-color 0.25s ease, opacity 0.25s ease;
+}
+.theme-nxg .nxg-emblem.is-locked .nxg-emblem-art::after { opacity: 0.55; }
+.theme-nxg .nxg-emblem-status {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--nxg-ink);
+  box-shadow: 0 0 0 2px var(--nxg-panel-hi);
+  color: var(--nxg-text);
+}
+.theme-nxg .nxg-live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
+.theme-nxg .nxg-info-head { display: flex; flex-direction: column; gap: 4px; }
+.theme-nxg .nxg-info-name {
+  margin: 0;
+  font-family: var(--nxg-font-display);
+  font-weight: 800;
+  font-size: var(--title-fs);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.theme-nxg .nxg-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.theme-nxg .nxg-tag {
+  border-radius: 99px;
+  background: var(--nxg-bg);
+  box-shadow: var(--nxg-inset);
+  padding: 2px 9px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.theme-nxg .nxg-blurb { margin: 0; max-width: 600px; font-size: 16px; color: var(--nxg-muted); }
+
+.theme-nxg .nxg-info-cta { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.theme-nxg .nxg-start {
+  padding: 16px 20px;
+  font-family: var(--nxg-font-display);
+  font-weight: 800;
+  font-size: 15px;
+}
+.theme-nxg .nxg-start .nxg-blink { animation: nxg-blink 1.1s steps(1, end) infinite; }
+/* Secondary actions under a locked game's "Explore" button. */
+.theme-nxg .nxg-cta-more { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.theme-nxg .nxg-more {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 0 16px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.theme-nxg .nxg-cta-note { text-align: center; }
+.theme-nxg .nxg-controls-d { display: none; }
+
+/* ── Why games / about ─────────────────────────────────────────────────── */
+
+/* 32px here + the info section's 32px keeps the 64px gap under the hero. */
+.theme-nxg .nxg-why-section { padding-top: 32px; }
+.theme-nxg .nxg-why {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.theme-nxg .nxg-why-copy,
+.theme-nxg .nxg-why-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.theme-nxg .nxg-h2 {
+  margin: 0;
+  font-family: var(--nxg-font-display);
+  font-weight: 800;
+  font-size: 25px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.theme-nxg .nxg-h2 span { color: var(--nxg-blue-lit); }
+.theme-nxg .nxg-copy { margin: 0; max-width: 520px; font-size: 16px; color: var(--nxg-muted); }
+.theme-nxg .nxg-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 15px;
+}
+/* Small raised tiles. Their fill is the panel's darkest stop, so the text
+   keeps at least the contrast it had on the panel. */
+.theme-nxg .nxg-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: var(--nxg-panel-lo);
+  box-shadow: var(--nxg-raise-sm);
+}
+.theme-nxg .nxg-points li::before {
+  content: '';
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--nxg-blue-lit);
+  box-shadow: 0 0 0 4px rgba(26, 111, 212, 0.25);
+}
+.theme-nxg .nxg-book-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.theme-nxg .nxg-book { padding: 14px 20px; font-size: 15px; flex: 1 1 100%; }
+.theme-nxg .nxg-book-note { display: none; font-size: 14px; color: var(--nxg-muted); }
+
+.theme-nxg .nxg-about {
+  padding-top: 56px;
+  padding-bottom: 64px;
+}
+.theme-nxg .nxg-about-inner { padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; }
+.theme-nxg .nxg-about h2 {
+  margin: 0;
+  font-family: var(--nxg-font-display);
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.25;
+}
+.theme-nxg .nxg-about p { margin: 0; max-width: 760px; font-size: 15px; color: var(--nxg-muted); }
+
+/* ── Wide screens: fanned stage and side-by-side panels ────────────────── */
+
+@media (min-width: 1080px) {
+  .theme-nxg .nxg-hero { padding-top: 60px; gap: 18px; }
+  .theme-nxg .nxg-hero-logo img { width: 150px; }
+  .theme-nxg .nxg-title { font-size: clamp(40px, 6.4vw, 88px); }
+  .theme-nxg .nxg-lede { font-size: 18px; }
+  .theme-nxg .nxg-unlocked { gap: 12px; font-size: 12px; letter-spacing: 0.14em; }
+  .theme-nxg .nxg-pips { gap: 4px; }
+  .theme-nxg .nxg-pip { width: 26px; height: 12px; }
+
+  .theme-nxg .nxg-stage { height: 560px; max-width: 1200px; margin: 0 auto; }
+  .theme-nxg .nxg-card {
+    top: 100px;
+    width: 280px;
+    height: 410px;
+    margin-left: -140px;
+    transform: var(--tf-d);
+    z-index: var(--z-d);
+    opacity: 1;
+    filter: var(--filter-d);
+  }
+  .theme-nxg .nxg-card.is-hidden-m { pointer-events: auto; }
+  .theme-nxg .nxg-card:not(.is-sel):hover { filter: brightness(0.92) saturate(0.95); }
+  .theme-nxg .nxg-chip { top: 14px; gap: 6px; }
+  .theme-nxg .nxg-chip-slot { left: 14px; font-size: 13px; padding: 2px 9px; }
+  .theme-nxg .nxg-chip-status { right: 14px; font-size: 11px; padding: 3px 10px; }
+  .theme-nxg .nxg-art { bottom: 78px; width: var(--art-d); margin-left: calc(var(--art-d) / -2); }
+  .theme-nxg .nxg-art img { filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.45)); }
+  .theme-nxg .nxg-card-foot { padding: 44px 18px 16px; }
+  .theme-nxg .nxg-card-name { font-size: 21px; }
+  .theme-nxg .nxg-card-kind { font-size: 11px; }
+
+  .theme-nxg .nxg-pager { gap: 20px; font-size: 13px; }
+  .theme-nxg .nxg-pager .nxg-btn-soft { min-height: 0; min-width: 0; padding: 10px 16px; }
+  .theme-nxg .nxg-pager-m { display: none; }
+  .theme-nxg .nxg-pager-d { display: flex; }
+
+  .theme-nxg .nxg-info {
+    margin-top: -36px;
+    padding: clamp(22px, 3vw, 36px);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px 40px;
+  }
+  /* Wide screens already keep one height, so the stack steps aside: its
+     content lays out directly in the panel and the copies are dropped. */
+  .theme-nxg .nxg-info-stack,
+  .theme-nxg .nxg-info-slide { display: contents; }
+  .theme-nxg .nxg-info-sizer { display: none; }
+  .theme-nxg .nxg-info-main { --emb: 64px; --title-fs: clamp(28px, 3.4vw, 42px); flex: 1 1 440px; column-gap: 18px; row-gap: 12px; }
+  .theme-nxg .nxg-emblem-status { width: 22px; height: 22px; }
+  .theme-nxg .nxg-info-head { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+  .theme-nxg .nxg-info-head .nxg-label { font-size: 12px; letter-spacing: 0.14em; }
+  .theme-nxg .nxg-tags { gap: 8px; }
+  .theme-nxg .nxg-tag { padding: 3px 10px; font-size: 11px; letter-spacing: 0.1em; }
+  .theme-nxg .nxg-blurb { font-size: 17px; }
+  .theme-nxg .nxg-info-cta { flex: 0 1 320px; gap: 14px; margin-top: 0; }
+  .theme-nxg .nxg-start { padding: 18px 28px; font-size: 16px; }
+  .theme-nxg .nxg-cta-note { font-size: 12px; }
+  .theme-nxg .nxg-controls-m { display: none; }
+  .theme-nxg .nxg-controls-d { display: inline; }
+  .theme-nxg .nxg-info-section { padding-bottom: 36px; }
+
+  .theme-nxg .nxg-why-section { padding-top: clamp(72px, 9vw, 120px); }
+  .theme-nxg .nxg-why {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px 56px;
+    padding: clamp(24px, 4vw, 56px);
+  }
+  .theme-nxg .nxg-why-copy { flex: 1 1 360px; }
+  .theme-nxg .nxg-why-side { flex: 1 1 320px; gap: 20px; justify-content: center; }
+  .theme-nxg .nxg-why .nxg-eyebrow { gap: 12px; font-size: 12px; letter-spacing: 0.14em; }
+  .theme-nxg .nxg-why .nxg-eyebrow::before { width: 26px; height: 12px; }
+  .theme-nxg .nxg-h2 { font-size: clamp(26px, 3.4vw, 40px); }
+  .theme-nxg .nxg-copy { font-size: 17px; }
+  .theme-nxg .nxg-points { gap: 14px; font-size: 16px; }
+  .theme-nxg .nxg-points li { gap: 14px; }
+  .theme-nxg .nxg-points li { padding: 14px 18px; }
+  .theme-nxg .nxg-points li::before { margin-top: 8px; }
+  .theme-nxg .nxg-book-row { margin-top: 8px; }
+  .theme-nxg .nxg-book { flex: 0 0 auto; padding: 12px 20px; }
+  .theme-nxg .nxg-book-note { display: inline; }
+
+  .theme-nxg .nxg-about { padding-top: clamp(64px, 8vw, 104px); padding-bottom: clamp(64px, 8vw, 104px); }
+  .theme-nxg .nxg-about-inner { padding: clamp(24px, 4vw, 56px); }
+  .theme-nxg .nxg-about h2 { font-size: 22px; line-height: 1.2; }
+  .theme-nxg .nxg-about p { font-size: 16px; }
+}
+
+@keyframes nxg-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes nxg-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-nxg .nxg-card,
+  .theme-nxg .nxg-art,
+  .theme-nxg .nxg-btn-soft,
+  .theme-nxg .nxg-btn-blue,
+  .theme-nxg .nxg-emblem-art img,
+  .theme-nxg .nxg-emblem-art::after { transition: none; }
+  .theme-nxg .nxg-card.is-sel .nxg-art,
+  .theme-nxg .nxg-start .nxg-blink { animation: none; }
+}

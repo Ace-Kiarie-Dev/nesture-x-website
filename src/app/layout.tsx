@@ -93,6 +93,8 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="dark"
+      // The inline script below rewrites data-theme before hydration.
+      suppressHydrationWarning
       className={`${bebasNeue.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>

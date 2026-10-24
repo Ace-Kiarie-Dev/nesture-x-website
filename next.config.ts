@@ -16,6 +16,21 @@ const nextConfig: NextConfig = {
       { source: '/portfolio/status/matatu-dash', destination: '/matatu-dash', permanent: true },
     ];
   },
+  async headers() {
+    return [
+      {
+        // The page lives at /nx-gaming/2048 (no trailing slash), just outside
+        // sw.js's default scope, so allow the service worker to claim it.
+        source: '/nx-gaming/2048/sw.js',
+        headers: [{ key: 'Service-Worker-Allowed', value: '/nx-gaming/2048' }],
+      },
+      {
+        // Same for Flappy Horror at /nx-gaming/flappy-horror.
+        source: '/nx-gaming/flappy-horror/sw.js',
+        headers: [{ key: 'Service-Worker-Allowed', value: '/nx-gaming/flappy-horror' }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
