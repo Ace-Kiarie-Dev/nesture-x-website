@@ -75,15 +75,8 @@
   text-transform: uppercase;
   color: var(--nxg-muted);
 }
-/* NX Gaming wordmark. Width only; the intrinsic size on the <img> keeps the
-   aspect ratio reserved, so nothing shifts while it loads. */
-.theme-nxg .nxg-logo {
-  display: block;
-  width: 260px;
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 4px;
-}
+/* Small NX Gaming wordmark above the closing section. Width only; the intrinsic
+   size on the <img> keeps the aspect ratio reserved, so nothing shifts. */
 .theme-nxg .nxg-logo-sm {
   display: block;
   width: 160px;
@@ -99,11 +92,73 @@
   color: var(--nxg-muted);
 }
 
+/* ---------- NX Gaming bar ----------
+   Shared by the hub (nesturex.com/nx-gaming) and every game page: keep the copies
+   identical. Always dark, whatever the page theme, because the logo's white letters
+   vanish on light backgrounds. */
+.nxg-bar {
+  box-sizing: content-box;
+  height: 52px;
+  padding: env(safe-area-inset-top, 0px) clamp(16px, 3vw, 40px) 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: rgba(11, 16, 32, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  color-scheme: dark;
+}
+.nxg-bar__logo {
+  display: inline-flex; align-items: center;
+  min-height: 44px;
+  border-radius: 8px;
+}
+.nxg-bar__logo img { display: block; width: auto; height: 28px; }
+.nxg-bar__all {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+}
+.nxg-bar__all:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.24); }
+.nxg-bar__all svg { flex: none; width: 16px; height: 16px; }
+.nxg-bar__logo:focus-visible,
+.nxg-bar__all:focus-visible { outline: 2px solid #5b9cf0; outline-offset: 2px; }
+@media (max-width: 760px) {
+  .nxg-bar { height: 48px; }
+  .nxg-bar__logo img { height: 24px; }
+}
+/* Very narrow phones: icon-only button (the link keeps its aria-label). */
+@media (max-width: 359px) {
+  .nxg-bar__all { padding: 0 13px; }
+  .nxg-bar__all span { display: none; }
+}
+/* ---------- /NX Gaming bar ---------- */
+
+/* Hub use of the bar: it sits under the site navbar (so no safe-area padding) and
+   its content lines up with the page column. The logo is sized by width here. */
+.theme-nxg .nxg-hub-bar { padding: 0; }
+.theme-nxg .nxg-hub-bar__inner { width: 100%; display: flex; align-items: center; }
+.theme-nxg .nxg-hub-bar .nxg-bar__logo img { width: 130px; height: auto; }
+@media (min-width: 1080px) {
+  .theme-nxg .nxg-hub-bar .nxg-bar__logo img { width: 150px; }
+}
+
 /* ── Hero ──────────────────────────────────────────────────────────────── */
 
 .theme-nxg .nxg-hero {
   position: relative;
-  padding-top: 36px;
+  padding-top: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -429,9 +484,8 @@
 /* ── Wide screens: fanned stage and side-by-side panels ────────────────── */
 
 @media (min-width: 1080px) {
-  .theme-nxg .nxg-hero { padding-top: clamp(40px, 5vw, 64px); gap: 18px; }
+  .theme-nxg .nxg-hero { padding-top: clamp(28px, 3.5vw, 44px); gap: 18px; }
   .theme-nxg .nxg-eyebrow { font-size: 13px; }
-  .theme-nxg .nxg-logo { width: 420px; margin-bottom: 8px; }
   .theme-nxg .nxg-title { font-size: clamp(40px, 6.4vw, 88px); }
   .theme-nxg .nxg-lede { font-size: 18px; }
   .theme-nxg .nxg-unlocked { gap: 12px; font-size: 12px; letter-spacing: 0.14em; }

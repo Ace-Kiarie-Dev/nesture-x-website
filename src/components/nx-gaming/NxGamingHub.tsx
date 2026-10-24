@@ -124,17 +124,23 @@ export default function NxGamingHub() {
 
   return (
     <main>
+      <div className="nxg-bar nxg-hub-bar">
+        <div className="nxg-wrap nxg-hub-bar__inner">
+          <Link href="/nx-gaming" className="nxg-bar__logo">
+            <Image
+              src={LOGO.src}
+              alt="NX Gaming"
+              width={LOGO.width}
+              height={LOGO.height}
+              sizes="(min-width: 1080px) 150px, 130px"
+              preload
+            />
+          </Link>
+        </div>
+      </div>
+
       <section className="nxg-stage-section">
         <div className="nxg-wrap nxg-hero">
-          <Image
-            className="nxg-logo"
-            src={LOGO.src}
-            alt="NX Gaming"
-            width={LOGO.width}
-            height={LOGO.height}
-            sizes="(min-width: 1080px) 420px, 260px"
-            preload
-          />
           <h1 className="nxg-title">
             Pick a game.
             <br />
