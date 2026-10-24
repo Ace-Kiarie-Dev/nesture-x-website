@@ -1,13 +1,17 @@
 'use client';
 
 import {
+  createContext,
+  useContext,
   useEffect,
   useRef,
   useState,
   type CSSProperties,
   type KeyboardEvent,
   type PointerEvent,
+  type ReactNode,
 } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NX_GAMES, LIVE_GAMES, isLive, type Game } from '@/lib/nx-gaming/games';
@@ -21,6 +25,20 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 // Minimum horizontal travel (px) for a touch drag on the stage to count as a swipe.
 const SWIPE_PX = 40;
+
+// The ribbons load client-only. Until they arrive the fallback renders the same hero in a
+// plain wrapper of the same shape, so the headline and cards are still in the server HTML.
+const HeroContent = createContext<ReactNode>(null);
+
+function HeroFallback() {
+  return (
+    <div className="nxg-ribbons" style={{ position: 'relative', overflow: 'hidden', isolation: 'isolate' }}>
+      <div style={{ position: 'relative', zIndex: 1, height: '100%' }}>{useContext(HeroContent)}</div>
+    </div>
+  );
+}
+
+const HubRibbons = dynamic(() => import('./HubRibbons'), { ssr: false, loading: () => <HeroFallback /> });
 
 // Per-card layout for both breakpoints, handed to CSS as custom properties so the
 // media query in nx-gaming.css picks one and the server render never depends on
@@ -129,8 +147,8 @@ export default function NxGamingHub() {
     }
   };
 
-  return (
-    <main>
+  const hero = (
+    <>
       <section className="nxg-stage-section">
         <Link href="/nx-gaming" className="nxg-hero-logo">
           <Image
@@ -280,6 +298,14 @@ export default function NxGamingHub() {
         </div>
         <Pager sel={sel} go={go} className="nxg-pager-d" />
       </section>
+    </>
+  );
+
+  return (
+    <main>
+      <HeroContent.Provider value={hero}>
+        <HubRibbons>{hero}</HubRibbons>
+      </HeroContent.Provider>
 
       <section className="nxg-wrap nxg-why-section">
         <div className="nxg-panel nxg-why">
