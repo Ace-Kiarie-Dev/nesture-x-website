@@ -365,7 +365,9 @@ export default function NxGamingHub() {
         <div className="nxg-panel nxg-why">
           <div className="nxg-why-copy">
             <p className="nxg-eyebrow">Why games</p>
-            <h2 className="nxg-h2">We make games the way we make websites.</h2>
+            <h2 className="nxg-h2">
+              We make games <span>the way we make websites.</span>
+            </h2>
             <p className="nxg-copy">
               Every game here is designed and coded in-house by Peter Kiarie and the Nesture-X team. Same attention to
               detail, same mobile-first thinking, same Nairobi roots as our client work.

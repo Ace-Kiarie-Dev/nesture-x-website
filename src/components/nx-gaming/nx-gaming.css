@@ -70,16 +70,25 @@
   .theme-nxg .nxg-wrap { padding-inline: clamp(20px, 4vw, 48px); }
 }
 
+/* Section eyebrow in the hero's label style ("Unlocked"), led by a lit pip. */
 .theme-nxg .nxg-eyebrow {
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.18em;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--nxg-muted);
+}
+.theme-nxg .nxg-eyebrow::before {
+  content: '';
+  flex: none;
+  width: 20px;
+  height: 10px;
+  border-radius: 99px;
+  background: var(--nxg-blue);
 }
 /* Small NX Gaming wordmark above the closing section. Width only; the intrinsic
    size on the <img> keeps the aspect ratio reserved, so nothing shifts. */
@@ -119,6 +128,12 @@
    is capped so no ribbon, even pulled toward the pointer or surging, drops the
    headline or lede below WCAG AA. */
 .theme-nxg .nxg-ribbons > svg { opacity: var(--nxg-ribbon-op); }
+/* Fade the ribbons and their vignette into the navy over the layer's last
+   quarter, so the hero has no hard bottom edge. */
+.theme-nxg .nxg-ribbons > [aria-hidden='true'] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 75%, transparent);
+  mask-image: linear-gradient(to bottom, #000 75%, transparent);
+}
 
 .theme-nxg .nxg-hero {
   position: relative;
@@ -446,7 +461,7 @@
   box-shadow: var(--nxg-raise);
 }
 
-.theme-nxg .nxg-info-section { position: relative; z-index: 20; }
+.theme-nxg .nxg-info-section { position: relative; z-index: 20; padding-bottom: 32px; }
 .theme-nxg .nxg-info {
   margin-top: -8px;
   padding: 22px 18px;
@@ -497,7 +512,8 @@
 
 /* ── Why games / about ─────────────────────────────────────────────────── */
 
-.theme-nxg .nxg-why-section { padding-top: 64px; }
+/* 32px here + the info section's 32px keeps the 64px gap under the hero. */
+.theme-nxg .nxg-why-section { padding-top: 32px; }
 .theme-nxg .nxg-why {
   padding: 24px 20px;
   display: flex;
@@ -515,6 +531,7 @@
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
+.theme-nxg .nxg-h2 span { color: var(--nxg-blue-lit); }
 .theme-nxg .nxg-copy { margin: 0; max-width: 520px; font-size: 16px; color: var(--nxg-muted); }
 .theme-nxg .nxg-points {
   list-style: none;
@@ -525,15 +542,26 @@
   gap: 12px;
   font-size: 15px;
 }
-.theme-nxg .nxg-points li { display: flex; align-items: flex-start; gap: 12px; }
+/* Small raised tiles. Their fill is the panel's darkest stop, so the text
+   keeps at least the contrast it had on the panel. */
+.theme-nxg .nxg-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: var(--nxg-panel-lo);
+  box-shadow: var(--nxg-raise-sm);
+}
 .theme-nxg .nxg-points li::before {
   content: '';
   flex: none;
-  width: 12px;
-  height: 12px;
-  margin-top: 6px;
+  width: 10px;
+  height: 10px;
+  margin-top: 7px;
   border-radius: 50%;
-  background: var(--nxg-blue);
+  background: var(--nxg-blue-lit);
+  box-shadow: 0 0 0 4px rgba(26, 111, 212, 0.25);
 }
 .theme-nxg .nxg-book-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 .theme-nxg .nxg-book { padding: 14px 20px; font-size: 15px; flex: 1 1 100%; }
@@ -558,7 +586,6 @@
 @media (min-width: 1080px) {
   .theme-nxg .nxg-hero { padding-top: 60px; gap: 18px; }
   .theme-nxg .nxg-hero-logo img { width: 150px; }
-  .theme-nxg .nxg-eyebrow { font-size: 13px; }
   .theme-nxg .nxg-title { font-size: clamp(40px, 6.4vw, 88px); }
   .theme-nxg .nxg-lede { font-size: 18px; }
   .theme-nxg .nxg-unlocked { gap: 12px; font-size: 12px; letter-spacing: 0.14em; }
@@ -622,6 +649,7 @@
   .theme-nxg .nxg-cta-note { font-size: 12px; }
   .theme-nxg .nxg-controls-m { display: none; }
   .theme-nxg .nxg-controls-d { display: inline; }
+  .theme-nxg .nxg-info-section { padding-bottom: 0; }
 
   .theme-nxg .nxg-why-section { padding-top: clamp(72px, 9vw, 120px); }
   .theme-nxg .nxg-why {
@@ -632,12 +660,14 @@
   }
   .theme-nxg .nxg-why-copy { flex: 1 1 360px; }
   .theme-nxg .nxg-why-side { flex: 1 1 320px; gap: 20px; justify-content: center; }
-  .theme-nxg .nxg-why .nxg-eyebrow { font-size: 13px; }
+  .theme-nxg .nxg-why .nxg-eyebrow { gap: 12px; font-size: 12px; letter-spacing: 0.14em; }
+  .theme-nxg .nxg-why .nxg-eyebrow::before { width: 26px; height: 12px; }
   .theme-nxg .nxg-h2 { font-size: clamp(26px, 3.4vw, 40px); }
   .theme-nxg .nxg-copy { font-size: 17px; }
   .theme-nxg .nxg-points { gap: 14px; font-size: 16px; }
   .theme-nxg .nxg-points li { gap: 14px; }
-  .theme-nxg .nxg-points li::before { margin-top: 7px; }
+  .theme-nxg .nxg-points li { padding: 14px 18px; }
+  .theme-nxg .nxg-points li::before { margin-top: 8px; }
   .theme-nxg .nxg-book-row { margin-top: 8px; }
   .theme-nxg .nxg-book { flex: 0 0 auto; padding: 12px 20px; }
   .theme-nxg .nxg-book-note { display: inline; }
