@@ -135,6 +135,98 @@ function Emblem({ cur }: { cur: Game }) {
   );
 }
 
+// An info panel action. As a sizer it keeps the same box but is a plain span: no link
+// to prefetch or crawl, nothing to focus.
+function Action({
+  sizer,
+  href,
+  kind,
+  className,
+  children,
+}: {
+  sizer: boolean;
+  href: string;
+  kind: 'route' | 'page' | 'external';
+  className: string;
+  children: ReactNode;
+}) {
+  if (sizer) return <span className={className}>{children}</span>;
+  if (kind === 'route')
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    );
+  return kind === 'external' ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {children}
+    </a>
+  ) : (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  );
+}
+
+// One game's info panel content. sizer renders the same layout without the emblem
+// art or real links, only to reserve height.
+function InfoContent({ game, sizer = false }: { game: Game; sizer?: boolean }) {
+  return (
+    <>
+      <div className="nxg-info-main">
+        {sizer ? <span className="nxg-emblem" /> : <Emblem cur={game} />}
+        <div className="nxg-info-head">
+          <h2 className="nxg-info-name">{game.name}</h2>
+          <span className="nxg-label">
+            {game.kind} · {isLive(game) ? 'Live' : 'Coming soon'}
+          </span>
+        </div>
+        <ul className="nxg-tags">
+          {game.tags.map((tag) => (
+            <li key={tag} className="nxg-tag nxg-label">
+              {tag}
+            </li>
+          ))}
+        </ul>
+        <p className="nxg-blurb">{game.blurb}</p>
+      </div>
+      <div className="nxg-info-cta">
+        {isLive(game) ? (
+          <>
+            {/* Plain <a>: the games are static pages outside the Next app, so a full load is wanted. */}
+            <Action sizer={sizer} href={game.href} kind="page" className="nxg-btn-blue nxg-start">
+              <svg viewBox="0 0 10 12" width="10" height="12" aria-hidden="true">
+                <path d="M0 0l10 6-10 6z" fill="#ffffff" />
+              </svg>
+              <span className="nxg-blink">Press start</span>
+            </Action>
+            <span className="nxg-cta-note nxg-label">
+              <span className="nxg-controls-d">{game.controls.desktop}</span>
+              <span className="nxg-controls-m">{game.controls.mobile}</span>
+            </span>
+          </>
+        ) : (
+          <>
+            <Action sizer={sizer} href={game.pageHref} kind="route" className="nxg-btn-blue nxg-start">
+              Explore {game.name} →
+            </Action>
+            <div className="nxg-cta-more">
+              <Action sizer={sizer} href={SOCIAL.instagram} kind="external" className="nxg-btn-soft nxg-more">
+                Follow @nesture_x
+              </Action>
+              {game.notifyHref && (
+                <Action sizer={sizer} href={game.notifyHref} kind="route" className="nxg-btn-soft nxg-more">
+                  Get notified
+                </Action>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
 export default function NxGamingHub() {
   const [sel, setSel] = useState(0);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -277,55 +369,17 @@ export default function NxGamingHub() {
 
       <section className="nxg-wrap nxg-info-section">
         <div className="nxg-panel nxg-info" aria-live="polite">
-          <div className="nxg-info-main">
-            <Emblem cur={cur} />
-            <div className="nxg-info-head">
-              <h2 className="nxg-info-name">{cur.name}</h2>
-              <span className="nxg-label">
-                {cur.kind} · {isLive(cur) ? 'Live' : 'Coming soon'}
-              </span>
+          {/* Phones and tablets: hidden copies of every game share the cell, so the panel
+              is always as tall as the tallest game and nothing below moves on a switch. */}
+          <div className="nxg-info-stack">
+            <div className="nxg-info-slide">
+              <InfoContent game={cur} />
             </div>
-            <ul className="nxg-tags">
-              {cur.tags.map((tag) => (
-                <li key={tag} className="nxg-tag nxg-label">
-                  {tag}
-                </li>
-              ))}
-            </ul>
-            <p className="nxg-blurb">{cur.blurb}</p>
-          </div>
-          <div className="nxg-info-cta">
-            {isLive(cur) ? (
-              <>
-                {/* Plain <a>: the games are static pages outside the Next app, so a full load is wanted. */}
-                <a href={cur.href} className="nxg-btn-blue nxg-start">
-                  <svg viewBox="0 0 10 12" width="10" height="12" aria-hidden="true">
-                    <path d="M0 0l10 6-10 6z" fill="#ffffff" />
-                  </svg>
-                  <span className="nxg-blink">Press start</span>
-                </a>
-                <span className="nxg-cta-note nxg-label">
-                  <span className="nxg-controls-d">{cur.controls.desktop}</span>
-                  <span className="nxg-controls-m">{cur.controls.mobile}</span>
-                </span>
-              </>
-            ) : (
-              <>
-                <Link href={cur.pageHref} className="nxg-btn-blue nxg-start">
-                  Explore {cur.name} →
-                </Link>
-                <div className="nxg-cta-more">
-                  <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" className="nxg-btn-soft nxg-more">
-                    Follow @nesture_x
-                  </a>
-                  {cur.notifyHref && (
-                    <Link href={cur.notifyHref} className="nxg-btn-soft nxg-more">
-                      Get notified
-                    </Link>
-                  )}
-                </div>
-              </>
-            )}
+            {NX_GAMES.map((game) => (
+              <div key={game.slug} className="nxg-info-slide nxg-info-sizer" aria-hidden="true" inert>
+                <InfoContent game={game} sizer />
+              </div>
+            ))}
           </div>
         </div>
         <Pager sel={sel} go={go} className="nxg-pager-d" />

@@ -376,6 +376,21 @@
   flex-direction: column;
   gap: 14px;
 }
+/* Phones and tablets: the selected game's content and a hidden, inert copy
+   of every game share one grid cell, so the cell is always as tall as the
+   tallest game and nothing below the panel moves when the game changes.
+   Content sits at the top; shorter games leave space at the bottom. */
+.theme-nxg .nxg-info-stack { display: grid; }
+.theme-nxg .nxg-info-slide {
+  grid-area: 1 / 1;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.theme-nxg .nxg-info-sizer { visibility: hidden; }
+
 /* Emblem in its own column; head, tags and blurb share the second column so
    they all start at the title's left edge. */
 .theme-nxg .nxg-info-main {
@@ -613,6 +628,11 @@
     justify-content: space-between;
     gap: 24px 40px;
   }
+  /* Wide screens already keep one height, so the stack steps aside: its
+     content lays out directly in the panel and the copies are dropped. */
+  .theme-nxg .nxg-info-stack,
+  .theme-nxg .nxg-info-slide { display: contents; }
+  .theme-nxg .nxg-info-sizer { display: none; }
   .theme-nxg .nxg-info-main { --emb: 64px; --title-fs: clamp(28px, 3.4vw, 42px); flex: 1 1 440px; column-gap: 18px; row-gap: 12px; }
   .theme-nxg .nxg-emblem-status { width: 22px; height: 22px; }
   .theme-nxg .nxg-info-head { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
