@@ -100,59 +100,38 @@ function Pager({ sel, go, className }: { sel: number; go: (i: number) => void; c
   );
 }
 
-// Second selector under the pager: one small tile per game, in card order. On phones
-// the row scrolls sideways, so the selected badge is kept in view.
-function Badges({ sel, go, className }: { sel: number; go: (i: number) => void; className: string }) {
-  const rowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const row = rowRef.current;
-    const badge = row?.children[sel] as HTMLElement | undefined;
-    if (!row || !badge || row.scrollWidth <= row.clientWidth) return;
-    row.scrollTo({ left: badge.offsetLeft - (row.clientWidth - badge.offsetWidth) / 2 });
-  }, [sel]);
-
+// The selected game's emblem beside the info panel title: a round crop of its hero
+// art with an accent ring and a LIVE dot or padlock. All four crops are stacked so a
+// selection change is a CSS cross-fade. Decorative: the title names the game.
+function Emblem({ cur }: { cur: Game }) {
+  const live = isLive(cur);
   return (
-    <div ref={rowRef} className={`nxg-badges ${className}`} role="group" aria-label="Choose a game">
-      {NX_GAMES.map((game, i) => {
-        const on = i === sel;
-        const live = isLive(game);
-        return (
-          <button
+    <span
+      className={`nxg-emblem${live ? '' : ' is-locked'}`}
+      style={{ '--nxg-accent': cur.accent } as CSSProperties}
+      aria-hidden="true"
+    >
+      <span className="nxg-emblem-art">
+        {NX_GAMES.map((game) => (
+          <Image
             key={game.slug}
-            type="button"
-            className={`nxg-badge${on ? ' is-sel' : ''}${live ? '' : ' is-locked'}`}
-            style={{ '--nxg-accent': game.accent } as CSSProperties}
-            onClick={() => go(i)}
-            aria-pressed={on}
-            aria-label={`${game.name}, ${live ? 'live' : 'locked'}`}
-          >
-            <span className="nxg-badge-emblem" aria-hidden="true">
-              <Image
-                src={game.hero.src}
-                alt=""
-                width={game.hero.width}
-                height={game.hero.height}
-                sizes="96px"
-                draggable={false}
-                style={{
-                  objectPosition: game.emblem.focus,
-                  transformOrigin: game.emblem.focus,
-                  transform: `scale(${game.emblem.zoom})`,
-                }}
-              />
-            </span>
-            <span className="nxg-badge-text" aria-hidden="true">
-              <span className="nxg-badge-name">{game.name}</span>
-              <span className="nxg-badge-status nxg-label">
-                {live ? <span className="nxg-live-dot" /> : <LockIcon />}
-                {live ? 'Live' : 'Locked'}
-              </span>
-            </span>
-          </button>
-        );
-      })}
-    </div>
+            className={game === cur ? 'is-on' : undefined}
+            src={game.hero.src}
+            alt=""
+            width={game.hero.width}
+            height={game.hero.height}
+            sizes="64px"
+            draggable={false}
+            style={{
+              objectPosition: game.emblem.focus,
+              transformOrigin: game.emblem.focus,
+              transform: `scale(${game.emblem.zoom})`,
+            }}
+          />
+        ))}
+      </span>
+      <span className="nxg-emblem-status">{live ? <span className="nxg-live-dot" /> : <LockIcon />}</span>
+    </span>
   );
 }
 
@@ -294,12 +273,12 @@ export default function NxGamingHub() {
         </div>
 
         <Pager sel={sel} go={go} className="nxg-pager-m" />
-        <Badges sel={sel} go={go} className="nxg-badges-m" />
       </section>
 
       <section className="nxg-wrap nxg-info-section">
         <div className="nxg-panel nxg-info" aria-live="polite">
           <div className="nxg-info-main">
+            <Emblem cur={cur} />
             <div className="nxg-info-head">
               <h2 className="nxg-info-name">{cur.name}</h2>
               <span className="nxg-label">
@@ -350,7 +329,6 @@ export default function NxGamingHub() {
           </div>
         </div>
         <Pager sel={sel} go={go} className="nxg-pager-d" />
-        <Badges sel={sel} go={go} className="nxg-badges-d" />
       </section>
     </>
   );
