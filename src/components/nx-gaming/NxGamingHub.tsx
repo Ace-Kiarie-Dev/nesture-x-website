@@ -100,6 +100,62 @@ function Pager({ sel, go, className }: { sel: number; go: (i: number) => void; c
   );
 }
 
+// Second selector under the pager: one small tile per game, in card order. On phones
+// the row scrolls sideways, so the selected badge is kept in view.
+function Badges({ sel, go, className }: { sel: number; go: (i: number) => void; className: string }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const row = rowRef.current;
+    const badge = row?.children[sel] as HTMLElement | undefined;
+    if (!row || !badge || row.scrollWidth <= row.clientWidth) return;
+    row.scrollTo({ left: badge.offsetLeft - (row.clientWidth - badge.offsetWidth) / 2 });
+  }, [sel]);
+
+  return (
+    <div ref={rowRef} className={`nxg-badges ${className}`} role="group" aria-label="Choose a game">
+      {NX_GAMES.map((game, i) => {
+        const on = i === sel;
+        const live = isLive(game);
+        return (
+          <button
+            key={game.slug}
+            type="button"
+            className={`nxg-badge${on ? ' is-sel' : ''}${live ? '' : ' is-locked'}`}
+            style={{ '--nxg-accent': game.accent } as CSSProperties}
+            onClick={() => go(i)}
+            aria-pressed={on}
+            aria-label={`${game.name}, ${live ? 'live' : 'locked'}`}
+          >
+            <span className="nxg-badge-emblem" aria-hidden="true">
+              <Image
+                src={game.hero.src}
+                alt=""
+                width={game.hero.width}
+                height={game.hero.height}
+                sizes="96px"
+                draggable={false}
+                style={{
+                  objectPosition: game.emblem.focus,
+                  transformOrigin: game.emblem.focus,
+                  transform: `scale(${game.emblem.zoom})`,
+                }}
+              />
+            </span>
+            <span className="nxg-badge-text" aria-hidden="true">
+              <span className="nxg-badge-name">{game.name}</span>
+              <span className="nxg-badge-status nxg-label">
+                {live ? <span className="nxg-live-dot" /> : <LockIcon />}
+                {live ? 'Live' : 'Locked'}
+              </span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function NxGamingHub() {
   const [sel, setSel] = useState(0);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -238,6 +294,7 @@ export default function NxGamingHub() {
         </div>
 
         <Pager sel={sel} go={go} className="nxg-pager-m" />
+        <Badges sel={sel} go={go} className="nxg-badges-m" />
       </section>
 
       <section className="nxg-wrap nxg-info-section">
@@ -293,6 +350,7 @@ export default function NxGamingHub() {
           </div>
         </div>
         <Pager sel={sel} go={go} className="nxg-pager-d" />
+        <Badges sel={sel} go={go} className="nxg-badges-d" />
       </section>
     </>
   );

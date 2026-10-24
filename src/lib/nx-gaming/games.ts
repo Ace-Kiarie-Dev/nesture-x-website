@@ -20,6 +20,9 @@ interface GameBase {
   hero: GameHero;
   // Rendered hero width in px on the card: desktop stage and mobile carousel.
   heroWidth: { desktop: number; mobile: number };
+  // Round badge emblem cropped from the hero: the point to centre on (CSS
+  // object-position) and how far to zoom in on it.
+  emblem: { focus: string; zoom: number };
   // Card background gradient.
   bg: string;
   // Soft glow layered over the card background.
@@ -57,6 +60,7 @@ export const NX_GAMES: readonly Game[] = [
     href: '/nx-gaming/2048',
     hero: { src: '/images/NX-Gaming/hero-2048.webp', width: 558, height: 1000 },
     heroWidth: { desktop: 212, mobile: 176 },
+    emblem: { focus: '50% 4%', zoom: 1.05 },
     bg: 'linear-gradient(160deg,#8b7bff 0%,#3b2cb0 60%,#1a1450 100%)',
     glow: 'radial-gradient(70% 50% at 50% 38%,rgba(198,243,90,0.35),rgba(198,243,90,0))',
     accent: '#c6f35a',
@@ -73,6 +77,7 @@ export const NX_GAMES: readonly Game[] = [
     href: '/nx-gaming/flappy-horror',
     hero: { src: '/images/NX-Gaming/hero-flappy-horror.webp', width: 992, height: 1000 },
     heroWidth: { desktop: 330, mobile: 280 },
+    emblem: { focus: '56% 40%', zoom: 1.3 },
     bg: 'linear-gradient(160deg,#1b4a4f 0%,#0b1f22 55%,#05080a 100%)',
     glow: 'radial-gradient(60% 45% at 78% 22%,rgba(227,38,58,0.55),rgba(227,38,58,0)),radial-gradient(60% 40% at 40% 55%,rgba(95,245,209,0.30),rgba(95,245,209,0))',
     accent: '#e3263a',
@@ -89,6 +94,7 @@ export const NX_GAMES: readonly Game[] = [
     pageHref: '/solo-standoff',
     hero: { src: '/images/NX-Gaming/hero-solo-standoff.webp', width: 682, height: 1000 },
     heroWidth: { desktop: 250, mobile: 208 },
+    emblem: { focus: '44% 14%', zoom: 2.2 },
     bg: 'linear-gradient(160deg,#1a6fd4 0%,#123a7a 55%,#0d1b3e 100%)',
     glow: 'radial-gradient(60% 45% at 60% 40%,rgba(255,198,41,0.40),rgba(255,198,41,0))',
     accent: '#FFC629',
@@ -105,6 +111,7 @@ export const NX_GAMES: readonly Game[] = [
     notifyHref: '/matatu-dash?utm_source=nx-gaming-hub#waitlist',
     hero: { src: '/images/NX-Gaming/hero-matatu-dash.webp', width: 625, height: 1000 },
     heroWidth: { desktop: 232, mobile: 192 },
+    emblem: { focus: '58% 10%', zoom: 2.2 },
     bg: 'linear-gradient(160deg,#17566a 0%,#0b2a3f 55%,#061423 100%)',
     glow: 'radial-gradient(60% 45% at 50% 40%,rgba(66,222,195,0.40),rgba(66,222,195,0))',
     accent: '#42DEC3',
