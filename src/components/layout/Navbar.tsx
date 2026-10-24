@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '@/constants';
 import NxButton from '@/components/ui/NxButton';
+import SiteThemeSwitch from '@/components/layout/SiteThemeSwitch';
 
 // Light-mode tokens have landed (see globals.css semantic text tokens) —
 // the toggle is back on.
@@ -15,16 +16,7 @@ const THEME_TOGGLE_VISIBLE = true;
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // Sync theme from DOM on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('nx-theme') as 'dark' | 'light' | null;
-    const initial = stored || 'dark';
-    setTheme(initial);
-    document.documentElement.setAttribute('data-theme', initial);
-  }, []);
 
   // Product pages that wear their own dark skin: always dark, no toggle.
   // The stored preference is left alone and restored on the way out.
@@ -36,7 +28,6 @@ export default function Navbar() {
       document.documentElement.setAttribute('data-theme', localStorage.getItem('nx-theme') || 'dark');
     };
   }, [forceDark]);
-  const effectiveTheme = forceDark ? 'dark' : theme;
 
   // Scroll listener
   useEffect(() => {
@@ -50,13 +41,6 @@ export default function Navbar() {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
-
-  function toggleTheme() {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('nx-theme', next);
-  }
 
   function isActive(href: string) {
     if (href === '/') return pathname === '/';
@@ -97,19 +81,32 @@ export default function Navbar() {
               theme counterpart to logo-white.png (same mark, dark wordmark),
               so it's wired in here rather than a text-wordmark fallback.
               Confirm with design that it's the intended light-theme lockup. */}
+          {/* Both lockups are rendered; CSS on <html data-theme> shows one, so the
+              first paint is right before any script runs. */}
           <Image
-            src={effectiveTheme === 'light' ? '/images/logo-black.png' : '/images/logo-white.png'}
+            src="/images/logo-white.png"
             alt="Nesture-X"
             width={220}
             height={60}
+            className="nx-only-dark"
+            style={{ width: '220px', height: '60px', objectFit: 'contain' }}
+            preload
+          />
+          <Image
+            src="/images/logo-black.png"
+            alt="Nesture-X"
+            width={220}
+            height={60}
+            className="nx-only-light"
             style={{ width: '220px', height: '60px', objectFit: 'contain' }}
             preload
           />
         </Link>
 
-        {/* Desktop right side */}
+        {/* Desktop right side. It needs about 1290px (logo box, 7 links, theme switch,
+            CTA), so below 1320px the hamburger menu takes over. */}
         <div
-          className="hidden md:flex"
+          className="hidden min-[1320px]:flex"
           style={{ alignItems: 'center', gap: '1.5rem' }}
         >
           {/* Nav links */}
@@ -157,39 +154,8 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Theme toggle — temporarily hidden, see THEME_TOGGLE_VISIBLE above */}
-          {THEME_TOGGLE_VISIBLE && !forceDark && (
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              data-hover
-              style={{
-                width: '36px',
-                height: '36px',
-                border: '1px solid var(--color-border-subtle)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'transparent',
-                color: 'var(--color-text)',
-                cursor: 'pointer',
-                transition: 'border-color 300ms ease, color 300ms ease',
-                flexShrink: 0,
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = 'var(--color-primary)';
-                el.style.color = 'var(--color-primary)';
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = 'var(--color-border-subtle)';
-                el.style.color = 'var(--color-text)';
-              }}
-            >
-              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          )}
+          {/* Theme switch — hidden via THEME_TOGGLE_VISIBLE above, and on always-dark pages */}
+          {THEME_TOGGLE_VISIBLE && !forceDark && <SiteThemeSwitch width={92} />}
 
           {/* CTA */}
           <NxButton variant="primary" size="sm" href="/booking">
@@ -197,8 +163,8 @@ export default function Navbar() {
           </NxButton>
         </div>
 
-        {/* Mobile: hamburger only */}
-        <div className="flex md:hidden" style={{ alignItems: 'center' }}>
+        {/* Narrow screens: hamburger only */}
+        <div className="flex min-[1320px]:hidden" style={{ alignItems: 'center' }}>
           <button
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
@@ -259,6 +225,13 @@ export default function Navbar() {
         >
           <X size={20} />
         </button>
+
+        {/* Theme switch, top-left, opposite the close button (clear of the links and CTA) */}
+        {THEME_TOGGLE_VISIBLE && !forceDark && (
+          <div style={{ position: 'absolute', top: '26px', left: '24px' }}>
+            <SiteThemeSwitch width={104} />
+          </div>
+        )}
 
         {/* Mobile links */}
         {NAV_LINKS.map((link) => {
