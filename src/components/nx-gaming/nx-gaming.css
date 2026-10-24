@@ -414,11 +414,14 @@
   font-size: 15px;
 }
 .theme-nxg .nxg-start .nxg-blink { animation: nxg-blink 1.1s steps(1, end) infinite; }
-.theme-nxg .nxg-follow {
-  padding: 16px 20px;
-  font-family: var(--nxg-font-display);
-  font-weight: 800;
-  font-size: 14px;
+/* Secondary actions under a locked game's "Explore" button. */
+.theme-nxg .nxg-cta-more { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.theme-nxg .nxg-more {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 0 16px;
+  font-weight: 700;
+  font-size: 13px;
 }
 .theme-nxg .nxg-cta-note { text-align: center; }
 .theme-nxg .nxg-controls-d { display: none; }
@@ -544,7 +547,6 @@
   .theme-nxg .nxg-blurb { font-size: 17px; }
   .theme-nxg .nxg-info-cta { flex: 0 1 320px; gap: 14px; margin-top: 0; }
   .theme-nxg .nxg-start { padding: 18px 28px; font-size: 16px; }
-  .theme-nxg .nxg-follow { padding: 18px 28px; font-size: 15px; }
   .theme-nxg .nxg-cta-note { font-size: 12px; }
   .theme-nxg .nxg-controls-m { display: none; }
   .theme-nxg .nxg-controls-d { display: inline; }

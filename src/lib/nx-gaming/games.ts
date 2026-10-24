@@ -40,6 +40,10 @@ export interface LiveGame extends GameBase {
 
 export interface LockedGame extends GameBase {
   status: 'locked';
+  // On-site landing page for the upcoming game ("Explore" button).
+  pageHref: string;
+  // Launch-list signup, when the landing page has one ("Get notified" link).
+  notifyHref?: string;
 }
 
 export type Game = LiveGame | LockedGame;
@@ -82,6 +86,7 @@ export const NX_GAMES: readonly Game[] = [
     name: 'Solo Standoff',
     kind: 'Puzzle shooter',
     status: 'locked',
+    pageHref: '/solo-standoff',
     hero: { src: '/images/NX-Gaming/hero-solo-standoff.webp', width: 682, height: 1000 },
     heroWidth: { desktop: 250, mobile: 208 },
     bg: 'linear-gradient(160deg,#1a6fd4 0%,#123a7a 55%,#0d1b3e 100%)',
@@ -95,6 +100,9 @@ export const NX_GAMES: readonly Game[] = [
     name: 'Matatu Dash',
     kind: 'Endless hopper',
     status: 'locked',
+    pageHref: '/matatu-dash',
+    // The page's closing waitlist form. utm_source is stored with each signup.
+    notifyHref: '/matatu-dash?utm_source=nx-gaming-hub#waitlist',
     hero: { src: '/images/NX-Gaming/hero-matatu-dash.webp', width: 625, height: 1000 },
     heroWidth: { desktop: 232, mobile: 192 },
     bg: 'linear-gradient(160deg,#17566a 0%,#0b2a3f 55%,#061423 100%)',

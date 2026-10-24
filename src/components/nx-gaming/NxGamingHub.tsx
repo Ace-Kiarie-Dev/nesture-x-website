@@ -234,7 +234,7 @@ export default function NxGamingHub() {
             <div className="nxg-info-head">
               <h2 className="nxg-info-name">{cur.name}</h2>
               <span className="nxg-label">
-                {cur.kind} · {isLive(cur) ? 'Live' : 'Locked'}
+                {cur.kind} · {isLive(cur) ? 'Live' : 'Coming soon'}
               </span>
             </div>
             <ul className="nxg-tags">
@@ -263,10 +263,19 @@ export default function NxGamingHub() {
               </>
             ) : (
               <>
-                <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" className="nxg-btn-soft nxg-follow">
-                  Follow @nesture_x to unlock
-                </a>
-                <span className="nxg-cta-note nxg-label">Locked · coming soon</span>
+                <Link href={cur.pageHref} className="nxg-btn-blue nxg-start">
+                  Explore {cur.name} →
+                </Link>
+                <div className="nxg-cta-more">
+                  <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" className="nxg-btn-soft nxg-more">
+                    Follow @nesture_x
+                  </a>
+                  {cur.notifyHref && (
+                    <Link href={cur.notifyHref} className="nxg-btn-soft nxg-more">
+                      Get notified
+                    </Link>
+                  )}
+                </div>
               </>
             )}
           </div>
