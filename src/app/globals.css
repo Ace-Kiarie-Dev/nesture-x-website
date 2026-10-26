@@ -86,6 +86,76 @@
   --color-nav-scrolled: rgba(245,245,245,0.85);
 }
 
+/* ── Hybrid redesign tokens (nx-) — used only by src/styles/hybrid.css and
+   src/components/redesign. Dark is the default; [data-theme] on any element
+   re-themes its subtree. Light values keep text pairs at WCAG AA or better. */
+:root,
+[data-theme='dark'] {
+  --nx-bg: #0a0a0a;
+  --nx-band: #141b2b;
+  --nx-blue: #1a6fd4;
+  --nx-accent: #3d8ef0;
+  --nx-accent-soft: #8ec0ff;
+  --nx-navy: #0d1b3e;
+  --nx-ice: #b8cef0;
+  --nx-text: #f5f5f5;
+  --nx-body: #b8cef0;
+  --nx-clay-from: #1e2744;
+  --nx-clay-to: #151b30;
+  --nx-inset: #131828;
+  --nx-footer-panel: #171c2e;
+
+  --nx-grid-line: rgba(26,111,212,0.06);
+  --nx-glass-fill: rgba(255,255,255,0.07);
+  --nx-glass-border: rgba(255,255,255,0.14);
+  --nx-ghost-border: rgba(255,255,255,0.28);
+  --nx-ghost-text: #ffffff;
+  --nx-focus: #8ec0ff;
+
+  --nx-shadow-clay: inset 0 2px 3px rgba(255,255,255,0.1), inset 0 -9px 16px rgba(0,0,0,0.28), 14px 20px 36px rgba(4,7,16,0.6);
+  --nx-shadow-glass: inset 0 1px 0 rgba(255,255,255,0.18), 0 18px 40px rgba(3,6,16,0.5);
+  --nx-shadow-inset: inset 3px 3px 8px rgba(0,0,0,0.5), inset -2px -2px 7px rgba(255,255,255,0.045);
+  --nx-shadow-btn: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.45), 0 10px 22px rgba(26,111,212,0.35);
+  --nx-shadow-btn-hover: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.45), 0 14px 28px rgba(26,111,212,0.45);
+  --nx-shadow-btn-active: inset 0 3px 8px rgba(8,40,96,0.55), 0 4px 10px rgba(26,111,212,0.3);
+}
+
+[data-theme='light'] {
+  --nx-bg: #f3f6fb;
+  --nx-band: #e3eaf5;
+  --nx-blue: #1a6fd4;
+  --nx-accent: #1558ad;
+  --nx-accent-soft: #124a92;
+  --nx-navy: #0d1b3e;
+  --nx-ice: #34466b;
+  --nx-text: #0d1b3e;
+  --nx-body: #34466b;
+  --nx-clay-from: #ffffff;
+  --nx-clay-to: #e8eef8;
+  --nx-inset: #e6ecf5;
+  --nx-footer-panel: #e9eef7;
+
+  --nx-grid-line: rgba(26,111,212,0.08);
+  --nx-glass-fill: rgba(255,255,255,0.55);
+  --nx-glass-border: rgba(13,27,62,0.10);
+  --nx-ghost-border: rgba(13,27,62,0.24);
+  --nx-ghost-text: #0d1b3e;
+  --nx-focus: #1558ad;
+
+  --nx-shadow-clay: inset 0 2px 3px rgba(255,255,255,0.9), inset 0 -9px 16px rgba(13,27,62,0.06), 14px 20px 36px rgba(13,27,62,0.12);
+  --nx-shadow-glass: inset 0 1px 0 rgba(255,255,255,0.8), 0 18px 40px rgba(13,27,62,0.10);
+  --nx-shadow-inset: inset 3px 3px 8px rgba(13,27,62,0.12), inset -2px -2px 7px rgba(255,255,255,0.9);
+  --nx-shadow-btn: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.35), 0 10px 22px rgba(26,111,212,0.25);
+  --nx-shadow-btn-hover: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.35), 0 14px 28px rgba(26,111,212,0.32);
+  --nx-shadow-btn-active: inset 0 3px 8px rgba(8,40,96,0.45), 0 4px 10px rgba(26,111,212,0.2);
+}
+
+:root {
+  --nx-radius-clay: 34px;
+  --nx-radius-card: 28px;
+  --nx-radius-pill: 999px;
+}
+
 /* Theme-specific elements (navbar logo, theme switch before hydration): render
    both, show the one matching data-theme, so the first paint needs no script. */
 [data-theme='light'] .nx-only-dark,
