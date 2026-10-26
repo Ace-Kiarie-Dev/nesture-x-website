@@ -123,4 +123,7 @@ export const NX_GAMES: readonly Game[] = [
 
 export const isLive = (game: Game): game is LiveGame => game.status === 'live';
 
+// Extra info panel tags every live game carries (they all play free in the browser, no account).
+export const LIVE_PERKS: readonly string[] = ['Free', 'No sign-up'];
+
 export const LIVE_GAMES: readonly LiveGame[] = NX_GAMES.filter(isLive);

@@ -1,24 +1,8 @@
 import type { Metadata } from 'next';
-import { Manrope, Sora } from 'next/font/google';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import { LIVE_GAMES } from '@/lib/nx-gaming/games';
 import NxGamingHub from '@/components/nx-gaming/NxGamingHub';
 import '@/components/nx-gaming/nx-gaming.css';
-
-// Loaded here rather than in the root layout, scoped to the NX Gaming hub.
-const sora = Sora({
-  weight: ['600', '700', '800'],
-  subsets: ['latin'],
-  variable: '--font-nxg-display',
-  display: 'swap',
-});
-
-const manrope = Manrope({
-  weight: ['400', '500', '700'],
-  subsets: ['latin'],
-  variable: '--font-nxg-body',
-  display: 'swap',
-});
 
 const TITLE = 'NX Gaming — Free Browser Games';
 const SHARE_TITLE = `${TITLE} | Nesture-X`;
@@ -90,7 +74,7 @@ export default function NxGamingPage() {
   return (
     <>
       <JsonLd data={[GAMES_JSON_LD, BREADCRUMB_JSON_LD]} />
-      <div className={`theme-nxg nxg-under-nav ${sora.variable} ${manrope.variable} flex-1`}>
+      <div className="flex-1">
         <NxGamingHub />
       </div>
     </>
