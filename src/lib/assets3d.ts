@@ -17,6 +17,7 @@ export const ASSETS_3D = {
   'contact-chat': { src: '/images/3d/webp/contact-chat.webp', width: 849, height: 673, alt: '' },
   'contact-mpesa': { src: '/images/3d/webp/contact-mpesa.webp', width: 407, height: 900, alt: 'Smiling 3D character confirming a mobile payment' },
   'controller': { src: '/images/3d/webp/controller.webp', width: 900, height: 900, alt: '' },
+  'controller-cutout': { src: '/images/3d/webp/controller-cutout.webp', width: 900, height: 727, alt: '' },
   'envelope': { src: '/images/3d/webp/envelope.webp', width: 900, height: 900, alt: '' },
   'kikota-dumbbell': { src: '/images/3d/webp/kikota-dumbbell.webp', width: 900, height: 729, alt: '' },
   'kikota-keycard': { src: '/images/3d/webp/kikota-keycard.webp', width: 835, height: 895, alt: '' },
