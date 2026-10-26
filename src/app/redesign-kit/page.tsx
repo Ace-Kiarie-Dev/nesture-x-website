@@ -33,8 +33,12 @@ const ASSET_KEYS = Object.keys(ASSETS_3D) as Asset3dKey[];
 
 function Panel({ surface, children }: { surface: Surface; children: React.ReactNode }) {
   return (
-    <div data-theme={surface.theme} className="rounded-[28px] p-5 sm:p-8" style={{ background: surface.bg, color: 'var(--nx-text)' }}>
-      <p className="nx-chip mb-6">{surface.name}</p>
+    <div
+      data-theme={surface.theme}
+      className="rounded-[28px]"
+      style={{ background: surface.bg, color: 'var(--nx-text)', padding: 'clamp(20px, 3vw, 32px)' }}
+    >
+      <p className="nx-chip" style={{ marginBottom: 24 }}>{surface.name}</p>
       {children}
     </div>
   );
@@ -87,19 +91,19 @@ function Specimens() {
       <div className="grid gap-6 md:grid-cols-3">
         <ClayCard>
           <Eyebrow>ClayCard</Eyebrow>
-          <p className="nx-body mt-4">.nx-clay, radius 34px, 160° gradient with inset light and drop shadow.</p>
+          <p className="nx-body" style={{ marginTop: 16 }}>.nx-clay, radius 34px, 160° gradient with inset light and drop shadow.</p>
         </ClayCard>
         <GlassPanel>
           <Eyebrow>GlassPanel</Eyebrow>
-          <p className="nx-body mt-4">.nx-glass, blur 18px with a hairline border.</p>
+          <p className="nx-body" style={{ marginTop: 16 }}>.nx-glass, blur 18px with a hairline border.</p>
         </GlassPanel>
-        <div className="nx-inset p-6 sm:p-8">
+        <div className="nx-inset" style={{ padding: 'clamp(24px, 3.5vw, 32px)' }}>
           <Eyebrow>.nx-inset</Eyebrow>
-          <p className="nx-body mt-4">A pressed-in well for inputs, stats and chips.</p>
+          <p className="nx-body" style={{ marginTop: 16 }}>A pressed-in well for inputs, stats and chips.</p>
         </div>
       </div>
 
-      <div className="nx-grid-bg h-40 rounded-[28px] p-6" style={{ boxShadow: 'inset 0 0 0 1px var(--nx-glass-border)' }}>
+      <div className="nx-grid-bg h-40 rounded-[28px]" style={{ padding: 24, boxShadow: 'inset 0 0 0 1px var(--nx-glass-border)' }}>
         <span className="nx-eyebrow">.nx-grid-bg</span>
       </div>
     </div>
@@ -139,14 +143,14 @@ export default async function RedesignKitPage({ searchParams }: { searchParams: 
   const { phone } = await searchParams;
 
   return (
-    <main className="nx-grid-bg pb-24">
-      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
-        <header className="py-14">
+    <main className="nx-grid-bg" style={{ paddingBottom: 96 }}>
+      <div className="w-full max-w-[1200px]" style={{ margin: '0 auto', paddingInline: 'clamp(16px, 4vw, 32px)' }}>
+        <header style={{ paddingBlock: 56 }}>
           <SectionHeading as="h1" eyebrow="feat/redesign · temporary" title="Hybrid redesign kit" outline="kit" />
         </header>
 
         <Band variant="slate" id="colours">
-          <SectionHeading eyebrow="Tokens" title="Six core colours" outline="colours" className="mb-10" />
+          <SectionHeading eyebrow="Tokens" title="Six core colours" outline="colours" style={{ marginBottom: 40 }} />
           <div className="flex flex-col gap-6">
             {SURFACES.map((s) => (
               <Panel key={s.name} surface={s}>
@@ -157,7 +161,7 @@ export default async function RedesignKitPage({ searchParams }: { searchParams: 
         </Band>
 
         <Band variant="dark" id="classes">
-          <SectionHeading eyebrow="Classes and components" title="Every piece on every surface" outline="surface" className="mb-10" />
+          <SectionHeading eyebrow="Classes and components" title="Every piece on every surface" outline="surface" style={{ marginBottom: 40 }} />
           <div className="flex flex-col gap-6">
             {SURFACES.map((s) => (
               <Panel key={s.name} surface={s}>
@@ -168,7 +172,7 @@ export default async function RedesignKitPage({ searchParams }: { searchParams: 
         </Band>
 
         <Band variant="slate" id="assets">
-          <SectionHeading eyebrow="3D assets" title={`${ASSET_KEYS.length} WebP renders`} outline="renders" className="mb-10" />
+          <SectionHeading eyebrow="3D assets" title={`${ASSET_KEYS.length} WebP renders`} outline="renders" style={{ marginBottom: 40 }} />
           <div className="flex flex-col gap-6">
             {SURFACES.map((s) => (
               <Panel key={s.name} surface={s}>
@@ -180,15 +184,15 @@ export default async function RedesignKitPage({ searchParams }: { searchParams: 
 
         {!phone && (
           <Band variant="dark" id="phone">
-            <SectionHeading eyebrow="Phone width" title="375px check" outline="check" className="mb-10" />
+            <SectionHeading eyebrow="Phone width" title="375px check" outline="check" style={{ marginBottom: 40 }} />
             <iframe
               src="/redesign-kit?phone=1"
               title="Redesign kit at 375px wide"
               width={375}
               height={760}
               loading="lazy"
-              className="mx-auto block max-w-full rounded-[28px] border-0"
-              style={{ boxShadow: 'var(--nx-shadow-clay)' }}
+              className="block max-w-full rounded-[28px] border-0"
+              style={{ margin: '0 auto', boxShadow: 'var(--nx-shadow-clay)' }}
             />
           </Band>
         )}

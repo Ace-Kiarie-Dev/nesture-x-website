@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import Eyebrow from './Eyebrow';
 import { cx } from './cx';
 
@@ -10,6 +10,7 @@ type SectionHeadingProps = {
   as?: 'h1' | 'h2' | 'h3';
   id?: string;
   className?: string;
+  style?: CSSProperties;
 };
 
 function renderTitle(title: string, outline?: string): ReactNode {
@@ -31,9 +32,9 @@ function renderTitle(title: string, outline?: string): ReactNode {
   );
 }
 
-export default function SectionHeading({ eyebrow, title, outline, as: Heading = 'h2', id, className }: SectionHeadingProps) {
+export default function SectionHeading({ eyebrow, title, outline, as: Heading = 'h2', id, className, style }: SectionHeadingProps) {
   return (
-    <div className={cx('flex flex-col gap-5', className)}>
+    <div className={cx('flex flex-col gap-5', className)} style={style}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <Heading id={id} className="nx-h2">
         {renderTitle(title, outline)}

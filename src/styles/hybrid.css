@@ -5,7 +5,12 @@
    which re-theme under [data-theme='light'].
 
    Note: .nx-btn is taken by the site-wide neo-brutalist NxButton, so the clay
-   button lives at .nx-clay-btn / .nx-clay-btn-ghost. */
+   button lives at .nx-clay-btn / .nx-clay-btn-ghost.
+
+   Heads-up: globals.css has an unlayered `* { margin: 0; padding: 0 }` reset,
+   which beats Tailwind's layered utilities, so m-*, p-*, mx-auto and friends do
+   nothing. Set spacing inline or in a class here; flex, grid, gap and sizing
+   utilities work. */
 
 /* Faint 60px blue grid on the page background */
 .nx-grid-bg {
