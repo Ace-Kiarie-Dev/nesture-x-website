@@ -1,0 +1,444 @@
+'use client';
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+} from 'react';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import Link from 'next/link';
+import { NX_GAMES, LIVE_GAMES, isLive, type Game } from '@/lib/nx-gaming/games';
+import { SOCIAL } from '@/constants';
+
+const COUNT = NX_GAMES.length;
+
+// White "GA…ING" letters: only ever place the logo on the hub's dark surface.
+const LOGO = { src: '/images/NX-Gaming/nx-gaming-logo.webp', width: 720, height: 107 };
+const pad = (n: number) => String(n).padStart(2, '0');
+
+// Minimum horizontal travel (px) for a touch drag on the stage to count as a swipe.
+const SWIPE_PX = 40;
+
+// The ribbons load client-only. Until they arrive the fallback renders the same hero in a
+// plain wrapper of the same shape, so the headline and cards are still in the server HTML.
+const HeroContent = createContext<ReactNode>(null);
+
+function HeroFallback() {
+  return (
+    <div className="nxg-ribbons" style={{ position: 'relative', overflow: 'hidden', isolation: 'isolate' }}>
+      <div style={{ position: 'relative', zIndex: 1, height: '100%' }}>{useContext(HeroContent)}</div>
+    </div>
+  );
+}
+
+const HubRibbons = dynamic(() => import('./HubRibbons'), { ssr: false, loading: () => <HeroFallback /> });
+
+// Per-card layout for both breakpoints, handed to CSS as custom properties so the
+// media query in nx-gaming.css picks one and the server render never depends on
+// the viewport. Numbers come straight from the mockups. Shadows live in the CSS.
+function cardVars(game: Game, index: number, sel: number): CSSProperties {
+  const on = index === sel;
+
+  // Wide screens: all four fanned around the centre.
+  const d = index - (COUNT - 1) / 2;
+  const dx = d * 262;
+  const dy = on ? -40 : Math.abs(d) * 22 - 6;
+  const rotD = on ? 0 : d * 5;
+
+  // Phone: a carousel that wraps, showing the selected card and one either side.
+  let off = index - sel;
+  if (off > COUNT / 2) off -= COUNT;
+  if (off < -COUNT / 2) off += COUNT;
+  const ao = Math.abs(off);
+
+  return {
+    '--tf-d': `translate(${dx}px, ${dy}px) rotate(${rotD}deg) scale(${on ? 1.07 : 0.96})`,
+    '--z-d': on ? 20 : 10 - Math.abs(index - sel),
+    '--filter-d': on ? 'none' : 'brightness(0.78) saturate(0.85)',
+    '--art-d': `${game.heroWidth.desktop}px`,
+
+    '--tf-m': `translateX(${off * 176}px) translateY(${on ? -18 : 6}px) rotate(${off * 8}deg) scale(${on ? 1.04 : 0.86})`,
+    '--z-m': 20 - ao,
+    '--op-m': ao > 1 ? 0 : on ? 1 : 0.7,
+    '--art-m': `${game.heroWidth.mobile}px`,
+
+    // Faint accent glow under the selected card (hex + ~35% alpha).
+    '--nxg-glow': `${game.accent}59`,
+    background: game.bg,
+  } as CSSProperties;
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true">
+      <rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" strokeWidth="3" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function Pager({ sel, go, className }: { sel: number; go: (i: number) => void; className: string }) {
+  return (
+    <div className={`nxg-pager ${className}`}>
+      <button type="button" className="nxg-btn-soft" onClick={() => go(sel - 1)} aria-label="Previous game">
+        ← Prev
+      </button>
+      <span className="nxg-pager-count">
+        {pad(sel + 1)} / {pad(COUNT)}
+      </span>
+      <button type="button" className="nxg-btn-soft" onClick={() => go(sel + 1)} aria-label="Next game">
+        Next →
+      </button>
+    </div>
+  );
+}
+
+// The selected game's emblem beside the info panel title: a round crop of its hero
+// art with an accent ring and a LIVE dot or padlock. All four crops are stacked so a
+// selection change is a CSS cross-fade. Decorative: the title names the game.
+function Emblem({ cur }: { cur: Game }) {
+  const live = isLive(cur);
+  return (
+    <span
+      className={`nxg-emblem${live ? '' : ' is-locked'}`}
+      style={{ '--nxg-accent': cur.accent } as CSSProperties}
+      aria-hidden="true"
+    >
+      <span className="nxg-emblem-art">
+        {NX_GAMES.map((game) => (
+          <Image
+            key={game.slug}
+            className={game === cur ? 'is-on' : undefined}
+            src={game.hero.src}
+            alt=""
+            width={game.hero.width}
+            height={game.hero.height}
+            sizes="64px"
+            draggable={false}
+            style={{
+              objectPosition: game.emblem.focus,
+              transformOrigin: game.emblem.focus,
+              transform: `scale(${game.emblem.zoom})`,
+            }}
+          />
+        ))}
+      </span>
+      <span className="nxg-emblem-status">{live ? <span className="nxg-live-dot" /> : <LockIcon />}</span>
+    </span>
+  );
+}
+
+// An info panel action. As a sizer it keeps the same box but is a plain span: no link
+// to prefetch or crawl, nothing to focus.
+function Action({
+  sizer,
+  href,
+  kind,
+  className,
+  children,
+}: {
+  sizer: boolean;
+  href: string;
+  kind: 'route' | 'page' | 'external';
+  className: string;
+  children: ReactNode;
+}) {
+  if (sizer) return <span className={className}>{children}</span>;
+  if (kind === 'route')
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    );
+  return kind === 'external' ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {children}
+    </a>
+  ) : (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  );
+}
+
+// One game's info panel content. sizer renders the same layout without the emblem
+// art or real links, only to reserve height.
+function InfoContent({ game, sizer = false }: { game: Game; sizer?: boolean }) {
+  return (
+    <>
+      <div className="nxg-info-main">
+        {sizer ? <span className="nxg-emblem" /> : <Emblem cur={game} />}
+        <div className="nxg-info-head">
+          <h2 className="nxg-info-name">{game.name}</h2>
+          <span className="nxg-label">
+            {game.kind} · {isLive(game) ? 'Live' : 'Coming soon'}
+          </span>
+        </div>
+        <ul className="nxg-tags">
+          {game.tags.map((tag) => (
+            <li key={tag} className="nxg-tag nxg-label">
+              {tag}
+            </li>
+          ))}
+        </ul>
+        <p className="nxg-blurb">{game.blurb}</p>
+      </div>
+      <div className="nxg-info-cta">
+        {isLive(game) ? (
+          <>
+            {/* Plain <a>: the games are static pages outside the Next app, so a full load is wanted. */}
+            <Action sizer={sizer} href={game.href} kind="page" className="nxg-btn-blue nxg-start">
+              <svg viewBox="0 0 10 12" width="10" height="12" aria-hidden="true">
+                <path d="M0 0l10 6-10 6z" fill="#ffffff" />
+              </svg>
+              <span className="nxg-blink">Press start</span>
+            </Action>
+            <span className="nxg-cta-note nxg-label">
+              <span className="nxg-controls-d">{game.controls.desktop}</span>
+              <span className="nxg-controls-m">{game.controls.mobile}</span>
+            </span>
+          </>
+        ) : (
+          <>
+            <Action sizer={sizer} href={game.pageHref} kind="route" className="nxg-btn-blue nxg-start">
+              Explore {game.name} →
+            </Action>
+            <div className="nxg-cta-more">
+              <Action sizer={sizer} href={SOCIAL.instagram} kind="external" className="nxg-btn-soft nxg-more">
+                Follow @nesture_x
+              </Action>
+              {game.notifyHref && (
+                <Action sizer={sizer} href={game.notifyHref} kind="route" className="nxg-btn-soft nxg-more">
+                  Get notified
+                </Action>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
+export default function NxGamingHub() {
+  const [sel, setSel] = useState(0);
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  // Set when the selection moved by arrow key, so focus follows it.
+  const focusOnChange = useRef(false);
+  const swipeStart = useRef<{ x: number; y: number } | null>(null);
+  // A swipe that ends on a card would also fire its click; this swallows that click.
+  const swiped = useRef(false);
+
+  const go = (i: number) => setSel(((i % COUNT) + COUNT) % COUNT);
+  const cur = NX_GAMES[sel];
+
+  useEffect(() => {
+    if (!focusOnChange.current) return;
+    focusOnChange.current = false;
+    cardRefs.current[sel]?.focus();
+  }, [sel]);
+
+  const onStageKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -1, ArrowDown: 1 }[e.key];
+    if (step === undefined && e.key !== 'Home' && e.key !== 'End') return;
+    e.preventDefault();
+    focusOnChange.current = true;
+    if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(COUNT - 1);
+    else go(sel + (step ?? 0));
+  };
+
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    swiped.current = false;
+    swipeStart.current = e.pointerType === 'mouse' ? null : { x: e.clientX, y: e.clientY };
+  };
+  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    if (Math.abs(dx) >= SWIPE_PX && Math.abs(dx) > Math.abs(e.clientY - start.y)) {
+      swiped.current = true;
+      go(sel + (dx < 0 ? 1 : -1));
+    }
+  };
+
+  const hero = (
+    <>
+      <section className="nxg-stage-section">
+        <Link href="/nx-gaming" className="nxg-hero-logo">
+          <Image
+            src={LOGO.src}
+            alt="NX Gaming"
+            width={LOGO.width}
+            height={LOGO.height}
+            sizes="(min-width: 1080px) 150px, 130px"
+            preload
+          />
+        </Link>
+
+        <div className="nxg-wrap nxg-hero">
+          <h1 className="nxg-title">
+            Pick a game.
+            <br />
+            <span>Press start.</span>
+          </h1>
+          <p className="nxg-lede">Free browser games built by Nesture-X. No sign-up, nothing to install.</p>
+          <div className="nxg-unlocked nxg-label">
+            <span>Unlocked</span>
+            <span className="nxg-pips" aria-hidden="true">
+              {NX_GAMES.map((game) => (
+                <span key={game.slug} className={`nxg-pip${isLive(game) ? ' is-on' : ''}`} />
+              ))}
+            </span>
+            <span>
+              {LIVE_GAMES.length} / {COUNT}
+            </span>
+          </div>
+        </div>
+
+        <div
+          id="games"
+          className="nxg-stage"
+          role="group"
+          aria-label="Select a game"
+          onKeyDown={onStageKey}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerCancel={() => (swipeStart.current = null)}
+        >
+          {NX_GAMES.map((game, i) => {
+            const on = i === sel;
+            const live = isLive(game);
+            let off = Math.abs(i - sel);
+            if (off > COUNT / 2) off = COUNT - off;
+            return (
+              <button
+                key={game.slug}
+                ref={(el) => {
+                  cardRefs.current[i] = el;
+                }}
+                type="button"
+                className={`nxg-card${on ? ' is-sel' : ''}${off > 1 ? ' is-hidden-m' : ''}`}
+                style={cardVars(game, i, sel)}
+                onClick={() => {
+                  if (swiped.current) swiped.current = false;
+                  else go(i);
+                }}
+                aria-pressed={on}
+                aria-label={`${game.name}, ${live ? 'live' : 'locked'}`}
+                tabIndex={on ? 0 : -1}
+              >
+                <span className="nxg-card-glow" aria-hidden="true" style={{ background: game.glow }} />
+                <span className="nxg-chip nxg-chip-slot" aria-hidden="true">
+                  {pad(i + 1)}
+                </span>
+                <span className={`nxg-chip nxg-chip-status${live ? '' : ' is-locked'}`} aria-hidden="true">
+                  {!live && <LockIcon />}
+                  {live ? 'LIVE' : 'LOCKED'}
+                </span>
+                <span className="nxg-art">
+                  <Image
+                    src={game.hero.src}
+                    alt=""
+                    width={game.hero.width}
+                    height={game.hero.height}
+                    sizes={`(min-width: 1080px) ${game.heroWidth.desktop}px, ${game.heroWidth.mobile}px`}
+                    preload={i < 2}
+                    draggable={false}
+                  />
+                </span>
+                <span className="nxg-card-foot" aria-hidden="true">
+                  <span className="nxg-card-name">{game.name}</span>
+                  <span className="nxg-card-kind nxg-label">{game.kind}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <Pager sel={sel} go={go} className="nxg-pager-m" />
+      </section>
+
+      <section className="nxg-wrap nxg-info-section">
+        <div className="nxg-panel nxg-info" aria-live="polite">
+          {/* Phones and tablets: hidden copies of every game share the cell, so the panel
+              is always as tall as the tallest game and nothing below moves on a switch. */}
+          <div className="nxg-info-stack">
+            <div className="nxg-info-slide">
+              <InfoContent game={cur} />
+            </div>
+            {NX_GAMES.map((game) => (
+              <div key={game.slug} className="nxg-info-slide nxg-info-sizer" aria-hidden="true" inert>
+                <InfoContent game={game} sizer />
+              </div>
+            ))}
+          </div>
+        </div>
+        <Pager sel={sel} go={go} className="nxg-pager-d" />
+      </section>
+    </>
+  );
+
+  return (
+    <main>
+      <HeroContent.Provider value={hero}>
+        <HubRibbons>{hero}</HubRibbons>
+      </HeroContent.Provider>
+
+      <section className="nxg-wrap nxg-why-section">
+        <div className="nxg-panel nxg-why">
+          <div className="nxg-why-copy">
+            <p className="nxg-eyebrow">Why games</p>
+            <h2 className="nxg-h2">
+              We make games <span>the way we make websites.</span>
+            </h2>
+            <p className="nxg-copy">
+              Every game here is designed and coded in-house by Peter Kiarie and the Nesture-X team. Same attention to
+              detail, same mobile-first thinking, same Nairobi roots as our client work.
+            </p>
+          </div>
+          <div className="nxg-why-side">
+            <ul className="nxg-points">
+              <li>Your scores and progress stay on your device.</li>
+              <li>Plain HTML, CSS and JavaScript. Fast to load, easy on your data.</li>
+              <li>2048 installs as an app and plays offline. More games will follow.</li>
+            </ul>
+            <div className="nxg-book-row">
+              <Link href="/booking" className="nxg-btn-blue nxg-book">
+                Book a Consultation →
+              </Link>
+              <span className="nxg-book-note">Need something built?</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="nxg-wrap nxg-about">
+        <div className="nxg-panel nxg-about-inner">
+          <Image
+            className="nxg-logo-sm"
+            src={LOGO.src}
+            alt=""
+            width={LOGO.width}
+            height={LOGO.height}
+            sizes="160px"
+          />
+          <h2>Free online games by NX Gaming</h2>
+          <p>
+            NX Gaming makes free browser games that run on phones, tablets and desktops. Play 2048, a sliding tile
+            puzzle with boards from 3×3 to 6×6, or Flappy Horror, a Halloween arcade game where a little ghost dodges
+            zombie hands. No account needed, and your best scores are saved in your browser.
+          </p>
+        </div>
+      </section>
+    </main>
+  );
+}

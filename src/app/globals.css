@@ -86,6 +86,18 @@
   --color-nav-scrolled: rgba(245,245,245,0.85);
 }
 
+/* Theme-specific elements (navbar logo, theme switch before hydration): render
+   both, show the one matching data-theme, so the first paint needs no script. */
+[data-theme='light'] .nx-only-dark,
+[data-theme='dark'] .nx-only-light { display: none; }
+.nx-theme-ssr { display: contents; }
+/* The switch's stick figure is positioned by script; keep it hidden until then. */
+.nx-theme-ssr svg g { visibility: hidden; }
+/* Keyboard focus on the theme switch knob. The component's own ring is a box-shadow
+   that its inline shadow overrides, so draw an outline instead (3:1+ on both panels). */
+.nx-theme-switch [role='switch']:focus-visible { outline: 2px solid #1a6fd4; outline-offset: 3px; }
+[data-theme='dark'] .nx-theme-switch [role='switch']:focus-visible { outline-color: #38bdf8; }
+
 /* Base resets */
 * {
   box-sizing: border-box;

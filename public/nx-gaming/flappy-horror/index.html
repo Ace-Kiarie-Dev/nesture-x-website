@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <script>
+        // Assets use relative paths. Served without a trailing slash (e.g. /nx-gaming/flappy-horror),
+        // they'd resolve one folder too high, so point them back into the game's folder.
+        // nesturex.com injects a <base> server-side already; this is the fallback for other hosts.
+        (function () {
+            var p = location.pathname;
+            if (!document.querySelector("base") && !/\/$|\.html?$/.test(p)) {
+                document.write('<base href="' + p + '/">');
+            }
+        })();
+    </script>
+    <title>Flappy Horror: Free Online Halloween Arcade Game | NX Gaming</title>
+    <meta name="description" content="Play Flappy Horror free in your browser. Guide a little ghost through a graveyard of zombie hands, gather lost souls and survive the Blood Moon.">
+    <meta name="theme-color" content="#05080a">
+    <link rel="canonical" href="https://nesturex.com/nx-gaming/flappy-horror">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NX Gaming">
+    <meta property="og:title" content="Flappy Horror by NX Gaming: Free Halloween Arcade Game">
+    <meta property="og:description" content="Guide a little ghost through zombie hands, gather lost souls and survive the Blood Moon. Free, no sign-up, plays on phone and desktop.">
+    <meta property="og:url" content="https://nesturex.com/nx-gaming/flappy-horror">
+    <meta property="og:image" content="https://nesturex.com/nx-gaming/flappy-horror/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Flappy Horror: a little ghost under a blood-red moon">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Flappy Horror",
+        "description": "A free Halloween arcade game. Guide a little ghost through a graveyard of zombie hands, gather lost souls, phase through the dead and survive the Blood Moon. Tap, click or press Space to flap.",
+        "url": "https://nesturex.com/nx-gaming/flappy-horror",
+        "image": "https://nesturex.com/nx-gaming/flappy-horror/og.png",
+        "genre": "Arcade",
+        "gamePlatform": "Web browser",
+        "applicationCategory": "Game",
+        "operatingSystem": "Any",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KES",
+            "availability": "https://schema.org/InStock"
+        },
+        "author": { "@type": "Organization", "name": "Nesture-X", "url": "https://nesturex.com" },
+        "publisher": { "@type": "Organization", "name": "Nesture-X", "url": "https://nesturex.com" }
+    }
+    </script>
+    <link rel="icon" href="./favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="preload" href="fonts/rubik-wet-paint-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+    <div class="atmos" aria-hidden="true">
+        <div class="atmos__fog atmos__fog--a"></div>
+        <div class="atmos__fog atmos__fog--b"></div>
+        <div class="atmos__flash"></div>
+    </div>
+
+    <header class="topbar nxg-bar">
+        <a class="nxg-bar__logo" href="https://nesturex.com/nx-gaming">
+            <img src="nx-gaming-logo.webp" alt="NX Gaming, all games" width="720" height="107">
+        </a>
+        <div class="topbar__actions">
+            <a class="nxg-bar__all" href="https://nesturex.com/nx-gaming" aria-label="All games">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+                <span>All games</span>
+            </a>
+            <button class="icon-btn" id="muteBtn" type="button" aria-pressed="false" title="Toggle sound (M)">
+                <svg viewBox="0 0 24 24" class="ico ico--on" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none"/></svg>
+                <svg viewBox="0 0 24 24" class="ico ico--off" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l6 6M22 9l-6 6" fill="none"/></svg>
+                <span class="sr-only">Toggle sound</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="layout">
+        <!-- Left: lore + controls -->
+        <aside class="panel panel--lore">
+            <p class="eyebrow">Chapter&nbsp;I · All Hallows' Eve</p>
+            <h1 class="title">Flappy<br><span>Horror</span></h1>
+            <p class="subtitle">The Reaper's Flight</p>
+            <p class="lore">
+                The graveyard below is restless. A thousand hands reach for anything that drifts too low.
+                Glide between them, gather the lost souls, and when the meter burns full,
+                <em>become the mist</em>.
+            </p>
+
+            <h2 class="panel__h">How to haunt</h2>
+            <ul class="keys">
+                <li><span class="keys__k"><kbd>Space</kbd><kbd>↑</kbd><kbd>Tap</kbd></span><span>Flap</span></li>
+                <li><span class="keys__k"><kbd>Shift</kbd><kbd>E</kbd></span><span>Phase when meter is full</span></li>
+                <li><span class="keys__k"><kbd>P</kbd><kbd>Esc</kbd></span><span>Pause</span></li>
+                <li><span class="keys__k"><kbd>Enter</kbd></span><span>Rise again</span></li>
+                <li><span class="keys__k"><kbd>M</kbd></span><span>Mute</span></li>
+            </ul>
+        </aside>
+
+        <!-- Centre: the game -->
+        <section class="cabinet" aria-label="Game">
+            <div class="cabinet__frame">
+                <div class="stage" id="stage">
+                    <canvas id="board" aria-label="Flappy Horror game canvas"></canvas>
+
+                    <!-- Title screen -->
+                    <div class="overlay is-active" id="screenTitle">
+                        <div class="overlay__inner">
+                            <p class="ov-eyebrow">NX Gaming</p>
+                            <h2 class="ov-title">Flappy<br><span>Horror</span></h2>
+                            <p class="ov-sub">The Reaper's Flight</p>
+                            <button class="btn btn--blood" id="playBtn" type="button">
+                                <span>Begin the Haunt</span>
+                            </button>
+                            <p class="ov-hint">Space · Click · Tap</p>
+                            <a class="btn btn--ghost btn--more" href="https://nesturex.com/nx-gaming"><span>More games</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Get ready -->
+                    <div class="overlay overlay--ghostly" id="screenReady">
+                        <div class="overlay__inner overlay__inner--ready">
+                            <p class="ready__word">Get Ready</p>
+                            <div class="ready__tap">
+                                <span class="ready__ring"></span>
+                                <span>Tap to flap</span>
+                            </div>
+                            <p class="ready__tip" id="readyTip"></p>
+                        </div>
+                    </div>
+
+                    <!-- Pause -->
+                    <div class="overlay" id="screenPause">
+                        <div class="overlay__inner">
+                            <h2 class="ov-title ov-title--sm">Paused</h2>
+                            <p class="ov-sub">The dead are patient.</p>
+                            <button class="btn btn--ghost" id="resumeBtn" type="button"><span>Resume</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Game over -->
+                    <div class="overlay" id="screenOver">
+                        <div class="overlay__inner">
+                            <h2 class="ov-title ov-title--sm ov-title--blood">You've Been<br>Claimed</h2>
+                            <div class="tomb">
+                                <div class="tomb__medal" id="overMedal" data-tier="none">
+                                    <span class="tomb__medal-ico" id="overMedalIco">✝</span>
+                                    <span class="tomb__medal-name" id="overMedalName">No medal</span>
+                                </div>
+                                <dl class="tomb__stats">
+                                    <div><dt>Score</dt><dd id="overScore">0</dd></div>
+                                    <div><dt>Best</dt><dd id="overBest">0</dd></div>
+                                    <div><dt>Souls</dt><dd id="overSouls">0</dd></div>
+                                </dl>
+                                <p class="tomb__new" id="overNew" hidden>New record</p>
+                            </div>
+                            <p class="epitaph" id="overEpitaph"></p>
+                            <div class="btn-row">
+                                <button class="btn btn--blood" id="retryBtn" type="button"><span>Rise Again</span></button>
+                                <button class="btn btn--ghost" id="menuBtn" type="button"><span>Menu</span></button>
+                            </div>
+                            <p class="ov-hint">Enter to retry</p>
+                            <a class="btn btn--ghost btn--more" id="overMoreBtn" href="https://nesturex.com/nx-gaming"><span>More games</span></a>
+                        </div>
+                    </div>
+
+                    <button class="phase-btn" id="phaseBtn" type="button" aria-label="Phase" hidden>
+                        <span>PHASE</span>
+                    </button>
+                    <button class="pause-btn" id="pauseBtn" type="button" aria-label="Pause" hidden>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right: records -->
+        <aside class="panel panel--records">
+            <h2 class="panel__h">Crypt records</h2>
+            <dl class="records">
+                <div class="records__item records__item--hero">
+                    <dt>Best flight</dt><dd id="recBest">0</dd>
+                </div>
+                <div class="records__item"><dt>Souls harvested</dt><dd id="recSouls">0</dd></div>
+                <div class="records__item"><dt>Times claimed</dt><dd id="recRuns">0</dd></div>
+            </dl>
+
+            <h2 class="panel__h">Medals of the dead</h2>
+            <ol class="medals" id="medalList">
+                <li data-tier="bone"><span class="medals__ico">🦴</span><span class="medals__name">Bone</span><span class="medals__req">10</span></li>
+                <li data-tier="skull"><span class="medals__ico">💀</span><span class="medals__name">Silver Skull</span><span class="medals__req">25</span></li>
+                <li data-tier="pumpkin"><span class="medals__ico">🎃</span><span class="medals__name">Gold Pumpkin</span><span class="medals__req">50</span></li>
+                <li data-tier="moon"><span class="medals__ico">🌕</span><span class="medals__name">Blood Moon</span><span class="medals__req">100</span></li>
+            </ol>
+
+            <div class="omen">
+                <p class="omen__h">Omens</p>
+                <p>Every <strong>15</strong> hands passed, the <strong>Blood Moon</strong> rises. The dead grow restless and faster. Past 20, the hands begin to <strong>sway</strong>.</p>
+            </div>
+        </aside>
+    </main>
+
+    <section class="howto" aria-labelledby="howtoTitle">
+        <h2 class="howto__title" id="howtoTitle">How to play Flappy Horror</h2>
+        <div class="howto__grid">
+            <div class="howto__block">
+                <p>
+                    Flappy Horror is a free Halloween arcade game you play right in your browser, on phone or desktop.
+                    You guide a little ghost through a graveyard of zombie hands. Each gap you slip through scores a point.
+                    Gather the lost souls floating in the gaps, phase through the dead when your meter is full,
+                    and survive the Blood Moon, when the hands speed up.
+                </p>
+                <p>
+                    No sign-up and nothing to install. Your best score, souls and medals are saved in this browser.
+                </p>
+            </div>
+            <div class="howto__block">
+                <h3 class="howto__h">Controls</h3>
+                <ul class="howto__list">
+                    <li><strong>Flap:</strong> press <kbd>Space</kbd>, click, or tap the screen.</li>
+                    <li><strong>Phase:</strong> press <kbd>Shift</kbd> or <kbd>E</kbd>, or tap the glowing orb, once 5 souls are collected.</li>
+                    <li><strong>Pause:</strong> <kbd>P</kbd> or <kbd>Esc</kbd>. <strong>Mute:</strong> <kbd>M</kbd>.</li>
+                </ul>
+                <a class="howto__link" href="https://nesturex.com/nx-gaming">More free games from NX Gaming <span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; <span id="year">2026</span> <strong>NX Gaming</strong>. All rights reserved.</p>
+        <p class="footer__small">Flappy Horror · The Reaper's Flight is an NX Gaming original.</p>
+    </footer>
+
+    <!-- preload="none": the ~2.4 MB track only downloads once a run starts (music.play() in main.js). -->
+    <audio id="music" src="./df.mp3" loop preload="none"></audio>
+    <script>
+        // On nesturex.com (and its previews) the hub is on the same host: keep the
+        // "all games" links there instead of jumping to the production domain.
+        (function () {
+            if (location.pathname.indexOf("/nx-gaming/") !== 0) return;
+            var links = document.querySelectorAll('a[href="https://nesturex.com/nx-gaming"]');
+            for (var i = 0; i < links.length; i++) links[i].setAttribute("href", "/nx-gaming");
+        })();
+    </script>
+</body>
+</html>
