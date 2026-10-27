@@ -19,7 +19,7 @@ export default function HomeClient() {
   return (
     <main className="nxhp">
       <HomeReveal />
-      <div className="nxhp-wrap">
+      <div className="nxhp-hero-wrap">
         <HomeHero />
       </div>
       <HomeMarquee />

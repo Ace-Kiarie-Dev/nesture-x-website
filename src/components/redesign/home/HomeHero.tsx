@@ -133,17 +133,19 @@ export default function HomeHero() {
         </div>
 
         <div className="nxhp-hero-avatar">
-          <span className="nxhp-hero-glow" aria-hidden="true" />
-          <Image
-            src={AVATAR.src}
-            alt="Peter of Nesture-X as a 3D character working on a laptop"
-            width={AVATAR.width}
-            height={AVATAR.height}
-            loading="eager"
-            fetchPriority="high"
-            sizes="(min-width: 1200px) 590px, (min-width: 768px) 400px, 296px"
-            className="nxhp-hero-avatar-img"
-          />
+          <div className="nxhp-hero-figure">
+            <span className="nxhp-hero-glow" aria-hidden="true" />
+            <Image
+              src={AVATAR.src}
+              alt="Peter of Nesture-X as a 3D character working on a laptop"
+              width={AVATAR.width}
+              height={AVATAR.height}
+              loading="eager"
+              fetchPriority="high"
+              sizes="(min-width: 1100px) 640px, (min-width: 768px) 400px, 296px"
+              className="nxhp-hero-avatar-img"
+            />
+          </div>
         </div>
 
         <div className="nxhp-hero-mid">

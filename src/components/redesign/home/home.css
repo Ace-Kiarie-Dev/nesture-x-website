@@ -22,7 +22,8 @@
   .nxhp { --nxhp-gutter: 40px; }
 }
 
-.nxhp-wrap {
+.nxhp-wrap,
+.nxhp-hero-wrap {
   max-width: 1320px;
   margin: 0 auto;
   padding-inline: var(--nxhp-gutter);
@@ -114,14 +115,25 @@
   width: 100%;
 }
 
-/* Avatar: mirrored so he faces the headline, over a blue radial glow. The image
-   carries its intrinsic size, so the box is reserved before it loads. */
+/* Avatar: mirrored so he faces the headline, over a blue radial glow.
+   The image keeps its intrinsic aspect ratio at every width: only its height is set,
+   width stays auto, and preflight's img { max-width: 100% } is lifted so a narrow
+   parent can never squeeze it. The cell is an inline-size container, so when the
+   column is too narrow the height comes down instead (cqi = cell width).
+   --nxhp-av-h is the wanted height per breakpoint, --nxhp-av-over the overhang. */
 .nxhp-hero-avatar {
+  --nxhp-av-h: 300px;
+  --nxhp-av-over: 0px;
   grid-area: avatar;
-  position: relative;
-  justify-self: center;
-  height: 300px;
+  container-type: inline-size;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
   pointer-events: none;
+}
+.nxhp-hero-figure {
+  position: relative;
+  flex-shrink: 0;
 }
 .nxhp-hero-glow {
   position: absolute;
@@ -131,8 +143,12 @@
 .nxhp-hero-avatar-img {
   position: relative;
   display: block;
+  flex-shrink: 0;
   width: auto;
-  height: 100%;
+  max-width: none;
+  /* 900 / 887: the render's height per unit of width. */
+  height: min(var(--nxhp-av-h), (100cqi + var(--nxhp-av-over)) * 1.0147);
+  object-fit: contain;
   transform: scaleX(-1);
   filter: drop-shadow(0 26px 30px rgba(3, 6, 16, 0.5));
   animation: nxhp-float 6s ease-in-out infinite;
@@ -206,7 +222,7 @@
     row-gap: 40px;
   }
   .nxhp-hero-title { font-size: clamp(96px, 10.4vw, 150px); }
-  .nxhp-hero-avatar { height: 400px; justify-self: end; }
+  .nxhp-hero-avatar { --nxhp-av-h: 400px; justify-content: flex-end; }
   .nxhp-hero-mid {
     flex-direction: row;
     align-items: center;
@@ -217,27 +233,35 @@
   .nxhp-stats { grid-template-columns: 1fr; width: 200px; }
 }
 
-/* Wide: headline left, NX Originals card centre, avatar bleeding off the right edge. */
-@media (min-width: 1200px) {
+/* Wide: the hero leaves the 1320px container for a wide one with small side padding,
+   so the headline sits near the left edge and the avatar near the right, with the
+   NX Originals card centred between them. Nav and other sections keep 1320px.
+   Capped at 1920px (not 1760px) so a 1920px screen gets the full width and the
+   headline lands 48px from the edge; wider screens centre it. */
+@media (min-width: 1100px) {
+  .nxhp-hero-wrap {
+    max-width: 1920px;
+    padding-inline: clamp(20px, 2.5vw, 48px);
+  }
   .nxhp-hero {
     min-height: 900px;
     padding-top: 150px;
     padding-bottom: 90px;
-    grid-template-columns: minmax(0, 500px) 360px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px) minmax(0, 1fr);
     grid-template-areas: 'copy mid avatar';
-    column-gap: 40px;
+    align-items: center;
+    column-gap: clamp(16px, 2vw, 40px);
   }
+  /* "DISCOVER." (~3.4em) stays inside the first column from 1100px up. */
+  .nxhp-hero-title { font-size: clamp(88px, 8.2vw, 150px); }
+  .nxhp-hero-copy { justify-self: start; }
   .nxhp-hero-avatar {
-    justify-self: stretch;
-    align-self: center;
-    height: clamp(460px, 39vw, 580px);
+    --nxhp-av-h: clamp(420px, 40vw, 640px);
+    --nxhp-av-over: 30px;
+    justify-content: flex-end;
   }
-  .nxhp-hero-avatar-img {
-    position: absolute;
-    top: 0;
-    /* Bleed to the viewport edge, capped so very wide screens don't push him away. */
-    right: calc(-1 * min(var(--nxhp-gutter) + max(0px, (100vw - 1320px) / 2), 100px));
-  }
+  /* Up to 30px past the right padding; .nxhp clips overflow-x, so no scrollbar. */
+  .nxhp-hero-figure { transform: translateX(var(--nxhp-av-over)); }
   .nxhp-hero-glow { inset: 6% -10% 0 -10%; }
   .nxhp-hero-mid { flex-direction: column; align-items: stretch; gap: 14px; }
   .nxhp-originals { width: auto; }
