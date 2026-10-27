@@ -1,23 +1,9 @@
 import Image from 'next/image';
 import { ASSETS_3D } from '@/lib/assets3d';
 import { ClayButton, Eyebrow } from '@/components/redesign';
-import TippedText from './TippedText';
+import GravityTextLazy from '@/components/effects/GravityTextLazy';
 
 const PETER = ASSETS_3D['peter-pointing'];
-
-// "DIFFERENT." tipping over: a few letters nudged down and rotated, the rest upright.
-const DIFFERENT_TIPS: [number, number][] = [
-  [0, 0],
-  [0, 0],
-  [0.02, -4],
-  [0, 0],
-  [0.04, 5],
-  [0, 0],
-  [0.05, -6],
-  [0.02, 3],
-  [0.1, 12],
-  [0.2, 0],
-];
 
 export default function HomeWhoWeAre() {
   return (
@@ -36,15 +22,21 @@ export default function HomeWhoWeAre() {
 
       <div className="nxhp-who-copy nxhp-reveal">
         <Eyebrow>Who We Are</Eyebrow>
-        <h2 id="nxhp-who-title" className="nx-h2" aria-label="WE BUILD DIGITAL EXPERIENCES THAT HIT DIFFERENT.">
-          <span aria-hidden="true">WE BUILD DIGITAL EXPERIENCES </span>
-          <span className="nx-outline nxhp-nowrap" aria-hidden="true">
-            THAT HIT
-          </span>{' '}
-          <span className="nx-outline">
-            <TippedText text="DIFFERENT." tips={DIFFERENT_TIPS} />
-          </span>
-        </h2>
+        {/* One heading with the whole sentence; the falling line beside it is visual only. */}
+        <div className="nxhp-who-heading">
+          <h2 id="nxhp-who-title" className="nx-h2">
+            WE BUILD DIGITAL EXPERIENCES<span className="nx-sr-only"> THAT HIT DIFFERENT.</span>
+          </h2>
+          <div className="nxhp-who-gt">
+            <GravityTextLazy
+              text="THAT HIT DIFFERENT."
+              announce={false}
+              height="var(--nxhp-who-gt-h)"
+              className="nx-gt-top nx-gt-left"
+              letterClassName="nxhp-who-gt-letter nx-outline"
+            />
+          </div>
+        </div>
         <p className="nx-body nxhp-who-text">
           Strategy, design, and code — all under one roof, all built with intention. Born in Nairobi, built for the
           world.

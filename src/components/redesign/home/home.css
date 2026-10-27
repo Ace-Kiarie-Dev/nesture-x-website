@@ -668,9 +668,24 @@
 
 /* ── 4. Who we are ─────────────────────────────────────────────────────── */
 
-.nxhp-nowrap { white-space: nowrap; }
-.nxhp-tipped { display: inline-block; white-space: nowrap; }
-.nxhp-tipped > span { display: inline-block; margin-right: 0.04em; transform-origin: 50% 100%; }
+/* "THAT HIT DIFFERENT." falls on its own stage under the first line (GravityTextLazy).
+   Letter size follows the stage width (cqi), so the line never overflows it. */
+.nxhp-who-heading { align-self: stretch; display: flex; flex-direction: column; }
+.nxhp-who-gt {
+  --nxhp-who-gt-h: 160px;
+  container-type: inline-size;
+  width: 100%;
+  margin-top: 4px;
+}
+.nxhp-who-gt-letter {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: min(clamp(3.5rem, 2.6rem + 4.5vw, 6.5rem), 100cqi / 8.4);
+  letter-spacing: 0.01em;
+}
+@media (min-width: 768px) {
+  .nxhp-who-gt { --nxhp-who-gt-h: 220px; }
+}
 
 .nxhp-who {
   display: grid;
@@ -1254,7 +1269,24 @@
   line-height: 0.95;
   color: #ffffff;
 }
-.nxhp-cta-title .nxhp-tipped > span { margin-right: 0.06em; }
+/* "SOMETHING?" falls on its own stage inside the panel's padding: rounded and clipped, so
+   the pile never spills past the panel's corners. Letter size follows the stage width. */
+.nxhp-cta-gt {
+  --nxhp-cta-gt-h: 200px;
+  container-type: inline-size;
+  width: 100%;
+  margin-top: -14px;
+}
+.nxhp-cta-stage { border-radius: 28px; }
+.nxhp-cta-gt-letter {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: min(clamp(62px, 4.7vw + 44px, 100px), 100cqi / 4.6);
+  color: #ffffff;
+}
+@media (min-width: 768px) {
+  .nxhp-cta-gt { --nxhp-cta-gt-h: 260px; }
+}
 .nxhp-cta-text { max-width: 480px; font-size: 17px; line-height: 1.6; color: #d6e6ff; }
 .nxhp-cta-btns { justify-content: center; }
 .nxhp-cta-contact {

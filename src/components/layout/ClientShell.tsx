@@ -37,14 +37,20 @@ export default function ClientShell({ children }: { children: React.ReactNode })
     );
   }
 
+  // .nx-legacy-chrome is display: contents (no layout effect); the 404 page hides it,
+  // since it renders the redesigned chrome itself (see hybrid.css).
   return (
     <>
-      <ParticleCanvas />
-      <Navbar />
+      <div className="nx-legacy-chrome">
+        <ParticleCanvas />
+        <Navbar />
+      </div>
       <div className="site-wrapper flex flex-col flex-1" style={{ paddingTop: '80px' }}>
         {children}
       </div>
-      <Footer />
+      <div className="nx-legacy-chrome">
+        <Footer />
+      </div>
     </>
   );
 }
