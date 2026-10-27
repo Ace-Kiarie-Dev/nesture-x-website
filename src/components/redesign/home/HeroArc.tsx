@@ -15,9 +15,9 @@ const CARD_MS = 5000; // one card passes the middle every 5s
 const STEP_MS = 600; // prev / next
 const SETTLE_MS = 380; // after a drag
 const RISE = 150; // the middle of the arc sits this much higher than the ends
-const BASE_Y = 300; // card centre at the ends, px from the top of the stage
+const BASE_Y = 360; // card centre at the ends, px from the top of the stage (top: 360px in home.css)
 const RAIL_DROP = 100; // the dashed rail runs this far below the card centres
-const STAGE_H = 410; // matches .nxhp-arc-stage height in home.css
+const SVG_H = 480; // rail canvas height; overflow is visible, so it only needs to cover the rail
 const WIDE_MQ = '(min-width: 1100px)';
 const REDUCED_MQ = '(prefers-reduced-motion: reduce)';
 
@@ -25,14 +25,10 @@ const frac = (v: number) => v - Math.floor(v);
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 // Half the arc's width: cards wrap from one end to the other out of sight.
 const halfSpan = (vw: number) => Math.min(600, Math.max(380, vw * 0.3));
-// Width of the mask's fade band; mirrors --nxhp-arc-fade in home.css.
-const fadeBand = (vw: number) => Math.min(120, Math.max(80, vw * 0.07));
 // Card i's place on the path, -1 (left end) to 1 (right end). progress 0.5 centres card 0.
 const pathU = (progress: number, i: number) => 2 * frac(progress - i / N) - 1;
 const nearestIndex = (progress: number) => (((Math.round((progress - 0.5) * N)) % N) + N) % N;
 const snap = (progress: number) => Math.round((progress - 0.5) * N) / N + 0.5;
-// Same curve as the scale() in home.css: 0.88 in the middle, ~0.78 at a quarter, 0.64 at the ends.
-const cardScale = (au: number) => 0.88 - 0.24 * (0.6 * au + 0.4 * au * au);
 const cardZ = (au: number) => 100 - Math.round(au * 50);
 // Starting places for the server HTML (card 0 centred), so the arc is laid out before JS runs.
 const START = SLIDES.map((_, i) => pathU(0.5, i));
@@ -84,8 +80,11 @@ export default function HeroArc() {
     reduced: false,
     wide: true,
     H: 500,
-    visL: 300, // measured: hero centre to the copy's right edge
-    visR: 300, // measured: hero centre to Peter's left edge
+    // The mask's resolved stops (px from the hero centre), measured on resize: where it is
+    // fully transparent on the left / right, and the width of each fade band.
+    maskL: 300,
+    maskR: 300,
+    maskF: 100,
     centre: 0,
     focusOnChange: false,
   });
@@ -103,10 +102,11 @@ export default function HeroArc() {
       el.style.setProperty('--u', u.toFixed(4));
       el.style.setProperty('--au', au.toFixed(4));
       el.style.zIndex = String(cardZ(au));
-      // Only cards inside the visible window take the pointer: invisible ones never catch clicks.
+      // Cards at under half opacity in the mask's fade bands (or past them) take no pointer:
+      // no hover, no clicks on something you can barely see.
       const x = u * st.H;
-      const half = 100 * cardScale(au);
-      el.style.pointerEvents = x - half > -st.visL + 40 && x + half < st.visR - 40 ? 'auto' : 'none';
+      const opacity = Math.min((x + st.maskL) / st.maskF, (st.maskR - x) / st.maskF);
+      el.style.pointerEvents = opacity >= 0.5 ? 'auto' : 'none';
     }
     const c = nearestIndex(st.progress);
     if (c !== st.centre) {
@@ -160,18 +160,24 @@ export default function HeroArc() {
     const hero = rootRef.current?.closest('.nxhp-hero');
     const layer = layerRef.current;
     if (!hero || !layer) return;
+    // Resolve a length from the mask's CSS variables by measuring a throwaway probe.
+    const probe = (value: string) => {
+      const el = document.createElement('div');
+      el.style.cssText = `position:absolute;visibility:hidden;height:0;width:${value}`;
+      layer.appendChild(el);
+      const px = el.getBoundingClientRect().width;
+      el.remove();
+      return px;
+    };
     const measure = () => {
       const st = s.current;
-      const vw = window.innerWidth;
       const lr = layer.getBoundingClientRect();
-      const centreX = lr.left + lr.width / 2;
-      const copy = hero.querySelector('.nxhp-hero-copy')?.getBoundingClientRect();
-      const avatar = hero.querySelector('.nxhp-hero-avatar-img')?.getBoundingClientRect();
-      st.H = halfSpan(vw);
-      st.visL = copy ? centreX - copy.right : 300;
-      st.visR = avatar ? avatar.left - centreX : 300;
-      const band = fadeBand(vw);
-      const { d, ends } = railPath(lr.width, st.H, Math.max(60, st.visL - band), Math.max(60, st.visR - band));
+      st.H = halfSpan(window.innerWidth);
+      st.maskL = probe('var(--nxhp-arc-l)');
+      st.maskR = probe('var(--nxhp-arc-r)');
+      st.maskF = Math.max(1, probe('var(--nxhp-arc-fade)'));
+      // The rail's end dots sit where the mask turns fully opaque.
+      const { d, ends } = railPath(lr.width, st.H, Math.max(60, st.maskL - st.maskF), Math.max(60, st.maskR - st.maskF));
       setRail({ w: lr.width, d, ends });
       apply();
     };
@@ -361,7 +367,7 @@ export default function HeroArc() {
       >
         <div ref={layerRef} className="nxhp-arc-layer">
           {wide && rail && (
-            <svg className="nxhp-arc-rail" viewBox={`0 0 ${rail.w} ${STAGE_H}`} width={rail.w} height={STAGE_H} aria-hidden="true" focusable="false">
+            <svg className="nxhp-arc-rail" viewBox={`0 0 ${rail.w} ${SVG_H}`} width={rail.w} height={SVG_H} aria-hidden="true" focusable="false">
               <path d={rail.d} />
               {rail.ends.map(([x, y], i) => (
                 <circle key={i} cx={x} cy={y} r="4" />
@@ -390,35 +396,38 @@ export default function HeroArc() {
                   }
                   aria-hidden={current ? undefined : true}
                 >
-                  <Link
-                    ref={(el) => {
-                      linkRefs.current[i] = el;
-                    }}
-                    href={dest.href}
-                    {...(dest.isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    tabIndex={current ? 0 : -1}
-                    draggable={false}
-                    className="nxhp-arc-card nx-clay"
-                  >
-                    <span className="nxhp-arc-tab" aria-hidden="true" />
-                    <span className="nxhp-arc-shot">
-                      <Image
-                        src={slide.imageSrc}
-                        alt=""
-                        fill
-                        draggable={false}
-                        loading={i === 0 ? 'eager' : 'lazy'}
-                        sizes="(min-width: 1100px) 180px, 70vw"
-                      />
-                    </span>
-                    <span className="nxhp-arc-body">
-                      <span className={cx('nxhp-arc-chip', slide.status.toLowerCase() === 'live' && 'is-live')}>
-                        {slide.status}
+                  {/* Hover / focus lift lives on this wrapper, so it never fights the path transform on the item. */}
+                  <div className="nxhp-arc-lift">
+                    <Link
+                      ref={(el) => {
+                        linkRefs.current[i] = el;
+                      }}
+                      href={dest.href}
+                      {...(dest.isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      tabIndex={current ? 0 : -1}
+                      draggable={false}
+                      className="nxhp-arc-card nx-clay"
+                    >
+                      <span className="nxhp-arc-tab" aria-hidden="true" />
+                      <span className="nxhp-arc-shot">
+                        <Image
+                          src={slide.imageSrc}
+                          alt=""
+                          fill
+                          draggable={false}
+                          loading={i === 0 ? 'eager' : 'lazy'}
+                          sizes="(min-width: 1100px) 180px, 70vw"
+                        />
                       </span>
-                      <span className="nxhp-arc-name">{slide.title}</span>
-                      <span className="nxhp-arc-tagline">{slide.description}</span>
-                    </span>
-                  </Link>
+                      <span className="nxhp-arc-body">
+                        <span className={cx('nxhp-arc-chip', slide.status.toLowerCase() === 'live' && 'is-live')}>
+                          {slide.status}
+                        </span>
+                        <span className="nxhp-arc-name">{slide.title}</span>
+                        <span className="nxhp-arc-tagline">{slide.description}</span>
+                      </span>
+                    </Link>
+                  </div>
                 </li>
               );
             })}

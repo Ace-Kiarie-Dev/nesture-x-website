@@ -218,7 +218,15 @@
   /* Up to 30px past the right padding; .nxhp clips overflow-x, so no scrollbar. */
   .nxhp-hero-figure { transform: translateX(var(--nxhp-av-over)); }
   .nxhp-hero-glow { inset: 6% -10% 0 -10%; }
-  .nxhp-hero-mid { gap: 14px; }
+  .nxhp-hero-mid {
+    /* Arc stage height. The lowest visible card sits lower on wide screens (wider visible
+       window), so the stage grows with the viewport to keep ~40px above the buttons. */
+    --nxhp-arc-stage-h: clamp(380px, 380px + (100vw - 1440px) * 0.08, 420px);
+    gap: 14px;
+    /* The column is centred vertically; this keeps its margin box the height it had with a
+       410px stage, so the NX Originals label stays put while the buttons move up. */
+    margin-bottom: calc(410px - var(--nxhp-arc-stage-h));
+  }
 }
 
 /* ── 1b. Hero: NX Originals arc carousel (HeroArc.tsx) ─────────────────────
@@ -419,7 +427,7 @@
 @media (min-width: 1100px) {
   .nxhp-arc-stage {
     --nxhp-arc-h: clamp(380px, 30vw, 600px);
-    height: 410px;
+    height: var(--nxhp-arc-stage-h);
     touch-action: pan-y;
     cursor: grab;
   }
@@ -477,7 +485,7 @@
   .nxhp-arc-item,
   .nxhp-arc-item.is-sel {
     position: absolute;
-    top: 300px;
+    top: 360px; /* BASE_Y in HeroArc.tsx: card centres at the path's ends */
     left: 50%;
     width: 200px;
     margin: -135px 0 0 -100px;
@@ -490,6 +498,21 @@
   }
   .nxhp-arc-card { height: 270px; }
   .nxhp-arc-controls { display: flex; }
+}
+
+/* Hover lift: +6% on top of the path scale, on an inner wrapper so it never fights the
+   per-frame transform on the item, and raised over its neighbours. Mouse-like pointers
+   only, and not under reduced motion. The keyboard-focused centre card gets the same lift.
+   (Faded cards take no pointer at all: HeroArc switches their pointer-events off.) */
+.nxhp-arc-lift { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .nxhp-arc-lift { transition: scale 200ms ease-out; }
+  .nxhp-arc-item:has(.nxhp-arc-card:focus-visible) { z-index: 200 !important; }
+  .nxhp-arc-item:has(.nxhp-arc-card:focus-visible) .nxhp-arc-lift { scale: 1.06; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .nxhp-arc-item:hover { z-index: 200 !important; }
+  .nxhp-arc-item:hover .nxhp-arc-lift { scale: 1.06; }
 }
 
 @media (prefers-reduced-motion: reduce) {
