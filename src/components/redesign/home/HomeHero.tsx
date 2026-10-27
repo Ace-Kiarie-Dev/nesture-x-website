@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import NxOriginalsCarousel from '@/components/sections/NxOriginalsCarousel';
 import { ASSETS_3D } from '@/lib/assets3d';
 import { ClayButton, Eyebrow } from '@/components/redesign';
+import HeroArc from './HeroArc';
 
 const TYPED_PHRASES = [
   'for tourism brands',
@@ -149,16 +149,12 @@ export default function HomeHero() {
         </div>
 
         <div className="nxhp-hero-mid">
-          <div className="nxhp-originals nx-glass">
-            <Eyebrow>NX Originals</Eyebrow>
-            <NxOriginalsCarousel />
-          </div>
-
-          <ul className="nxhp-stats" aria-label="Nesture-X at a glance">
+          <HeroArc />
+          <ul className="nxhp-stats-pill nx-clay" aria-label="Nesture-X at a glance">
             {STATS.map((stat) => (
-              <li key={stat.label} className="nxhp-stat nx-clay">
-                <span className="nxhp-stat-num">{stat.number}</span>
-                <span className="nxhp-stat-label">{stat.label}</span>
+              <li key={stat.label}>
+                <span className="nxhp-stats-pill-num">{stat.number}</span>
+                <span className="nxhp-stats-pill-label">{stat.label}</span>
               </li>
             ))}
           </ul>

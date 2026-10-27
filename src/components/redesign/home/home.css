@@ -129,6 +129,8 @@
   display: flex;
   justify-content: center;
   min-width: 0;
+  position: relative;
+  z-index: 2;
   pointer-events: none;
 }
 .nxhp-hero-figure {
@@ -156,56 +158,17 @@
 [data-theme='light'] .nxhp-hero-avatar-img { filter: drop-shadow(0 20px 26px rgba(13, 27, 62, 0.22)); }
 [data-theme='light'] .nxhp-hero-glow { opacity: 0.45; }
 
+/* Middle: the NX Originals arc carousel and the stats pill. It sits under the copy
+   and the avatar (z-index 1 vs 2): the arc's layer runs beneath both, masked out. */
 .nxhp-hero-mid {
   grid-area: mid;
   position: relative;
-  z-index: 3;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 18px;
   min-width: 0;
-}
-
-.nxhp-originals {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 20px 18px 14px;
-}
-
-.nxhp-originals a:focus-visible {
-  display: block;
-  outline: 3px solid var(--nx-focus);
-  outline-offset: 4px;
-  border-radius: 16px;
-}
-
-.nxhp-stats {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-.nxhp-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 14px 12px;
-  border-radius: 22px;
-}
-.nxhp-stat-num {
-  font-family: var(--font-display), sans-serif;
-  font-size: 34px;
-  line-height: 1;
-  color: var(--nx-accent);
-}
-.nxhp-stat-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  line-height: 1.35;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--nx-body);
 }
 
 @media (min-width: 480px) {
@@ -223,19 +186,11 @@
   }
   .nxhp-hero-title { font-size: clamp(96px, 10.4vw, 150px); }
   .nxhp-hero-avatar { --nxhp-av-h: 400px; justify-content: flex-end; }
-  .nxhp-hero-mid {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  .nxhp-originals { width: 360px; flex-shrink: 0; }
-  .nxhp-stats { grid-template-columns: 1fr; width: 200px; }
 }
 
 /* Wide: the hero leaves the 1320px container for a wide one with small side padding,
    so the headline sits near the left edge and the avatar near the right, with the
-   NX Originals card centred between them. Nav and other sections keep 1320px.
+   NX Originals arc centred between them. Nav and other sections keep 1320px.
    Capped at 1920px (not 1760px) so a 1920px screen gets the full width and the
    headline lands 48px from the edge; wider screens centre it. */
 @media (min-width: 1100px) {
@@ -263,9 +218,283 @@
   /* Up to 30px past the right padding; .nxhp clips overflow-x, so no scrollbar. */
   .nxhp-hero-figure { transform: translateX(var(--nxhp-av-over)); }
   .nxhp-hero-glow { inset: 6% -10% 0 -10%; }
-  .nxhp-hero-mid { flex-direction: column; align-items: stretch; gap: 14px; }
-  .nxhp-originals { width: auto; }
-  .nxhp-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); width: auto; }
+  .nxhp-hero-mid { gap: 14px; }
+}
+
+/* ── 1b. Hero: NX Originals arc carousel (HeroArc.tsx) ─────────────────────
+   Wide (from 1100px): cards ride a shallow parabola across the whole hero, under the
+   text and the avatar. The track layer is as wide as the hero and centred on the middle
+   column; its horizontal mask hides cards before they reach the copy block or Peter, so
+   they appear out of thin air on the left and dissolve on the right. Mask stops are
+   measured from the hero centre:
+     --nxhp-arc-l  centre to the copy block's right edge: never less than the middle
+                   column's half + gap (176px + gap), otherwise the headline's width
+                   (3.2em of the title size, or the 480px tagline / buttons), less 12px.
+     --nxhp-arc-r  centre to Peter's left edge: exactly 180px + gap while his column
+                   limits his width, otherwise half the hero minus his 631px, less margin.
+   Below 1100px the same cards become a scroll-snap row. */
+
+.nxhp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.nxhp-arc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  width: 100%;
+}
+
+.nxhp-arc-label {
+  padding: 9px 18px;
+  border-radius: var(--nx-radius-pill);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-accent-soft);
+  white-space: nowrap;
+}
+
+.nxhp-arc-stage { position: relative; width: 100%; }
+
+/* Row (phones and tablets) */
+.nxhp-arc-track {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxhp-gutter));
+  /* Room above for the poking-out shot; side padding lets the first and last card centre. */
+  padding: 60px calc(50% - min(35vw, 150px) + var(--nxhp-gutter)) 26px;
+}
+.nxhp-arc-track::-webkit-scrollbar { display: none; }
+.nxhp-arc-item {
+  flex: 0 0 min(70vw, 300px);
+  scroll-snap-align: center;
+  transform: scale(0.9);
+  transition: transform 300ms var(--nxhp-ease);
+}
+.nxhp-arc-item.is-sel { transform: scale(1); }
+
+.nxhp-arc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 290px;
+  padding: 0 18px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  color: var(--nx-text);
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.nxhp-arc-card:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 4px;
+}
+/* Slanted accent tab peeking out behind the card. Negative z-index paints it under the
+   card's own clay background (the item is the stacking context). */
+.nxhp-arc-tab {
+  position: absolute;
+  inset: -16px -12px 36px 34px;
+  z-index: -1;
+  border-radius: 26px;
+  background: var(--nxhp-accent);
+  clip-path: polygon(18% 0, 100% 7%, 100% 100%, 0 90%);
+  opacity: 0.92;
+}
+.nxhp-arc-shot {
+  position: absolute;
+  top: -44px;
+  left: 14px;
+  right: 14px;
+  height: 46%;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  transform: rotate(-7deg);
+  box-shadow: 0 22px 34px rgba(2, 6, 18, 0.55), 0 6px 12px rgba(2, 6, 18, 0.35);
+  background: #0a0f1e;
+}
+.nxhp-arc-shot img { object-fit: cover; }
+[data-theme='light'] .nxhp-arc-shot { box-shadow: 0 20px 30px rgba(13, 27, 62, 0.3), 0 6px 12px rgba(13, 27, 62, 0.18); }
+
+.nxhp-arc-body { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.nxhp-arc-chip {
+  padding: 4px 9px;
+  border-radius: var(--nx-radius-pill);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-accent-soft);
+}
+.nxhp-arc-chip.is-live { color: #22c55e; }
+[data-theme='light'] .nxhp-arc-chip.is-live { color: #15803d; }
+.nxhp-arc-name {
+  font-family: var(--font-display), sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--nx-text);
+}
+.nxhp-arc-tagline {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--nx-body);
+}
+
+/* Prev / pause / next: wide only. */
+.nxhp-arc-controls { display: none; align-items: center; gap: 12px; }
+.nxhp-arc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  color: var(--nx-accent);
+  cursor: pointer;
+}
+.nxhp-arc-btn:hover { color: var(--nx-text); }
+.nxhp-arc-btn:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 3px;
+}
+
+/* Stats: one clay pill with hairline dividers. */
+.nxhp-stats-pill {
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  align-self: center;
+  border-radius: var(--nx-radius-pill);
+  padding: 10px 8px;
+  max-width: 100%;
+}
+.nxhp-stats-pill li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 14px;
+}
+.nxhp-stats-pill li + li { border-left: 1px solid color-mix(in srgb, var(--nx-blue) 28%, transparent); }
+.nxhp-stats-pill-num {
+  font-family: var(--font-display), sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--nx-accent);
+}
+.nxhp-stats-pill-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+  max-width: 9ch;
+}
+@media (max-width: 479px) {
+  .nxhp-stats-pill li { flex-direction: column; align-items: flex-start; gap: 4px; padding-inline: 10px; }
+}
+
+@media (min-width: 1100px) {
+  .nxhp-arc-stage {
+    --nxhp-arc-h: clamp(380px, 30vw, 600px);
+    height: 410px;
+    touch-action: pan-y;
+    cursor: grab;
+  }
+  .nxhp-arc-stage:active { cursor: grabbing; }
+  .nxhp-arc-layer {
+    --nxhp-pad: clamp(20px, 2.5vw, 48px);
+    --nxhp-gap: clamp(16px, 2vw, 40px);
+    --nxhp-arc-l: min(430px, max(176px + var(--nxhp-gap), 50vw - var(--nxhp-pad) - max(3.2 * clamp(88px, 8.2vw, 150px), 480px) - 12px));
+    --nxhp-arc-r: min(297px, max(176px + var(--nxhp-gap), 50vw - var(--nxhp-pad) - 615px));
+    --nxhp-arc-fade: clamp(80px, 7vw, 120px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: calc(min(100vw, 1920px) - 2 * var(--nxhp-pad));
+    translate: -50% 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to right,
+      transparent calc(50% - var(--nxhp-arc-l)),
+      #000 calc(50% - var(--nxhp-arc-l) + var(--nxhp-arc-fade)),
+      #000 calc(50% + var(--nxhp-arc-r) - var(--nxhp-arc-fade)),
+      transparent calc(50% + var(--nxhp-arc-r)));
+    mask-image: linear-gradient(to right,
+      transparent calc(50% - var(--nxhp-arc-l)),
+      #000 calc(50% - var(--nxhp-arc-l) + var(--nxhp-arc-fade)),
+      #000 calc(50% + var(--nxhp-arc-r) - var(--nxhp-arc-fade)),
+      transparent calc(50% + var(--nxhp-arc-r)));
+  }
+  .nxhp-arc-rail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: visible;
+  }
+  .nxhp-arc-rail path {
+    fill: none;
+    stroke: #3d8ef0;
+    stroke-opacity: 0.45;
+    stroke-width: 1.5;
+    stroke-dasharray: 2 9;
+    stroke-linecap: round;
+  }
+  .nxhp-arc-rail circle { fill: #3d8ef0; fill-opacity: 0.7; }
+
+  .nxhp-arc-track {
+    display: block;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+  /* Each card's place comes from --u (-1 left end, 0 middle, 1 right end) and --au = |u|,
+     written per frame by HeroArc and rendered by the server for the first paint.
+     Parabola 150px higher in the middle; tilt -12deg..12deg; scale 0.64 / 0.78 / 0.88
+     at the ends / quarters / middle. */
+  .nxhp-arc-item,
+  .nxhp-arc-item.is-sel {
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    width: 200px;
+    margin: -135px 0 0 -100px;
+    transition: none;
+    transform:
+      translate3d(calc(var(--u) * var(--nxhp-arc-h)), calc(-150px * (1 - var(--u) * var(--u))), 0)
+      rotate(calc(var(--u) * 12deg))
+      scale(calc(0.88 - 0.24 * (0.6 * var(--au) + 0.4 * var(--au) * var(--au))));
+    will-change: transform;
+  }
+  .nxhp-arc-card { height: 270px; }
+  .nxhp-arc-controls { display: flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxhp-arc-item { transition: none; }
+  .nxhp-arc-pause { display: none; }
 }
 
 /* ── Shared section bits ───────────────────────────────────────────────── */
