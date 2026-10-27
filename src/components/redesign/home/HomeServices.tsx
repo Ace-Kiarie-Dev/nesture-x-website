@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState, type KeyboardEvent } from 'react';
+import { useId, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import Image from 'next/image';
 import { SERVICES } from '@/constants';
 import { ASSETS_3D, type Asset3dKey } from '@/lib/assets3d';
@@ -90,7 +90,7 @@ export default function HomeServices() {
                 hidden={i !== active}
                 className="nxhp-svc-panel nx-clay"
               >
-                <div className="nxhp-svc-visual" style={{ background: svc.gradient }}>
+                <div className="nxhp-svc-visual" style={{ '--nxhp-svc-bg': svc.gradient } as CSSProperties}>
                   <span className="nxhp-svc-ghost" aria-hidden="true">
                     {svc.visual}
                   </span>

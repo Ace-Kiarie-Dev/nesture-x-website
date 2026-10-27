@@ -511,6 +511,12 @@
   height: 200px;
   overflow: hidden;
   border-radius: var(--nx-radius-card);
+  background: var(--nxhp-svc-bg);
+}
+/* The SERVICES gradients are dark; light mode swaps in a pale blue well. */
+[data-theme='light'] .nxhp-svc-visual {
+  background: linear-gradient(135deg, #dbe6f7 0%, #f3f6fb 100%);
+  box-shadow: var(--nx-shadow-inset);
 }
 .nxhp-svc-ghost {
   position: absolute;
