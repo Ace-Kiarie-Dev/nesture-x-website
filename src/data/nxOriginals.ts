@@ -15,6 +15,8 @@ export interface NxOriginal {
   status: string;
   statusDescription?: string;
   imageSrc: string;
+  // Accent colour for the homepage arc carousel (the slanted tab behind each card).
+  accent: string;
   // Absolute URL = external site; root-relative path = on-site landing page;
   // null = falls back to /portfolio/status/[slug]. See getProjectDestination.
   link?: string | null;
@@ -30,6 +32,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     statusDescription: 'Site coming soon',
     imageSrc: '/images/originals/Shinkusen-Card.webp',
+    accent: '#e5484d',
     link: 'https://shinkusen.co.ke',
   },
   {
@@ -40,6 +43,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'web',
     status: 'In Development',
     imageSrc: '/images/originals/Kikota-Card.webp',
+    accent: '#1a6fd4',
     link: '/kikota',
   },
   {
@@ -50,6 +54,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'Live',
     imageSrc: '/images/originals/BetLedger-Card.webp',
+    accent: '#2dd4bf',
     link: '/betledger',
   },
   {
@@ -61,6 +66,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     statusDescription: 'Coming to Play Store',
     imageSrc: '/images/originals/SoraPesa-Card.webp',
+    accent: '#6366f1',
     link: '/sorapesa',
   },
   {
@@ -71,6 +77,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'In Development',
     imageSrc: '/images/placeholder-hikarani.svg',
+    accent: '#8b5cf6',
     link: null,
   },
   {
@@ -81,6 +88,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'In Development',
     imageSrc: '/images/originals/MatatuDash-Card.webp',
+    accent: '#facc15',
     link: '/matatu-dash',
   },
   {
@@ -91,6 +99,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'In Development',
     imageSrc: '/images/placeholder-no-snooze-solen.svg',
+    accent: '#f59e0b',
     link: null,
   },
 ];
