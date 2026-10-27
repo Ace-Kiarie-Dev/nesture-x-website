@@ -3,8 +3,9 @@
 import { motion } from 'framer-motion';
 import HomeHero from '@/components/redesign/home/HomeHero';
 import NxButton from '@/components/ui/NxButton';
-import MarqueeStrip from '@/components/sections/Marquee';
-import Solutions from '@/components/sections/Solutions';
+import HomeMarquee from '@/components/redesign/home/HomeMarquee';
+import HomeSolve from '@/components/redesign/home/HomeSolve';
+import HomeReveal from '@/components/redesign/home/HomeReveal';
 import Services from '@/components/sections/Services';
 import Portfolio from '@/components/sections/Portfolio';
 import About from '@/components/sections/About';
@@ -18,11 +19,14 @@ import '@/components/redesign/home/home.css';
 export default function HomeClient() {
   return (
     <main className="nxhp">
+      <HomeReveal />
       <div className="nxhp-wrap">
         <HomeHero />
       </div>
-      <MarqueeStrip />
-      <Solutions />
+      <HomeMarquee />
+      <div className="nxhp-wrap">
+        <HomeSolve />
+      </div>
       <Services />
 
       {/* ── About teaser ── */}
