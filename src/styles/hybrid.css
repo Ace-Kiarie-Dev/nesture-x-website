@@ -139,6 +139,16 @@
   background: linear-gradient(160deg, color-mix(in srgb, var(--nx-blue) 18%, var(--nx-inset)), var(--nx-inset));
 }
 
+/* Visually hidden, still read by screen readers and search engines. */
+.nx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* ── Type ── */
 .nx-eyebrow {
   display: flex;
