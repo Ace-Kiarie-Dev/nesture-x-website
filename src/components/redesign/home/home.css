@@ -1183,15 +1183,14 @@
 /* ── 10. Stack ─────────────────────────────────────────────────────────── */
 
 .nxhp-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 12px; }
-.nxhp-stack-chips { margin-top: 40px; }
-.nxhp-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* Groups: one column on phones, two from 768px, three from 1200px. */
+.nxhp-stack-groups {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
   margin-top: 40px;
-  padding-top: 32px;
-  border-top: 1px solid color-mix(in srgb, var(--nx-blue) 18%, transparent);
 }
+.nxhp-stack-group { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .nxhp-tools-label {
   font-family: var(--font-mono), monospace;
   font-size: 12px;
@@ -1199,8 +1198,22 @@
   text-transform: uppercase;
   color: var(--nx-body);
 }
+.nxhp-stack-used {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid color-mix(in srgb, var(--nx-blue) 18%, transparent);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: 0.08em;
+  color: var(--nx-body);
+  opacity: 0.8;
+}
 @media (min-width: 768px) {
-  .nxhp-stack-chips { margin-top: 56px; }
+  .nxhp-stack-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; margin-top: 56px; }
+}
+@media (min-width: 1200px) {
+  .nxhp-stack-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* ── 11. CTA ───────────────────────────────────────────────────────────────
