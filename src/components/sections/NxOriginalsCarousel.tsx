@@ -169,11 +169,10 @@ export default function NxOriginalsCarousel() {
         </p>
       </div>
 
-      {/* Dot Navigation */}
+      {/* Dot Navigation: each dot sits in a 44px hit area. */}
       <div
         style={{
           display: 'flex',
-          gap: '12px',
           justifyContent: 'center',
           alignItems: 'center',
         }}
@@ -184,18 +183,22 @@ export default function NxOriginalsCarousel() {
             onClick={() => goToSlide(index)}
             aria-label={`Go to ${product.title}`}
             aria-current={currentIndex === index}
-            style={{
-              width: currentIndex === index ? '28px' : '12px',
-              height: '12px',
-              borderRadius: '6px',
-              border: '1px solid var(--color-primary)',
-              backgroundColor: currentIndex === index ? 'var(--color-primary)' : 'transparent',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'all 0.3s ease',
-            }}
+            className="nx-carousel-dot"
             title={product.title}
-          />
+          >
+            <span
+              aria-hidden
+              style={{
+                display: 'block',
+                width: currentIndex === index ? '28px' : '12px',
+                height: '12px',
+                borderRadius: '6px',
+                border: '1px solid var(--color-primary)',
+                backgroundColor: currentIndex === index ? 'var(--color-primary)' : 'transparent',
+                transition: 'all 0.3s ease',
+              }}
+            />
+          </button>
         ))}
       </div>
     </div>

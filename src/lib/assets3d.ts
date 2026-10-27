@@ -1,5 +1,6 @@
 // Generated from public/images/3d/webp with sharp (dimensions read from the files).
 // People carry descriptive alt text; decorative objects use alt="" so screen readers skip them.
+// *-cutout entries are transparent versions of renders that ship with a white background.
 // Pass a real alt at the call site when an object carries meaning there.
 
 export type Asset3d = {
@@ -12,16 +13,21 @@ export type Asset3d = {
 export const ASSETS_3D = {
   'about-team': { src: '/images/3d/webp/about-team.webp', width: 893, height: 900, alt: 'Illustrated 3D tech team collaborating' },
   'avatar': { src: '/images/3d/webp/avatar.webp', width: 900, height: 900, alt: '3D character coding on a laptop' },
+  'avatar-cutout': { src: '/images/3d/webp/avatar-cutout.webp', width: 887, height: 900, alt: '3D character coding on a laptop' },
   'calendar': { src: '/images/3d/webp/calendar.webp', width: 900, height: 900, alt: '' },
+  'calendar-cutout': { src: '/images/3d/webp/calendar-cutout.webp', width: 900, height: 732, alt: '' },
   'code-window': { src: '/images/3d/webp/code-window.webp', width: 900, height: 900, alt: '' },
+  'code-window-cutout': { src: '/images/3d/webp/code-window-cutout.webp', width: 900, height: 702, alt: '' },
   'contact-chat': { src: '/images/3d/webp/contact-chat.webp', width: 849, height: 673, alt: '' },
   'contact-mpesa': { src: '/images/3d/webp/contact-mpesa.webp', width: 407, height: 900, alt: 'Smiling 3D character confirming a mobile payment' },
   'controller': { src: '/images/3d/webp/controller.webp', width: 900, height: 900, alt: '' },
   'controller-cutout': { src: '/images/3d/webp/controller-cutout.webp', width: 900, height: 727, alt: '' },
   'envelope': { src: '/images/3d/webp/envelope.webp', width: 900, height: 900, alt: '' },
+  'envelope-cutout': { src: '/images/3d/webp/envelope-cutout.webp', width: 900, height: 685, alt: '' },
   'kikota-dumbbell': { src: '/images/3d/webp/kikota-dumbbell.webp', width: 900, height: 729, alt: '' },
   'kikota-keycard': { src: '/images/3d/webp/kikota-keycard.webp', width: 835, height: 895, alt: '' },
   'megaphone': { src: '/images/3d/webp/megaphone.webp', width: 900, height: 900, alt: '' },
+  'megaphone-cutout': { src: '/images/3d/webp/megaphone-cutout.webp', width: 900, height: 679, alt: '' },
   'misc-compass': { src: '/images/3d/webp/misc-compass.webp', width: 588, height: 900, alt: '' },
   'misc-rocket': { src: '/images/3d/webp/misc-rocket.webp', width: 652, height: 900, alt: '' },
   'partner-baker': { src: '/images/3d/webp/partner-baker.webp', width: 444, height: 900, alt: 'Cheerful 3D pastry chef with floating cupcakes' },
@@ -30,6 +36,7 @@ export const ASSETS_3D = {
   'partner-guide': { src: '/images/3d/webp/partner-guide.webp', width: 714, height: 900, alt: 'Cheerful 3D safari guide' },
   'partner-importer': { src: '/images/3d/webp/partner-importer.webp', width: 471, height: 900, alt: 'Logistics worker character carrying packages' },
   'pen': { src: '/images/3d/webp/pen.webp', width: 900, height: 900, alt: '' },
+  'pen-cutout': { src: '/images/3d/webp/pen-cutout.webp', width: 900, height: 668, alt: '' },
   'peter-arms-crossed': { src: '/images/3d/webp/peter-arms-crossed.webp', width: 347, height: 900, alt: 'Peter of Nesture-X as a 3D character in a blue hoodie, arms crossed' },
   'peter-pointing': { src: '/images/3d/webp/peter-pointing.webp', width: 560, height: 900, alt: 'Peter of Nesture-X as a 3D character pointing right' },
   'platform': { src: '/images/3d/webp/platform.webp', width: 900, height: 900, alt: '' },

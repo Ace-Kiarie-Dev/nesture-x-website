@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Hero from '@/components/sections/Hero';
+import HomeHero from '@/components/redesign/home/HomeHero';
 import NxButton from '@/components/ui/NxButton';
 import MarqueeStrip from '@/components/sections/Marquee';
 import Solutions from '@/components/sections/Solutions';
@@ -13,11 +13,14 @@ import Process from '@/components/sections/Process';
 import TechStack from '@/components/sections/TechStack';
 import CTA from '@/components/sections/CTA';
 import Contact from '@/components/sections/Contact';
+import '@/components/redesign/home/home.css';
 
 export default function HomeClient() {
   return (
-    <main>
-      <Hero />
+    <main className="nxhp">
+      <div className="nxhp-wrap">
+        <HomeHero />
+      </div>
       <MarqueeStrip />
       <Solutions />
       <Services />

@@ -28,3 +28,28 @@
 .nx-carousel-arrow--next {
   right: 8px;
 }
+
+/* 44px touch targets: the arrows grow, each dot gets a 44px button around its pill. */
+.nx-carousel-arrow {
+  width: 44px;
+  height: 44px;
+}
+
+.nx-carousel-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.nx-carousel-arrow:focus-visible,
+.nx-carousel-dot:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 2px;
+  border-radius: 999px;
+}

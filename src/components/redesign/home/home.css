@@ -1,0 +1,248 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Homepage, hybrid redesign. Scoped under .nxhp; colours, shadows and radii come
+   from the --nx-* tokens in app/globals.css, so the page follows the light / dark
+   toggle. Building blocks (.nx-clay, .nx-glass, .nx-band, .nx-h2, .nx-outline,
+   .nx-clay-btn) live in src/styles/hybrid.css; this file only lays them out.
+   Breakpoints: 768px (tablet) and 1200px (wide, same as SiteNav).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxhp {
+  --nxhp-gutter: 20px;
+  --nxhp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  /* Clip, not hidden: no horizontal page scroll from the avatar bleed or glows,
+     and no scroll container, so sticky descendants keep working. */
+  overflow-x: clip;
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxhp { --nxhp-gutter: 40px; }
+}
+
+.nxhp-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--nxhp-gutter);
+}
+
+/* In-page anchors (#portfolio, #contact) land below the floating nav. */
+.nxhp [id] { scroll-margin-top: 110px; }
+
+/* Dark sections let the page's nx-grid-bg show; slate ones use <Band>. */
+.nxhp-sec {
+  position: relative;
+  padding-block: clamp(72px, 10vw, 140px);
+}
+
+/* Ribbon glow behind the top 1000px, fading out downward. Dark theme only. */
+.nxhp-ribbons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1000px;
+  z-index: -1;
+  opacity: 0.4;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent);
+}
+[data-theme='light'] .nxhp-ribbons { display: none; }
+
+/* ── 1. Hero ───────────────────────────────────────────────────────────── */
+
+.nxhp-hero {
+  /* Clears the floating nav: 22px offset + 68px pill + air. */
+  padding-top: 124px;
+  padding-bottom: 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'copy' 'avatar' 'mid';
+  gap: 28px;
+}
+
+.nxhp-hero-copy {
+  grid-area: copy;
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.nxhp-hero-title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  /* "DISCOVER." is ~3.4em wide in Bebas: 23vw keeps it inside a 20px-gutter phone column. */
+  font-size: min(23vw, 88px);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+}
+.nxhp-hero-line { display: block; white-space: nowrap; }
+
+.nxhp-hero-lede {
+  max-width: 460px;
+  min-height: 3.2em; /* two lines reserved, so the typewriter never shifts the buttons */
+  padding-left: 16px;
+  border-left: 3px solid var(--nx-blue);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--nx-body);
+}
+.nxhp-caret {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: middle;
+  background: var(--nx-blue);
+  animation: blink 0.8s infinite;
+}
+
+.nxhp-hero-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Avatar: mirrored so he faces the headline, over a blue radial glow. The image
+   carries its intrinsic size, so the box is reserved before it loads. */
+.nxhp-hero-avatar {
+  grid-area: avatar;
+  position: relative;
+  justify-self: center;
+  height: 300px;
+  pointer-events: none;
+}
+.nxhp-hero-glow {
+  position: absolute;
+  inset: 8% 4% 0;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.55), rgba(26, 111, 212, 0));
+}
+.nxhp-hero-avatar-img {
+  position: relative;
+  display: block;
+  width: auto;
+  height: 100%;
+  transform: scaleX(-1);
+  filter: drop-shadow(0 26px 30px rgba(3, 6, 16, 0.5));
+  animation: nxhp-float 6s ease-in-out infinite;
+}
+[data-theme='light'] .nxhp-hero-avatar-img { filter: drop-shadow(0 20px 26px rgba(13, 27, 62, 0.22)); }
+[data-theme='light'] .nxhp-hero-glow { opacity: 0.45; }
+
+.nxhp-hero-mid {
+  grid-area: mid;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.nxhp-originals {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 18px 14px;
+}
+
+.nxhp-stats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.nxhp-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 12px;
+  border-radius: 22px;
+}
+.nxhp-stat-num {
+  font-family: var(--font-display), sans-serif;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--nx-accent);
+}
+.nxhp-stat-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+
+@media (min-width: 480px) {
+  .nxhp-hero-ctas { flex-direction: row; flex-wrap: wrap; width: auto; }
+}
+
+@media (min-width: 768px) {
+  .nxhp-hero {
+    padding-top: 140px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr);
+    grid-template-areas: 'copy avatar' 'mid mid';
+    align-items: center;
+    column-gap: 32px;
+    row-gap: 40px;
+  }
+  .nxhp-hero-title { font-size: clamp(96px, 10.4vw, 150px); }
+  .nxhp-hero-avatar { height: 400px; justify-self: end; }
+  .nxhp-hero-mid {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .nxhp-originals { width: 360px; flex-shrink: 0; }
+  .nxhp-stats { grid-template-columns: 1fr; width: 200px; }
+}
+
+/* Wide: headline left, NX Originals card centre, avatar bleeding off the right edge. */
+@media (min-width: 1200px) {
+  .nxhp-hero {
+    min-height: 900px;
+    padding-top: 150px;
+    padding-bottom: 90px;
+    grid-template-columns: minmax(0, 500px) 360px minmax(0, 1fr);
+    grid-template-areas: 'copy mid avatar';
+    column-gap: 40px;
+  }
+  .nxhp-hero-avatar {
+    justify-self: stretch;
+    align-self: center;
+    height: clamp(460px, 39vw, 580px);
+  }
+  .nxhp-hero-avatar-img {
+    position: absolute;
+    top: 0;
+    /* Bleed to the viewport edge, capped so very wide screens don't push him away. */
+    right: calc(-1 * min(var(--nxhp-gutter) + max(0px, (100vw - 1320px) / 2), 100px));
+  }
+  .nxhp-hero-glow { inset: 6% -10% 0 -10%; }
+  .nxhp-hero-mid { flex-direction: column; align-items: stretch; gap: 14px; }
+  .nxhp-originals { width: auto; }
+  .nxhp-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); width: auto; }
+}
+
+@keyframes nxhp-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxhp-hero-avatar-img,
+  .nxhp-caret { animation: none; }
+}
