@@ -6,9 +6,9 @@ import HomeMarquee from '@/components/redesign/home/HomeMarquee';
 import HomeSolve from '@/components/redesign/home/HomeSolve';
 import HomeReveal from '@/components/redesign/home/HomeReveal';
 import HomeServices from '@/components/redesign/home/HomeServices';
-import Portfolio from '@/components/sections/Portfolio';
-import About from '@/components/sections/About';
-import Partners from '@/components/sections/Partners';
+import HomePortfolio from '@/components/redesign/home/HomePortfolio';
+import HomeAbout from '@/components/redesign/home/HomeAbout';
+import HomePartners from '@/components/redesign/home/HomePartners';
 import Process from '@/components/sections/Process';
 import TechStack from '@/components/sections/TechStack';
 import CTA from '@/components/sections/CTA';
@@ -27,11 +27,11 @@ export default function HomeClient() {
         <HomeSolve />
         <HomeServices />
         <HomeWhoWeAre />
+        <HomePortfolio />
+        <HomeAbout />
+        <HomePartners />
       </div>
 
-      <Portfolio featuredOnly />
-      <About />
-      <Partners />
       <Process />
       <TechStack />
       <Contact />

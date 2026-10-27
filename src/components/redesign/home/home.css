@@ -588,6 +588,266 @@
   .nxhp-svc-art.is-code { height: 240px; }
 }
 
+/* ── 6. Portfolio ──────────────────────────────────────────────────────── */
+
+.nxhp-center { display: flex; justify-content: center; margin-top: 48px; }
+
+/* Masonry via CSS columns: 2 on phones, 3 on tablets, 4 wide. */
+.nxhp-port-grid {
+  list-style: none;
+  columns: 2;
+  column-gap: 12px;
+  margin-top: 40px;
+}
+.nxhp-port-cell { break-inside: avoid; margin-bottom: 12px; }
+.nxhp-port-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: var(--nx-shadow-clay);
+  /* Light backing in both themes: several logos are dark ink on transparent. */
+  background: #eef2f8;
+  text-decoration: none;
+}
+.nxhp-port-media { position: relative; display: block; }
+.nxhp-port-img { object-fit: cover; transition: scale 400ms var(--nxhp-ease); }
+.nxhp-port-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  max-width: calc(100% - 20px);
+  padding: 6px 12px;
+  border-radius: var(--nx-radius-pill);
+  background: rgba(10, 14, 28, 0.72);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #f5f5f5;
+}
+.nxhp-port-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 18px;
+  background: linear-gradient(to top, rgba(6, 10, 24, 0.9), rgba(6, 10, 24, 0) 65%);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.nxhp-port-client {
+  font-family: var(--font-display), sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  color: #f5f5f5;
+}
+.nxhp-port-view {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8ec0ff;
+}
+.nxhp-port-tile:hover .nxhp-port-overlay,
+.nxhp-port-tile:focus-visible .nxhp-port-overlay { opacity: 1; }
+.nxhp-port-tile:hover .nxhp-port-img { scale: 1.04; }
+.nxhp-port-tile:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .nxhp-port-grid { columns: 3; column-gap: 18px; margin-top: 56px; }
+  .nxhp-port-cell { margin-bottom: 18px; }
+  .nxhp-port-tile { border-radius: var(--nx-radius-card); }
+  .nxhp-port-pill { top: 14px; left: 14px; }
+}
+@media (min-width: 1200px) {
+  .nxhp-port-grid { columns: 4; column-gap: 22px; }
+  .nxhp-port-cell { margin-bottom: 22px; }
+}
+
+/* ── 7. About + stats ──────────────────────────────────────────────────── */
+
+.nxhp-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+.nxhp-about-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 640px;
+}
+.nxhp-about-copy .nx-h2 { margin-bottom: 8px; }
+.nxhp-about-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.nxhp-about-team {
+  width: 240px;
+  height: auto;
+  margin-bottom: -36px;
+  filter: drop-shadow(0 22px 26px rgba(3, 6, 16, 0.45));
+}
+[data-theme='light'] .nxhp-about-team { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.2)); }
+.nxhp-about-stats {
+  position: relative;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+.nxhp-about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 14px;
+  border-radius: 26px;
+}
+.nxhp-about-num {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  color: var(--nx-text);
+}
+.nxhp-about-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+
+@media (min-width: 768px) {
+  .nxhp-about-team { width: 300px; }
+  .nxhp-about-stat { padding: 24px 22px; }
+  .nxhp-about-label { font-size: 11px; }
+}
+@media (min-width: 1200px) {
+  .nxhp-about { grid-template-columns: minmax(0, 1fr) 520px; gap: 72px; }
+  .nxhp-about-team { width: 360px; margin-bottom: -48px; }
+}
+
+/* ── 8. Equity partners ───────────────────────────────────────────────────
+   Cards stay dark in both themes: partner-guide has a faint smudge that only
+   shows on light backgrounds. */
+
+.nxhp-partners-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: end;
+}
+
+.nxhp-partners {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxhp-gutter));
+  padding: 8px var(--nxhp-gutter) 24px;
+}
+.nxhp-partners::-webkit-scrollbar { display: none; }
+.nxhp-partners:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: -3px; border-radius: 12px; }
+
+.nxhp-partner {
+  flex: 0 0 220px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 22px 22px 26px;
+  border-radius: var(--nx-radius-clay);
+  background: linear-gradient(160deg, #1e2744, #121829);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -9px 16px rgba(0, 0, 0, 0.28), 14px 20px 36px rgba(4, 7, 16, 0.45);
+  color: #f5f5f5;
+}
+[data-theme='light'] .nxhp-partner {
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -9px 16px rgba(0, 0, 0, 0.28), 14px 20px 36px rgba(13, 27, 62, 0.2);
+}
+.nxhp-partner-art {
+  position: relative;
+  align-self: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 190px;
+  margin-bottom: 8px;
+}
+.nxhp-partner-art::before {
+  content: '';
+  position: absolute;
+  inset: 20% -30% 0;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.4), rgba(26, 111, 212, 0));
+}
+.nxhp-partner-art img {
+  position: relative;
+  width: auto;
+  height: 100%;
+  filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.45));
+}
+.nxhp-partner-badge {
+  padding: 5px 10px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(61, 142, 240, 0.5);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8ec0ff;
+}
+.nxhp-partner-name {
+  font-family: var(--font-display), sans-serif;
+  font-size: 28px;
+  line-height: 1;
+}
+.nxhp-partner-industry {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b8cef0;
+}
+
+@media (min-width: 768px) {
+  /* 3 + 2, centred. */
+  .nxhp-partners {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    overflow: visible;
+    margin: 56px 0 0;
+    padding: 0;
+  }
+  .nxhp-partner { flex: 0 0 calc((100% - 40px) / 3); }
+}
+@media (min-width: 1200px) {
+  .nxhp-partners-head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
+  .nxhp-partners { flex-wrap: nowrap; }
+  .nxhp-partner { flex: 1 1 0; min-width: 0; padding-inline: 20px; }
+}
+
 @keyframes nxhp-fade-in {
   from { opacity: 0; translate: 0 12px; }
   to { opacity: 1; translate: 0 0; }
@@ -608,7 +868,10 @@
   .nxhp-marquee-track,
   .nxhp-svc-panel,
   .nxhp-svc-art { animation: none; }
-  .nxhp-svc-tab { transition: none; }
+  .nxhp-svc-tab,
+  .nxhp-port-img,
+  .nxhp-port-overlay { transition: none; }
+  .nxhp-port-tile:hover .nxhp-port-img { scale: none; }
   .nxhp-reveal-ready .nxhp-reveal { transition: none; }
   /* Static: one copy, wrapped and centred. */
   .nxhp-marquee-track { width: auto; justify-content: center; padding-inline: 20px; }
