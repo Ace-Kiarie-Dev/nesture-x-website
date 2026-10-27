@@ -64,13 +64,44 @@ function useTypewriter(phrases: string[]) {
   return typedText;
 }
 
-export default function HomeHero() {
+// Its own component, so each keystroke re-renders this span and not the whole hero
+// (carousel and tilt card included).
+function TypedPhrase() {
   const typedText = useTypewriter(TYPED_PHRASES);
+  return <span>{typedText}</span>;
+}
+
+// The ribbon canvas is cheap to download but busy on the main thread, so it waits for
+// the page load and an idle moment: first paint and LCP never compete with it.
+function useAfterLoadIdle() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let idle = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const go = () => {
+      if ('requestIdleCallback' in window) idle = window.requestIdleCallback(() => setReady(true), { timeout: 2000 });
+      else timer = setTimeout(() => setReady(true), 1200);
+    };
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+    return () => {
+      window.removeEventListener('load', go);
+      if (idle) window.cancelIdleCallback(idle);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  return ready;
+}
+
+export default function HomeHero() {
+  const showRibbons = useAfterLoadIdle();
 
   return (
     <>
       <div className="nxhp-ribbons" aria-hidden="true">
-        <HubRibbons />
+        {showRibbons && <HubRibbons />}
       </div>
 
       <section className="nxhp-hero" aria-label="Introduction">
@@ -89,7 +120,7 @@ export default function HomeHero() {
 
           <p className="nxhp-hero-lede">
             We don&apos;t make products. We build solutions —{' '}
-            <span>{typedText}</span>
+            <TypedPhrase />
             <span className="nxhp-caret" aria-hidden="true" />
           </p>
 
@@ -108,7 +139,8 @@ export default function HomeHero() {
             alt="Peter of Nesture-X as a 3D character working on a laptop"
             width={AVATAR.width}
             height={AVATAR.height}
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="(min-width: 1200px) 590px, (min-width: 768px) 400px, 296px"
             className="nxhp-hero-avatar-img"
           />

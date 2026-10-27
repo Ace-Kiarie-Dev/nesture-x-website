@@ -157,6 +157,13 @@
   padding: 20px 18px 14px;
 }
 
+.nxhp-originals a:focus-visible {
+  display: block;
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 4px;
+  border-radius: 16px;
+}
+
 .nxhp-stats {
   list-style: none;
   display: grid;

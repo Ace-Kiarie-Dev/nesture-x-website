@@ -1,5 +1,5 @@
-'use client';
-
+// Server component despite the name (kept so page.tsx is untouched): only the hero,
+// services tabs, scroll reveal, count-ups and Contact ship client JS.
 import HomeHero from '@/components/redesign/home/HomeHero';
 import HomeWhoWeAre from '@/components/redesign/home/HomeWhoWeAre';
 import HomeMarquee from '@/components/redesign/home/HomeMarquee';
