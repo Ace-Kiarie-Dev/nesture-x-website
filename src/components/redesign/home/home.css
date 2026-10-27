@@ -383,6 +383,220 @@
   .nxhp-solve-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* ── 4. Who we are ─────────────────────────────────────────────────────── */
+
+.nxhp-nowrap { white-space: nowrap; }
+.nxhp-tipped { display: inline-block; white-space: nowrap; }
+.nxhp-tipped > span { display: inline-block; margin-right: 0.04em; transform-origin: 50% 100%; }
+
+.nxhp-who {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+.nxhp-who-art {
+  position: relative;
+  justify-self: start;
+  height: 240px;
+}
+.nxhp-who-art::before {
+  content: '';
+  position: absolute;
+  inset: 10% -20% 0;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.4), rgba(26, 111, 212, 0));
+}
+.nxhp-who-img {
+  position: relative;
+  display: block;
+  width: auto;
+  height: 100%;
+  filter: drop-shadow(0 22px 26px rgba(3, 6, 16, 0.45));
+}
+[data-theme='light'] .nxhp-who-img { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.2)); }
+.nxhp-who-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  min-width: 0;
+}
+.nxhp-who-text { max-width: 560px; }
+
+@media (min-width: 768px) {
+  .nxhp-who { grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+  .nxhp-who-art { height: 360px; justify-self: center; }
+}
+@media (min-width: 1200px) {
+  .nxhp-who { grid-template-columns: 300px minmax(0, 1fr); gap: 72px; }
+  .nxhp-who-art { height: 470px; }
+}
+
+/* ── 5. Services ───────────────────────────────────────────────────────── */
+
+.nxhp-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+
+.nxhp-svc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* Phone / tablet: a swipeable row of pills. Padding gives the shadows room. */
+.nxhp-svc-tabs {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxhp-gutter));
+  padding: 6px var(--nxhp-gutter) 18px;
+}
+.nxhp-svc-tabs::-webkit-scrollbar { display: none; }
+
+.nxhp-svc-tab {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 22px 8px 18px;
+  border: 0;
+  border-radius: var(--nx-radius-pill);
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--nx-body);
+  cursor: pointer;
+  transition: color 180ms ease, box-shadow 180ms ease;
+}
+.nxhp-svc-tab:hover { color: var(--nx-text); }
+.nxhp-svc-tab.is-on {
+  color: var(--nx-accent);
+  box-shadow: var(--nx-shadow-inset), inset 0 0 0 2px var(--nx-blue);
+}
+.nxhp-svc-tab:focus-visible,
+.nxhp-svc-panel:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 3px;
+}
+.nxhp-svc-num {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--nx-accent);
+}
+.nxhp-svc-tab-icon { width: 40px; height: 40px; object-fit: contain; }
+.nxhp-svc-tab-label { white-space: nowrap; }
+
+.nxhp-svc-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  padding: 20px 20px 28px;
+  animation: nxhp-fade-in 360ms var(--nxhp-ease);
+}
+.nxhp-svc-panel[hidden] { display: none; }
+
+.nxhp-svc-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  overflow: hidden;
+  border-radius: var(--nx-radius-card);
+}
+.nxhp-svc-ghost {
+  position: absolute;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(72px, 12vw, 140px);
+  letter-spacing: 0.08em;
+  color: rgba(26, 111, 212, 0.12);
+  user-select: none;
+}
+.nxhp-svc-art {
+  position: relative;
+  width: auto;
+  height: 150px;
+  filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.45));
+  animation: nxhp-bob 5s ease-in-out infinite;
+}
+
+.nxhp-svc-body { display: flex; flex-direction: column; gap: 18px; padding-inline: 6px; }
+.nxhp-svc-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(40px, 4.4vw, 60px);
+  line-height: 0.95;
+  color: var(--nx-text);
+}
+.nxhp-svc-desc { max-width: 560px; }
+.nxhp-svc-features {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px 24px;
+  margin-bottom: 8px;
+}
+.nxhp-svc-features li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--nx-body);
+}
+.nxhp-svc-bullet {
+  font-family: var(--font-mono), monospace;
+  color: var(--nx-accent);
+}
+
+@media (min-width: 768px) {
+  .nxhp-svc { margin-top: 56px; }
+  .nxhp-svc-panel { padding: 28px 28px 36px; }
+  .nxhp-svc-features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Wide: numbered pills stacked on the left, the active panel on the right. */
+@media (min-width: 1200px) {
+  .nxhp-svc { grid-template-columns: 320px minmax(0, 1fr); gap: 40px; align-items: start; }
+  .nxhp-svc-tabs {
+    position: sticky;
+    top: 120px;
+    flex-direction: column;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    gap: 14px;
+  }
+  .nxhp-svc-tab { min-height: 68px; padding-inline: 22px; }
+  .nxhp-svc-panel {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-areas: 'body visual';
+    padding: 44px;
+    gap: 40px;
+  }
+  .nxhp-svc-body { grid-area: body; padding: 0; }
+  .nxhp-svc-visual { grid-area: visual; height: 340px; align-self: start; }
+  .nxhp-svc-art { height: 210px; }
+  .nxhp-svc-art.is-code { height: 240px; }
+}
+
+@keyframes nxhp-fade-in {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes nxhp-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
 @keyframes nxhp-float {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -10px; }
@@ -391,7 +605,11 @@
 @media (prefers-reduced-motion: reduce) {
   .nxhp-hero-avatar-img,
   .nxhp-caret,
-  .nxhp-marquee-track { animation: none; }
+  .nxhp-marquee-track,
+  .nxhp-svc-panel,
+  .nxhp-svc-art { animation: none; }
+  .nxhp-svc-tab { transition: none; }
+  .nxhp-reveal-ready .nxhp-reveal { transition: none; }
   /* Static: one copy, wrapped and centred. */
   .nxhp-marquee-track { width: auto; justify-content: center; padding-inline: 20px; }
   .nxhp-marquee-list { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
