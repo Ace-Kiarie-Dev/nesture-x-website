@@ -9,9 +9,9 @@ import HomeServices from '@/components/redesign/home/HomeServices';
 import HomePortfolio from '@/components/redesign/home/HomePortfolio';
 import HomeAbout from '@/components/redesign/home/HomeAbout';
 import HomePartners from '@/components/redesign/home/HomePartners';
-import Process from '@/components/sections/Process';
-import TechStack from '@/components/sections/TechStack';
-import CTA from '@/components/sections/CTA';
+import HomeProcess from '@/components/redesign/home/HomeProcess';
+import HomeStack from '@/components/redesign/home/HomeStack';
+import HomeCta from '@/components/redesign/home/HomeCta';
 import Contact from '@/components/sections/Contact';
 import '@/components/redesign/home/home.css';
 
@@ -30,12 +30,14 @@ export default function HomeClient() {
         <HomePortfolio />
         <HomeAbout />
         <HomePartners />
+        <HomeProcess />
+        <HomeStack />
       </div>
-
-      <Process />
-      <TechStack />
+      {/* Shared with /contact, so it keeps its own styling. */}
       <Contact />
-      <CTA />
+      <div className="nxhp-wrap">
+        <HomeCta />
+      </div>
     </main>
   );
 }
