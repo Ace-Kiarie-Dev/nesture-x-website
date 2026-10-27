@@ -7,7 +7,7 @@ type Group = { label: string; items: string[] };
 // their exact wording; FEATURED (the old list's headline stack) keeps the blue chip.
 // Mobile (React Native, Expo) is folded into Frontend: two chips are too few for a group.
 const GROUPS: Group[] = [
-  { label: 'Languages', items: ['TypeScript', 'Vanilla JavaScript', 'HTML5/CSS3', 'Kotlin'] },
+  { label: 'Languages', items: ['TypeScript', 'Vanilla JavaScript', 'HTML5/CSS3', 'Kotlin', 'Python'] },
   {
     label: 'Frontend & mobile',
     items: [
@@ -28,13 +28,14 @@ const GROUPS: Group[] = [
   { label: 'Games & motion', items: ['HTML5 Canvas', 'matter-js', 'React Native Skia'] },
   {
     label: 'Backend & data',
-    items: ['Node.js', 'Express', 'MongoDB Atlas', 'Mongoose', 'SQLite', 'Firebase (Auth & Hosting)'],
+    items: ['Node.js', 'Express', 'MongoDB Atlas', 'Mongoose', 'Supabase', 'SQLite', 'Firebase (Auth & Hosting)'],
   },
   {
     label: 'Payments & messaging',
     items: ['M-Pesa Daraja API (STK Push)', 'Resend', 'WhatsApp Integration', 'Calendly'],
   },
   { label: 'Documents & media', items: ['react-pdf', 'pdf-lib', 'PDF.js', 'sharp'] },
+  { label: 'Desktop & scripting', items: ['PyMuPDF', 'pyttsx3', 'PyInstaller'] },
   { label: 'Hosting & DevOps', items: ['Vercel', 'Netlify', 'Railway', 'Render', 'GitHub'] },
   { label: 'Design Tools', items: ['Adobe Photoshop', 'Adobe Illustrator', 'Canva'] },
 ];
@@ -61,6 +62,7 @@ const PROJECTS = [
   'Matatu Dash',
   'Solo Standoff',
   'SoraPesa',
+  'Readout',
   'NX Admin',
 ];
 
