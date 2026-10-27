@@ -33,7 +33,7 @@ export default function HomeClient() {
         <HomeProcess />
         <HomeStack />
       </div>
-      {/* Shared with /contact, so it keeps its own styling. */}
+      {/* Shared with /contact; styles in sections/Contact.css. */}
       <Contact />
       <div className="nxhp-wrap">
         <HomeCta />

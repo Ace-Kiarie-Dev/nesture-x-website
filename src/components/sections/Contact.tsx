@@ -1,9 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import NxButton from '@/components/ui/NxButton';
+import { ClayButton } from '@/components/redesign';
+import { ASSETS_3D } from '@/lib/assets3d';
 import { CONTACT } from '@/constants';
+import './Contact.css';
+
+const CHAT = ASSETS_3D['contact-chat'];
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -60,31 +65,7 @@ const INITIAL: FormState = {
   service: '', brief: '', budget: '', timeline: '',
 };
 
-// ─── Shared styles ─────────────────────────────────────────────────────────────
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  background: 'rgba(26,111,212,0.04)',
-  border: '1px solid rgba(26,111,212,0.18)',
-  color: 'var(--color-text)',
-  fontFamily: 'var(--font-body)',
-  fontSize: '0.95rem',
-  padding: '0.85rem 1rem',
-  outline: 'none',
-  transition: 'border-color 0.2s',
-  appearance: 'none',
-  WebkitAppearance: 'none',
-};
-
-const labelStyle: React.CSSProperties = {
-  display: 'block',
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.6rem',
-  letterSpacing: '0.18em',
-  textTransform: 'uppercase',
-  color: 'var(--color-text-muted)',
-  marginBottom: '0.5rem',
-};
+// ─── Animation ─────────────────────────────────────────────────────────────────
 
 const stagger = {
   hidden:  {},
@@ -128,467 +109,260 @@ export default function Contact() {
     }
   }
 
+  // After a failed send, empty required fields get the error ring and point at the message.
+  const invalid = (field: 'name' | 'email' | 'brief') =>
+    status === 'error' && !form[field].trim() ? { 'aria-invalid': true, 'aria-describedby': 'cx-error' } : {};
+
   return (
-    <section
-      id="contact"
-      style={{
-        background: 'var(--color-surface)',
-        padding: 'clamp(6rem, 10vw, 11rem) clamp(2rem, 7vw, 8rem)',
-        borderTop: '1px solid rgba(26,111,212,0.10)',
-      }}
-    >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: 'clamp(4rem, 8vw, 8rem)',
-          alignItems: 'start',
-        }}
-      >
+    <section id="contact" className="nxc nx-grid-bg" aria-labelledby="cx-title">
+      <div className="nxc-wrap">
 
         {/* ── Left — headline + details ── */}
         <motion.div
+          className="nxc-intro"
           variants={stagger}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          <motion.p className="section-label" style={{ marginBottom: '2.5rem' }} variants={item}>
+          <motion.p className="nx-eyebrow" variants={item}>
             Get In Touch
           </motion.p>
 
-          <motion.h2
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.8rem, 5vw, 5rem)',
-              lineHeight: 0.9,
-              color: 'var(--color-text)',
-              marginBottom: '2rem',
-            }}
-            variants={item}
-          >
-            LET&apos;S BUILD SOMETHING THAT ACTUALLY WORKS.
+          <motion.h2 id="cx-title" className="nxc-title" variants={item}>
+            LET&apos;S BUILD SOMETHING THAT <span className="nx-outline nxc-title-2">ACTUALLY WORKS.</span>
           </motion.h2>
 
-          <motion.p
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 'clamp(1rem, 1.3vw, 1.05rem)',
-              lineHeight: 1.9,
-              color: 'var(--color-text-secondary)',
-              marginBottom: '3.5rem',
-            }}
-            variants={item}
-          >
+          <motion.p className="nx-body" variants={item}>
             Got an idea? Half an idea? Just exploring?<br />
             Start the conversation — we&apos;ll figure it out together.
           </motion.p>
 
           {/* Contact details */}
-          <motion.div
-            style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '3rem' }}
-            variants={stagger}
-          >
+          <motion.dl className="nxc-details nx-inset" variants={item}>
             {[
               { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
               { label: 'Phone', value: CONTACT.phoneDisplay, href: `tel:${CONTACT.phone}` },
               { label: 'Location', value: CONTACT.location, href: null },
             ].map(({ label, value, href }) => (
-              <motion.div
-                key={label}
-                variants={item}
-                style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.58rem',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: 'rgba(26,111,212,0.6)',
-                    flexShrink: 0,
-                    width: '4.5rem',
-                  }}
-                >
-                  {label}
-                </span>
-                {href ? (
-                  <a
-                    href={href}
-                    data-hover
-                    style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '0.95rem',
-                      color: 'var(--color-text-secondary)',
-                      textDecoration: 'none',
-                      transition: 'color 0.2s',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text)')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-secondary)')}
-                  >
-                    {value}
-                  </a>
-                ) : (
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: 'var(--color-text-secondary)' }}>
-                    {value}
-                  </span>
-                )}
-              </motion.div>
+              <div key={label} className="nxc-detail">
+                <dt>{label}</dt>
+                <dd>{href ? <a href={href}>{value}</a> : value}</dd>
+              </div>
             ))}
-          </motion.div>
+          </motion.dl>
 
           {/* WhatsApp CTA */}
           <motion.div variants={item}>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-hover
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: '0.85rem 1.5rem',
-                border: '1px solid rgba(37,211,102,0.35)',
-                background: 'rgba(37,211,102,0.06)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.68rem',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: '#25d366',
-                textDecoration: 'none',
-                transition: 'background 0.2s, border-color 0.2s',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.12)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(37,211,102,0.55)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.06)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(37,211,102,0.35)';
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="nxc-whatsapp">
+              <WhatsAppIcon size={16} />
               Message on WhatsApp
             </a>
           </motion.div>
+
+          <Image
+            src={CHAT.src}
+            alt=""
+            width={CHAT.width}
+            height={CHAT.height}
+            sizes="(min-width: 1100px) 220px, 160px"
+            className="nxc-art"
+          />
         </motion.div>
 
         {/* ── Right — form ── */}
         <motion.div
+          className="nxc-panel nx-clay"
           variants={stagger}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
           {status === 'success' ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              style={{
-                padding: 'clamp(3rem, 5vw, 4rem)',
-                border: '1px solid rgba(26,111,212,0.20)',
-                background: 'rgba(26,111,212,0.04)',
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(3rem, 6vw, 5rem)',
-                  lineHeight: 0.9,
-                  color: 'var(--color-text)',
-                  marginBottom: '1.5rem',
-                }}
-              >
-                YOU&apos;RE IN.
-              </p>
-              <p style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '1rem',
-                color: 'var(--color-text-secondary)',
-                lineHeight: 1.85,
-                marginBottom: '2.5rem',
-              }}>
+            <motion.div className="nxc-success" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+              <p className="nxc-success-title">YOU&apos;RE IN.</p>
+              <p className="nx-body">
                 We&apos;ve received your message — we&apos;ll take a look and get back to you within 24 hours.
                 Check your inbox for a confirmation.
               </p>
 
               {/* WhatsApp follow-up */}
-              <a
-                href={WHATSAPP_FOLLOWUP}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-hover
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.65rem',
-                  padding: '0.8rem 1.4rem',
-                  border: '1px solid rgba(37,211,102,0.35)',
-                  background: 'rgba(37,211,102,0.06)',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: '#25d366',
-                  textDecoration: 'none',
-                  transition: 'background 0.2s, border-color 0.2s',
-                  marginBottom: '2rem',
-                  width: '100%',
-                  justifyContent: 'center',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.12)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(37,211,102,0.55)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.06)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(37,211,102,0.35)';
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
+              <a href={WHATSAPP_FOLLOWUP} target="_blank" rel="noopener noreferrer" className="nxc-whatsapp nxc-whatsapp--wide">
+                <WhatsAppIcon size={14} />
                 Prefer faster? Continue on WhatsApp →
               </a>
 
-              <button
-                onClick={() => setStatus('idle')}
-                data-hover
-                style={{
-                  display: 'block',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'var(--color-text-faint)',
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-secondary)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-faint)')}
-              >
+              <button type="button" onClick={() => setStatus('idle')} className="nxc-again">
                 Send another message ↗
               </button>
             </motion.div>
           ) : (
-            <form onSubmit={submit} noValidate>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <form onSubmit={submit} noValidate className="nxc-form">
 
-                {/* Name + Email */}
-                <motion.div
-                  style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
-                  variants={item}
-                >
-                  <div>
-                    <label htmlFor="cx-name" style={labelStyle}>Name *</label>
-                    <input
-                      id="cx-name"
-                      name="name"
-                      type="text"
-                      required
-                      placeholder="Your name"
-                      value={form.name}
-                      onChange={handle}
-                      style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                      onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="cx-email" style={labelStyle}>Email *</label>
-                    <input
-                      id="cx-email"
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="your@email.com"
-                      value={form.email}
-                      onChange={handle}
-                      style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                      onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
-                    />
-                  </div>
-                </motion.div>
-
-                {/* Phone */}
-                <motion.div variants={item}>
-                  <label htmlFor="cx-phone" style={labelStyle}>Phone / WhatsApp (optional)</label>
+              {/* Name + Email */}
+              <motion.div className="nxc-row" variants={item}>
+                <div className="nxc-field">
+                  <label htmlFor="cx-name">Name *</label>
                   <input
-                    id="cx-phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="+254 7XX XXX XXX"
-                    value={form.phone}
+                    id="cx-name"
+                    name="name"
+                    type="text"
+                    required
+                    placeholder="Your name"
+                    value={form.name}
                     onChange={handle}
-                    style={inputStyle}
-                    onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                    onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
+                    className="nxc-input"
+                    {...invalid('name')}
                   />
-                </motion.div>
+                </div>
+                <div className="nxc-field">
+                  <label htmlFor="cx-email">Email *</label>
+                  <input
+                    id="cx-email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="your@email.com"
+                    value={form.email}
+                    onChange={handle}
+                    className="nxc-input"
+                    {...invalid('email')}
+                  />
+                </div>
+              </motion.div>
 
-                {/* Service */}
-                <motion.div variants={item}>
-                  <label htmlFor="cx-service" style={labelStyle}>Service</label>
-                  <div style={{ position: 'relative' }}>
+              {/* Phone */}
+              <motion.div className="nxc-field" variants={item}>
+                <label htmlFor="cx-phone">Phone / WhatsApp (optional)</label>
+                <input
+                  id="cx-phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="+254 7XX XXX XXX"
+                  value={form.phone}
+                  onChange={handle}
+                  className="nxc-input"
+                />
+              </motion.div>
+
+              {/* Service */}
+              <motion.div className="nxc-field" variants={item}>
+                <label htmlFor="cx-service">Service</label>
+                <div className="nxc-select">
+                  <select
+                    id="cx-service"
+                    name="service"
+                    value={form.service}
+                    onChange={handle}
+                    className={form.service ? 'nxc-input' : 'nxc-input is-empty'}
+                  >
+                    {SERVICES.map(s => (
+                      <option key={s.value} value={s.value}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </motion.div>
+
+              {/* Brief */}
+              <motion.div className="nxc-field" variants={item}>
+                <label htmlFor="cx-brief">What you&apos;re building *</label>
+                <textarea
+                  id="cx-brief"
+                  name="brief"
+                  required
+                  rows={5}
+                  placeholder="What are you trying to build? What's the goal?"
+                  value={form.brief}
+                  onChange={handle}
+                  className="nxc-input nxc-textarea"
+                  {...invalid('brief')}
+                />
+              </motion.div>
+
+              {/* Budget + Timeline */}
+              <motion.div className="nxc-row" variants={item}>
+                <div className="nxc-field">
+                  <label htmlFor="cx-budget">Do you have a budget in mind?</label>
+                  <div className="nxc-select">
                     <select
-                      id="cx-service"
-                      name="service"
-                      value={form.service}
+                      id="cx-budget"
+                      name="budget"
+                      value={form.budget}
                       onChange={handle}
-                      style={{ ...inputStyle, color: form.service ? 'var(--color-text)' : 'var(--color-text-muted)', cursor: 'pointer' }}
-                      onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                      onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
+                      className={form.budget ? 'nxc-input' : 'nxc-input is-empty'}
                     >
-                      {SERVICES.map(s => (
-                        <option key={s.value} value={s.value} style={{ background: 'var(--color-surface)', color: 'var(--color-text)' }}>
-                          {s.label}
+                      {BUDGETS.map(b => (
+                        <option key={b.value} value={b.value}>
+                          {b.label}
                         </option>
                       ))}
                     </select>
-                    <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.7rem' }}>▼</span>
                   </div>
-                </motion.div>
-
-                {/* Brief */}
-                <motion.div variants={item}>
-                  <label htmlFor="cx-brief" style={labelStyle}>What you&apos;re building *</label>
-                  <textarea
-                    id="cx-brief"
-                    name="brief"
-                    required
-                    rows={5}
-                    placeholder="What are you trying to build? What's the goal?"
-                    value={form.brief}
-                    onChange={handle}
-                    style={{ ...inputStyle, resize: 'vertical', minHeight: '120px' }}
-                    onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                    onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
-                  />
-                </motion.div>
-
-                {/* Budget + Timeline */}
-                <motion.div
-                  style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
-                  variants={item}
-                >
-                  <div>
-                    <label htmlFor="cx-budget" style={labelStyle}>Do you have a budget in mind?</label>
-                    <div style={{ position: 'relative' }}>
-                      <select
-                        id="cx-budget"
-                        name="budget"
-                        value={form.budget}
-                        onChange={handle}
-                        style={{ ...inputStyle, color: form.budget ? 'var(--color-text)' : 'var(--color-text-muted)', cursor: 'pointer' }}
-                        onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                        onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
-                      >
-                        {BUDGETS.map(b => (
-                          <option key={b.value} value={b.value} style={{ background: 'var(--color-surface)', color: 'var(--color-text)' }}>
-                            {b.label}
-                          </option>
-                        ))}
-                      </select>
-                      <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.7rem' }}>▼</span>
-                    </div>
+                </div>
+                <div className="nxc-field">
+                  <label htmlFor="cx-timeline">When are you looking to start?</label>
+                  <div className="nxc-select">
+                    <select
+                      id="cx-timeline"
+                      name="timeline"
+                      value={form.timeline}
+                      onChange={handle}
+                      className={form.timeline ? 'nxc-input' : 'nxc-input is-empty'}
+                    >
+                      {TIMELINES.map(t => (
+                        <option key={t.value} value={t.value}>
+                          {t.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  <div>
-                    <label htmlFor="cx-timeline" style={labelStyle}>When are you looking to start?</label>
-                    <div style={{ position: 'relative' }}>
-                      <select
-                        id="cx-timeline"
-                        name="timeline"
-                        value={form.timeline}
-                        onChange={handle}
-                        style={{ ...inputStyle, color: form.timeline ? 'var(--color-text)' : 'var(--color-text-muted)', cursor: 'pointer' }}
-                        onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-                        onBlur={e => (e.target.style.borderColor = 'rgba(26,111,212,0.18)')}
-                      >
-                        {TIMELINES.map(t => (
-                          <option key={t.value} value={t.value} style={{ background: 'var(--color-surface)', color: 'var(--color-text)' }}>
-                            {t.label}
-                          </option>
-                        ))}
-                      </select>
-                      <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.7rem' }}>▼</span>
-                    </div>
-                  </div>
-                </motion.div>
+                </div>
+              </motion.div>
 
-                {/* Error */}
-                {status === 'error' && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.72rem',
-                      color: '#ff4444',
-                      letterSpacing: '0.05em',
-                      padding: '0.75rem 1rem',
-                      border: '1px solid rgba(255,68,68,0.25)',
-                      background: 'rgba(255,68,68,0.05)',
-                    }}
-                  >
-                    {errorMsg}
-                  </motion.p>
-                )}
-
-                {/* Friction line */}
-                <motion.p
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.82rem',
-                    lineHeight: 1.7,
-                    color: 'var(--color-text-faint)',
-                    borderLeft: '2px solid rgba(26,111,212,0.2)',
-                    paddingLeft: '0.85rem',
-                  }}
-                  variants={item}
-                >
-                  We typically take on projects where we can add real value — if it&apos;s a fit, we&apos;ll map the next steps together.
+              {/* Error */}
+              {status === 'error' && (
+                <motion.p id="cx-error" role="alert" className="nxc-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  {errorMsg}
                 </motion.p>
+              )}
 
-                {/* Submit */}
-                <motion.div variants={item}>
-                  <NxButton
-                    variant="primary"
-                    size="lg"
-                    type="submit"
-                    disabled={status === 'sending'}
-                    className="w-full"
-                  >
-                    {status === 'sending' ? 'SENDING…' : 'SEND INQUIRY'}
-                  </NxButton>
-                </motion.div>
+              {/* Friction line */}
+              <motion.p className="nxc-note" variants={item}>
+                We typically take on projects where we can add real value — if it&apos;s a fit, we&apos;ll map the next steps together.
+              </motion.p>
 
-                <motion.p
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.58rem',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: 'var(--color-text-faint)',
-                    textAlign: 'center',
-                  }}
-                  variants={item}
+              {/* Submit */}
+              <motion.div variants={item}>
+                <ClayButton
+                  type="submit"
+                  disabled={status === 'sending'}
+                  aria-busy={status === 'sending'}
+                  className="nxc-submit"
                 >
-                  We respond within 24 hours · First conversation is always free
-                </motion.p>
+                  {status === 'sending' && <span className="nxc-spinner" aria-hidden="true" />}
+                  {status === 'sending' ? 'SENDING…' : 'SEND INQUIRY'}
+                </ClayButton>
+              </motion.div>
 
-              </div>
+              <motion.p className="nxc-footnote" variants={item}>
+                We respond within 24 hours · First conversation is always free
+              </motion.p>
+
             </form>
           )}
         </motion.div>
 
       </div>
     </section>
+  );
+}
+
+function WhatsAppIcon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
   );
 }
