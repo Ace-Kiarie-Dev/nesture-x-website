@@ -1,15 +1,23 @@
 import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
-import { Montserrat } from 'next/font/google';
+import localFont from 'next/font/local';
 import SoraPesaLanding from '@/components/sorapesa/SoraPesaLanding';
 import '@/components/sorapesa/sorapesa.css';
 
 // Montserrat is only used by SoraPesa, so it's loaded here rather than in the root layout.
-const montserrat = Montserrat({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
+// Self-hosted from src/fonts (latin, OFL).
+const montserrat = localFont({
+  src: [
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '800', style: 'normal' },
+  ],
   variable: '--font-montserrat',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Montserrat Fallback'],
 });
 
 const TITLE = 'SoraPesa — Money App for Young Kenyans';

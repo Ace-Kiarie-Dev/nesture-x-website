@@ -1,24 +1,38 @@
 import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
-import { Inter, Montserrat } from 'next/font/google';
+import localFont from 'next/font/local';
 import MatatuDashLanding from '@/components/matatu-dash/MatatuDashLanding';
 import '@/components/matatu-dash/matatu-dash.css';
 
 // Loaded here rather than in the root layout, scoped to Matatu Dash. SoraPesa
 // loads its own Montserrat instance, so the two pages never share weights.
-const montserrat = Montserrat({
-  weight: ['700', '800', '900'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
+// Self-hosted from src/fonts (latin, OFL).
+const montserrat = localFont({
+  src: [
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-italic.woff2', weight: '700', style: 'italic' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '800', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-italic.woff2', weight: '800', style: 'italic' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-normal.woff2', weight: '900', style: 'normal' },
+    { path: '../../fonts/montserrat/montserrat-latin-wght-italic.woff2', weight: '900', style: 'italic' },
+  ],
   variable: '--font-md-display',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Montserrat Fallback'],
 });
 
-const inter = Inter({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+const inter = localFont({
+  src: [
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-md-body',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Inter Fallback'],
 });
 
 const TITLE = 'Matatu Dash — Nairobi Street Hopper Game';

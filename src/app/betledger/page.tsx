@@ -1,16 +1,23 @@
 import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import { BETLEDGER_PLAY_URL_CLEAN } from '@/constants';
 import BetLedgerLanding from '@/components/betledger/BetLedgerLanding';
 import '@/components/betledger/betledger.css';
 
 // Inter is only used by BetLedger, so it's loaded here rather than in the root layout.
-const inter = Inter({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+// Self-hosted from src/fonts (latin, OFL).
+const inter = localFont({
+  src: [
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-inter',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Inter Fallback'],
 });
 
 const TITLE = 'BetLedger — Bet Tracker for Kenyan Sports Bettors';

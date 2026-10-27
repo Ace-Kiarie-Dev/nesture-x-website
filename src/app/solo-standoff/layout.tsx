@@ -1,21 +1,34 @@
 import type { Metadata } from 'next';
-import { Baloo_2, Barlow } from 'next/font/google';
+import localFont from 'next/font/local';
 import '@/components/solo-standoff/solo-standoff.css';
 
 // Solo Standoff wears the game's own skin. Baloo 2 is the in-game UI font, so
 // these load here, for this route and its legal pages only.
-const baloo = Baloo_2({
-  weight: ['700', '800'],
-  subsets: ['latin'],
+// Self-hosted from src/fonts (latin, OFL).
+const baloo = localFont({
+  src: [
+    { path: '../../fonts/baloo-2/baloo-2-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+    { path: '../../fonts/baloo-2/baloo-2-latin-wght-normal.woff2', weight: '800', style: 'normal' },
+  ],
   variable: '--font-baloo',
   display: 'swap',
+  adjustFontFallback: false,
+  // No space before the 2: next/font writes fallback names unquoted, and a word starting
+  // with a digit would void the whole font-family declaration.
+  fallback: ['Baloo2 Fallback'],
 });
 
-const barlow = Barlow({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+const barlow = localFont({
+  src: [
+    { path: '../../fonts/barlow/barlow-latin-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../fonts/barlow/barlow-latin-500-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../fonts/barlow/barlow-latin-600-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/barlow/barlow-latin-700-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-barlow',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Barlow Fallback'],
 });
 
 const ICONS = '/images/solo-standoff/social';

@@ -1,24 +1,38 @@
 import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
-import { Barlow_Condensed, Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import KikotaLanding from '@/components/kikota/KikotaLanding';
 import '@/components/kikota/kikota.css';
 
 // Barlow Condensed and Inter are only used by Kikota, so they're loaded here
-// rather than in the root layout.
-const barlow = Barlow_Condensed({
-  weight: ['600', '700', '800'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
+// rather than in the root layout. Self-hosted from src/fonts (latin, OFL).
+const barlowCondensed = localFont({
+  src: [
+    { path: '../../fonts/barlow-condensed/barlow-condensed-latin-600-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/barlow-condensed/barlow-condensed-latin-600-italic.woff2', weight: '600', style: 'italic' },
+    { path: '../../fonts/barlow-condensed/barlow-condensed-latin-700-normal.woff2', weight: '700', style: 'normal' },
+    { path: '../../fonts/barlow-condensed/barlow-condensed-latin-700-italic.woff2', weight: '700', style: 'italic' },
+    { path: '../../fonts/barlow-condensed/barlow-condensed-latin-800-normal.woff2', weight: '800', style: 'normal' },
+    { path: '../../fonts/barlow-condensed/barlow-condensed-latin-800-italic.woff2', weight: '800', style: 'italic' },
+  ],
   variable: '--font-kk-display',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Barlow Condensed Fallback'],
 });
 
-const inter = Inter({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
+const inter = localFont({
+  src: [
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+    { path: '../../fonts/inter/inter-latin-wght-normal.woff2', weight: '800', style: 'normal' },
+  ],
   variable: '--font-kk-body',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Inter Fallback'],
 });
 
 const TITLE = 'Kikota — Gym Management Software for Kenya';
@@ -88,7 +102,7 @@ export default function KikotaPage() {
   return (
     <>
       <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
-      <div className={`theme-kikota kk-under-nav ${barlow.variable} ${inter.variable} flex-1`}>
+      <div className={`theme-kikota kk-under-nav ${barlowCondensed.variable} ${inter.variable} flex-1`}>
         <KikotaLanding />
       </div>
     </>
