@@ -215,13 +215,16 @@
 }
 
 @media (min-width: 1200px) {
+  /* One line from ~1300px; narrower desktops wrap to two, hence the card radius. */
   .nxpf-tabs-row {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
     overflow: visible;
     border-radius: 32px;
   }
+  .nxpf-tab-chip { padding: 12px 11px; letter-spacing: 0; gap: 6px; }
+  .nxpf-tab[aria-current='true']::after { left: 12px; right: 12px; }
 }
 
 /* Filtering: the wrapper's data-cat hides the other categories' cards. */
@@ -239,4 +242,172 @@
 
 @media (prefers-reduced-motion: reduce) {
   .nxpf-tab-chip { transition: none; }
+}
+
+/* ── 3. Masonry grid ───────────────────────────────────────────────────────
+   CSS columns: 1 below 380px, 2 from 380px (larger phones and tablets), 3 from
+   1024px. Each card keeps its image's real aspect ratio (no layout shift). */
+
+.nxpf-grid-sec { padding-bottom: clamp(56px, 8vw, 112px); }
+
+.nxpf-grid {
+  list-style: none;
+  columns: 1;
+  column-gap: 14px;
+}
+.nxpf-item {
+  break-inside: avoid;
+  margin-bottom: 14px;
+}
+@media (min-width: 380px) {
+  .nxpf-grid { columns: 2; }
+}
+@media (min-width: 768px) {
+  .nxpf-grid { column-gap: 20px; }
+  .nxpf-item { margin-bottom: 20px; }
+}
+@media (min-width: 1024px) {
+  .nxpf-grid { columns: 3; }
+}
+
+/* Card: clay-style frame, thin border, soft shadow. */
+.nxpf-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--nx-glass-border);
+  background: var(--nx-inset);
+  box-shadow: 0 14px 30px rgba(3, 6, 16, 0.45);
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 220ms var(--nxpf-ease), box-shadow 220ms var(--nxpf-ease);
+}
+[data-theme='light'] .nxpf-card { box-shadow: 0 12px 26px rgba(13, 27, 62, 0.12); }
+.nxpf-card:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 3px;
+}
+.nxpf-card-media { position: relative; display: block; width: 100%; }
+.nxpf-card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No-image tile (PDF without a cover, coming-soon site). */
+.nxpf-card-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(160deg, var(--nx-clay-from), var(--nx-clay-to));
+}
+.nxpf-card-ph-mark {
+  font-family: var(--font-display), sans-serif;
+  font-size: 56px;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--nx-blue);
+}
+.nxpf-card-ph-text {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+
+/* Type pill, top left. Dark glass in both themes so it reads on any artwork. */
+.nxpf-card-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(8, 12, 24, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* Title + View, over a dark gradient from the bottom. */
+.nxpf-card-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 44px 14px 14px;
+  background: linear-gradient(to top, rgba(4, 8, 20, 0.92), rgba(4, 8, 20, 0.6) 55%, rgba(4, 8, 20, 0));
+}
+.nxpf-card-title {
+  min-width: 0;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #ffffff;
+}
+.nxpf-card-view { flex-shrink: 0; min-height: 36px; padding: 8px 14px; font-size: 11px; }
+
+/* Mouse-like pointers: the overlay rises on hover or keyboard focus. */
+@media (hover: hover) {
+  .nxpf-card-overlay {
+    opacity: 0;
+    translate: 0 30%;
+    transition: opacity 220ms var(--nxpf-ease), translate 220ms var(--nxpf-ease);
+  }
+  .nxpf-card:hover .nxpf-card-overlay,
+  .nxpf-card:focus-visible .nxpf-card-overlay { opacity: 1; translate: 0 0; }
+  .nxpf-card:hover { transform: translateY(-3px); }
+}
+/* Touch: no hover, so a slim title bar stays at the bottom. */
+@media (max-width: 767px) {
+  .nxpf-card { border-radius: 16px; }
+  .nxpf-card-pill { top: 8px; left: 8px; padding: 4px 8px; font-size: 9px; letter-spacing: 0.08em; }
+}
+@media (hover: none) {
+  .nxpf-card-overlay { padding: 22px 10px 8px; }
+  .nxpf-card-title {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nxpf-card-view { display: none; }
+}
+
+/* Empty category. */
+.nxpf-empty {
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 48px 24px;
+  text-align: center;
+}
+.nxpf-empty-img { width: auto; height: 140px; filter: drop-shadow(0 16px 18px rgba(3, 6, 16, 0.45)); }
+.nxpf-empty-text {
+  font-family: var(--font-display), sans-serif;
+  font-size: 32px;
+  line-height: 1.05;
+  color: var(--nx-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-card,
+  .nxpf-card-overlay { transition: none; }
+  .nxpf-card:hover { transform: none; }
 }

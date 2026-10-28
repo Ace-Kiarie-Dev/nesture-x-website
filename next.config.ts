@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    // Next's defaults plus 480: a 400px portfolio column at 1x gets 480, not 640.
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 480],
+  },
   // Templates are read at runtime via fs.readFileSync (src/emails/render.ts) —
   // trace them into the API function bundles explicitly.
   outputFileTracingIncludes: {
