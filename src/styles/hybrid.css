@@ -446,17 +446,21 @@ body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
 }
 
 /* ── Hero ribbons (HeroRibbons.tsx) on page heroes: /services, /portfolio ──
-   Behind the hero copy and art (the wrapper isolates, the layer sits at z -1),
-   clipped to the hero wrapper, fading out over the last quarter of the hero so it
-   never runs behind the tabs or the grid. Same treatment as the homepage layer:
-   0.4 opacity, and none in light theme. The wrapper needs .nx-hero-ribbons-host. */
+   Layer order, back to front: page background, the faint grid (.nx-grid-bg on the
+   site wrapper, the same layer the homepage and hub sit on), ribbons, copy and art.
+   The ribbons sit at z -1 in the isolated hero host, so above the grid; the mask is
+   on this layer only, so it fades the ribbons out over the last quarter of the hero
+   and leaves the grid alone. Height follows the hero; width bleeds to the viewport
+   edges like the homepage layer (the page's overflow-x: clip stops any scroll).
+   Same treatment as the homepage: 0.4 opacity, none in light theme. The hero
+   wrapper needs .nx-hero-ribbons-host. */
 .nx-hero-ribbons-host {
   position: relative;
   isolation: isolate;
 }
 .nx-hero-ribbons {
   position: absolute;
-  inset: 0;
+  inset: 0 calc(50% - 50vw);
   z-index: -1;
   overflow: hidden;
   opacity: 0.4;
