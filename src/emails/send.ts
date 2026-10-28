@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
-import { renderTemplate } from './render';
 import { buildContactReply } from './contact-reply';
 import { buildBookingConfirmation } from './booking-confirmation';
+import { buildLaunchSignup } from './launch-signup';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -46,11 +46,13 @@ export function sendLaunchSignup(params: {
   to: string;
   productName: string;
 }) {
+  const { html, text } = buildLaunchSignup(params);
   return resend.emails.send({
     from: 'Nesture-X <launch@nesturex.com>',
     to: params.to,
     replyTo: REPLY_TO,
     subject: `You're on the list for ${params.productName}`,
-    html: renderTemplate('launch-signup', params),
+    html,
+    text,
   });
 }
