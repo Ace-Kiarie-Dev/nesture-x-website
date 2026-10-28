@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import BackLink from '@/components/tools/BackLink';
-import ToolCTA from '@/components/tools/ToolCTA';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
 
 // ── Stop words ───────────────────────────────────────────────────────────────
 
@@ -90,26 +88,6 @@ function buildHighlightHtml(text: string): string {
   });
 }
 
-// ── Shared styles ─────────────────────────────────────────────────────────────
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20, 25, 32, 0.6)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  padding: 'clamp(1.5rem, 3vw, 2.25rem)',
-};
-
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.62rem',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase' as const,
-  color: 'rgba(245,245,245,0.35)',
-  display: 'block',
-  marginBottom: '0.5rem',
-};
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function WordCounterPage() {
@@ -137,76 +115,28 @@ export default function WordCounterPage() {
   ];
 
   return (
-    <main
-      style={{
-        padding: 'clamp(6rem, 10vw, 11rem) clamp(2rem, 7vw, 8rem) clamp(4rem, 6vw, 6rem)',
-        background: 'var(--color-bg)',
-      }}
+    <ToolShell
+      title="Word & Character Counter"
+      outline="Counter"
+      description="Count words, characters, sentences, and more. Analyse keyword density and check character limits instantly."
+      cta
     >
-      <BackLink />
-
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3.5rem, 8vw, 8rem)',
-          lineHeight: 0.9,
-          color: 'var(--color-text)',
-          marginBottom: '0.75rem',
-        }}
-      >
-        WORD & CHARACTER COUNTER
-      </h1>
-      <p
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 'clamp(0.95rem, 1.3vw, 1.05rem)',
-          color: 'rgba(245,245,245,0.5)',
-          marginBottom: '2.5rem',
-          maxWidth: '42rem',
-        }}
-      >
-        Count words, characters, sentences, and more. Analyse keyword density and check character limits instantly.
-      </p>
-
-      <div style={{ maxWidth: '900px' }}>
-        {/* Textarea + options */}
-        <div style={{ ...GLASS, marginBottom: '1.5rem' }}>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-            <label style={{ ...LABEL, marginBottom: 0, flex: '0 0 auto' }}>Your Text</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: 'auto' }}>
+      <div className="nxtl-stack">
+        {/* Text + options */}
+        <div className="nxtl-panel nx-clay">
+          <div className="nxtl-wc-head">
+            <label htmlFor="wc-text" className="nxtl-label" style={{ marginBottom: 0 }}>Your Text</label>
+            <div className="nxtl-wc-tools">
               <button
+                type="button"
                 onClick={() => setHighlight(h => !h)}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  padding: '0.35rem 0.75rem',
-                  border: '1px solid',
-                  borderColor: highlight ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)',
-                  background: highlight ? 'rgba(26,111,212,0.15)' : 'transparent',
-                  color: highlight ? 'var(--color-primary)' : 'rgba(245,245,245,0.4)',
-                  cursor: 'pointer',
-                  transition: 'all 150ms',
-                }}
+                aria-pressed={highlight}
+                className="nxtl-chip-btn"
               >
                 {highlight ? 'Highlighting ON' : 'Highlight Repeated'}
               </button>
               {text.length > 0 && (
-                <button
-                  onClick={() => setText('')}
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    padding: '0.35rem 0.75rem',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    background: 'transparent',
-                    color: 'rgba(245,245,245,0.35)',
-                    cursor: 'pointer',
-                  }}
-                >
+                <button type="button" onClick={() => setText('')} className="nxtl-link-btn">
                   Clear
                 </button>
               )}
@@ -215,154 +145,73 @@ export default function WordCounterPage() {
 
           {!highlight ? (
             <textarea
+              id="wc-text"
               value={text}
               onChange={e => setText(e.target.value)}
               placeholder="Paste or type your text here…"
-              style={{
-                width: '100%',
-                minHeight: '300px',
-                resize: 'vertical',
-                background: 'rgba(10,10,10,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                padding: '1rem',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.95rem',
-                lineHeight: 1.7,
-                color: 'var(--color-text)',
-                outline: 'none',
-                boxSizing: 'border-box',
-              }}
-              onFocus={e => (e.target.style.borderColor = 'var(--color-primary)')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
+              className="nx-input nx-textarea nxtl-wc-box"
             />
           ) : (
             <div
               dangerouslySetInnerHTML={{ __html: highlightHtml || '<span style="opacity:0.3">Paste or type your text here…</span>' }}
-              style={{
-                width: '100%',
-                minHeight: '300px',
-                background: 'rgba(10,10,10,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                padding: '1rem',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.95rem',
-                lineHeight: 1.7,
-                color: 'var(--color-text)',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-word',
-                boxSizing: 'border-box',
-              }}
+              className="nx-input nxtl-wc-box nxtl-wc-highlight"
             />
           )}
 
           {/* Character limit */}
-          <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <label style={{ ...LABEL, marginBottom: 0, flex: '0 0 auto' }}>Char limit</label>
+          <div className="nxtl-wc-limit">
+            <label htmlFor="wc-limit" className="nxtl-label" style={{ marginBottom: 0 }}>Char limit</label>
             <input
+              id="wc-limit"
               type="number"
               min={1}
               value={charLimit}
               onChange={e => setCharLimit(e.target.value)}
               placeholder="e.g. 280"
-              style={{
-                width: '110px',
-                background: 'rgba(10,10,10,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                padding: '0.4rem 0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.82rem',
-                color: 'var(--color-text)',
-                outline: 'none',
-              }}
+              className="nx-input nxtl-wc-limit-input"
             />
             {limitValid && (
-              <div style={{ flex: 1, minWidth: '140px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'rgba(245,245,245,0.4)' }}>
-                    {text.length} / {limitNum}
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: limitColor }}>
-                    {Math.round(limitPct)}%
-                  </span>
+              <div className="nxtl-wc-meter">
+                <div className="nxtl-range-head">
+                  <span className="nxtl-mono">{text.length} / {limitNum}</span>
+                  <span className="nxtl-mono" style={{ color: limitColor }}>{Math.round(limitPct)}%</span>
                 </div>
-                <div style={{ height: '4px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${limitPct}%`, background: limitColor, transition: 'width 100ms, background 200ms' }} />
+                <div className="nxtl-progress">
+                  <span style={{ width: `${limitPct}%`, background: limitColor }} />
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Stat cards */}
-        <style>{`
-          .wc-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:1.5rem}
-          @media(min-width:640px){.wc-stats{grid-template-columns:repeat(4,1fr)}}
-        `}</style>
-        <div className="wc-stats">
+        {/* Stats */}
+        <div className="nxtl-stats nxtl-stats--4" aria-live="polite">
           {statCards.map(card => (
-            <div
-              key={card.label}
-              style={{
-                ...GLASS,
-                padding: '1rem 1.25rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.25rem',
-              }}
-            >
-              <span style={{ ...LABEL, marginBottom: 0 }}>{card.label}</span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-                  lineHeight: 1,
-                  color: 'var(--color-text)',
-                }}
-              >
-                {card.value}
-              </span>
+            <div key={card.label} className="nxtl-stat">
+              <span className="nxtl-stat-label">{card.label}</span>
+              <span className="nxtl-stat-num">{card.value}</span>
             </div>
           ))}
         </div>
 
         {/* Keyword density */}
         {keywords.length > 0 && (
-          <div style={{ ...GLASS, marginBottom: '2rem' }}>
-            <label style={LABEL}>Top Keywords</label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+          <div className="nxtl-panel nx-clay">
+            <span className="nxtl-label">Top Keywords</span>
+            <div className="nxtl-kw-list">
               {keywords.map(kw => (
-                <div key={kw.word} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.78rem',
-                      color: 'var(--color-text)',
-                      minWidth: '100px',
-                    }}
-                  >
-                    {kw.word}
-                  </span>
-                  <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.08)' }}>
-                    <div
-                      style={{
-                        height: '100%',
-                        width: `${Math.min(kw.pct * 4, 100)}%`,
-                        background: 'var(--color-primary)',
-                        minWidth: '4px',
-                      }}
-                    />
+                <div key={kw.word} className="nxtl-kw">
+                  <span className="nxtl-kw-word">{kw.word}</span>
+                  <div className="nxtl-progress nxtl-kw-bar">
+                    <span style={{ width: `${Math.min(kw.pct * 4, 100)}%`, minWidth: '4px' }} />
                   </div>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'rgba(245,245,245,0.4)', minWidth: '60px', textAlign: 'right' }}>
-                    {kw.count}× · {kw.pct.toFixed(1)}%
-                  </span>
+                  <span className="nxtl-mono nxtl-kw-num">{kw.count}× · {kw.pct.toFixed(1)}%</span>
                 </div>
               ))}
             </div>
           </div>
         )}
-
-        <ToolCTA />
       </div>
-    </main>
+    </ToolShell>
   );
 }
