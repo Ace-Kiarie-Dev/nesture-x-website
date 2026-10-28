@@ -363,7 +363,7 @@ export default function BookingClient() {
                           <p className="nxbk-done-text">
                             You&apos;re booked for{' '}
                             <strong>{formatDateLabel(form.date)}</strong> at{' '}
-                            <strong>{formatSlotLabel(form.timeSlot)}</strong>.
+                            <strong>{formatSlotLabel(form.timeSlot)}</strong>.{' '}
                             {emailSent ? (
                               <>
                                 A confirmation email has been sent to{' '}

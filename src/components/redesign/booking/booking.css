@@ -462,3 +462,125 @@
   .nxbk-pickbar .nxbk-actions { display: flex; flex-shrink: 0; }
   .nxbk-pickbar .nxbk-btn { padding-inline: 22px; font-size: 14px; letter-spacing: 0.08em; }
 }
+
+/* ── 5. Confirm and booked ──────────────────────────────────────────────────
+   Clay summary card with the fee in Bebas; the booked state adds the 3D calendar.
+   The art box has a fixed height so nothing below moves while the image loads. */
+
+.nxbk-summary { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.nxbk-kicker {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxbk-sum { display: flex; flex-direction: column; gap: 8px; }
+.nxbk-sum-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+}
+.nxbk-sum-row dt {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxbk-sum-row dd {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--nx-text);
+  overflow-wrap: anywhere;
+}
+.nxbk-fee {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--nx-glass-border);
+}
+.nxbk-fee-amt {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--nx-text);
+}
+
+.nxbk-note {
+  padding-left: 12px;
+  border-left: 3px solid var(--nx-blue);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--nx-body);
+  overflow-wrap: anywhere;
+}
+.nxbk-note strong,
+.nxbk-done-text strong { color: var(--nx-text); }
+
+.nxbk-done { display: flex; flex-direction: column; gap: 4px; }
+.nxbk-done-art {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 150px;
+  pointer-events: none;
+}
+.nxbk-done-glow {
+  position: absolute;
+  inset: 0 18%;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.5), rgba(26, 111, 212, 0));
+}
+[data-theme='light'] .nxbk-done-glow { opacity: 0.45; }
+.nxbk-done-img {
+  position: relative;
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 22px rgba(3, 6, 16, 0.45));
+}
+[data-theme='light'] .nxbk-done-img { filter: drop-shadow(0 14px 18px rgba(13, 27, 62, 0.2)); }
+@media (min-width: 640px) {
+  .nxbk-done-art { height: 180px; }
+}
+
+.nxbk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxbk-badge-tick {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+}
+.nxbk-done-text { font-size: 16px; line-height: 1.65; color: var(--nx-body); overflow-wrap: anywhere; }
+
+.nxbk-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #1faa52;
+  border-radius: 8px;
+}
+[data-theme='dark'] .nxbk-wa { color: #25d366; }
+.nxbk-wa:hover { text-decoration: underline; }
