@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import BackLink from '@/components/tools/BackLink';
-import ToolCTA from '@/components/tools/ToolCTA';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
+import { Spinner, Status } from '@/components/redesign/tools/blocks';
+import { ClayButton } from '@/components/redesign';
 import { Plus, Trash2, Upload, X } from 'lucide-react';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -26,20 +26,6 @@ const CURRENCY_SYMBOLS: Record<Currency, string> = {
   KES: 'KES ', USD: '$', GBP: '£', EUR: '€',
 };
 
-const STATUS_COLORS: Record<InvoiceStatus, string> = {
-  DRAFT: 'rgba(245,245,245,0.4)',
-  SENT: 'rgba(26,111,212,1)',
-  PAID: 'rgba(34,197,94,1)',
-  OVERDUE: 'rgba(239,68,68,1)',
-};
-
-const STATUS_BG: Record<InvoiceStatus, string> = {
-  DRAFT: 'rgba(245,245,245,0.07)',
-  SENT: 'rgba(26,111,212,0.14)',
-  PAID: 'rgba(34,197,94,0.12)',
-  OVERDUE: 'rgba(239,68,68,0.12)',
-};
-
 function fmt(n: number, cur: Currency) {
   return `${CURRENCY_SYMBOLS[cur]}${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
@@ -47,44 +33,6 @@ function fmt(n: number, cur: Currency) {
 function uid() {
   return Math.random().toString(36).slice(2);
 }
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20, 25, 32, 0.6)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  padding: 'clamp(1.5rem, 3vw, 2.25rem)',
-};
-
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.62rem',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  color: 'rgba(245,245,245,0.35)',
-  display: 'block',
-  marginBottom: '0.4rem',
-};
-
-const INPUT: React.CSSProperties = {
-  width: '100%',
-  background: 'rgba(10, 10, 10, 0.6)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  padding: '0.6rem 0.9rem',
-  fontFamily: 'var(--font-body)',
-  fontSize: '0.88rem',
-  color: 'var(--color-text)',
-  outline: 'none',
-};
-
-const SECTION_TITLE: React.CSSProperties = {
-  fontFamily: 'var(--font-display)',
-  fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
-  color: 'var(--color-text)',
-  marginBottom: '1.25rem',
-  paddingBottom: '0.75rem',
-  borderBottom: '1px solid rgba(26,111,212,0.12)',
-};
 
 // ── PDF generation ────────────────────────────────────────────────────────────
 
@@ -444,514 +392,386 @@ export default function InvoiceGeneratorPage() {
     }
   }
 
-  const focusBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.target.style.borderColor = 'var(--color-primary)';
-  };
-  const blurBorder = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    e.target.style.borderColor = 'rgba(255,255,255,0.12)';
-  };
-
   return (
-    <main
-      style={{
-        padding: 'clamp(6rem, 10vw, 11rem) clamp(2rem, 7vw, 8rem) clamp(4rem, 6vw, 6rem)',
-        background: 'var(--color-bg)',
-      }}
+    <ToolShell
+      title="Invoice Generator"
+      outline="Generator"
+      description="Create and download professional PDF invoices for free."
+      cta
     >
-      <BackLink />
-
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3.5rem, 8vw, 8rem)',
-          lineHeight: 0.9,
-          color: 'var(--color-text)',
-          marginBottom: '0.75rem',
-        }}
-      >
-        INVOICE GENERATOR
-      </h1>
-      <p
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 'clamp(0.95rem, 1.3vw, 1.05rem)',
-          color: 'rgba(245,245,245,0.5)',
-          marginBottom: '2.5rem',
-          maxWidth: '40rem',
-        }}
-      >
-        Create and download professional PDF invoices for free.
-      </p>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '1.5rem',
-          maxWidth: '1100px',
-          alignItems: 'start',
-        }}
-      >
+      <div className="nxtl-panes nxtl-inv">
         {/* ── Left column ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div className="nxtl-stack">
 
           {/* A: Your Details */}
-          <div style={GLASS}>
-            <h2 style={SECTION_TITLE}>Your Details</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+          <section className="nxtl-panel nx-clay" aria-labelledby="inv-you">
+            <h2 id="inv-you" className="nxtl-inv-h2">Your Details</h2>
 
-              {/* Logo */}
-              <div>
-                <label style={LABEL}>Business Logo (optional)</label>
-                {logoDataUrl ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={logoDataUrl}
-                      alt="Logo preview"
-                      style={{ height: '48px', maxWidth: '140px', objectFit: 'contain', border: '1px solid rgba(255,255,255,0.1)', padding: '4px', background: 'rgba(255,255,255,0.04)' }}
-                    />
-                    <button
-                      data-hover
-                      onClick={() => { setLogoDataUrl(null); if (logoInputRef.current) logoInputRef.current.value = ''; }}
-                      style={{ background: 'transparent', border: '1px solid rgba(239,68,68,0.35)', padding: '0.3rem 0.7rem', fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'rgba(239,68,68,0.8)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
-                    >
-                      <X size={12} /> Remove
-                    </button>
-                  </div>
-                ) : (
-                  <label
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      border: '1px dashed rgba(255,255,255,0.2)',
-                      padding: '0.65rem 1rem',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '0.82rem',
-                      color: 'rgba(245,245,245,0.45)',
-                    }}
+            {/* Logo */}
+            <div>
+              <span className="nxtl-label">Business Logo (optional)</span>
+              {logoDataUrl ? (
+                <div className="nxtl-inv-logo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={logoDataUrl}
+                    alt="Logo preview"
+                    className="nxtl-inv-logo-img"
+                  />
+                  <button
+                    type="button"
+                    data-hover
+                    onClick={() => { setLogoDataUrl(null); if (logoInputRef.current) logoInputRef.current.value = ''; }}
+                    className="nxtl-link-btn nxtl-inv-danger"
                   >
-                    <Upload size={14} />
-                    Upload logo (PNG / JPG, max 1 MB)
-                    <input
-                      ref={logoInputRef}
-                      type="file"
-                      accept="image/png,image/jpeg"
-                      style={{ display: 'none' }}
-                      onChange={e => { const f = e.target.files?.[0]; if (f) handleLogoUpload(f); }}
-                    />
-                  </label>
-                )}
-              </div>
-
-              <div>
-                <label style={LABEL}>Business Name</label>
-                <input style={INPUT} value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="Acme Ltd." onFocus={focusBorder} onBlur={blurBorder} />
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                <div>
-                  <label style={LABEL}>Email</label>
-                  <input style={INPUT} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@email.com" onFocus={focusBorder} onBlur={blurBorder} />
+                    <X size={14} aria-hidden="true" /> Remove
+                  </button>
                 </div>
-                <div>
-                  <label style={LABEL}>Phone</label>
-                  <input style={INPUT} type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+254 700 000 000" onFocus={focusBorder} onBlur={blurBorder} />
-                </div>
-              </div>
-              <div>
-                <label style={LABEL}>Address</label>
-                <textarea
-                  style={{ ...INPUT, resize: 'vertical', minHeight: '70px' }}
-                  value={address}
-                  onChange={e => setAddress(e.target.value)}
-                  placeholder="123 Street, Nairobi"
-                  onFocus={focusBorder}
-                  onBlur={blurBorder}
-                />
-              </div>
+              ) : (
+                <label className="nxtl-drop nxtl-drop--sm nxtl-drop--input">
+                  <Upload size={18} aria-hidden="true" className="nxtl-b64-drop-icon" />
+                  <span className="nxtl-drop-hint">Upload logo (PNG / JPG, max 1 MB)</span>
+                  <input
+                    ref={logoInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg"
+                    className="nx-sr-only"
+                    onChange={e => { const f = e.target.files?.[0]; if (f) handleLogoUpload(f); }}
+                  />
+                </label>
+              )}
+            </div>
 
-              {/* Payment Details */}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '0.9rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <span style={{ ...LABEL, marginBottom: 0 }}>Payment Details (optional)</span>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                  <div>
-                    <label style={LABEL}>M-Pesa Till</label>
-                    <input style={INPUT} value={mpesaTill} onChange={e => setMpesaTill(e.target.value)} placeholder="123456" onFocus={focusBorder} onBlur={blurBorder} />
-                  </div>
-                  <div>
-                    <label style={LABEL}>M-Pesa Paybill</label>
-                    <input style={INPUT} value={mpesaPaybill} onChange={e => setMpesaPaybill(e.target.value)} placeholder="400200" onFocus={focusBorder} onBlur={blurBorder} />
-                  </div>
-                  <div>
-                    <label style={LABEL}>Bank Name</label>
-                    <input style={INPUT} value={bankName} onChange={e => setBankName(e.target.value)} placeholder="Equity Bank" onFocus={focusBorder} onBlur={blurBorder} />
-                  </div>
-                  <div>
-                    <label style={LABEL}>Bank Account</label>
-                    <input style={INPUT} value={bankAccount} onChange={e => setBankAccount(e.target.value)} placeholder="0123456789" onFocus={focusBorder} onBlur={blurBorder} />
-                  </div>
+            <div className="nx-field">
+              <label htmlFor="inv-business">Business Name</label>
+              <input id="inv-business" className="nx-input" value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="Acme Ltd." />
+            </div>
+            <div className="nxtl-row">
+              <div className="nx-field">
+                <label htmlFor="inv-email">Email</label>
+                <input id="inv-email" className="nx-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@email.com" />
+              </div>
+              <div className="nx-field">
+                <label htmlFor="inv-phone">Phone</label>
+                <input id="inv-phone" className="nx-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+254 700 000 000" />
+              </div>
+            </div>
+            <div className="nx-field">
+              <label htmlFor="inv-address">Address</label>
+              <textarea
+                id="inv-address"
+                className="nx-input nx-textarea nxtl-inv-area"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+                placeholder="123 Street, Nairobi"
+              />
+            </div>
+
+            {/* Payment Details */}
+            <div className="nxtl-inv-sub">
+              <span className="nxtl-label" style={{ marginBottom: 0 }}>Payment Details (optional)</span>
+              <div className="nxtl-row">
+                <div className="nx-field">
+                  <label htmlFor="inv-till">M-Pesa Till</label>
+                  <input id="inv-till" className="nx-input" inputMode="numeric" value={mpesaTill} onChange={e => setMpesaTill(e.target.value)} placeholder="123456" />
+                </div>
+                <div className="nx-field">
+                  <label htmlFor="inv-paybill">M-Pesa Paybill</label>
+                  <input id="inv-paybill" className="nx-input" inputMode="numeric" value={mpesaPaybill} onChange={e => setMpesaPaybill(e.target.value)} placeholder="400200" />
+                </div>
+                <div className="nx-field">
+                  <label htmlFor="inv-bank">Bank Name</label>
+                  <input id="inv-bank" className="nx-input" value={bankName} onChange={e => setBankName(e.target.value)} placeholder="Equity Bank" />
+                </div>
+                <div className="nx-field">
+                  <label htmlFor="inv-account">Bank Account</label>
+                  <input id="inv-account" className="nx-input" value={bankAccount} onChange={e => setBankAccount(e.target.value)} placeholder="0123456789" />
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* B: Client Details */}
-          <div style={GLASS}>
-            <h2 style={SECTION_TITLE}>Client Details</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-              <div>
-                <label style={LABEL}>Client Name</label>
-                <input style={INPUT} value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Company" onFocus={focusBorder} onBlur={blurBorder} />
-              </div>
-              <div>
-                <label style={LABEL}>Client Email</label>
-                <input style={INPUT} type="email" value={clientEmail} onChange={e => setClientEmail(e.target.value)} placeholder="client@email.com" onFocus={focusBorder} onBlur={blurBorder} />
-              </div>
-              <div>
-                <label style={LABEL}>Client Address</label>
-                <textarea
-                  style={{ ...INPUT, resize: 'vertical', minHeight: '70px' }}
-                  value={clientAddress}
-                  onChange={e => setClientAddress(e.target.value)}
-                  placeholder="456 Avenue, Nairobi"
-                  onFocus={focusBorder}
-                  onBlur={blurBorder}
-                />
-              </div>
+          <section className="nxtl-panel nx-clay" aria-labelledby="inv-client">
+            <h2 id="inv-client" className="nxtl-inv-h2">Client Details</h2>
+            <div className="nx-field">
+              <label htmlFor="inv-client-name">Client Name</label>
+              <input id="inv-client-name" className="nx-input" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Client Company" />
             </div>
-          </div>
+            <div className="nx-field">
+              <label htmlFor="inv-client-email">Client Email</label>
+              <input id="inv-client-email" className="nx-input" type="email" value={clientEmail} onChange={e => setClientEmail(e.target.value)} placeholder="client@email.com" />
+            </div>
+            <div className="nx-field">
+              <label htmlFor="inv-client-address">Client Address</label>
+              <textarea
+                id="inv-client-address"
+                className="nx-input nx-textarea nxtl-inv-area"
+                value={clientAddress}
+                onChange={e => setClientAddress(e.target.value)}
+                placeholder="456 Avenue, Nairobi"
+              />
+            </div>
+          </section>
 
           {/* C: Invoice Details */}
-          <div style={GLASS}>
-            <h2 style={SECTION_TITLE}>Invoice Details</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              <div>
-                <label style={LABEL}>Invoice Number</label>
-                <input style={INPUT} value={invoiceNumber} onChange={e => setInvoiceNumber(e.target.value)} onFocus={focusBorder} onBlur={blurBorder} />
+          <section className="nxtl-panel nx-clay" aria-labelledby="inv-details">
+            <h2 id="inv-details" className="nxtl-inv-h2">Invoice Details</h2>
+            <div className="nxtl-row">
+              <div className="nx-field">
+                <label htmlFor="inv-number">Invoice Number</label>
+                <input id="inv-number" className="nx-input" value={invoiceNumber} onChange={e => setInvoiceNumber(e.target.value)} />
               </div>
-              <div>
-                <label style={LABEL}>Currency</label>
+              <div className="nx-field nx-select">
+                <label htmlFor="inv-currency">Currency</label>
                 <select
+                  id="inv-currency"
+                  className="nx-input"
                   value={currency}
                   onChange={e => setCurrency(e.target.value as Currency)}
-                  style={{ ...INPUT, cursor: 'pointer' }}
-                  onFocus={focusBorder}
-                  onBlur={blurBorder}
                 >
                   {(['KES', 'USD', 'GBP', 'EUR'] as Currency[]).map(c => (
-                    <option key={c} value={c} style={{ background: '#141920' }}>{c}</option>
+                    <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
               </div>
-              <div>
-                <label style={LABEL}>Date</label>
-                <input type="date" style={{ ...INPUT, colorScheme: 'dark' }} value={date} onChange={e => setDate(e.target.value)} onFocus={focusBorder} onBlur={blurBorder} />
+              <div className="nx-field">
+                <label htmlFor="inv-date">Date</label>
+                <input id="inv-date" type="date" className="nx-input nxtl-inv-date" value={date} onChange={e => setDate(e.target.value)} />
               </div>
-              <div>
-                <label style={LABEL}>Due Date</label>
-                <input type="date" style={{ ...INPUT, colorScheme: 'dark' }} value={dueDate} onChange={e => setDueDate(e.target.value)} onFocus={focusBorder} onBlur={blurBorder} />
+              <div className="nx-field">
+                <label htmlFor="inv-due">Due Date</label>
+                <input id="inv-due" type="date" className="nx-input nxtl-inv-date" value={dueDate} onChange={e => setDueDate(e.target.value)} />
               </div>
             </div>
 
             {/* Status stamp */}
-            <div style={{ marginTop: '0.9rem' }}>
-              <label style={LABEL}>Invoice Status</label>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div>
+              <span className="nxtl-label" id="inv-status-label">Invoice Status</span>
+              <div className="nxtl-inv-statuses" role="group" aria-labelledby="inv-status-label">
                 {(['DRAFT', 'SENT', 'PAID', 'OVERDUE'] as InvoiceStatus[]).map(s => (
                   <button
                     key={s}
+                    type="button"
                     data-hover
+                    data-status={s}
                     onClick={() => setStatus(s)}
-                    style={{
-                      padding: '0.35rem 0.85rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.68rem',
-                      letterSpacing: '0.1em',
-                      background: status === s ? STATUS_BG[s] : 'transparent',
-                      border: `1px solid ${status === s ? STATUS_COLORS[s] : 'rgba(255,255,255,0.15)'}`,
-                      color: status === s ? STATUS_COLORS[s] : 'rgba(245,245,245,0.38)',
-                      cursor: 'pointer',
-                      transition: 'all 120ms ease',
-                    }}
+                    aria-pressed={status === s}
+                    className="nxtl-inv-status"
                   >
                     {s}
                   </button>
                 ))}
               </div>
             </div>
-          </div>
+          </section>
 
           {/* E: Notes */}
-          <div style={GLASS}>
-            <h2 style={SECTION_TITLE}>Notes</h2>
+          <section className="nxtl-panel nx-clay" aria-labelledby="inv-notes">
+            <h2 id="inv-notes" className="nxtl-inv-h2">Notes</h2>
             <textarea
-              style={{ ...INPUT, resize: 'vertical', minHeight: '80px' }}
+              aria-labelledby="inv-notes"
+              className="nx-input nx-textarea nxtl-inv-area"
               value={notes}
               onChange={e => setNotes(e.target.value)}
               placeholder="Payment terms, thank-you message…"
-              onFocus={focusBorder}
-              onBlur={blurBorder}
             />
-          </div>
+          </section>
         </div>
 
         {/* ── Right column ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div className="nxtl-stack">
 
           {/* D: Line Items */}
-          <div style={GLASS}>
-            <h2 style={SECTION_TITLE}>Line Items</h2>
+          <section className="nxtl-panel nx-clay" aria-labelledby="inv-items">
+            <h2 id="inv-items" className="nxtl-inv-h2">Line Items</h2>
 
-            {/* Table header */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 52px 52px 82px 80px 36px',
-                gap: '0.4rem',
-                marginBottom: '0.5rem',
-              }}
-            >
-              {['Description', 'Qty', 'Disc%', 'Unit Price', 'Total', ''].map(h => (
-                <span key={h} style={{ ...LABEL, marginBottom: 0 }}>{h}</span>
-              ))}
-            </div>
+            <div className="nxtl-inv-items">
+              {/* Table header (wide layout only) */}
+              <div className="nxtl-inv-item nxtl-inv-head" aria-hidden="true">
+                {['Description', 'Qty', 'Disc%', 'Unit Price', 'Total', ''].map(h => (
+                  <span key={h} className="nxtl-label" style={{ marginBottom: 0 }}>{h}</span>
+                ))}
+              </div>
 
-            {/* Rows */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-              {items.map(item => (
-                <div
-                  key={item.id}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 52px 52px 82px 80px 36px',
-                    gap: '0.4rem',
-                    alignItems: 'center',
-                  }}
-                >
-                  <input
-                    style={INPUT}
-                    value={item.description}
-                    onChange={e => updateItem(item.id, 'description', e.target.value)}
-                    placeholder="Service or product"
-                    onFocus={focusBorder}
-                    onBlur={blurBorder}
-                  />
-                  <input
-                    style={{ ...INPUT, textAlign: 'right' }}
-                    type="number"
-                    min={0}
-                    value={item.quantity}
-                    onChange={e => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
-                    onFocus={focusBorder}
-                    onBlur={blurBorder}
-                  />
-                  <input
-                    style={{ ...INPUT, textAlign: 'right' }}
-                    type="number"
-                    min={0}
-                    max={100}
-                    value={item.discount}
-                    onChange={e => updateItem(item.id, 'discount', parseFloat(e.target.value) || 0)}
-                    onFocus={focusBorder}
-                    onBlur={blurBorder}
-                  />
-                  <input
-                    style={{ ...INPUT, textAlign: 'right' }}
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    value={item.unitPrice}
-                    onChange={e => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                    onFocus={focusBorder}
-                    onBlur={blurBorder}
-                  />
-                  <div
-                    style={{
-                      padding: '0.6rem 0.4rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.68rem',
-                      color: 'rgba(245,245,245,0.45)',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                      background: 'rgba(10,10,10,0.3)',
-                      textAlign: 'right',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {fmt(item.quantity * item.unitPrice * (1 - item.discount / 100), currency)}
+              {/* Rows */}
+              {items.map((item, idx) => (
+                <div key={item.id} className="nxtl-inv-item">
+                  <label className="nxtl-inv-cell nxtl-inv-cell--desc">
+                    <span className="nxtl-inv-cell-label">Description</span>
+                    <input
+                      className="nx-input"
+                      value={item.description}
+                      onChange={e => updateItem(item.id, 'description', e.target.value)}
+                      placeholder="Service or product"
+                      aria-label={`Item ${idx + 1} description`}
+                    />
+                  </label>
+                  <label className="nxtl-inv-cell">
+                    <span className="nxtl-inv-cell-label">Qty</span>
+                    <input
+                      className="nx-input nxtl-inv-num"
+                      type="number"
+                      min={0}
+                      value={item.quantity}
+                      onChange={e => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
+                      aria-label={`Item ${idx + 1} quantity`}
+                    />
+                  </label>
+                  <label className="nxtl-inv-cell">
+                    <span className="nxtl-inv-cell-label">Disc%</span>
+                    <input
+                      className="nx-input nxtl-inv-num"
+                      type="number"
+                      min={0}
+                      max={100}
+                      value={item.discount}
+                      onChange={e => updateItem(item.id, 'discount', parseFloat(e.target.value) || 0)}
+                      aria-label={`Item ${idx + 1} discount percent`}
+                    />
+                  </label>
+                  <label className="nxtl-inv-cell">
+                    <span className="nxtl-inv-cell-label">Unit Price</span>
+                    <input
+                      className="nx-input nxtl-inv-num"
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      value={item.unitPrice}
+                      onChange={e => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                      aria-label={`Item ${idx + 1} unit price`}
+                    />
+                  </label>
+                  <div className="nxtl-inv-cell nxtl-inv-cell--total">
+                    <span className="nxtl-inv-cell-label">Total</span>
+                    <div className="nxtl-inv-line-total">
+                      {fmt(item.quantity * item.unitPrice * (1 - item.discount / 100), currency)}
+                    </div>
                   </div>
                   <button
+                    type="button"
                     data-hover
                     onClick={() => removeItem(item.id)}
                     disabled={items.length === 1}
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: 'transparent',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      cursor: items.length === 1 ? 'not-allowed' : 'pointer',
-                      color: items.length === 1 ? 'rgba(245,245,245,0.15)' : 'rgba(239,68,68,0.7)',
-                      flexShrink: 0,
-                    }}
+                    className="nxtl-inv-remove"
                     aria-label="Remove item"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={16} />
                   </button>
                 </div>
               ))}
             </div>
 
             <button
+              type="button"
               data-hover
               onClick={addItem}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                background: 'transparent',
-                border: '1px dashed rgba(26,111,212,0.35)',
-                padding: '0.5rem 1rem',
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.78rem',
-                color: 'var(--color-primary)',
-                cursor: 'pointer',
-                width: '100%',
-                justifyContent: 'center',
-                transition: 'border-color 150ms ease',
-                marginBottom: '1rem',
-              }}
+              className="nxtl-inv-add"
             >
-              <Plus size={14} /> Add Line Item
+              <Plus size={16} aria-hidden="true" /> Add Line Item
             </button>
 
             {/* VAT & Global Discount */}
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '0.9rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              <div>
-                <label style={LABEL}>VAT / Tax %</label>
+            <div className="nxtl-inv-sub nxtl-row">
+              <div className="nx-field">
+                <label htmlFor="inv-vat">VAT / Tax %</label>
                 <input
-                  style={{ ...INPUT, textAlign: 'right' }}
+                  id="inv-vat"
+                  className="nx-input nxtl-inv-num"
                   type="number"
                   min={0}
                   max={100}
                   step="0.1"
                   value={vatPct}
                   onChange={e => setVatPct(parseFloat(e.target.value) || 0)}
-                  onFocus={focusBorder}
-                  onBlur={blurBorder}
                 />
               </div>
-              <div>
-                <label style={LABEL}>Global Discount</label>
-                <div style={{ display: 'flex', gap: '0.4rem' }}>
+              <div className="nx-field">
+                <label htmlFor="inv-gdisc">Global Discount</label>
+                <div className="nxtl-inv-gdisc">
                   <input
-                    style={{ ...INPUT, textAlign: 'right' }}
+                    id="inv-gdisc"
+                    className="nx-input nxtl-inv-num"
                     type="number"
                     min={0}
                     step="0.01"
                     value={globalDiscount}
                     onChange={e => setGlobalDiscount(parseFloat(e.target.value) || 0)}
-                    onFocus={focusBorder}
-                    onBlur={blurBorder}
                   />
                   <button
+                    type="button"
                     data-hover
                     onClick={() => setGlobalDiscountType(t => t === 'pct' ? 'flat' : 'pct')}
-                    style={{
-                      padding: '0.6rem 0.75rem',
-                      background: 'rgba(26,111,212,0.1)',
-                      border: '1px solid rgba(26,111,212,0.3)',
-                      color: 'var(--color-primary)',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.72rem',
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                      flexShrink: 0,
-                    }}
+                    className="nxtl-chip-btn nxtl-inv-dtype"
+                    aria-label={`Discount type: ${globalDiscountType === 'pct' ? 'percent' : 'flat amount'}. Switch`}
                   >
                     {globalDiscountType === 'pct' ? '%' : 'flat'}
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* Invoice Summary */}
-          <div style={{ ...GLASS, border: '1px solid rgba(26,111,212,0.2)' }}>
-            <p style={{ ...LABEL, marginBottom: '1rem' }}>Invoice Summary</p>
+          <section className="nxtl-panel nx-glass nxtl-inv-summary" aria-labelledby="inv-summary">
+            <p id="inv-summary" className="nxtl-label" style={{ marginBottom: 0 }}>Invoice Summary</p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.5)' }}>
+            <dl className="nxtl-inv-lines" aria-live="polite">
+              <div className="nxtl-inv-line">
+                <dt>
                   Subtotal ({items.length} item{items.length !== 1 ? 's' : ''})
-                </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.5)' }}>
+                </dt>
+                <dd>
                   {fmt(subtotal, currency)}
-                </span>
+                </dd>
               </div>
 
               {lineDiscounts > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.38)' }}>Line discounts</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.38)' }}>- {fmt(lineDiscounts, currency)}</span>
+                <div className="nxtl-inv-line nxtl-inv-line--muted">
+                  <dt>Line discounts</dt>
+                  <dd>- {fmt(lineDiscounts, currency)}</dd>
                 </div>
               )}
 
               {globalDiscount > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.38)' }}>
+                <div className="nxtl-inv-line nxtl-inv-line--muted">
+                  <dt>
                     Discount {globalDiscountType === 'pct' ? `(${globalDiscount}%)` : '(flat)'}
-                  </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.38)' }}>- {fmt(globalDiscountAmount, currency)}</span>
+                  </dt>
+                  <dd>- {fmt(globalDiscountAmount, currency)}</dd>
                 </div>
               )}
 
               {vatPct > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.38)' }}>VAT ({vatPct}%)</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.38)' }}>{fmt(vatAmount, currency)}</span>
+                <div className="nxtl-inv-line nxtl-inv-line--muted">
+                  <dt>VAT ({vatPct}%)</dt>
+                  <dd>{fmt(vatAmount, currency)}</dd>
                 </div>
               )}
 
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  borderTop: '1px solid rgba(26,111,212,0.15)',
-                  paddingTop: '0.75rem',
-                  marginTop: '0.25rem',
-                }}
-              >
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', fontWeight: 600, color: 'var(--color-text)' }}>Total</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', fontWeight: 600, color: 'var(--color-primary)' }}>
+              <div className="nxtl-inv-line nxtl-inv-line--total">
+                <dt>Total</dt>
+                <dd>
                   {fmt(grandTotal, currency)}
-                </span>
+                </dd>
               </div>
+            </dl>
+
+            {error && <Status tone="error">{error}</Status>}
+
+            <div className="nxtl-actions">
+              <ClayButton
+                onClick={handleGenerate}
+                disabled={generating}
+                aria-busy={generating}
+              >
+                {generating && <Spinner />}
+                {generating ? 'Generating PDF…' : 'Generate Invoice PDF'}
+              </ClayButton>
             </div>
-
-            {error && (
-              <div style={{ border: '1px solid rgba(239,68,68,0.45)', background: 'rgba(239,68,68,0.07)', padding: '0.75rem 0.9rem', marginBottom: '1rem' }}>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgb(239,68,68)' }}>{error}</p>
-              </div>
-            )}
-
-            <NxButton
-              variant="primary"
-              size="sm"
-              onClick={handleGenerate}
-              disabled={generating}
-            >
-              {generating ? 'Generating PDF…' : 'Generate Invoice PDF'}
-            </NxButton>
-          </div>
+          </section>
         </div>
       </div>
-
-      <ToolCTA />
-    </main>
+    </ToolShell>
   );
 }

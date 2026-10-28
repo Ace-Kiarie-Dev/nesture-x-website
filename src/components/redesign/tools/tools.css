@@ -1047,3 +1047,145 @@
 .nxtl-b64-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: var(--font-mono), monospace; font-size: 13px; color: var(--nx-body); }
 .nxtl-b64-meta-name { color: var(--nx-text); overflow-wrap: anywhere; }
 .nxtl-b64-mime { max-width: 320px; font-family: var(--font-mono), monospace; }
+
+/* Invoice generator */
+.nxtl-inv-h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(26px, 3vw, 32px);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--nx-blue) 22%, transparent);
+}
+.nxtl-inv-area { min-height: 96px; }
+.nxtl-inv-sub { display: flex; flex-direction: column; gap: 14px; padding-top: 16px; border-top: 1px solid color-mix(in srgb, var(--nx-body) 18%, transparent); }
+.nxtl-inv-sub.nxtl-row { display: grid; }
+.nxtl-inv-logo { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.nxtl-inv-logo-img { height: 56px; max-width: 160px; object-fit: contain; padding: 6px; border-radius: 12px; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(13, 27, 62, 0.1); }
+.nxtl-inv-danger { display: inline-flex; align-items: center; gap: 6px; color: #f87171; }
+[data-theme='light'] .nxtl-inv-danger { color: #b91c1c; }
+.nxtl-inv-date { color-scheme: dark; }
+[data-theme='light'] .nxtl-inv-date { color-scheme: light; }
+.nxtl-inv-statuses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 480px) { .nxtl-inv-statuses { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.nxtl-inv-status {
+  --st: var(--nx-body);
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--nx-body);
+  cursor: pointer;
+}
+.nxtl-inv-status[data-status='SENT'] { --st: #3d8ef0; }
+.nxtl-inv-status[data-status='PAID'] { --st: #22c55e; }
+.nxtl-inv-status[data-status='OVERDUE'] { --st: #ef4444; }
+[data-theme='light'] .nxtl-inv-status[data-status='SENT'] { --st: #1558ad; }
+[data-theme='light'] .nxtl-inv-status[data-status='PAID'] { --st: #15803d; }
+[data-theme='light'] .nxtl-inv-status[data-status='OVERDUE'] { --st: #b91c1c; }
+.nxtl-inv-status[aria-pressed='true'] {
+  color: var(--st);
+  background: color-mix(in srgb, var(--st) 14%, transparent);
+  box-shadow: inset 0 0 0 2px var(--st);
+}
+.nxtl-inv-status[data-status='DRAFT'][aria-pressed='true'] { color: var(--nx-text); box-shadow: inset 0 0 0 2px var(--nx-body); }
+.nxtl-inv-status:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+
+/* Line items: stacked cards in a narrow column, a table row when there is room. */
+.nxtl-inv-items { container-type: inline-size; display: flex; flex-direction: column; gap: 10px; }
+.nxtl-inv-item {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 10px;
+  align-items: end;
+  padding: 12px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--nx-inset) 55%, transparent);
+}
+.nxtl-inv-head { display: none; }
+.nxtl-inv-cell { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.nxtl-inv-cell--desc { grid-column: 1 / -1; }
+.nxtl-inv-cell--total { grid-column: span 2; }
+.nxtl-inv-cell-label { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--nx-body); }
+.nxtl-inv-item .nx-input { min-height: 44px; padding: 10px 12px; border-radius: 14px; }
+.nxtl-inv-num { text-align: right; font-family: var(--font-mono), monospace; }
+.nxtl-inv-line-total {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 12px;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-body) 20%, transparent);
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  color: var(--nx-text);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.nxtl-inv-remove {
+  justify-self: end;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #f87171;
+  cursor: pointer;
+}
+[data-theme='light'] .nxtl-inv-remove { color: #b91c1c; }
+.nxtl-inv-remove:disabled { color: var(--nx-body); opacity: 0.35; cursor: not-allowed; }
+.nxtl-inv-remove:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+@container (min-width: 560px) {
+  .nxtl-inv-item {
+    grid-template-columns: minmax(0, 1fr) 64px 64px 104px 112px 44px;
+    gap: 8px;
+    align-items: center;
+    padding: 0;
+    background: none;
+  }
+  .nxtl-inv-head { display: grid; }
+  .nxtl-inv-cell--desc,
+  .nxtl-inv-cell--total { grid-column: auto; }
+  .nxtl-inv-cell-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .nxtl-inv-item .nx-input { padding: 10px; }
+}
+.nxtl-inv-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  border: 2px dashed color-mix(in srgb, var(--nx-blue) 45%, transparent);
+  border-radius: 16px;
+  background: transparent;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+  cursor: pointer;
+}
+.nxtl-inv-add:hover { border-color: var(--nx-blue); }
+.nxtl-inv-add:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+.nxtl-inv-gdisc { display: flex; gap: 8px; }
+.nxtl-inv-dtype { min-width: 64px; flex-shrink: 0; }
+.nxtl-inv-summary { border-left: 4px solid var(--nx-blue); }
+@media (min-width: 900px) { .nxtl-inv-summary { position: sticky; top: 112px; } }
+.nxtl-inv-lines { display: flex; flex-direction: column; gap: 8px; }
+.nxtl-inv-line { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; color: var(--nx-body); }
+.nxtl-inv-line dd { font-family: var(--font-mono), monospace; white-space: nowrap; }
+.nxtl-inv-line--muted { opacity: 0.85; }
+.nxtl-inv-line--total { margin-top: 6px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--nx-blue) 25%, transparent); font-size: 18px; font-weight: 600; color: var(--nx-text); }
+.nxtl-inv-line--total dd { color: var(--nx-accent); }
