@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { renderTemplate } from './render';
 import { buildContactReply } from './contact-reply';
+import { buildBookingConfirmation } from './booking-confirmation';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -14,12 +15,14 @@ export function sendBookingConfirmation(params: {
   time: string;
   bookingRef: string;
 }) {
+  const { html, text } = buildBookingConfirmation(params);
   return resend.emails.send({
     from: 'Nesture-X <bookings@nesturex.com>',
     to: params.to,
     replyTo: REPLY_TO,
     subject: 'Your Nesture-X Consultation is Confirmed ✓',
-    html: renderTemplate('booking-confirmation', params),
+    html,
+    text,
   });
 }
 
