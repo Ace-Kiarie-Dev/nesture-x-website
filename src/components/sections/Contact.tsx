@@ -1,69 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ClayButton } from '@/components/redesign';
 import { ASSETS_3D } from '@/lib/assets3d';
 import { CONTACT } from '@/constants';
+import { BUDGETS, SERVICES, TIMELINES, WHATSAPP_FOLLOWUP, WHATSAPP_URL, useContactForm, type RequiredField } from '@/lib/useContactForm';
 import './Contact.css';
 
 const CHAT = ASSETS_3D['contact-chat'];
-
-// ─── Types ─────────────────────────────────────────────────────────────────────
-
-interface FormState {
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
-  brief: string;
-  budget: string;
-  timeline: string;
-}
-
-type Status = 'idle' | 'sending' | 'success' | 'error';
-
-// ─── Constants ─────────────────────────────────────────────────────────────────
-
-const SERVICES = [
-  { value: '', label: 'What are you looking to build?' },
-  { value: 'Website', label: 'Website' },
-  { value: 'Web App', label: 'Web App' },
-  { value: 'Branding', label: 'Branding' },
-  { value: 'E-commerce', label: 'E-commerce' },
-  { value: 'Not sure yet', label: 'Not sure yet' },
-];
-
-const BUDGETS = [
-  { value: '', label: 'Budget range (optional)' },
-  { value: 'Under 50K', label: 'Under 50K' },
-  { value: '50K – 150K', label: '50K – 150K' },
-  { value: '150K – 500K', label: '150K – 500K' },
-  { value: '500K+', label: '500K+' },
-  { value: 'Not sure yet', label: 'Not sure yet' },
-];
-
-const TIMELINES = [
-  { value: '', label: 'Timeline (optional)' },
-  { value: 'ASAP', label: 'ASAP' },
-  { value: '2–4 weeks', label: '2–4 weeks' },
-  { value: '1–2 months', label: '1–2 months' },
-  { value: 'Flexible', label: 'Flexible' },
-];
-
-const WHATSAPP_URL = `https://wa.me/${CONTACT.phone}?text=${encodeURIComponent(
-  "Hi, I'm interested in working with Nesture-X. I'd like to discuss a project."
-)}`;
-
-const WHATSAPP_FOLLOWUP = `https://wa.me/${CONTACT.phone}?text=${encodeURIComponent(
-  "Hi, I just submitted a project request on your site and wanted to follow up directly."
-)}`;
-
-const INITIAL: FormState = {
-  name: '', email: '', phone: '',
-  service: '', brief: '', budget: '', timeline: '',
-};
 
 // ─── Animation ─────────────────────────────────────────────────────────────────
 
@@ -80,38 +25,11 @@ const item = {
 // ─── Main component ────────────────────────────────────────────────────────────
 
 export default function Contact() {
-  const [form, setForm] = useState<FormState>(INITIAL);
-  const [status, setStatus] = useState<Status>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
-
-  function handle(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus('sending');
-    setErrorMsg('');
-
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Send failed');
-      setStatus('success');
-      setForm(INITIAL);
-    } catch (err) {
-      setStatus('error');
-      setErrorMsg(err instanceof Error ? err.message : 'Something went wrong.');
-    }
-  }
+  const { form, status, setStatus, errorMsg, handle, submit, isInvalid } = useContactForm();
 
   // After a failed send, empty required fields get the error ring and point at the message.
-  const invalid = (field: 'name' | 'email' | 'brief') =>
-    status === 'error' && !form[field].trim() ? { 'aria-invalid': true, 'aria-describedby': 'cx-error' } : {};
+  const invalid = (field: RequiredField) =>
+    isInvalid(field) ? { 'aria-invalid': true, 'aria-describedby': 'cx-error' } : {};
 
   return (
     <section id="contact" className="nxc nx-grid-bg" aria-labelledby="cx-title">
@@ -201,7 +119,7 @@ export default function Contact() {
 
               {/* Name + Email */}
               <motion.div className="nxc-row" variants={item}>
-                <div className="nxc-field">
+                <div className="nx-field">
                   <label htmlFor="cx-name">Name *</label>
                   <input
                     id="cx-name"
@@ -211,11 +129,11 @@ export default function Contact() {
                     placeholder="Your name"
                     value={form.name}
                     onChange={handle}
-                    className="nxc-input"
+                    className="nx-input"
                     {...invalid('name')}
                   />
                 </div>
-                <div className="nxc-field">
+                <div className="nx-field">
                   <label htmlFor="cx-email">Email *</label>
                   <input
                     id="cx-email"
@@ -225,14 +143,14 @@ export default function Contact() {
                     placeholder="your@email.com"
                     value={form.email}
                     onChange={handle}
-                    className="nxc-input"
+                    className="nx-input"
                     {...invalid('email')}
                   />
                 </div>
               </motion.div>
 
               {/* Phone */}
-              <motion.div className="nxc-field" variants={item}>
+              <motion.div className="nx-field" variants={item}>
                 <label htmlFor="cx-phone">Phone / WhatsApp (optional)</label>
                 <input
                   id="cx-phone"
@@ -241,20 +159,20 @@ export default function Contact() {
                   placeholder="+254 7XX XXX XXX"
                   value={form.phone}
                   onChange={handle}
-                  className="nxc-input"
+                  className="nx-input"
                 />
               </motion.div>
 
               {/* Service */}
-              <motion.div className="nxc-field" variants={item}>
+              <motion.div className="nx-field" variants={item}>
                 <label htmlFor="cx-service">Service</label>
-                <div className="nxc-select">
+                <div className="nx-select">
                   <select
                     id="cx-service"
                     name="service"
                     value={form.service}
                     onChange={handle}
-                    className={form.service ? 'nxc-input' : 'nxc-input is-empty'}
+                    className={form.service ? 'nx-input' : 'nx-input is-empty'}
                   >
                     {SERVICES.map(s => (
                       <option key={s.value} value={s.value}>
@@ -266,7 +184,7 @@ export default function Contact() {
               </motion.div>
 
               {/* Brief */}
-              <motion.div className="nxc-field" variants={item}>
+              <motion.div className="nx-field" variants={item}>
                 <label htmlFor="cx-brief">What you&apos;re building *</label>
                 <textarea
                   id="cx-brief"
@@ -276,22 +194,22 @@ export default function Contact() {
                   placeholder="What are you trying to build? What's the goal?"
                   value={form.brief}
                   onChange={handle}
-                  className="nxc-input nxc-textarea"
+                  className="nx-input nx-textarea"
                   {...invalid('brief')}
                 />
               </motion.div>
 
               {/* Budget + Timeline */}
               <motion.div className="nxc-row" variants={item}>
-                <div className="nxc-field">
+                <div className="nx-field">
                   <label htmlFor="cx-budget">Do you have a budget in mind?</label>
-                  <div className="nxc-select">
+                  <div className="nx-select">
                     <select
                       id="cx-budget"
                       name="budget"
                       value={form.budget}
                       onChange={handle}
-                      className={form.budget ? 'nxc-input' : 'nxc-input is-empty'}
+                      className={form.budget ? 'nx-input' : 'nx-input is-empty'}
                     >
                       {BUDGETS.map(b => (
                         <option key={b.value} value={b.value}>
@@ -301,15 +219,15 @@ export default function Contact() {
                     </select>
                   </div>
                 </div>
-                <div className="nxc-field">
+                <div className="nx-field">
                   <label htmlFor="cx-timeline">When are you looking to start?</label>
-                  <div className="nxc-select">
+                  <div className="nx-select">
                     <select
                       id="cx-timeline"
                       name="timeline"
                       value={form.timeline}
                       onChange={handle}
-                      className={form.timeline ? 'nxc-input' : 'nxc-input is-empty'}
+                      className={form.timeline ? 'nx-input' : 'nx-input is-empty'}
                     >
                       {TIMELINES.map(t => (
                         <option key={t.value} value={t.value}>
@@ -323,7 +241,7 @@ export default function Contact() {
 
               {/* Error */}
               {status === 'error' && (
-                <motion.p id="cx-error" role="alert" className="nxc-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <motion.p id="cx-error" role="alert" className="nx-form-error" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   {errorMsg}
                 </motion.p>
               )}
