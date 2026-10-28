@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { RefreshCw, Copy, Check } from 'lucide-react';
-import BackLink from '@/components/tools/BackLink';
-import ToolCTA from '@/components/tools/ToolCTA';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
+import { Segmented, Toggle } from '@/components/redesign/tools/blocks';
+import { ClayButton } from '@/components/redesign';
 
 // ── Word list (200 words) ─────────────────────────────────────────────────────
 
@@ -136,45 +136,6 @@ function generatePassphrase(opts: PassphraseOpts): string {
   return words.join(opts.separator);
 }
 
-// ── Shared styles ─────────────────────────────────────────────────────────────
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20, 25, 32, 0.6)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  padding: 'clamp(1.5rem, 3vw, 2.25rem)',
-};
-
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.62rem',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase' as const,
-  color: 'rgba(245,245,245,0.35)',
-  display: 'block',
-  marginBottom: '0.5rem',
-};
-
-const TOGGLE_BASE: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.72rem',
-  letterSpacing: '0.08em',
-  padding: '0.4rem 0.9rem',
-  border: '1px solid rgba(255,255,255,0.15)',
-  background: 'transparent',
-  color: 'rgba(245,245,245,0.4)',
-  cursor: 'pointer',
-  transition: 'all 150ms',
-};
-
-const TOGGLE_ACTIVE: React.CSSProperties = {
-  ...TOGGLE_BASE,
-  border: '1px solid var(--color-primary)',
-  background: 'rgba(26,111,212,0.15)',
-  color: 'var(--color-primary)',
-};
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 type Mode = 'password' | 'passphrase';
@@ -279,72 +240,55 @@ export default function PasswordGeneratorPage() {
   const strength = output ? scorePassword(output) : null;
 
   return (
-    <main
-      style={{
-        padding: 'clamp(6rem, 10vw, 11rem) clamp(2rem, 7vw, 8rem) clamp(4rem, 6vw, 6rem)',
-        background: 'var(--color-bg)',
-      }}
+    <ToolShell
+      title="Password Generator"
+      outline="Generator"
+      description="Generate cryptographically secure passwords and passphrases. All generation happens locally — nothing leaves your browser."
+      cta
     >
-      <BackLink />
+      <div className="nxtl-panes">
 
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3.5rem, 8vw, 8rem)',
-          lineHeight: 0.9,
-          color: 'var(--color-text)',
-          marginBottom: '0.75rem',
-        }}
-      >
-        PASSWORD GENERATOR
-      </h1>
-      <p
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 'clamp(0.95rem, 1.3vw, 1.05rem)',
-          color: 'rgba(245,245,245,0.5)',
-          marginBottom: '2.5rem',
-          maxWidth: '42rem',
-        }}
-      >
-        Generate cryptographically secure passwords and passphrases. All generation happens locally — nothing leaves your browser.
-      </p>
+        {/* ── Controls ── */}
+        <div className="nxtl-panel nx-clay">
+          {/* Mode toggle */}
+          <Segmented
+            label="Mode"
+            className="nxtl-pw-modes"
+            options={[
+              { value: 'password' as Mode, label: 'Password' },
+              { value: 'passphrase' as Mode, label: 'Passphrase' },
+            ]}
+            value={mode}
+            onChange={setMode}
+          />
 
-      <div style={{ maxWidth: '640px' }}>
-        {/* Mode toggle */}
-        <div style={{ display: 'flex', marginBottom: '1.5rem' }}>
-          <button style={mode === 'password' ? TOGGLE_ACTIVE : TOGGLE_BASE} onClick={() => setMode('password')}>Password</button>
-          <button style={mode === 'passphrase' ? TOGGLE_ACTIVE : TOGGLE_BASE} onClick={() => setMode('passphrase')}>Passphrase</button>
-        </div>
-
-        {/* Controls */}
-        <div style={{ ...GLASS, marginBottom: '1.5rem' }}>
           {mode === 'password' ? (
             <>
               {/* Length */}
-              <div style={{ marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <label style={{ ...LABEL, marginBottom: 0 }}>Length</label>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.88rem', color: 'var(--color-text)' }}>{length}</span>
+              <div>
+                <div className="nxtl-range-head">
+                  <label htmlFor="pw-length" className="nxtl-label" style={{ marginBottom: 0 }}>Length</label>
+                  <span className="nxtl-pw-val">{length}</span>
                 </div>
                 <input
+                  id="pw-length"
                   type="range"
                   min={8}
                   max={128}
                   value={length}
                   onChange={e => setLength(Number(e.target.value))}
-                  style={{ width: '100%', accentColor: 'var(--color-primary)' }}
+                  className="nxtl-range"
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)' }}>8</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)' }}>128</span>
+                <div className="nxtl-range-head">
+                  <span className="nxtl-mono">8</span>
+                  <span className="nxtl-mono">128</span>
                 </div>
               </div>
 
               {/* Character sets */}
-              <div style={{ marginBottom: '0.75rem' }}>
-                <label style={LABEL}>Character Types</label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div>
+                <span className="nxtl-label" id="pw-types">Character Types</span>
+                <div className="nxtl-pw-types" role="group" aria-labelledby="pw-types">
                   {[
                     { key: 'upper' as const, label: 'Uppercase (A–Z)', active: upper },
                     { key: 'lower' as const, label: 'Lowercase (a–z)', active: lower },
@@ -353,287 +297,204 @@ export default function PasswordGeneratorPage() {
                   ].map(({ key, label, active }) => (
                     <button
                       key={key}
+                      type="button"
                       onClick={() => toggleCharset(key)}
-                      style={active ? TOGGLE_ACTIVE : TOGGLE_BASE}
+                      aria-pressed={active}
+                      className="nxtl-chip-btn nxtl-pw-type"
                     >
                       {label}
                     </button>
                   ))}
                 </div>
                 {charWarn && (
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#d97706', marginTop: '0.4rem' }}>
+                  <p className="nxtl-pw-warn" role="alert">
                     At least one character type must be selected
                   </p>
                 )}
               </div>
 
               {/* Advanced options */}
-              <button
-                onClick={() => setAdvOpen(v => !v)}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(245,245,245,0.3)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  marginTop: '0.25rem',
-                }}
-              >
-                {advOpen ? '▾' : '▸'} Advanced Options
-              </button>
+              <div className="nxtl-pw-adv">
+                <button
+                  type="button"
+                  onClick={() => setAdvOpen(v => !v)}
+                  aria-expanded={advOpen}
+                  className="nxtl-utm-history-toggle"
+                >
+                  <span aria-hidden="true">{advOpen ? '▾' : '▸'}</span> Advanced Options
+                </button>
 
-              {advOpen && (
-                <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={exAmbig}
-                      onChange={e => setExAmbig(e.target.checked)}
-                      style={{ accentColor: 'var(--color-primary)', width: '15px', height: '15px' }}
-                    />
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.6)' }}>
+                {advOpen && (
+                  <div className="nxtl-pw-adv-body">
+                    <Toggle checked={exAmbig} onChange={setExAmbig}>
                       Exclude ambiguous characters (0Oo1lIi)
-                    </span>
-                  </label>
-                  <div>
-                    <label style={LABEL}>Custom exclude characters</label>
-                    <input
-                      type="text"
-                      value={customEx}
-                      onChange={e => setCustomEx(e.target.value)}
-                      placeholder="e.g. @#$"
-                      style={{
-                        background: 'rgba(10,10,10,0.5)',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        padding: '0.4rem 0.75rem',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.82rem',
-                        color: 'var(--color-text)',
-                        outline: 'none',
-                        width: '160px',
-                      }}
-                    />
+                    </Toggle>
+                    <div className="nx-field">
+                      <label htmlFor="pw-exclude">Custom exclude characters</label>
+                      <input
+                        id="pw-exclude"
+                        type="text"
+                        value={customEx}
+                        onChange={e => setCustomEx(e.target.value)}
+                        placeholder="e.g. @#$"
+                        className="nx-input nxtl-pw-exclude"
+                        spellCheck={false}
+                        autoComplete="off"
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </>
           ) : (
             <>
               {/* Word count */}
-              <div style={{ marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <label style={{ ...LABEL, marginBottom: 0 }}>Word Count</label>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.88rem', color: 'var(--color-text)' }}>{wordCount}</span>
+              <div>
+                <div className="nxtl-range-head">
+                  <label htmlFor="pw-words" className="nxtl-label" style={{ marginBottom: 0 }}>Word Count</label>
+                  <span className="nxtl-pw-val">{wordCount}</span>
                 </div>
                 <input
+                  id="pw-words"
                   type="range"
                   min={3}
                   max={8}
                   value={wordCount}
                   onChange={e => setWordCount(Number(e.target.value))}
-                  style={{ width: '100%', accentColor: 'var(--color-primary)' }}
+                  className="nxtl-range"
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)' }}>3</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)' }}>8</span>
+                <div className="nxtl-range-head">
+                  <span className="nxtl-mono">3</span>
+                  <span className="nxtl-mono">8</span>
                 </div>
               </div>
 
               {/* Separator */}
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={LABEL}>Separator</label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  {SEPARATORS.map(s => (
-                    <button
-                      key={s.label}
-                      onClick={() => setSeparator(s.value)}
-                      style={separator === s.value ? TOGGLE_ACTIVE : TOGGLE_BASE}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
+              <div>
+                <span className="nxtl-label">Separator</span>
+                <Segmented
+                  label="Separator"
+                  size="sm"
+                  options={SEPARATORS.map(sp => ({ value: sp.value, label: sp.label }))}
+                  value={separator}
+                  onChange={setSeparator}
+                />
               </div>
 
               {/* Toggles */}
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                  <input type="checkbox" checked={capitalise} onChange={e => setCapitalise(e.target.checked)} style={{ accentColor: 'var(--color-primary)' }} />
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.6)' }}>Capitalise words</span>
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                  <input type="checkbox" checked={includeNum} onChange={e => setIncludeNum(e.target.checked)} style={{ accentColor: 'var(--color-primary)' }} />
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.6)' }}>Include a number</span>
-                </label>
+              <div className="nxtl-pw-toggles">
+                <Toggle checked={capitalise} onChange={setCapitalise}>Capitalise words</Toggle>
+                <Toggle checked={includeNum} onChange={setIncludeNum}>Include a number</Toggle>
               </div>
             </>
           )}
+
+          {/* Generate button */}
+          <div className="nxtl-actions">
+            <ClayButton onClick={handleGenerate}>
+              Generate
+            </ClayButton>
+          </div>
         </div>
 
-        {/* Generate button */}
-        <div style={{ marginBottom: '1.5rem' }}>
-          <NxButton variant="primary" size="sm" onClick={handleGenerate}>
-            Generate
-          </NxButton>
-        </div>
-
-        {/* Output */}
-        {output && (
-          <div style={{ ...GLASS, marginBottom: '1.5rem' }}>
-            <label style={LABEL}>Generated {mode === 'passphrase' ? 'Passphrase' : 'Password'}</label>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-              <div
-                style={{
-                  flex: 1,
-                  background: 'rgba(10,10,10,0.5)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  padding: '0.75rem 1rem',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(0.8rem, 1.8vw, 1rem)',
-                  color: 'var(--color-text)',
-                  wordBreak: 'break-all',
-                  lineHeight: 1.5,
-                  minHeight: '52px',
-                }}
-              >
-                {output}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
-                <button
-                  onClick={handleGenerate}
-                  title="Regenerate"
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    background: 'transparent',
-                    color: 'rgba(245,245,245,0.5)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <RefreshCw size={15} />
-                </button>
-                <button
-                  onClick={copyOutput}
-                  title="Copy"
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    background: copied ? 'rgba(22,163,74,0.15)' : 'transparent',
-                    color: copied ? '#16a34a' : 'rgba(245,245,245,0.5)',
-                    cursor: 'pointer',
-                    transition: 'all 150ms',
-                  }}
-                >
-                  {copied ? <Check size={15} /> : <Copy size={15} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Strength meter (passwords only) */}
-            {mode === 'password' && strength && (
-              <div style={{ marginTop: '0.75rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'rgba(245,245,245,0.35)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Strength</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: strength.color, fontWeight: 600 }}>{strength.label}</span>
+        <div className="nxtl-stack">
+          {/* Output */}
+          <div className="nxtl-panel nx-clay" aria-live="polite">
+            {output ? (
+              <>
+                <span className="nxtl-label" style={{ marginBottom: 0 }}>Generated {mode === 'passphrase' ? 'Passphrase' : 'Password'}</span>
+                <div className="nxtl-pw-out">
+                  <div className="nxtl-pw-value">
+                    {output}
+                  </div>
+                  <div className="nxtl-pw-out-btns">
+                    <button
+                      type="button"
+                      onClick={handleGenerate}
+                      title="Regenerate"
+                      aria-label="Regenerate"
+                      className="nxtl-pw-icon"
+                    >
+                      <RefreshCw size={18} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={copyOutput}
+                      title="Copy"
+                      aria-label={copied ? 'Copied' : 'Copy'}
+                      className={`nxtl-pw-icon${copied ? ' is-copied' : ''}`}
+                    >
+                      {copied ? <Check size={18} /> : <Copy size={18} />}
+                    </button>
+                  </div>
                 </div>
-                <div style={{ height: '4px', background: 'rgba(255,255,255,0.08)' }}>
-                  <div style={{ height: '100%', width: `${strength.pct}%`, background: strength.color, transition: 'width 250ms, background 250ms' }} />
-                </div>
+
+                {/* Strength meter (passwords only) */}
+                {mode === 'password' && strength && (
+                  <div className="nxtl-pw-strength">
+                    <div className="nxtl-range-head">
+                      <span className="nxtl-label" style={{ marginBottom: 0 }}>Strength</span>
+                      <span className="nxtl-pw-strength-label" style={{ color: strength.color }}>{strength.label}</span>
+                    </div>
+                    <div className="nxtl-progress">
+                      <span style={{ width: `${strength.pct}%`, background: strength.color }} />
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="nxtl-pw-empty">
+                <span className="nxtl-pw-empty-dots" aria-hidden="true">••••••••</span>
+                <span className="nxtl-hint">Press Generate to create one</span>
               </div>
             )}
           </div>
-        )}
 
-        {/* Bulk generate */}
-        <div style={{ ...GLASS, marginBottom: '2rem' }}>
-          <label style={LABEL}>Bulk Generate</label>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '1rem' }}>
-            {([1, 5, 10, 20] as BulkCount[]).map(n => (
-              <button key={n} onClick={() => setBulkCount(n)} style={bulkCount === n ? TOGGLE_ACTIVE : TOGGLE_BASE}>
-                {n}
-              </button>
-            ))}
-            <NxButton variant="ghost" size="sm" onClick={handleBulk}>
-              Generate {bulkCount}
-            </NxButton>
+          {/* Bulk generate */}
+          <div className="nxtl-panel nx-clay">
+            <span className="nxtl-label" style={{ marginBottom: 0 }}>Bulk Generate</span>
+            <div className="nxtl-pw-bulk-head">
+              <Segmented
+                label="How many"
+                size="sm"
+                options={([1, 5, 10, 20] as BulkCount[]).map(n => ({ value: String(n), label: n }))}
+                value={String(bulkCount)}
+                onChange={v => setBulkCount(Number(v) as BulkCount)}
+              />
+              <ClayButton variant="ghost" className="nx-clay-btn--sm" onClick={handleBulk}>
+                Generate {bulkCount}
+              </ClayButton>
+            </div>
+
+            {bulkList.length > 0 && (
+              <>
+                <div className="nxtl-pw-bulk-list">
+                  {bulkList.map((pw, i) => (
+                    <div key={i} className="nxtl-mp-row">
+                      <span className="nxtl-pw-bulk-value">
+                        {pw}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => copyBulkRow(i)}
+                        aria-label={`Copy item ${i + 1}`}
+                        className={`nxtl-mp-copy${bulkCopied === i ? ' is-copied' : ''}`}
+                      >
+                        {bulkCopied === i ? <Check size={16} /> : <Copy size={16} />}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="nxtl-actions">
+                  <ClayButton variant="ghost" className="nx-clay-btn--sm" onClick={copyAllBulk}>
+                    {bulkAllCopied ? 'Copied All!' : 'Copy All'}
+                  </ClayButton>
+                </div>
+              </>
+            )}
           </div>
-
-          {bulkList.length > 0 && (
-            <>
-              <div
-                style={{
-                  maxHeight: '260px',
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.4rem',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                {bulkList.map((pw, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      background: 'rgba(10,10,10,0.4)',
-                      padding: '0.4rem 0.75rem',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        flex: 1,
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.78rem',
-                        color: 'var(--color-text)',
-                        wordBreak: 'break-all',
-                      }}
-                    >
-                      {pw}
-                    </span>
-                    <button
-                      onClick={() => copyBulkRow(i)}
-                      style={{
-                        flexShrink: 0,
-                        width: '28px',
-                        height: '28px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        background: 'transparent',
-                        color: bulkCopied === i ? '#16a34a' : 'rgba(245,245,245,0.4)',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {bulkCopied === i ? <Check size={12} /> : <Copy size={12} />}
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <NxButton variant="ghost" size="sm" onClick={copyAllBulk}>
-                {bulkAllCopied ? 'Copied All!' : 'Copy All'}
-              </NxButton>
-            </>
-          )}
         </div>
-
-        <ToolCTA />
       </div>
-    </main>
+    </ToolShell>
   );
 }
