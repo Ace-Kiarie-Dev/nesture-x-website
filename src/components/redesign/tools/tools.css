@@ -1,0 +1,413 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   /tools hub and every /tools/* page, hybrid redesign. Scoped under .nxtl; colours,
+   shadows and radii come from the --nx-* tokens in app/globals.css (light / dark).
+   Form controls use the shared .nx-field / .nx-input / .nx-select / .nx-textarea
+   (hybrid.css). This file adds the page frame (ToolShell) and the tool building
+   blocks (blocks.tsx): panel, panes, dropzone, stage, result, segmented control,
+   toggle, slider, progress, status, spinner, action row.
+   Breakpoints: 640px (phone → wider), 900px (panes side by side), 1100px (hub hero).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxtl {
+  --nxtl-gutter: 20px;
+  --nxtl-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxtl { --nxtl-gutter: 40px; }
+}
+
+.nxtl-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--nxtl-gutter);
+}
+
+/* ── ToolShell: slim header ───────────────────────────────────────────── */
+
+.nxtl-page { padding-top: 112px; padding-bottom: clamp(48px, 7vw, 96px); }
+@media (min-width: 768px) {
+  .nxtl-page { padding-top: 120px; }
+}
+
+.nxtl-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.nxtl-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--nx-accent);
+}
+.nxtl-back:hover { color: var(--nx-text); }
+.nxtl-back:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; border-radius: 8px; }
+.nxtl-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 4.4vw + 28px, 92px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+  overflow-wrap: anywhere;
+}
+.nxtl-desc { max-width: 640px; font-size: 17px; line-height: 1.6; color: var(--nx-body); }
+
+/* Custom-tool band (the old ToolCTA copy). */
+.nxtl-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: clamp(36px, 5vw, 56px);
+  padding: 22px 24px;
+  border-radius: 28px;
+}
+.nxtl-cta-copy { display: flex; flex-direction: column; gap: 6px; }
+.nxtl-cta-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxtl-cta-text { font-size: 16px; line-height: 1.6; color: var(--nx-body); }
+@media (min-width: 768px) {
+  .nxtl-cta { flex-direction: row; align-items: center; justify-content: space-between; padding: 24px 32px; }
+}
+
+/* ── Building blocks ───────────────────────────────────────────────────── */
+
+/* Panel: a clay card with comfortable padding. Use with .nx-clay (or .nx-glass). */
+.nxtl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding: clamp(20px, 3vw, 32px);
+  border-radius: var(--nx-radius-clay);
+}
+.nxtl-panel-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--nx-text);
+}
+
+/* Two panes: stacked on phones, side by side from 900px. */
+.nxtl-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .nxtl-panes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  .nxtl-panes--wide-left { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .nxtl-panes--wide-right { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+}
+.nxtl-stack { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.nxtl-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+@media (min-width: 560px) {
+  .nxtl-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nxtl-row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Label for groups that aren't a single <label> (matches .nx-field label). */
+.nxtl-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxtl-hint { font-size: 13px; line-height: 1.5; color: var(--nx-body); }
+.nxtl-mono { font-family: var(--font-mono), monospace; font-size: 13px; letter-spacing: 0.04em; color: var(--nx-body); }
+
+/* Dropzone: dashed glass border, drag-over state, keyboard focus. */
+.nxtl-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 180px;
+  padding: 28px 20px;
+  border: 2px dashed color-mix(in srgb, var(--nx-blue) 45%, transparent);
+  border-radius: 24px;
+  background: var(--nx-glass-fill);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+.nxtl-drop:hover { border-color: var(--nx-blue); }
+.nxtl-drop.is-drag {
+  border-color: var(--nx-blue);
+  border-style: solid;
+  background: color-mix(in srgb, var(--nx-blue) 12%, var(--nx-glass-fill));
+}
+.nxtl-drop:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+.nxtl-drop--sm { min-height: 64px; padding: 14px 16px; flex-direction: row; }
+.nxtl-drop-title { font-weight: 600; font-size: 16px; color: var(--nx-text); }
+.nxtl-drop-hint { font-size: 13px; color: var(--nx-body); }
+
+/* Preview stage: user content stays on a neutral stage in both themes. */
+.nxtl-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  padding: 20px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0f1422;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.nxtl-stage--checker {
+  background-color: #e9edf3;
+  background-image:
+    linear-gradient(45deg, #d3d9e3 25%, transparent 25%),
+    linear-gradient(-45deg, #d3d9e3 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d3d9e3 75%),
+    linear-gradient(-45deg, transparent 75%, #d3d9e3 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  box-shadow: inset 0 0 0 1px rgba(13, 27, 62, 0.08);
+}
+.nxtl-stage--light { background: #f5f7fb; box-shadow: inset 0 0 0 1px rgba(13, 27, 62, 0.08); }
+.nxtl-stage img,
+.nxtl-stage canvas { max-width: 100%; height: auto; }
+.nxtl-stage-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(184, 206, 240, 0.6);
+  text-align: center;
+}
+.nxtl-stage--checker .nxtl-stage-empty,
+.nxtl-stage--light .nxtl-stage-empty { color: #5b6b86; }
+
+/* Result panel: the finished output with its primary action. */
+.nxtl-result {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 22px;
+  background: color-mix(in srgb, #22c55e 8%, var(--nx-inset));
+  box-shadow: var(--nx-shadow-inset), inset 0 0 0 1px rgba(34, 197, 94, 0.35);
+}
+
+/* Segmented control (Segmented in blocks.tsx). */
+.nxtl-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 24px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+}
+.nxtl-seg-btn {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--nx-body);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+.nxtl-seg-btn:hover { color: var(--nx-text); }
+.nxtl-seg-btn[aria-pressed='true'] {
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+}
+.nxtl-seg-btn:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+.nxtl-seg--sm .nxtl-seg-btn { font-size: 13px; padding: 0 12px; }
+
+/* Toggle (switch). */
+.nxtl-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--nx-text);
+}
+.nxtl-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.nxtl-toggle-track {
+  position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  transition: background-color 150ms ease;
+}
+.nxtl-toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(3, 6, 16, 0.35);
+  transition: translate 150ms ease;
+}
+.nxtl-toggle input:checked + .nxtl-toggle-track { background: var(--nx-blue); }
+.nxtl-toggle input:checked + .nxtl-toggle-track::after { translate: 20px 0; }
+.nxtl-toggle input:focus-visible + .nxtl-toggle-track { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+
+/* Slider. */
+.nxtl-range {
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  accent-color: var(--nx-blue);
+  cursor: pointer;
+}
+.nxtl-range:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; border-radius: 8px; }
+.nxtl-range-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+
+/* Progress bar. */
+.nxtl-progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+}
+.nxtl-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4a97f2, #1a6fd4);
+  transition: width 200ms ease;
+}
+
+/* Status line (Status in blocks.tsx). */
+.nxtl-status {
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.nxtl-status--info { color: var(--nx-accent-soft); background: color-mix(in srgb, var(--nx-blue) 10%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-blue) 30%, transparent); }
+.nxtl-status--ok { color: #22c55e; background: rgba(34, 197, 94, 0.08); box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.35); }
+.nxtl-status--error { color: #f87171; background: rgba(239, 68, 68, 0.08); box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.35); }
+[data-theme='light'] .nxtl-status--ok { color: #15803d; }
+[data-theme='light'] .nxtl-status--error { color: #b91c1c; }
+
+.nxtl-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: nxtl-spin 0.8s linear infinite;
+}
+.nxtl-spinner--dark { border-color: color-mix(in srgb, var(--nx-blue) 25%, transparent); border-top-color: var(--nx-blue); }
+
+/* Action row: buttons wrap; full width on phones. */
+.nxtl-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 559px) {
+  .nxtl-actions > .nx-clay-btn { flex: 1 1 100%; }
+}
+
+/* Small text button (Remove, Clear...). */
+.nxtl-link-btn {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+  cursor: pointer;
+}
+.nxtl-link-btn:hover { color: var(--nx-text); }
+.nxtl-link-btn:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+
+/* Colour input: a round swatch with the hex beside it. */
+.nxtl-color { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
+.nxtl-color input[type='color'] {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  cursor: pointer;
+}
+.nxtl-color input[type='color']::-webkit-color-swatch-wrapper { padding: 0; }
+.nxtl-color input[type='color']::-webkit-color-swatch { border: 0; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25); }
+.nxtl-color input[type='color']:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+
+/* Stat tile (counts, sizes). */
+.nxtl-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 640px) {
+  .nxtl-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.nxtl-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+}
+.nxtl-stat-num { font-family: var(--font-display), sans-serif; font-size: 40px; line-height: 0.95; color: var(--nx-accent); }
+.nxtl-stat-label { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--nx-body); }
+
+@keyframes nxtl-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxtl-spinner { animation: none; }
+  .nxtl-drop,
+  .nxtl-seg-btn,
+  .nxtl-toggle-track,
+  .nxtl-toggle-track::after,
+  .nxtl-progress > span { transition: none; }
+}
