@@ -509,7 +509,11 @@
 }
 .nxpf-view-media { min-width: 0; }
 
-/* Image in a clay frame; tall pieces are capped at ~85vh. */
+/* Media height budget: the viewport minus the nav, breadcrumb, frame and the pager
+   under the media, so a tall piece never pushes the pager off the first screen. */
+.nxpf-project { --nxpf-media-max: max(300px, calc(100svh - 340px)); }
+
+/* Image in a clay frame, capped by the height budget. */
 .nxpf-view-frame {
   display: flex;
   justify-content: center;
@@ -520,7 +524,7 @@
   width: auto;
   max-width: 100%;
   height: auto;
-  max-height: 85vh;
+  max-height: var(--nxpf-media-max);
   border-radius: 14px;
 }
 
@@ -613,7 +617,7 @@
    draws it. No container query here: it would trap the fullscreen position: fixed. */
 .nxpf-pdf-fit {
   --nxpf-col: calc(100vw - 2 * var(--nxpf-gutter));
-  --nxpf-fit: min(var(--nxpf-col), calc((88vh - 64px - 2rem) * var(--nxpf-pdf-ratio, 0.707) + 32px));
+  --nxpf-fit: min(var(--nxpf-col), calc((var(--nxpf-media-max) - 64px - 2rem) * var(--nxpf-pdf-ratio, 0.707) + 32px));
   width: var(--nxpf-fit);
   max-width: 100%;
   margin-inline: auto;
@@ -738,42 +742,6 @@
   .nxpf-more-item { flex-basis: 300px; }
 }
 
-/* Previous / next. */
-.nxpf-pager {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
-  padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 96px);
-}
-.nxpf-pager-link {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-  padding: 20px 24px;
-  text-decoration: none;
-  color: var(--nx-text);
-  transition: transform 180ms ease;
-}
-.nxpf-pager-link:hover { transform: translateY(-2px); }
-.nxpf-pager-link:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
-.nxpf-pager-link--next { text-align: right; }
-.nxpf-pager-dir {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--nx-accent);
-}
-.nxpf-pager-title { font-family: var(--font-display), sans-serif; font-size: 26px; line-height: 1.05; }
-@media (min-width: 768px) {
-  .nxpf-pager { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nxpf-pager-link { transition: none; }
-  .nxpf-pager-link:hover { transform: none; }
-}
 
 /* ── 6. Two-step flow: back link, choice cards, digital grid, card badges ── */
 
@@ -924,4 +892,55 @@
   .nxpf-choice:hover { transform: none; }
   .nxpf-choice:hover .nxpf-choice-img,
   .nxpf-choice:hover .nxpf-choice-arrow { translate: none; }
+}
+
+/* Project pager, directly under the media. Desktop: two ghost clay buttons with the
+   neighbour titles on one line and a counter between. Phones: 44px arrow buttons. */
+.nxpf-pager {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.nxpf-pager-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 12px;
+  gap: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.nxpf-pager-btn[aria-disabled='true'] { opacity: 0.4; cursor: not-allowed; }
+.nxpf-pager-btn[aria-disabled='true']:hover { transform: none; border-color: var(--nx-ghost-border); }
+.nxpf-pager-text { display: none; }
+.nxpf-pager-count {
+  justify-self: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--nx-body);
+  white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .nxpf-pager { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .nxpf-pager-btn { min-width: 0; padding: 10px 18px; max-width: 100%; }
+  .nxpf-pager-btn--prev { justify-self: start; }
+  .nxpf-pager-btn--next { justify-self: end; }
+  .nxpf-pager-text { display: flex; flex-direction: column; min-width: 0; text-align: left; }
+  .nxpf-pager-btn--next .nxpf-pager-text { text-align: right; }
+  .nxpf-pager-dir {
+    font-family: var(--font-mono), monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--nx-accent);
+  }
+  .nxpf-pager-title {
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

@@ -15,14 +15,16 @@ import {
 } from '@/lib/portfolio-data';
 import { Chip, ClayButton, GlassPanel } from '@/components/redesign';
 import MoreLikeThis from './MoreLikeThis';
-
-type Neighbour = { id: string; title: string } | null;
+import ProjectPager, { type PagerItem } from './ProjectPager';
 
 type ProjectViewProps = {
   item: PortfolioItem;
   more: WorkCard[];
-  prev: Neighbour;
-  next: Neighbour;
+  /** Neighbours within the category, in grid order. */
+  prev: PagerItem;
+  next: PagerItem;
+  position: number;
+  total: number;
 };
 
 // Desktop media column is ~860px wide; tall pieces are capped at ~85vh, so they render
@@ -79,7 +81,7 @@ function Media({ item, title }: { item: PortfolioItem; title: string }) {
   return <div className="nxpf-view-frame nx-clay">{image}</div>;
 }
 
-export default function ProjectView({ item, more, prev, next }: ProjectViewProps) {
+export default function ProjectView({ item, more, prev, next, position, total }: ProjectViewProps) {
   const title = portfolioTitle(item);
   const category = categoryOf(item);
 
@@ -105,6 +107,7 @@ export default function ProjectView({ item, more, prev, next }: ProjectViewProps
       <div className="nxpf-view">
         <div className="nxpf-view-media">
           <Media item={item} title={title} />
+          <ProjectPager prev={prev} next={next} position={position} total={total} />
         </div>
 
         <aside className="nxpf-view-side">
@@ -139,23 +142,6 @@ export default function ProjectView({ item, more, prev, next }: ProjectViewProps
       </div>
 
       <MoreLikeThis cards={more} />
-
-      <nav className="nxpf-pager" aria-label="More projects">
-        {prev ? (
-          <Link href={`/portfolio/${prev.id}`} className="nxpf-pager-link nx-clay">
-            <span className="nxpf-pager-dir">← Previous</span>
-            <span className="nxpf-pager-title">{prev.title}</span>
-          </Link>
-        ) : (
-          <span />
-        )}
-        {next && (
-          <Link href={`/portfolio/${next.id}`} className="nxpf-pager-link nxpf-pager-link--next nx-clay">
-            <span className="nxpf-pager-dir">Next →</span>
-            <span className="nxpf-pager-title">{next.title}</span>
-          </Link>
-        )}
-      </nav>
     </>
   );
 }

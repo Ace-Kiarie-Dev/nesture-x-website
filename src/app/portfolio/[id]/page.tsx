@@ -60,11 +60,11 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
   const item = DESIGN_ITEMS[index];
 
   const category = categoryOf(item);
-  const more = DESIGN_CARDS.filter(c => c.category === category && c.key !== item.id).slice(0, 12);
-  const neighbour = (i: number) => {
-    const n = DESIGN_ITEMS[i];
-    return n ? { id: n.id, title: portfolioTitle(n) } : null;
-  };
+  // Same category, same order as the grid: the pager's neighbours and its counter.
+  const siblings = DESIGN_CARDS.filter(c => c.category === category);
+  const at = siblings.findIndex(c => c.key === item.id);
+  const neighbour = (i: number) => (siblings[i] ? { id: siblings[i].key, title: siblings[i].title } : null);
+  const more = siblings.filter(c => c.key !== item.id).slice(0, 12);
 
   return (
     <main className="nxpf nxpf-project">
@@ -76,7 +76,14 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
         ])}
       />
       <div className="nxpf-wrap">
-        <ProjectView item={item} more={more} prev={neighbour(index - 1)} next={neighbour(index + 1)} />
+        <ProjectView
+          item={item}
+          more={more}
+          prev={neighbour(at - 1)}
+          next={neighbour(at + 1)}
+          position={at + 1}
+          total={siblings.length}
+        />
       </div>
     </main>
   );
