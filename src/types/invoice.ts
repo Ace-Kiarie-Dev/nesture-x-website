@@ -1,4 +1,5 @@
 import type { QuoteLine, DiscountType } from './quote';
+import type { ContactSnapshot } from './contact';
 
 export type { QuoteLine as InvoiceLine, DiscountType };
 export { subtotal, discountAmount, grandTotal, fmt, fmtDate } from './quote';
@@ -28,4 +29,7 @@ export interface Invoice {
   yourKraPin:      string;
   buyerKraPin:     string;
   etimsCompliant:  boolean; // controls whether the reserved eTIMS block renders on the PDF
+  // Contact details copied from the chosen profile at save time (see types/contact.ts).
+  // Absent on invoices saved before contact profiles existed — render via resolveContact().
+  contact?:        ContactSnapshot;
 }

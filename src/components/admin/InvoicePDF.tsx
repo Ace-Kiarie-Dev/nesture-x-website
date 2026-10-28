@@ -16,6 +16,7 @@ import {
   fmt,
   fmtDate,
 } from '@/types/invoice';
+import { COMPANY_NAME, resolveContact, footerContactParts } from '@/types/contact';
 
 // ── Colors ────────────────────────────────────────────────────────────────────
 // Same palette as QuotePDF.tsx so invoices and quotations read as one brand.
@@ -399,6 +400,8 @@ export function InvoicePDF({ invoice }: { invoice: Invoice }) {
   const total       = grandTotal(invoice.lines, invoice.discountType, invoice.discountValue);
   const balanceDue  = total - (invoice.amountPaid || 0);
   const logoSrc     = getLogoSrc();
+  // Rendered from the invoice's own snapshot; old invoices fall back to the legacy values.
+  const contact     = resolveContact(invoice.contact);
 
   return (
     <Document
@@ -578,8 +581,8 @@ export function InvoicePDF({ invoice }: { invoice: Invoice }) {
         {/* ── Footer ── */}
         <View style={s.footer} fixed>
           <View>
-            <Text style={s.footerBrand}>Nesture-X</Text>
-            <Text style={s.footerText}>Nairobi, Kenya  ·  +254 717 164 951  ·  nesturex@gmail.com  ·  nesturex.com</Text>
+            <Text style={s.footerBrand}>{COMPANY_NAME}</Text>
+            <Text style={s.footerText}>{footerContactParts(contact).join('  ·  ')}</Text>
           </View>
           <Text style={s.footerText}>
             Due {fmtDate(invoice.dueDate)}

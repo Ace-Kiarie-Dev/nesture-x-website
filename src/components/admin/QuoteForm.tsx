@@ -17,6 +17,16 @@ import type { QuoteStatus, SavedQuote } from '@/services/quoteService';
 import type { Invoice, PaymentStatus } from '@/types/invoice';
 import type { SavedInvoice } from '@/services/invoiceService';
 import { createInvoice, updateInvoice, downloadInvoicePDF } from '@/services/invoiceClient';
+import {
+  type ContactSnapshot,
+  COMPANY_NAME,
+  resolveContact,
+  footerContactParts,
+  toSnapshot,
+  sameContact,
+} from '@/types/contact';
+import type { SavedContactProfile } from '@/services/contactProfileService';
+import { fetchContactProfiles } from '@/services/contactProfileClient';
 
 export type DocumentType = 'quotation' | 'invoice';
 
@@ -92,7 +102,7 @@ function blankInvoiceExtra(): InvoiceExtra {
 }
 
 /** Combines the shared `quote` fields with invoice-only fields into an Invoice. */
-function toInvoicePayload(q: Quote, extra: InvoiceExtra): Invoice {
+function toInvoicePayload(q: Quote, extra: InvoiceExtra, contact?: ContactSnapshot): Invoice {
   return {
     documentNumber:  extra.documentNumber,
     issueDate:       extra.issueDate,
@@ -111,7 +121,16 @@ function toInvoicePayload(q: Quote, extra: InvoiceExtra): Invoice {
     yourKraPin:      extra.yourKraPin,
     buyerKraPin:     extra.buyerKraPin,
     etimsCompliant:  extra.etimsCompliant,
+    // Snapshot of the chosen contact. Undefined only while profiles are still
+    // loading/unavailable — the server then snapshots the default profile.
+    ...(contact ? { contact } : {}),
   };
+}
+
+const CUSTOM_CONTACT = 'custom';
+
+function blankContact(): ContactSnapshot {
+  return { contactName: '', phone: '', whatsapp: '', email: '' };
 }
 
 // ── Shared input styles ───────────────────────────────────────────────────────
@@ -325,6 +344,7 @@ function InvoicePreview({ inv }: { inv: Invoice }) {
   const total       = grandTotal(inv.lines, inv.discountType, inv.discountValue);
   const balanceDue  = total - (inv.amountPaid || 0);
   const statusColor = PAYMENT_STATUS_HEX[inv.paymentStatus];
+  const contact     = resolveContact(inv.contact);
 
   const cell: React.CSSProperties = {
     padding: '7px 10px', fontSize: '0.78rem', borderBottom: '1px solid #e8ecf5',
@@ -478,12 +498,61 @@ function InvoicePreview({ inv }: { inv: Invoice }) {
       )}
       <div style={{ background: '#0d1b3e', padding: '10px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
         <div>
-          <div style={{ color: '#1a6fd4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Nesture-X</div>
-          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>Nairobi, Kenya · +254 717 164 951 · nesturex@gmail.com · nesturex.com</div>
+          <div style={{ color: '#1a6fd4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{COMPANY_NAME}</div>
+          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>{footerContactParts(contact).join(' · ')}</div>
         </div>
         <div style={{ color: 'rgba(184,206,240,0.55)', fontSize: '0.65rem' }}>Due {fmtDate(inv.dueDate) || '—'}</div>
       </div>
     </div>
+  );
+}
+
+// ── Contact details picker ────────────────────────────────────────────────────
+
+function ContactPicker({
+  profiles, choice, custom, error, onChoice, onCustom,
+}: {
+  profiles: SavedContactProfile[];
+  choice:   string;
+  custom:   ContactSnapshot;
+  error:    string;
+  onChoice: (v: string) => void;
+  onCustom: <K extends keyof ContactSnapshot>(key: K, value: ContactSnapshot[K]) => void;
+}) {
+  return (
+    <>
+      <label style={lbl}>Contact on document</label>
+      <div style={{ position: 'relative' }}>
+        <select
+          value={choice}
+          onChange={e => onChoice(e.target.value)}
+          style={{ ...inp, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' } as React.CSSProperties}
+        >
+          {!choice && <option value="" style={{ background: '#0d1b3e' }}>Loading…</option>}
+          {profiles.map(p => (
+            <option key={p._id} value={p._id} style={{ background: '#0d1b3e' }}>
+              {p.label}{p.isDefault ? ' (default)' : ''} · {p.contactName} · {p.phone}
+            </option>
+          ))}
+          <option value={CUSTOM_CONTACT} style={{ background: '#0d1b3e' }}>Custom (this document only)</option>
+        </select>
+        <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
+      </div>
+      {error && (
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#fbbf24', margin: '0.5rem 0 0' }}>{error}</p>
+      )}
+      {choice === CUSTOM_CONTACT && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginTop: '0.85rem' }}>
+          <Field label="Contact Name *"      value={custom.contactName} onChange={v => onCustom('contactName', v)} placeholder="Jane Doe" />
+          <Field label="Phone *"             value={custom.phone}       onChange={v => onCustom('phone', v)}       placeholder="+254 7XX XXX XXX" />
+          <Field label="Email *"             value={custom.email}       onChange={v => onCustom('email', v)}       placeholder="jane@nesturex.com" type="email" />
+          <Field label="WhatsApp (optional)" value={custom.whatsapp}    onChange={v => onCustom('whatsapp', v)}    placeholder="Only if different from phone" />
+        </div>
+      )}
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.56rem', color: 'rgba(255,255,255,0.3)', margin: '0.6rem 0 0', lineHeight: 1.6 }}>
+        Copied onto the document when you save. Later profile edits won&apos;t change it.
+      </p>
+    </>
   );
 }
 
@@ -551,6 +620,11 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
   const [saveError,   setSaveError]   = useState('');
   const [dlError,     setDlError]     = useState('');
   const [activeTab,   setActiveTab]   = useState<'form' | 'preview'>('form');
+  const [profiles,      setProfiles]      = useState<SavedContactProfile[]>([]);
+  const [profilesError, setProfilesError] = useState('');
+  // A profile _id, CUSTOM_CONTACT, or '' while profiles load.
+  const [contactChoice, setContactChoice] = useState('');
+  const [customContact, setCustomContact] = useState<ContactSnapshot>(blankContact());
 
   // ── Auth guard + initialise ───────────────────────────────────────────────
   useEffect(() => {
@@ -563,10 +637,17 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
           const {
             _id: _ignored, createdAt: _c, updatedAt: _u,
             documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin, etimsCompliant,
+            contact,
             ...shared
           } = initialInvoice;
           setQuote({ quoteNumber: '', date: '', expiryDate: '', ...shared });
           setInvoiceExtra({ documentNumber, issueDate, dueDate, paymentStatus, amountPaid, yourKraPin, buyerKraPin, etimsCompliant });
+          // Start from the invoice's own snapshot (or the legacy values it renders
+          // with today) so re-saving never silently swaps its contact.
+          const existing = resolveContact(contact);
+          setCustomContact(existing);
+          setContactChoice(CUSTOM_CONTACT);
+          loadContactProfiles(existing);
         } else if (initial) {
           const { _id: _ignored, status: s, createdAt: _c, updatedAt: _u, ...q } = initial;
           setQuote(q as Quote);
@@ -575,10 +656,48 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
           const q = blankQuote();
           q.quoteNumber = nextQuoteNumber();
           setQuote(q);
+          loadContactProfiles(null);
         }
       })
       .catch(() => router.replace('/admin'));
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * Loads profiles and picks the dropdown value: the profile matching the
+   * document's existing snapshot (else it stays on Custom with that snapshot),
+   * or the default profile for a new document.
+   */
+  async function loadContactProfiles(existing: ContactSnapshot | null) {
+    try {
+      const list = await fetchContactProfiles();
+      setProfiles(list);
+      if (existing) {
+        const match = list.find(p => sameContact(toSnapshot(p), existing));
+        if (match) setContactChoice(match._id);
+      } else {
+        const def = list.find(p => p.isDefault) ?? list[0];
+        setContactChoice(def ? def._id : CUSTOM_CONTACT);
+      }
+    } catch {
+      setProfilesError('Could not load contact profiles. New documents will use the default profile on save.');
+    }
+  }
+
+  const chosenProfile = profiles.find(p => p._id === contactChoice);
+  const chosenContact: ContactSnapshot | undefined =
+    contactChoice === CUSTOM_CONTACT ? customContact
+    : chosenProfile ? toSnapshot(chosenProfile)
+    : undefined;
+
+  function changeContactChoice(v: string) {
+    // Switching to Custom starts from whatever is currently selected.
+    if (v === CUSTOM_CONTACT && chosenContact) setCustomContact(chosenContact);
+    setContactChoice(v);
+  }
+
+  const updateCustomContact = useCallback(<K extends keyof ContactSnapshot>(key: K, value: ContactSnapshot[K]) => {
+    setCustomContact(prev => ({ ...prev, [key]: value }));
   }, []);
 
   const update = useCallback(<K extends keyof Quote>(key: K, value: Quote[K]) => {
@@ -643,7 +762,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     setSaving(true);
     setSaveError('');
     try {
-      const payload = toInvoicePayload(quote, invoiceExtra);
+      const payload = toInvoicePayload(quote, invoiceExtra, chosenContact);
       if (mode === 'create') {
         const saved = await createInvoice(payload);
         router.replace(`/admin/invoices/${saved._id}`);
@@ -684,7 +803,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         URL.revokeObjectURL(url);
       } else {
         if (!invoiceExtra.documentNumber) throw new Error('Save the invoice first to generate its number.');
-        await downloadInvoicePDF(toInvoicePayload(quote, invoiceExtra));
+        await downloadInvoicePDF(toInvoicePayload(quote, invoiceExtra, chosenContact));
       }
     } catch (err) {
       setDlError(err instanceof Error ? err.message : 'Download failed.');
@@ -704,7 +823,10 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     );
   }
 
-  const isValid = quote.clientName.trim() && quote.lines.some(l => l.description.trim() && l.unitPrice > 0);
+  const customContactValid = !!(customContact.contactName.trim() && customContact.phone.trim() && customContact.email.trim());
+  const isValid = quote.clientName.trim()
+    && quote.lines.some(l => l.description.trim() && l.unitPrice > 0)
+    && (docType !== 'invoice' || contactChoice !== CUSTOM_CONTACT || customContactValid);
   const panelBg: React.CSSProperties = {
     background:   'rgba(13,27,62,0.45)',
     border:       '1px solid rgba(26,111,212,0.12)',
@@ -891,6 +1013,18 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
               </div>
 
               <div style={panelBg}>
+                <SectionHead title="Contact Details" />
+                <ContactPicker
+                  profiles={profiles}
+                  choice={contactChoice}
+                  custom={customContact}
+                  error={profilesError}
+                  onChoice={changeContactChoice}
+                  onCustom={updateCustomContact}
+                />
+              </div>
+
+              <div style={panelBg}>
                 <SectionHead title="Tax Info (KRA)" />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                   <Field label="Your KRA PIN"         value={invoiceExtra.yourKraPin}  onChange={v => updateInvoiceExtra('yourKraPin', v)}  placeholder="P0XXXXXXXXX" />
@@ -1001,7 +1135,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         <div className={activeTab === 'form' ? 'hidden md:block' : ''} style={{ background: '#111318', overflowY: 'auto', padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
           {docType === 'quotation'
             ? <QuotePreview q={quote} />
-            : <InvoicePreview inv={toInvoicePayload(quote, invoiceExtra)} />}
+            : <InvoicePreview inv={toInvoicePayload(quote, invoiceExtra, chosenContact)} />}
         </div>
 
       </div>

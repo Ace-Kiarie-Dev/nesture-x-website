@@ -2,6 +2,8 @@ import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb';
 import { getNextSequence } from '@/lib/counters';
 import type { Invoice } from '@/types/invoice';
+import { sanitizeContact } from '@/types/contact';
+import { getDefaultContactSnapshot } from '@/services/contactProfileService';
 
 const COLLECTION = 'invoices';
 
@@ -42,7 +44,9 @@ export async function createSavedInvoice(
 ): Promise<SavedInvoice> {
   const db  = await getDb();
   const ts  = now();
-  const doc = { ...invoice, documentNumber: await nextInvoiceNumber(), createdAt: ts, updatedAt: ts };
+  // Snapshot rule: the contact is copied onto the invoice, never referenced by id.
+  const contact = sanitizeContact(invoice.contact) ?? await getDefaultContactSnapshot();
+  const doc = { ...invoice, contact, documentNumber: await nextInvoiceNumber(), createdAt: ts, updatedAt: ts };
   const res = await db.collection(COLLECTION).insertOne(doc);
   return toSaved({ _id: res.insertedId, ...doc });
 }
@@ -71,7 +75,10 @@ export async function updateSavedInvoice(
   if (!ObjectId.isValid(id)) return null;
   const db  = await getDb();
   // documentNumber is immutable once allocated — never let a client overwrite it.
-  const { documentNumber: _ignored, ...safeUpdates } = updates;
+  const { documentNumber: _ignored, contact: rawContact, ...rest } = updates;
+  // Only overwrite the snapshot when a valid one is sent — never wipe it.
+  const contact     = sanitizeContact(rawContact);
+  const safeUpdates = contact ? { ...rest, contact } : rest;
   const res = await db.collection(COLLECTION).findOneAndUpdate(
     { _id: new ObjectId(id) },
     { $set: { ...safeUpdates, updatedAt: now() } },
