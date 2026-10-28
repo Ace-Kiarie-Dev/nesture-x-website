@@ -3,11 +3,16 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import NxButton from '@/components/ui/NxButton';
+import Image from 'next/image';
+import { Check } from 'lucide-react';
 import BookingCalendar from '@/components/booking/BookingCalendar';
 import { formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { CONTACT } from '@/constants';
-import { Eyebrow } from '@/components/redesign';
+import { ASSETS_3D } from '@/lib/assets3d';
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon';
+import { ClayButton, ClayCard, Eyebrow, GlassPanel } from '@/components/redesign';
+import BookingStepper from '@/components/redesign/booking/BookingStepper';
+import StepHeading from '@/components/redesign/booking/StepHeading';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -41,84 +46,23 @@ const WHATSAPP = `https://wa.me/${CONTACT.phone}?text=${encodeURIComponent(
   "Hi, I tried to book a consultation on your site and need some help."
 )}`;
 
-// ── Shared input styles ────────────────────────────────────────────────────────
+const CALENDAR = ASSETS_3D['calendar-cutout'];
 
-const inputSt: React.CSSProperties = {
-  width:             '100%',
-  background:        'rgba(26,111,212,0.04)',
-  border:            '1px solid rgba(26,111,212,0.2)',
-  color:             'var(--color-text)',
-  fontFamily:        'var(--font-body)',
-  fontSize:          '0.92rem',
-  padding:           '0.8rem 1rem',
-  outline:           'none',
-  appearance:        'none',
-  WebkitAppearance:  'none',
-  transition:        'border-color 0.2s',
+// One-line helper under each step title. Steps 3 and 4 carry their copy in the body.
+const STEP_HELPER: Record<Step, string | null> = {
+  1: 'Fields marked * are required.',
+  2: 'Pick a day and time that works for you.',
+  3: null,
+  4: null,
 };
-
-const labelSt: React.CSSProperties = {
-  display:       'block',
-  fontFamily:    'var(--font-mono)',
-  fontSize:      '0.58rem',
-  letterSpacing: '0.18em',
-  textTransform: 'uppercase',
-  color:         'rgba(245,245,245,0.38)',
-  marginBottom:  '0.45rem',
-};
-
-function focusBorder(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
-  e.target.style.borderColor = 'rgba(26,111,212,0.55)';
-}
-function blurBorder(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
-  e.target.style.borderColor = 'rgba(26,111,212,0.2)';
-}
-
-// ── Step indicator ─────────────────────────────────────────────────────────────
-
-function StepDots({ step }: { step: Step }) {
-  return (
-    <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', marginBottom: '1rem' }}>
-      {([1, 2, 3, 4] as Step[]).map(s => (
-        <span
-          key={s}
-          style={{
-            width:      s === step ? '22px' : '6px',
-            height:     '5px',
-            background: s <= step ? 'var(--color-primary)' : 'rgba(26,111,212,0.18)',
-            transition: 'all 0.3s ease',
-            flexShrink: 0,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 // ── Summary row ────────────────────────────────────────────────────────────────
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}>
-      <span style={{
-        fontFamily:    'var(--font-mono)',
-        fontSize:      '0.56rem',
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        color:         'rgba(26,111,212,0.55)',
-        width:         '3.5rem',
-        flexShrink:    0,
-      }}>
-        {label}
-      </span>
-      <span style={{
-        fontFamily: 'var(--font-body)',
-        fontSize:   '0.85rem',
-        color:      'rgba(245,245,245,0.72)',
-        lineHeight: 1.4,
-      }}>
-        {value}
-      </span>
+    <div className="nxbk-sum-row">
+      <dt>{label}</dt>
+      <dd>{value}</dd>
     </div>
   );
 }
@@ -127,27 +71,9 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
 
 function BackLink({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <button
-      onClick={onClick}
-      data-hover
-      style={{
-        background:    'none',
-        border:        'none',
-        fontFamily:    'var(--font-mono)',
-        fontSize:      '0.6rem',
-        letterSpacing: '0.15em',
-        textTransform: 'uppercase',
-        color:         'rgba(245,245,245,0.28)',
-        cursor:        'pointer',
-        padding:       '0.5rem',
-        transition:    'color 0.2s',
-        alignSelf:     'flex-start',
-      }}
-      onMouseEnter={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.6)')}
-      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(245,245,245,0.28)')}
-    >
+    <ClayButton variant="ghost" onClick={onClick} className="nxbk-btn">
       {label}
-    </button>
+    </ClayButton>
   );
 }
 
@@ -206,327 +132,280 @@ export default function BookingClient() {
   return (
     <main className="nxbk">
       <div className="nxbk-wrap nxbk-page">
-      <div className="nxbk-layout">
+        <div className="nxbk-layout">
 
-      {/* ── Page header ── */}
-      <header className="nxbk-head">
-        <Eyebrow>Book a consultation</Eyebrow>
-        <h1 className="nxbk-title" aria-label="Book a consultation.">
-          <span className="nxbk-title-line" aria-hidden="true">BOOK A</span>
-          <span className="nxbk-title-line nx-outline" aria-hidden="true">CONSULTATION.</span>
-        </h1>
-        <p className="nxbk-lede">
-          A free 30-minute consultation — no payment required. Pick a day and time that works for you.
-        </p>
-      </header>
+          {/* ── Page header ── */}
+          <header className="nxbk-head">
+            <Eyebrow>Book a consultation</Eyebrow>
+            <h1 className="nxbk-title" aria-label="Book a consultation.">
+              <span className="nxbk-title-line" aria-hidden="true">BOOK A</span>
+              <span className="nxbk-title-line nx-outline" aria-hidden="true">CONSULTATION.</span>
+            </h1>
+            <p className="nxbk-lede">
+              A free 30-minute consultation — no payment required. Pick a day and time that works for you.
+            </p>
+          </header>
 
-      {/* ── Form panel ── */}
-      <section className="nxbk-flow" aria-label="Booking form">
-        <motion.div
-          className="relative z-[1]"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.15 }}
-          style={{
-            maxWidth:   '560px',
-            background: 'rgba(13,27,62,0.72)',
-            border:     '1px solid rgba(26,111,212,0.22)',
-            padding:    'clamp(2rem, 5vw, 3rem)',
-          }}
-        >
-          {/* Header */}
-          <div style={{ marginBottom: '2rem' }}>
-            <StepDots step={step} />
-            <h2
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize:   'clamp(1.75rem, 4vw, 2.4rem)',
-                lineHeight: 0.92,
-                color:      'var(--color-text)',
-                margin:     0,
-              }}
+          {/* ── Flow ── */}
+          <section className="nxbk-flow" aria-label="Booking form">
+            <BookingStepper step={step} />
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: 0.15 }}
             >
-              {stepTitle[step]}
-            </h2>
-          </div>
+              <GlassPanel className="nxbk-panel" style={{ padding: 'clamp(20px, 3.4vw, 36px)' }}>
+                <div className="nxbk-panel-head">
+                  <StepHeading step={step}>{stepTitle[step]}</StepHeading>
+                  {STEP_HELPER[step] && <p className="nxbk-helper">{STEP_HELPER[step]}</p>}
+                </div>
 
-          <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait">
 
-            {/* ── Step 1: Contact info ── */}
-            {step === 1 && (
-              <motion.div
-                key="step1"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.25 }}
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-
-                  <div>
-                    <label style={labelSt}>Full Name *</label>
-                    <input
-                      name="name" type="text" required
-                      placeholder="Your name"
-                      value={form.name} onChange={handleChange}
-                      onFocus={focusBorder} onBlur={blurBorder}
-                      style={inputSt}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={labelSt}>Email Address *</label>
-                    <input
-                      name="email" type="email" required
-                      placeholder="your@email.com"
-                      value={form.email} onChange={handleChange}
-                      onFocus={focusBorder} onBlur={blurBorder}
-                      style={inputSt}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={labelSt}>Phone Number *</label>
-                    <input
-                      name="phone" type="tel" required
-                      placeholder="+254 7XX XXX XXX"
-                      value={form.phone} onChange={handleChange}
-                      onFocus={focusBorder} onBlur={blurBorder}
-                      style={inputSt}
-                    />
-                  </div>
-
-                  <div>
-                    <label style={labelSt}>What do you need? (optional)</label>
-                    <div style={{ position: 'relative' }}>
-                      <select
-                        name="service"
-                        value={form.service} onChange={handleChange}
-                        onFocus={focusBorder} onBlur={blurBorder}
-                        style={{
-                          ...inputSt,
-                          color:  form.service ? 'var(--color-text)' : 'rgba(245,245,245,0.32)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {SERVICES.map(s => (
-                          <option key={s.value} value={s.value} style={{ background: '#0d1b3e', color: 'var(--color-text)' }}>
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
-                      <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.62rem' }}>▼</span>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.25rem', flexWrap: 'wrap' }}>
-                    <NxButton
-                      variant="primary" size="lg"
-                      onClick={() => setStep(2)}
-                      disabled={!step1Valid}
+                  {/* ── Step 1: Contact info ── */}
+                  {step === 1 && (
+                    <motion.div
+                      key="step1"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.25 }}
                     >
-                      Continue →
-                    </NxButton>
-                    <NxButton variant="ghost" size="lg" href="/contact">
-                      Cancel
-                    </NxButton>
-                  </div>
+                      <div className="nxbk-fields">
 
-                </div>
-              </motion.div>
-            )}
+                        <div className="nx-field">
+                          <label htmlFor="bk-name">Full name <span className="nxbk-req" aria-hidden="true">*</span></label>
+                          <input
+                            id="bk-name" name="name" type="text" required
+                            autoComplete="name"
+                            placeholder="Your name"
+                            value={form.name} onChange={handleChange}
+                            className="nx-input"
+                          />
+                        </div>
 
-            {/* ── Step 2: Pick date & time ── */}
-            {step === 2 && (
-              <motion.div
-                key="step2"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.25 }}
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  <BookingCalendar
-                    selectedDate={form.date || null}
-                    selectedTimeSlot={form.timeSlot || null}
-                    onSelect={handleSlotSelect}
-                  />
+                        <div className="nx-field">
+                          <label htmlFor="bk-email">Email address <span className="nxbk-req" aria-hidden="true">*</span></label>
+                          <input
+                            id="bk-email" name="email" type="email" required
+                            autoComplete="email"
+                            placeholder="your@email.com"
+                            value={form.email} onChange={handleChange}
+                            className="nx-input"
+                          />
+                        </div>
 
-                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    <NxButton
-                      variant="primary" size="lg"
-                      onClick={() => setStep(3)}
-                      disabled={!step2Valid}
+                        <div className="nx-field">
+                          <label htmlFor="bk-phone">Phone number <span className="nxbk-req" aria-hidden="true">*</span></label>
+                          <input
+                            id="bk-phone" name="phone" type="tel" required
+                            autoComplete="tel"
+                            placeholder="+254 7XX XXX XXX"
+                            value={form.phone} onChange={handleChange}
+                            className="nx-input"
+                          />
+                        </div>
+
+                        <div className="nx-field">
+                          <label htmlFor="bk-service">What do you need? (optional)</label>
+                          <div className="nx-select">
+                            <select
+                              id="bk-service" name="service"
+                              value={form.service} onChange={handleChange}
+                              className={form.service ? 'nx-input' : 'nx-input is-empty'}
+                            >
+                              {SERVICES.map(s => (
+                                <option key={s.value} value={s.value}>
+                                  {s.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="nxbk-actions">
+                          <ClayButton variant="ghost" href="/contact" className="nxbk-btn">
+                            Cancel
+                          </ClayButton>
+                          <ClayButton
+                            onClick={() => setStep(2)}
+                            disabled={!step1Valid}
+                            className="nxbk-btn"
+                          >
+                            Continue →
+                          </ClayButton>
+                        </div>
+
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ── Step 2: Pick date & time ── */}
+                  {step === 2 && (
+                    <motion.div
+                      key="step2"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.25 }}
                     >
-                      Continue →
-                    </NxButton>
-                    <BackLink label="← Edit details" onClick={() => setStep(1)} />
-                  </div>
-                </div>
-              </motion.div>
-            )}
+                      <BookingCalendar
+                        selectedDate={form.date || null}
+                        selectedTimeSlot={form.timeSlot || null}
+                        onSelect={handleSlotSelect}
+                      />
 
-            {/* ── Step 3: Confirm booking ── */}
-            {step === 3 && (
-              <motion.div
-                key="step3"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.25 }}
-              >
-                {/* Summary */}
-                <div style={{
-                  border:       '1px solid rgba(26,111,212,0.2)',
-                  padding:      '1.4rem',
-                  background:   'rgba(26,111,212,0.04)',
-                  marginBottom: '1.5rem',
-                }}>
-                  <p style={{
-                    fontFamily:    'var(--font-mono)',
-                    fontSize:      '0.56rem',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color:         'rgba(245,245,245,0.3)',
-                    marginBottom:  '1rem',
-                  }}>
-                    Booking Summary
-                  </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
-                    <SummaryRow label="Name"    value={form.name} />
-                    <SummaryRow label="Email"   value={form.email} />
-                    <SummaryRow label="Phone"   value={form.phone} />
-                    <SummaryRow label="Service" value={form.service || 'General Consultation'} />
-                    <SummaryRow label="Date"    value={formatDateLabel(form.date)} />
-                    <SummaryRow label="Time"    value={formatSlotLabel(form.timeSlot)} />
-                  </div>
-                </div>
+                      {/* Sticky on phones so the picked date and time stay on screen. */}
+                      <div className="nxbk-pickbar">
+                        <p className="nxbk-picked" aria-live="polite">
+                          <span className="nxbk-picked-label">Your slot</span>
+                          {form.date && form.timeSlot ? (
+                            <strong>{formatDateLabel(form.date)} · {formatSlotLabel(form.timeSlot)}</strong>
+                          ) : (
+                            <span className="nxbk-picked-none">Pick a day, then a time</span>
+                          )}
+                        </p>
+                        <div className="nxbk-actions">
+                          <BackLink label="← Edit details" onClick={() => setStep(1)} />
+                          <ClayButton
+                            onClick={() => setStep(3)}
+                            disabled={!step2Valid}
+                            className="nxbk-btn"
+                          >
+                            Continue →
+                          </ClayButton>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
 
-                <p style={{
-                  fontFamily:   'var(--font-body)',
-                  fontSize:     '0.82rem',
-                  color:        'rgba(245,245,245,0.42)',
-                  lineHeight:   1.8,
-                  marginBottom: '1.4rem',
-                  borderLeft:   '2px solid rgba(26,111,212,0.2)',
-                  paddingLeft:  '0.85rem',
-                }}>
-                  This consultation is free — no payment is required.{' '}
-                  A confirmation will be sent to{' '}
-                  <strong style={{ color: 'rgba(245,245,245,0.72)' }}>{form.email}</strong>.
-                </p>
+                  {/* ── Step 3: Confirm booking ── */}
+                  {step === 3 && (
+                    <motion.div
+                      key="step3"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.25 }}
+                      className="nxbk-stack"
+                    >
+                      {/* Summary */}
+                      <ClayCard className="nxbk-summary" style={{ padding: 'clamp(20px, 3vw, 28px)' }}>
+                        <p className="nxbk-kicker">Booking Summary</p>
+                        <dl className="nxbk-sum">
+                          <SummaryRow label="Name"    value={form.name} />
+                          <SummaryRow label="Email"   value={form.email} />
+                          <SummaryRow label="Phone"   value={form.phone} />
+                          <SummaryRow label="Service" value={form.service || 'General Consultation'} />
+                          <SummaryRow label="Date"    value={formatDateLabel(form.date)} />
+                          <SummaryRow label="Time"    value={formatSlotLabel(form.timeSlot)} />
+                        </dl>
+                        <div className="nxbk-fee">
+                          <span className="nxbk-kicker">Fee</span>
+                          <strong className="nxbk-fee-amt">FREE</strong>
+                        </div>
+                      </ClayCard>
 
-                {error && (
-                  <p style={{
-                    fontFamily:    'var(--font-mono)',
-                    fontSize:      '0.68rem',
-                    color:         '#ff4444',
-                    background:    'rgba(255,68,68,0.05)',
-                    border:        '1px solid rgba(255,68,68,0.2)',
-                    padding:       '0.7rem 1rem',
-                    marginBottom:  '1.25rem',
-                    letterSpacing: '0.04em',
-                  }}>
-                    {error}
-                  </p>
-                )}
+                      <p className="nxbk-note">
+                        This consultation is free — no payment is required.{' '}
+                        A confirmation will be sent to{' '}
+                        <strong>{form.email}</strong>.
+                      </p>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
-                  <NxButton
-                    variant="primary" size="lg"
-                    onClick={submitBooking}
-                    disabled={submitting}
-                    className="w-full"
-                  >
-                    {submitting ? 'BOOKING…' : 'CONFIRM BOOKING'}
-                  </NxButton>
+                      <div className="nxbk-live" aria-live="assertive">
+                        {error && <p className="nx-form-error">{error}</p>}
+                      </div>
 
-                  <BackLink label="← Change date/time" onClick={() => { setError(''); setStep(2); }} />
-                </div>
-              </motion.div>
-            )}
+                      <div className="nxbk-actions">
+                        <BackLink label="← Change date/time" onClick={() => { setError(''); setStep(2); }} />
+                        <ClayButton
+                          onClick={submitBooking}
+                          disabled={submitting}
+                          aria-busy={submitting || undefined}
+                          className="nxbk-btn"
+                        >
+                          {submitting && <span className="nxbk-spinner" aria-hidden="true" />}
+                          {submitting ? 'BOOKING…' : 'CONFIRM BOOKING'}
+                        </ClayButton>
+                      </div>
+                    </motion.div>
+                  )}
 
-            {/* ── Step 4: Success ── */}
-            {step === 4 && (
-              <motion.div
-                key="step4"
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div style={{
-                  border:       '1px solid rgba(26,111,212,0.28)',
-                  padding:      '1.4rem',
-                  background:   'rgba(26,111,212,0.06)',
-                  marginBottom: '1.5rem',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
-                    <span style={{
-                      width:          '24px',
-                      height:         '24px',
-                      background:     'rgba(26,111,212,0.2)',
-                      border:         '1px solid rgba(26,111,212,0.4)',
-                      display:        'flex',
-                      alignItems:     'center',
-                      justifyContent: 'center',
-                      fontSize:       '0.7rem',
-                      color:          'var(--color-primary)',
-                      flexShrink:     0,
-                    }}>
-                      ✓
-                    </span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(26,111,212,0.7)' }}>
-                      Booking Confirmed
-                    </span>
-                  </div>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgba(245,245,245,0.6)', lineHeight: 1.8, margin: 0 }}>
-                    You&apos;re booked for{' '}
-                    <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{formatDateLabel(form.date)}</strong> at{' '}
-                    <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{formatSlotLabel(form.timeSlot)}</strong>.
-                    {emailSent ? (
-                      <>
-                        A confirmation email has been sent to{' '}
-                        <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>.
-                      </>
-                    ) : (
-                      <>
-                        We couldn&apos;t confirm that the email to{' '}
-                        <strong style={{ color: 'rgba(245,245,245,0.82)' }}>{form.email}</strong>{' '}
-                        went through — your booking is saved either way.
-                      </>
-                    )}
-                  </p>
-                </div>
+                  {/* ── Step 4: Success ── */}
+                  {step === 4 && (
+                    <motion.div
+                      key="step4"
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className="nxbk-stack"
+                    >
+                      <div className="nxbk-done">
+                        <div className="nxbk-done-art" aria-hidden="true">
+                          <span className="nxbk-done-glow" />
+                          <Image
+                            src={CALENDAR.src}
+                            alt=""
+                            width={CALENDAR.width}
+                            height={CALENDAR.height}
+                            sizes="220px"
+                            className="nxbk-done-img"
+                          />
+                        </div>
 
-                <p style={{
-                  fontFamily:   'var(--font-body)',
-                  fontSize:     '0.88rem',
-                  color:        'rgba(245,245,245,0.5)',
-                  lineHeight:   1.85,
-                  marginBottom: '1.75rem',
-                }}>
-                  See you then. Need to change anything?{' '}
-                  <a
-                    href={WHATSAPP}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#25d366', textDecoration: 'none' }}
-                  >
-                    Reach us on WhatsApp →
-                  </a>
-                </p>
+                        <ClayCard className="nxbk-summary" style={{ padding: 'clamp(20px, 3vw, 28px)' }}>
+                          <p className="nxbk-badge">
+                            <span className="nxbk-badge-tick" aria-hidden="true"><Check size={14} strokeWidth={3} /></span>
+                            Booking Confirmed
+                          </p>
+                          <p className="nxbk-done-text">
+                            You&apos;re booked for{' '}
+                            <strong>{formatDateLabel(form.date)}</strong> at{' '}
+                            <strong>{formatSlotLabel(form.timeSlot)}</strong>.
+                            {emailSent ? (
+                              <>
+                                A confirmation email has been sent to{' '}
+                                <strong>{form.email}</strong>.
+                              </>
+                            ) : (
+                              <>
+                                We couldn&apos;t confirm that the email to{' '}
+                                <strong>{form.email}</strong>{' '}
+                                went through — your booking is saved either way.
+                              </>
+                            )}
+                          </p>
+                        </ClayCard>
+                      </div>
 
-                <NxButton variant="ghost" size="lg" onClick={() => router.push('/')}>
-                  Back to home
-                </NxButton>
-              </motion.div>
-            )}
+                      <p className="nxbk-note">
+                        See you then. Need to change anything?{' '}
+                        <a
+                          href={WHATSAPP}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="nxbk-wa"
+                        >
+                          <WhatsAppIcon size={16} />
+                          Reach us on WhatsApp →
+                        </a>
+                      </p>
 
-          </AnimatePresence>
-        </motion.div>
-      </section>
-      </div>
+                      <div className="nxbk-actions">
+                        <ClayButton variant="ghost" onClick={() => router.push('/')} className="nxbk-btn">
+                          Back to home
+                        </ClayButton>
+                      </div>
+                    </motion.div>
+                  )}
+
+                </AnimatePresence>
+              </GlassPanel>
+            </motion.div>
+          </section>
+        </div>
       </div>
     </main>
   );

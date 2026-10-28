@@ -80,3 +80,158 @@
 }
 
 .nxbk-flow { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+/* ── 2. Stepper ─────────────────────────────────────────────────────────────
+   Mirrors the step state. Phone: "Step 2 of 4 · Date & time" over a thin bar.
+   From 640px: numbered clay nodes joined by a rail, active in blue, done ticked. */
+
+.nxbk-steps { display: none; list-style: none; }
+.nxbk-steps-compact { display: flex; flex-direction: column; gap: 8px; }
+.nxbk-compact-text {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxbk-compact-text strong { font-weight: 700; color: var(--nx-text); }
+.nxbk-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  overflow: hidden;
+}
+.nxbk-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4a97f2, #1a6fd4);
+  transition: width 300ms var(--nxbk-ease);
+}
+
+@media (min-width: 640px) {
+  .nxbk-steps-compact { display: none; }
+  .nxbk-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
+.nxbk-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  text-align: center;
+}
+/* Rail from this node to the next one. */
+.nxbk-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: calc(50% + 26px);
+  right: calc(-50% + 22px);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--nx-glass-border);
+}
+.nxbk-step.is-done:not(:last-child)::after { background: var(--nx-blue); }
+.nxbk-node {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--nx-clay-from), var(--nx-clay-to));
+  box-shadow: var(--nx-shadow-clay);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--nx-body);
+}
+.nxbk-step.is-active .nxbk-node,
+.nxbk-step.is-done .nxbk-node {
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+}
+.nxbk-step.is-done .nxbk-node { opacity: 0.85; }
+.nxbk-step.is-active .nxbk-node { outline: 3px solid color-mix(in srgb, var(--nx-blue) 35%, transparent); outline-offset: 3px; }
+.nxbk-step-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxbk-step.is-active .nxbk-step-label { color: var(--nx-text); font-weight: 700; }
+
+/* ── 3. Panel, fields, actions ─────────────────────────────────────────── */
+
+.nxbk-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: var(--nx-shadow-glass), 0 0 64px rgba(26, 111, 212, 0.22);
+}
+[data-theme='light'] .nxbk-panel { box-shadow: var(--nx-shadow-glass), 0 0 64px rgba(26, 111, 212, 0.14); }
+
+.nxbk-panel-head { display: flex; flex-direction: column; gap: 6px; }
+.nxbk-step-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(32px, 3vw + 18px, 46px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+  scroll-margin-top: 104px;
+}
+.nxbk-step-title:focus { outline: none; }
+.nxbk-step-title:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 4px; border-radius: 6px; }
+.nxbk-helper { font-size: 15px; line-height: 1.5; color: var(--nx-body); }
+
+.nxbk-fields { display: flex; flex-direction: column; gap: 16px; }
+.nxbk-req { color: var(--nx-accent); }
+.nxbk-stack { display: flex; flex-direction: column; gap: 18px; }
+
+/* Back / Next: stacked full width on phones (Next lowest, nearest the thumb),
+   one row from 640px with Next on the right. */
+.nxbk-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+.nxbk-btn {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 22px;
+}
+@media (min-width: 640px) {
+  .nxbk-actions { flex-direction: row; justify-content: space-between; align-items: center; }
+  .nxbk-btn { width: auto; }
+  .nxbk-actions > .nxbk-btn:only-child { margin-left: auto; }
+}
+
+.nxbk-live:empty { display: none; }
+
+.nxbk-spinner {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: nxbk-spin 0.9s linear infinite;
+}
+@keyframes nxbk-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .nxbk-bar-fill { transition: none; }
+  .nxbk-spinner { animation-duration: 2.4s; }
+}
