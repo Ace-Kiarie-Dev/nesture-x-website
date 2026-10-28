@@ -235,3 +235,230 @@
   .nxbk-bar-fill { transition: none; }
   .nxbk-spinner { animation-duration: 2.4s; }
 }
+
+/* ── 4. Scheduling (BookingCalendar) ────────────────────────────────────────
+   Month grid on a glass well; slots as chips. Available: inset chip. Picked: blue
+   clay with a tick. Taken: dashed, struck through and labelled "Taken". From 900px
+   (wide panel) the month and the slots sit side by side. */
+
+.nxbk-cal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+@media (min-width: 900px) {
+  .nxbk-cal { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+}
+
+.nxbk-cal-month {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 22px;
+  background: var(--nx-glass-fill);
+  border: 1px solid var(--nx-glass-border);
+  box-shadow: var(--nx-shadow-glass);
+}
+.nxbk-cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.nxbk-cal-title {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-text);
+}
+.nxbk-cal-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--nx-accent);
+  background: linear-gradient(160deg, var(--nx-clay-from), var(--nx-clay-to));
+  box-shadow: var(--nx-shadow-clay);
+  cursor: pointer;
+}
+.nxbk-cal-arrow:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+.nxbk-cal-week,
+.nxbk-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.nxbk-cal-week span {
+  text-align: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--nx-body);
+  opacity: 0.8;
+}
+.nxbk-day {
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  font-family: var(--font-body), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nx-text);
+  cursor: pointer;
+  transition: background-color 150ms ease, box-shadow 150ms ease;
+}
+.nxbk-day:not(:disabled):hover { background: color-mix(in srgb, var(--nx-blue) 14%, transparent); }
+.nxbk-day:disabled {
+  font-weight: 400;
+  color: var(--nx-body);
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.nxbk-day.is-viewing { box-shadow: inset 0 0 0 2px var(--nx-blue); background: color-mix(in srgb, var(--nx-blue) 14%, transparent); }
+.nxbk-day.is-confirmed {
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+}
+
+.nxbk-slots-area { display: flex; flex-direction: column; gap: 10px; min-height: 196px; min-width: 0; }
+.nxbk-slots-date {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxbk-slots-hint,
+.nxbk-slot-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--nx-body);
+}
+.nxbk-slots-hint {
+  flex: 1;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px dashed var(--nx-glass-border);
+  text-align: center;
+}
+.nxbk-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+.nxbk-slot {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 6px;
+  min-height: 48px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--nx-text);
+  cursor: pointer;
+  transition: box-shadow 150ms ease, background-color 150ms ease;
+}
+.nxbk-slot:not(:disabled):hover { box-shadow: var(--nx-shadow-inset), inset 0 0 0 2px color-mix(in srgb, var(--nx-blue) 55%, transparent); }
+.nxbk-slot.is-selected {
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+  font-weight: 700;
+}
+.nxbk-slot.is-taken {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--nx-glass-border);
+  border: 1px dashed var(--nx-ghost-border);
+  color: var(--nx-body);
+  cursor: not-allowed;
+}
+.nxbk-slot.is-taken .nxbk-slot-time { text-decoration: line-through; opacity: 0.7; }
+.nxbk-slot-tag {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nxbk-day:focus-visible,
+.nxbk-slot:focus-visible,
+.nxbk-cal-arrow:focus-visible,
+.nxbk-wa:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 2px;
+}
+
+.nxbk-spinner--blue {
+  border-color: color-mix(in srgb, var(--nx-blue) 25%, transparent);
+  border-top-color: var(--nx-blue);
+}
+
+/* Picked slot + Back / Continue. Sticky at the bottom of the screen on phones so the
+   choice stays in view while scrolling the month. */
+.nxbk-pickbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 18px -8px 0;
+  padding: 12px 8px calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--nx-glass-border);
+  background: color-mix(in srgb, var(--nx-bg) 82%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.nxbk-pickbar .nxbk-actions {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 0;
+}
+/* Phone bar: both buttons on one row (still 48px tall) so the bar stays short. */
+.nxbk-pickbar .nxbk-btn { padding-inline: 14px; font-size: 12px; letter-spacing: 0.04em; }
+.nxbk-picked {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 40px;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--nx-text);
+}
+.nxbk-picked-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxbk-picked-none { color: var(--nx-body); }
+@media (min-width: 640px) {
+  .nxbk-pickbar {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0 0;
+    padding: 16px 0 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .nxbk-pickbar .nxbk-actions { display: flex; flex-shrink: 0; }
+  .nxbk-pickbar .nxbk-btn { padding-inline: 22px; font-size: 14px; letter-spacing: 0.08em; }
+}
