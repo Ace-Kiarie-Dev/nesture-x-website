@@ -607,9 +607,46 @@
 /* PDF viewer (PDFViewerClient.tsx): a dark stage in both themes, like a lightbox.
    The viewer sizes its page to the stage width, so the wrapper's max-width (from the
    cover's ratio) keeps one page + the 64px bar inside ~88vh. */
+/* --nxpf-col is the media column width (the viewport math the grid resolves to);
+   --nxpf-fit the viewer width. The stage reserves the page's final height up front
+   (page = stage width - 32px, at the cover's ratio), so nothing shifts while react-pdf
+   draws it. No container query here: it would trap the fullscreen position: fixed. */
 .nxpf-pdf-fit {
-  max-width: min(100%, calc((88vh - 64px - 2rem) * var(--nxpf-pdf-ratio, 0.707) + 32px));
+  --nxpf-col: calc(100vw - 2 * var(--nxpf-gutter));
+  --nxpf-fit: min(var(--nxpf-col), calc((88vh - 64px - 2rem) * var(--nxpf-pdf-ratio, 0.707) + 32px));
+  width: var(--nxpf-fit);
+  max-width: 100%;
   margin-inline: auto;
+}
+@media (min-width: 1100px) {
+  .nxpf-pdf-fit { --nxpf-col: calc((min(100vw, 1320px) - 2 * var(--nxpf-gutter) - 32px) * 0.7); }
+}
+.nxpf-pdf-fit .nxpf-pdf-stage { min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707) + 2rem); }
+.nxpf-pdf-fit .nxpf-pdf-skeleton { min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707) + 2rem + 65px); }
+@media (max-width: 479px) {
+  .nxpf-pdf-fit .nxpf-pdf-skeleton { min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707) + 2rem + 61px); }
+}
+.nxpf-pdf-fit .nxpf-pdf.is-fullscreen .nxpf-pdf-stage { min-height: 0; }
+/* react-pdf's page starts as a small loading line; reserve its final box so it
+   doesn't jump from centred-and-tiny to full width. Not in fullscreen, where the
+   viewer sizes the page to the screen. !important because react-pdf sets inline
+   min-width / min-height: min-content on the page element. */
+.nxpf-pdf-fit .nxpf-pdf:not(.is-fullscreen) .react-pdf__Page {
+  min-width: calc(var(--nxpf-fit) - 34px) !important;
+  min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707)) !important;
+  max-width: calc(var(--nxpf-fit) - 34px);
+}
+/* Before its ResizeObserver reports, the viewer draws the first page 480px wide; on a
+   narrow screen that first draw is scaled down to the final width instead of pushing
+   the page around. The document wrapper keeps full width while it says "Loading". */
+.nxpf-pdf-fit .nxpf-pdf:not(.is-fullscreen) .react-pdf__Page canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+.nxpf-pdf-fit .nxpf-pdf:not(.is-fullscreen) .react-pdf__Document {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 .nxpf-pdf {
   position: relative;
