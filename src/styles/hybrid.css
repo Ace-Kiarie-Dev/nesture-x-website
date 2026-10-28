@@ -152,6 +152,7 @@
 /* GravityText stage alignment: its first child is the layout copy the letters fly to.
    Unlayered, so these beat its Tailwind centring utilities. */
 .nx-gt-top > div:first-child { align-content: flex-start; align-items: flex-start; }
+.nx-gt-bottom > div:first-child { align-content: flex-end; align-items: flex-end; }
 .nx-gt-left > div:first-child { justify-content: flex-start; }
 
 /* The 404 page brings its own SiteNav / SiteFooter (an unknown URL can't opt in by

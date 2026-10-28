@@ -74,8 +74,37 @@
   color: var(--nx-text);
 }
 .nxh-title-line { display: block; white-space: nowrap; }
-.nxh-fallen { display: inline-block; }
-.nxh-fallen > span { display: inline-block; margin-right: 0.03em; transform-origin: 50% 100%; }
+.nxh-fallen { position: relative; display: inline-block; }
+
+/* "START." (GravityTextLazy). The invisible in-flow copy keeps the line exactly as wide
+   as before; the stage sits over it, bottom-aligned on the word's floor, and reaches up
+   one line so the letters have room to fall and fly. It ends at the word's floor, so a
+   pile never reaches the lede or the counter below. (The stage's px-4 is cancelled by
+   the global * { padding: 0 } reset, so it sits flush on the word.) The extra 0.05em at the bottom
+   matches the static letters' 1em boxes to the 0.9em line they used to sit in. */
+.nxh-start-size { display: inline-block; visibility: hidden; }
+.nxh-start-size > span,
+.nxh-start-letter { display: inline-block; margin-right: 0.03em; }
+.nxh-start-host {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.05em;
+  /* Same as the stage height (NxGamingHub): while the physics chunk loads, the static
+     word overlays a still-empty box, so it needs the box to have its final size. */
+  height: 1.85em;
+  display: block;
+}
+/* The static word (before the physics mounts, and under reduced motion) keeps the old
+   tipped letters. Only its letters: GravityText's own sit in an .invisible layout copy
+   or directly on the stage, and move under inline transforms. */
+.nxh-start-stage > div:not(.invisible) > span { transform-origin: 50% 100%; }
+.nxh-start-stage > div:not(.invisible) > span:nth-child(1) { transform: translateY(0.02em) rotate(-3deg); }
+.nxh-start-stage > div:not(.invisible) > span:nth-child(2) { transform: translateY(-0.03em) rotate(5deg); }
+.nxh-start-stage > div:not(.invisible) > span:nth-child(3) { transform: translateY(0.05em) rotate(-7deg); }
+.nxh-start-stage > div:not(.invisible) > span:nth-child(4) { transform: translateY(0.01em) rotate(4deg); }
+.nxh-start-stage > div:not(.invisible) > span:nth-child(5) { transform: translateY(0.09em) rotate(13deg); }
+.nxh-start-stage > div:not(.invisible) > span:nth-child(6) { transform: translateY(0.04em) rotate(0deg); }
 
 .nxh-lede {
   max-width: 460px;

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import HeroRibbons from '@/components/redesign/HeroRibbons';
+import GravityTextLazy from '@/components/effects/GravityTextLazy';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NX_GAMES, LIVE_GAMES, LIVE_PERKS, isLive, type Game } from '@/lib/nx-gaming/games';
@@ -28,15 +29,9 @@ const CAST = {
 const FAN_MQ = '(min-width: 1100px)';
 const REDUCED_MQ = '(prefers-reduced-motion: reduce)';
 
-// "START." letters, statically tipped as if they had fallen. [translateY px, rotate deg]
-const FALLEN: [number, number][] = [
-  [0.02, -3],
-  [-0.03, 5],
-  [0.05, -7],
-  [0.01, 4],
-  [0.09, 13],
-  [0.04, 0],
-];
+// "START." is live: GravityText letters (drop, pile, click, double click, drag) on their
+// own stage over the word, mounted after load + idle. Until then, and under reduced motion,
+// the static word shows with the same tipped letters as before (nx-gaming.css).
 
 // Card art is ~250px tall on the fan and ~220px in the swipe row.
 const artSizes = (game: Game) =>
@@ -308,14 +303,22 @@ export default function NxGamingHub() {
               <span className="nxh-title-line nx-outline" aria-hidden="true">
                 Press{' '}
                 <span className="nxh-fallen">
-                  {'START.'.split('').map((ch, i) => (
-                    <span
-                      key={i}
-                      style={{ transform: `translateY(${FALLEN[i][0]}em) rotate(${FALLEN[i][1]}deg)` }}
-                    >
-                      {ch}
-                    </span>
-                  ))}
+                  {/* Invisible copy that keeps the line's width; the stage sits on top of it. */}
+                  <span className="nxh-start-size">
+                    {'START.'.split('').map((ch, i) => (
+                      <span key={i}>{ch}</span>
+                    ))}
+                  </span>
+                  <span className="nxh-start-host">
+                    <GravityTextLazy
+                      text="START."
+                      announce={false}
+                      deferUntilIdle
+                      height="1.85em"
+                      className="nxh-start-stage nx-gt-bottom nx-gt-left"
+                      letterClassName="nxh-start-letter"
+                    />
+                  </span>
                 </span>
               </span>
             </h1>

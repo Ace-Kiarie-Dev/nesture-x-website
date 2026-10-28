@@ -18,6 +18,13 @@ type GravityTextLazyProps = Omit<GravityTextProps, 'letterClassName' | 'draggabl
   letterClassName?: string;
   /** Adds an sr-only copy of the text. Turn off when a heading next to it already carries the words. */
   announce?: boolean;
+  /**
+   * For a stage above the fold (a hero): don't mount the physics until the page has
+   * loaded and the browser is idle, so LCP and other deferred work are untouched; under
+   * reduced motion it never mounts and the static word stays. The static word shows the
+   * whole time, so nothing flashes or shifts.
+   */
+  deferUntilIdle?: boolean;
 };
 
 // Same letter layout GravityText uses for its targets, so the swap does not move anything.
@@ -44,18 +51,41 @@ function StaticWord({ text, height, className, letterClassName }: Omit<GravityTe
   - Touch screens get draggable={false}, so a finger on the stage still scrolls the page.
   - Reduced motion is handled inside GravityText (it just shows the word).
   - One sr-only copy of the text; the visual stage is aria-hidden so it is not read twice.
-  Don't use it in the hero: GravityText hides its letters until web fonts are ready.
+  In a hero, pass deferUntilIdle: GravityText hides its letters until web fonts are ready,
+  and above the fold the observer would otherwise mount it during the first paint.
 */
 export default function GravityTextLazy(props: GravityTextLazyProps) {
-  const { text, letterClassName, announce = true, ...rest } = props;
+  const { text, letterClassName, announce = true, deferUntilIdle = false, ...rest } = props;
   const hostRef = useRef<HTMLSpanElement>(null);
   const liveRef = useRef<HTMLSpanElement>(null);
   const [live, setLive] = useState<null | { draggable: boolean }>(null);
   const [dropped, setDropped] = useState(false);
+  // Without deferUntilIdle the observer may mount at once, as before.
+  const [idle, setIdle] = useState(!deferUntilIdle);
+
+  // deferUntilIdle: after window load, then an idle moment (or 1.2s without
+  // requestIdleCallback). Reduced motion never gets the physics.
+  useEffect(() => {
+    if (!deferUntilIdle) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let handle = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const go = () => {
+      if ('requestIdleCallback' in window) handle = window.requestIdleCallback(() => setIdle(true), { timeout: 2000 });
+      else timer = setTimeout(() => setIdle(true), 1200);
+    };
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+    return () => {
+      window.removeEventListener('load', go);
+      if (handle) window.cancelIdleCallback(handle);
+      clearTimeout(timer);
+    };
+  }, [deferUntilIdle]);
 
   useEffect(() => {
     const host = hostRef.current;
-    if (!host) return;
+    if (!host || !idle) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
@@ -66,7 +96,7 @@ export default function GravityTextLazy(props: GravityTextLazyProps) {
     );
     io.observe(host);
     return () => io.disconnect();
-  }, []);
+  }, [idle]);
 
   // matter-js 0.20's Mouse listens for "wheel" (non-passive) and calls preventDefault, but
   // GravityText only unhooks the old "mousewheel" / "DOMMouseScroll" names, so a wheel over
