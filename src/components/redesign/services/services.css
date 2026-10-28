@@ -212,3 +212,73 @@
   .nxsv-hero-phone,
   .nxsv-orbit { animation: none; }
 }
+
+/* ── 2. Quick nav ──────────────────────────────────────────────────────────
+   Sticky under the floating nav (22px offset + 68px pill + 10px air) while the
+   service blocks scroll. Below 1200px a single horizontal scroll-snap row with no
+   visible scrollbar; from 1200px the chips wrap, centred. */
+
+.nxsv-qnav {
+  position: sticky;
+  top: 100px;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  pointer-events: none;
+}
+.nxsv-qnav-row {
+  pointer-events: auto;
+  position: relative;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  padding: 8px;
+  border-radius: var(--nx-radius-pill);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+}
+.nxsv-qnav-row::-webkit-scrollbar { display: none; }
+.nxsv-qnav-row li { flex-shrink: 0; scroll-snap-align: start; }
+
+.nxsv-qnav-link {
+  display: inline-flex;
+  min-height: 44px;
+  border-radius: var(--nx-radius-pill);
+  text-decoration: none;
+}
+.nxsv-qnav-link:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 2px;
+}
+.nxsv-qnav-chip {
+  border-radius: var(--nx-radius-pill);
+  padding: 12px 16px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: color 180ms ease, background 180ms ease;
+}
+.nxsv-qnav-link:hover .nx-chip { color: var(--nx-text); }
+
+@media (min-width: 1200px) {
+  /* One line from ~1360px; narrower desktops wrap to two, hence the card radius. */
+  .nxsv-qnav-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    overflow: visible;
+    border-radius: 32px;
+  }
+  .nxsv-qnav-chip { padding: 12px 13px; letter-spacing: 0; }
+}
+
+/* In-page anchors land below the floating nav and the sticky quick nav. */
+.nxsv [id] { scroll-margin-top: 180px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nxsv-qnav-chip { transition: none; }
+}

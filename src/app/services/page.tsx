@@ -27,10 +27,13 @@ export default function ServicesPage() {
         <ServicesHero />
       </div>
       <div className="nxsv-wrap">
-        <ServicesQuickNav />
-        {SERVICES.map((service, i) => (
-          <ServiceBlock key={service.id} service={service} index={i} />
-        ))}
+        {/* The quick nav sticks only while the six blocks scroll by. */}
+        <div className="nxsv-services">
+          <ServicesQuickNav />
+          {SERVICES.map((service, i) => (
+            <ServiceBlock key={service.id} service={service} index={i} />
+          ))}
+        </div>
         <ServicesProcess />
         <ServicesPartnership />
         <ServicesCta />
