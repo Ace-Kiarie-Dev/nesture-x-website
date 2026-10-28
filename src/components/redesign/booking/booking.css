@@ -74,8 +74,9 @@
   color: var(--nx-body);
 }
 @media (min-width: 1024px) {
-  .nxbk-head { position: sticky; top: 116px; gap: 20px; }
-  .nxbk-title { font-size: clamp(72px, 6.4vw, 108px); }
+  /* Title sized to its column (container units) so "CONSULTATION." never runs into the panel. */
+  .nxbk-head { position: sticky; top: 116px; gap: 20px; container-type: inline-size; }
+  .nxbk-title { font-size: min(20.5cqi, 104px); }
   .nxbk-lede { font-size: 18px; }
 }
 
