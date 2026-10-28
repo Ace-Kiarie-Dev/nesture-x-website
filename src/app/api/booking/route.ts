@@ -3,27 +3,9 @@ import { Resend } from 'resend';
 import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { sendBookingConfirmation } from '@/emails/send';
+import { buildBookingOwner } from '@/emails/booking-owner';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ── Email templates ───────────────────────────────────────────────────────────
-// Relocated from api/mpesa/callback/route.ts — these used to fire only once
-// Safaricom confirmed payment; now the booking itself is the confirmation.
-
-function peterEmail(name: string, email: string, phone: string, service: string, date: string, timeSlot: string): string {
-  return `
-New Consultation Booking — Nesture-X
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NAME     : ${name}
-EMAIL    : ${email}
-PHONE    : ${phone}
-SERVICE  : ${service}
-DATE     : ${formatDateLabel(date)}
-TIME     : ${formatSlotLabel(timeSlot)}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  `.trim();
-}
 
 // ── POST /api/booking — validate, save, confirm ───────────────────────────────
 
@@ -78,7 +60,14 @@ export async function POST(req: NextRequest) {
         from:    'Nesture-X Bookings <bookings@nesturex.com>',
         to:      'nesturex@gmail.com',
         subject: `New Consultation — ${booking.name} — ${formatDateLabel(booking.date)}`,
-        text:    peterEmail(booking.name, booking.email, booking.phone, booking.service, booking.date, booking.timeSlot),
+        ...buildBookingOwner({
+          name:    booking.name,
+          email:   booking.email,
+          phone:   booking.phone,
+          service: booking.service,
+          date:    formatDateLabel(booking.date),
+          time:    formatSlotLabel(booking.timeSlot),
+        }),
       }),
     ]);
 
