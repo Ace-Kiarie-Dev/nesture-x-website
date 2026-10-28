@@ -7,9 +7,10 @@ import { getProjectDestination } from '@/lib/getProjectDestination';
 import { slugify } from '@/lib/slugify';
 import { portfolioTitle } from '@/lib/portfolioSeo';
 
-// View model for the redesigned /portfolio and /portfolio/[id]. Design work comes from
-// portfolio.json; digital products (NX Originals + client sites) fold into Web Projects
-// and link straight to their site, landing page or status page. Pixel sizes come from
+// View model for the redesigned /portfolio and /portfolio/[id]. Two sets, as the two
+// screens of the portfolio: design work from portfolio.json (?view=design, with tabs),
+// and digital products, NX Originals + client sites (?view=digital&type=web|mobile),
+// which link straight to their site, landing page or status page. Pixel sizes come from
 // portfolio-media.json (npm run portfolio:media), so every image box is reserved up front.
 
 export type CategoryKey =
@@ -55,7 +56,16 @@ export type WorkCard = {
   image: WorkImage | null;
   /** What the placeholder tile says when there is no image. */
   placeholder?: string;
+  /** Status badge, top right (digital products: "Live", "Coming soon"...). */
+  badge?: string;
+  /** Has no destination of its own yet; links to its status page. */
+  comingSoon?: boolean;
+  /** In-page anchor id (the status pages link back to #slug). */
+  anchor?: string;
 };
+
+export type DigitalType = 'web' | 'mobile';
+export type DigitalCard = WorkCard & { digital: DigitalType };
 
 export const DESIGN_ITEMS = portfolioData as PortfolioItem[];
 
@@ -105,42 +115,52 @@ function designCard(item: PortfolioItem): WorkCard | null {
   };
 }
 
-function digitalCards(): WorkCard[] {
-  const originals = NX_ORIGINALS.map((o): WorkCard => {
+// Same order as the old Digital Products grid: NX Originals first, then client sites
+// (web only). No destination yet means the status page, shown as "Coming soon".
+function digitalCards(): DigitalCard[] {
+  const originals = NX_ORIGINALS.map((o): DigitalCard => {
     const dest = getProjectDestination(o.link, o.slug);
     return {
       key: `original-${o.id}`,
       title: o.title,
       pill: o.category === 'mobile' ? 'Mobile App' : 'Web App',
       category: 'web',
+      digital: o.category,
       href: dest.href,
       external: dest.isExternal,
       image: sized(o.imageSrc),
+      badge: dest.isStatusPage ? 'Coming soon' : o.status,
+      comingSoon: dest.isStatusPage,
+      anchor: o.slug,
     };
   });
-  const sites = DEV_PROJECTS.map((p): WorkCard => {
+  const sites = DEV_PROJECTS.map((p): DigitalCard => {
     const dest = getProjectDestination(p.url, slugify(p.name));
     return {
       key: `site-${slugify(p.name)}`,
       title: p.name,
       pill: 'Website',
       category: 'web',
+      digital: 'web',
       href: dest.href,
       external: dest.isExternal,
       image: sized(p.image),
-      ...(p.comingSoon ? { placeholder: 'Coming soon' } : {}),
+      ...(dest.isStatusPage ? { badge: 'Coming soon', comingSoon: true, placeholder: 'Coming soon' } : {}),
+      anchor: slugify(p.name),
     };
   });
-  return [...originals, ...sites];
+  return [...originals.filter((o) => o.digital === 'web'), ...sites, ...originals.filter((o) => o.digital === 'mobile')];
 }
 
-export const WORK_CARDS: WorkCard[] = [
-  ...DESIGN_ITEMS.map(designCard).filter((c): c is WorkCard => c !== null),
-  ...digitalCards(),
-];
+export const DESIGN_CARDS: WorkCard[] = DESIGN_ITEMS.map(designCard).filter((c): c is WorkCard => c !== null);
+export const DIGITAL_CARDS: DigitalCard[] = digitalCards();
+
+export function digitalCardsOf(type: DigitalType): DigitalCard[] {
+  return DIGITAL_CARDS.filter((c) => c.digital === type);
+}
 
 /** Item counts per category, for hiding empty tabs. */
-export function categoryCounts(cards: WorkCard[] = WORK_CARDS): Record<CategoryKey, number> {
+export function categoryCounts(cards: WorkCard[] = DESIGN_CARDS): Record<CategoryKey, number> {
   const counts = Object.fromEntries(CATEGORIES.map((c) => [c.key, 0])) as Record<CategoryKey, number>;
   for (const card of cards) counts[card.category] += 1;
   return counts;

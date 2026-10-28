@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { ASSETS_3D } from '@/lib/assets3d';
-import { WORK_CARDS } from '@/lib/portfolio-data';
 import { Chip, Eyebrow } from '@/components/redesign';
 import { cx } from '@/components/redesign/cx';
 
@@ -12,8 +11,15 @@ const HEADLINE = [
 
 const EASEL = ASSETS_3D['port-easel'];
 
-// Kept short so the grid starts within about one scroll on desktop. No GravityText.
-export default function PortfolioHero() {
+type PortfolioHeroProps = {
+  /** One line under the headline; differs per screen (entry, design, digital). */
+  lede: string;
+  /** Items on this screen, shown as the mono count chip. */
+  count: number;
+};
+
+// Kept short so the content starts within about one scroll on desktop. No GravityText.
+export default function PortfolioHero({ lede, count }: PortfolioHeroProps) {
   return (
     <section className="nxpf-hero" aria-labelledby="nxpf-hero-title">
       <div className="nxpf-hero-copy">
@@ -26,11 +32,9 @@ export default function PortfolioHero() {
           ))}
         </h1>
         <div className="nxpf-hero-foot">
-          <p className="nxpf-hero-lede">
-            Logos, print, social, and full-stack builds. Pick a category and have a look.
-          </p>
+          <p className="nxpf-hero-lede">{lede}</p>
           <Chip variant="blue" className="nxpf-count">
-            {WORK_CARDS.length} projects
+            {count} projects
           </Chip>
         </div>
       </div>

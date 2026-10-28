@@ -18,7 +18,7 @@ type PortfolioTabsProps = {
 
 const ALL = 'all';
 
-// The filter state lives in the URL (?category=logos): shareable, and back / forward
+// The filter state lives in the URL (?view=design&category=logos): shareable, and back / forward
 // work, because Next syncs history.pushState with useSearchParams. Filtering itself is
 // CSS: the wrapper's data-cat hides cards of other categories (portfolio.css), so the
 // cards stay server-rendered and hidden lazy images never download.
@@ -84,7 +84,7 @@ export default function PortfolioTabs({ tabs, categoryKeys, emptyKeys, children 
             return (
               <li key={t.key}>
                 <a
-                  href={t.key === ALL ? '/portfolio' : `/portfolio?category=${t.key}`}
+                  href={t.key === ALL ? '/portfolio?view=design' : `/portfolio?view=design&category=${t.key}`}
                   data-key={t.key}
                   className="nxpf-tab"
                   aria-current={isActive ? 'true' : undefined}

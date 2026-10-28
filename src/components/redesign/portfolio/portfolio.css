@@ -774,3 +774,154 @@
   .nxpf-pager-link { transition: none; }
   .nxpf-pager-link:hover { transform: none; }
 }
+
+/* ── 6. Two-step flow: back link, choice cards, digital grid, card badges ── */
+
+.nxpf-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--nx-accent);
+}
+.nxpf-back:hover { color: var(--nx-text); }
+.nxpf-back:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; border-radius: 8px; }
+
+.nxpf-choices { padding-bottom: clamp(56px, 8vw, 112px); }
+.nxpf-choices-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.nxpf-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--nx-text);
+  transition: transform 220ms var(--nxpf-ease), box-shadow 220ms var(--nxpf-ease);
+}
+.nxpf-choice:hover { transform: translateY(-4px); }
+.nxpf-choice:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 4px; }
+.nxpf-choice-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  padding-top: 24px;
+}
+.nxpf-choice-glow {
+  position: absolute;
+  inset: 0 10%;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.5), rgba(26, 111, 212, 0));
+}
+[data-theme='light'] .nxpf-choice-glow { opacity: 0.45; }
+.nxpf-choice-img {
+  position: relative;
+  width: auto;
+  max-width: 80%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 26px rgba(3, 6, 16, 0.5));
+  transition: translate 220ms var(--nxpf-ease);
+}
+[data-theme='light'] .nxpf-choice-img { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.22)); }
+.nxpf-choice:hover .nxpf-choice-img { translate: 0 -6px; }
+.nxpf-choice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 26px 28px;
+}
+.nxpf-choice-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(48px, 3vw + 32px, 76px);
+  line-height: 0.92;
+}
+.nxpf-choice-line { font-size: 16px; line-height: 1.55; color: var(--nx-body); }
+.nxpf-choice-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+.nxpf-choice-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 22px;
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+  transition: translate 220ms var(--nxpf-ease);
+}
+.nxpf-choice:hover .nxpf-choice-arrow { translate: 4px 0; }
+@media (min-width: 768px) {
+  .nxpf-choices-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .nxpf-choice-art { height: 280px; }
+}
+
+.nxpf-sub-title {
+  margin-bottom: 24px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 3vw + 28px, 72px);
+  line-height: 0.95;
+  color: var(--nx-text);
+}
+.nxpf-digital {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.nxpf-digital-item { scroll-margin-top: 120px; }
+@media (min-width: 640px) {
+  .nxpf-digital { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .nxpf-digital { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Status badge, top right (digital products). */
+.nxpf-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(142, 192, 255, 0.5);
+  background: rgba(8, 12, 24, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8ec0ff;
+}
+.nxpf-card-badge.is-live { color: #4ade80; border-color: rgba(74, 222, 128, 0.55); }
+.nxpf-card-badge.is-soon { color: #fbbf24; border-color: rgba(251, 191, 36, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-choice,
+  .nxpf-choice-img,
+  .nxpf-choice-arrow { transition: none; }
+  .nxpf-choice:hover { transform: none; }
+  .nxpf-choice:hover .nxpf-choice-img,
+  .nxpf-choice:hover .nxpf-choice-arrow { translate: none; }
+}

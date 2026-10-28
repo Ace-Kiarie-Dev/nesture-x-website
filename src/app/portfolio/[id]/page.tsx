@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { JsonLd, breadcrumbList } from '@/lib/jsonLd';
 import { isIndexablePortfolioItem, portfolioDescription, portfolioTitle } from '@/lib/portfolioSeo';
-import { DESIGN_ITEMS, WORK_CARDS, categoryOf, thumbFor } from '@/lib/portfolio-data';
+import { DESIGN_CARDS, DESIGN_ITEMS, categoryOf, thumbFor } from '@/lib/portfolio-data';
 import ProjectView from '@/components/redesign/portfolio/ProjectView';
 import '@/components/redesign/portfolio/portfolio.css';
 
@@ -60,7 +60,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
   const item = DESIGN_ITEMS[index];
 
   const category = categoryOf(item);
-  const more = WORK_CARDS.filter(c => c.category === category && c.key !== item.id).slice(0, 12);
+  const more = DESIGN_CARDS.filter(c => c.category === category && c.key !== item.id).slice(0, 12);
   const neighbour = (i: number) => {
     const n = DESIGN_ITEMS[i];
     return n ? { id: n.id, title: portfolioTitle(n) } : null;

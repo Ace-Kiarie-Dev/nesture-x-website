@@ -88,11 +88,14 @@ export default function ProjectView({ item, more, prev, next }: ProjectViewProps
       <nav className="nxpf-crumbs" aria-label="Breadcrumb">
         <ol>
           <li>
-            <Link href="/portfolio">Work</Link>
+            <Link href="/portfolio">Portfolio</Link>
+          </li>
+          <li>
+            <Link href="/portfolio?view=design">Design work</Link>
           </li>
           {category && (
             <li>
-              <Link href={`/portfolio?category=${category}`}>{categoryLabel(category)}</Link>
+              <Link href={`/portfolio?view=design&category=${category}`}>{categoryLabel(category)}</Link>
             </li>
           )}
           <li aria-current="page">{title}</li>
@@ -127,7 +130,7 @@ export default function ProjectView({ item, more, prev, next }: ProjectViewProps
             )}
             <div className="nxpf-view-ctas">
               <ClayButton href="/booking">Start a project like this</ClayButton>
-              <ClayButton href="/portfolio" variant="ghost">
+              <ClayButton href="/portfolio?view=design" variant="ghost">
                 Back to all work
               </ClayButton>
             </div>
