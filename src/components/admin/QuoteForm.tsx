@@ -205,6 +205,7 @@ function QuotePreview({ q }: { q: Quote }) {
   const sub   = subtotal(q.lines);
   const disc  = discountAmount(sub, q.discountType, q.discountValue);
   const total = grandTotal(q.lines, q.discountType, q.discountValue);
+  const contact = resolveContact(q.contact);
 
   const cell: React.CSSProperties = {
     padding: '7px 10px', fontSize: '0.78rem', borderBottom: '1px solid #e8ecf5',
@@ -316,8 +317,8 @@ function QuotePreview({ q }: { q: Quote }) {
       )}
       <div style={{ background: '#0d1b3e', padding: '10px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
         <div>
-          <div style={{ color: '#1a6fd4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Nesture-X</div>
-          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>Nairobi, Kenya · +254 717 164 951 · nesturex@gmail.com · nesturex.com</div>
+          <div style={{ color: '#1a6fd4', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{COMPANY_NAME}</div>
+          <div style={{ color: 'rgba(184,206,240,0.6)', fontSize: '0.65rem', marginTop: 2 }}>{footerContactParts(contact).join(' · ')}</div>
         </div>
         <div style={{ color: 'rgba(184,206,240,0.55)', fontSize: '0.65rem' }}>Valid until {fmtDate(q.expiryDate) || '—'}</div>
       </div>
@@ -649,9 +650,14 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
           setContactChoice(CUSTOM_CONTACT);
           loadContactProfiles(existing);
         } else if (initial) {
-          const { _id: _ignored, status: s, createdAt: _c, updatedAt: _u, ...q } = initial;
+          const { _id: _ignored, status: s, createdAt: _c, updatedAt: _u, contact, ...q } = initial;
           setQuote(q as Quote);
           setStatus(s);
+          // Same as invoices: start from the quote's own snapshot (or legacy values).
+          const existing = resolveContact(contact);
+          setCustomContact(existing);
+          setContactChoice(CUSTOM_CONTACT);
+          loadContactProfiles(existing);
         } else {
           const q = blankQuote();
           q.quoteNumber = nextQuoteNumber();
@@ -737,7 +743,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         const res  = await fetch('/api/admin/quotes', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ quote, status }),
+          body:    JSON.stringify({ quote: { ...quote, contact: chosenContact }, status }),
         });
         if (!res.ok) throw new Error('Save failed.');
         const saved = await res.json() as SavedQuote;
@@ -746,7 +752,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         const res = await fetch(`/api/admin/quotes/${initial!._id}`, {
           method:  'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ ...quote, status }),
+          body:    JSON.stringify({ ...quote, contact: chosenContact, status }),
         });
         if (!res.ok) throw new Error('Save failed.');
       }
@@ -791,7 +797,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         const res = await fetch('/api/admin/quote/pdf', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(quote),
+          body:    JSON.stringify({ ...quote, contact: chosenContact }),
         });
         if (!res.ok) throw new Error('PDF generation failed.');
         const blob = await res.blob();
@@ -826,7 +832,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
   const customContactValid = !!(customContact.contactName.trim() && customContact.phone.trim() && customContact.email.trim());
   const isValid = quote.clientName.trim()
     && quote.lines.some(l => l.description.trim() && l.unitPrice > 0)
-    && (docType !== 'invoice' || contactChoice !== CUSTOM_CONTACT || customContactValid);
+    && (contactChoice !== CUSTOM_CONTACT || customContactValid);
   const panelBg: React.CSSProperties = {
     background:   'rgba(13,27,62,0.45)',
     border:       '1px solid rgba(26,111,212,0.12)',
@@ -1013,18 +1019,6 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
               </div>
 
               <div style={panelBg}>
-                <SectionHead title="Contact Details" />
-                <ContactPicker
-                  profiles={profiles}
-                  choice={contactChoice}
-                  custom={customContact}
-                  error={profilesError}
-                  onChoice={changeContactChoice}
-                  onCustom={updateCustomContact}
-                />
-              </div>
-
-              <div style={panelBg}>
                 <SectionHead title="Tax Info (KRA)" />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                   <Field label="Your KRA PIN"         value={invoiceExtra.yourKraPin}  onChange={v => updateInvoiceExtra('yourKraPin', v)}  placeholder="P0XXXXXXXXX" />
@@ -1042,6 +1036,19 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
               </div>
             </>
           )}
+
+          {/* Contact details — snapshotted onto the quote/invoice on save */}
+          <div style={panelBg}>
+            <SectionHead title="Contact Details" />
+            <ContactPicker
+              profiles={profiles}
+              choice={contactChoice}
+              custom={customContact}
+              error={profilesError}
+              onChoice={changeContactChoice}
+              onCustom={updateCustomContact}
+            />
+          </div>
 
           {/* Line items */}
           <div style={panelBg}>
@@ -1134,7 +1141,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         {/* RIGHT: Preview */}
         <div className={activeTab === 'form' ? 'hidden md:block' : ''} style={{ background: '#111318', overflowY: 'auto', padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
           {docType === 'quotation'
-            ? <QuotePreview q={quote} />
+            ? <QuotePreview q={{ ...quote, contact: chosenContact }} />
             : <InvoicePreview inv={toInvoicePayload(quote, invoiceExtra, chosenContact)} />}
         </div>
 

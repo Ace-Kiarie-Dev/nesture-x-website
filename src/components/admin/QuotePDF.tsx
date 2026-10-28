@@ -16,6 +16,7 @@ import {
   fmt,
   fmtDate,
 } from '@/types/quote';
+import { COMPANY_NAME, resolveContact, footerContactParts } from '@/types/contact';
 
 // ── Colors ────────────────────────────────────────────────────────────────────
 
@@ -296,6 +297,8 @@ export function QuotePDF({ quote }: { quote: Quote }) {
   const disc     = discountAmount(sub, quote.discountType, quote.discountValue);
   const total    = grandTotal(quote.lines, quote.discountType, quote.discountValue);
   const logoSrc  = getLogoSrc();
+  // Rendered from the quote's own snapshot; old quotes fall back to the legacy values.
+  const contact  = resolveContact(quote.contact);
 
   return (
     <Document
@@ -423,8 +426,8 @@ export function QuotePDF({ quote }: { quote: Quote }) {
         {/* ── Footer ── */}
         <View style={s.footer} fixed>
           <View>
-            <Text style={s.footerBrand}>Nesture-X</Text>
-            <Text style={s.footerText}>Nairobi, Kenya  ·  +254 717 164 951  ·  nesturex@gmail.com  ·  nesturex.com</Text>
+            <Text style={s.footerBrand}>{COMPANY_NAME}</Text>
+            <Text style={s.footerText}>{footerContactParts(contact).join('  ·  ')}</Text>
           </View>
           <Text style={s.footerText}>
             This quotation is valid until {fmtDate(quote.expiryDate)}

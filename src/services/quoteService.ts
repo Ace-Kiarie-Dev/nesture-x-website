@@ -1,6 +1,8 @@
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/mongodb';
 import type { Quote } from '@/types/quote';
+import { sanitizeContact } from '@/types/contact';
+import { getDefaultContactSnapshot } from '@/services/contactProfileService';
 
 export type QuoteStatus = 'draft' | 'sent' | 'approved' | 'declined' | 'expired';
 
@@ -34,7 +36,9 @@ export async function createSavedQuote(
 ): Promise<SavedQuote> {
   const db  = await getDb();
   const ts  = now();
-  const doc = { ...quote, status, createdAt: ts, updatedAt: ts };
+  // Snapshot rule: the contact is copied onto the quote, never referenced by id.
+  const contact = sanitizeContact(quote.contact) ?? await getDefaultContactSnapshot();
+  const doc = { ...quote, contact, status, createdAt: ts, updatedAt: ts };
   const res = await db.collection(COLLECTION).insertOne(doc);
   return toSaved({ _id: res.insertedId, ...doc });
 }
@@ -62,9 +66,13 @@ export async function updateSavedQuote(
 ): Promise<SavedQuote | null> {
   if (!ObjectId.isValid(id)) return null;
   const db  = await getDb();
+  // Only overwrite the snapshot when a valid one is sent — never wipe it.
+  const { contact: rawContact, ...rest } = updates;
+  const contact     = sanitizeContact(rawContact);
+  const safeUpdates = contact ? { ...rest, contact } : rest;
   const res = await db.collection(COLLECTION).findOneAndUpdate(
     { _id: new ObjectId(id) },
-    { $set: { ...updates, updatedAt: now() } },
+    { $set: { ...safeUpdates, updatedAt: now() } },
     { returnDocument: 'after' },
   );
   return res ? toSaved(res) : null;
