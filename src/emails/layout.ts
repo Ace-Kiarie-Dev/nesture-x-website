@@ -56,7 +56,8 @@ export function escMultiline(value: string | null | undefined): string {
 // ── Links ─────────────────────────────────────────────────────────────────────
 
 export function mailtoHref(address: string, subject?: string): string {
-  const to = encodeURIComponent(address.trim());
+  // Encoded so a crafted address can't add headers; @ stays literal for Outlook.
+  const to = encodeURIComponent(address.trim()).replace(/%40/g, '@');
   return subject ? `mailto:${to}?subject=${encodeURIComponent(subject)}` : `mailto:${to}`;
 }
 
