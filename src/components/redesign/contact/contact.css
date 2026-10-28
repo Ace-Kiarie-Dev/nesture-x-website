@@ -137,3 +137,230 @@
 @media (prefers-reduced-motion: reduce) {
   .nxct-hero-img { animation: none; }
 }
+
+/* ── 2. Details + form ─────────────────────────────────────────────────────
+   Phone: the form first (it comes first in the DOM), then the details. From
+   1000px: details on the left, the form on the right. */
+
+.nxct-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'form' 'details';
+  gap: 28px;
+  align-items: start;
+}
+.nxct-form-card { grid-area: form; min-width: 0; }
+.nxct-details { grid-area: details; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+@media (min-width: 1000px) {
+  .nxct-main {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-areas: 'details form';
+    gap: clamp(24px, 3vw, 48px);
+  }
+  .nxct-details { position: sticky; top: 110px; }
+}
+
+/* Details: a glass stack of clickable cards. */
+.nxct-details-title {
+  font-family: var(--font-mono), monospace;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxct-cards { border-radius: 30px; }
+.nxct-card-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.nxct-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border-radius: 22px;
+  color: var(--nx-text);
+  text-decoration: none;
+  transition: background-color 160ms ease;
+}
+a.nxct-card:hover { background: color-mix(in srgb, var(--nx-blue) 10%, transparent); }
+a.nxct-card:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+.nxct-card-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  color: var(--nx-accent);
+}
+.nxct-card-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.nxct-card-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxct-card-value { font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.nxct-card-arrow { flex-shrink: 0; color: var(--nx-accent); transition: translate 160ms ease; }
+a.nxct-card:hover .nxct-card-arrow { translate: 2px -2px; }
+
+.nxct-socials { list-style: none; display: flex; flex-wrap: wrap; gap: 12px; }
+.nxct-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: var(--nx-text);
+  transition: translate 160ms ease, color 160ms ease;
+}
+.nxct-social:hover { color: var(--nx-accent); translate: 0 -2px; }
+.nxct-social:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+
+/* Form card. The form and the success message share one grid cell, so the card keeps
+   the form's height in every state. */
+.nxct-stack { display: grid; }
+.nxct-stack > * { grid-area: 1 / 1; min-width: 0; }
+.nxct-form { display: flex; flex-direction: column; gap: 22px; }
+.nxct-form[inert] { visibility: hidden; }
+.nxct-form-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(40px, 2vw + 30px, 56px);
+  line-height: 0.95;
+  color: var(--nx-text);
+}
+.nxct-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+@media (min-width: 560px) {
+  .nxct-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+/* 48px+ tap targets on /contact (the shared input is 52px). */
+.nxct-form .nx-field label,
+.nxct-chips legend { font-size: 12px; }
+.nxct-req { color: var(--nx-accent); }
+.nxct-field-error {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #f87171;
+}
+[data-theme='light'] .nxct-field-error { color: #b91c1c; }
+
+/* Service as chips: real radio inputs (same values as the old select). */
+.nxct-chips { border: 0; margin: 0; padding: 0; min-width: 0; }
+.nxct-chips legend {
+  margin-bottom: 8px;
+  font-family: var(--font-mono), monospace;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxct-chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.nxct-chip { position: relative; display: inline-flex; cursor: pointer; }
+.nxct-chip input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.nxct-chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: var(--nx-radius-pill);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-size: 15px;
+  color: var(--nx-body);
+  transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+.nxct-chip:hover span { color: var(--nx-text); }
+.nxct-chip input:checked + span {
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+}
+.nxct-chip input:focus-visible + span { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+
+.nxct-live:empty { display: none; }
+.nx-form-error a { color: inherit; text-decoration: underline; }
+
+.nxct-submit-row { display: flex; flex-direction: column; gap: 14px; align-items: stretch; }
+.nxct-submit { width: 100%; min-height: 56px; }
+.nxct-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: nxct-spin 0.8s linear infinite;
+}
+.nxct-note { font-size: 13px; line-height: 1.6; color: var(--nx-body); }
+.nxct-note a { color: var(--nx-accent); text-decoration: underline; text-underline-offset: 3px; }
+.nxct-note a:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; border-radius: 4px; }
+@media (min-width: 560px) {
+  .nxct-submit-row { flex-direction: row; align-items: center; }
+  .nxct-submit { width: auto; flex-shrink: 0; }
+}
+
+/* Success: centred in the reserved height. */
+.nxct-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+.nxct-success[hidden] { display: none; }
+.nxct-success-img { width: auto; height: 150px; filter: drop-shadow(0 18px 22px rgba(3, 6, 16, 0.45)); }
+.nxct-success-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(40px, 2vw + 30px, 56px);
+  line-height: 0.95;
+  color: var(--nx-text);
+}
+.nxct-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: var(--nx-radius-pill);
+  background: rgba(37, 211, 102, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(37, 211, 102, 0.45);
+  font-weight: 600;
+  font-size: 14px;
+  color: #22c55e;
+  text-decoration: none;
+}
+[data-theme='light'] .nxct-wa { color: #15803d; }
+.nxct-wa:focus-visible,
+.nxct-again:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+.nxct-again {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+  cursor: pointer;
+}
+
+@keyframes nxct-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxct-spinner { animation: none; border-top-color: rgba(255, 255, 255, 0.35); }
+  .nxct-card,
+  .nxct-card-arrow,
+  .nxct-social,
+  .nxct-chip span { transition: none; }
+  a.nxct-card:hover .nxct-card-arrow,
+  .nxct-social:hover { translate: none; }
+}
