@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { renderTemplate } from './render';
+import { buildContactReply } from './contact-reply';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -27,12 +28,14 @@ export function sendContactReply(params: {
   clientName: string;
   message: string;
 }) {
+  const { html, text } = buildContactReply(params);
   return resend.emails.send({
     from: 'Peter at Nesture-X <inquiries@nesturex.com>',
     to: params.to,
     replyTo: REPLY_TO,
     subject: "Got it — we're looking at your idea 👀",
-    html: renderTemplate('contact-reply', params),
+    html,
+    text,
   });
 }
 
