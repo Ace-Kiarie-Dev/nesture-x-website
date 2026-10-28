@@ -15,6 +15,12 @@
 export const SITE_URL = 'https://nesturex.com';
 const LOGO = { src: `${SITE_URL}/email/nx-logo.png`, width: 168, height: 44 };
 
+// The hosted logo only exists on production once feat/redesign is released (until
+// then the URL is a 404). While false, the header is a pure text wordmark that
+// always renders. Flip to true after release to use the PNG, which then falls back
+// to a matching styled alt text when images are blocked.
+const USE_LOGO_IMAGE = false;
+
 const C = {
   page:   '#0a0a0a',
   card:   '#0d1b3e',
@@ -196,6 +202,20 @@ export interface LayoutOptions {
   reason: string;
 }
 
+/**
+ * Header wordmark. Text mode: "NESTURE-" off-white, "X" blue, heavy condensed stack,
+ * nothing to download, so it can't break. Image mode: the PNG with explicit size,
+ * display:block and border:0; its alt text is styled the same way (no background
+ * box), so a blocked image still reads as the wordmark.
+ */
+function brandHeader(): string {
+  const type = `font-family:${FONT_HEAD};font-size:30px;line-height:44px;font-weight:900;letter-spacing:1px;text-transform:uppercase;mso-line-height-rule:exactly;`;
+  if (!USE_LOGO_IMAGE) {
+    return `<a href="${SITE_URL}" target="_blank" style="${type}color:${C.text};text-decoration:none;"><span style="color:${C.text};">NESTURE-</span><span style="color:${C.blue};">X</span></a>`;
+  }
+  return `<a href="${SITE_URL}" target="_blank" style="text-decoration:none;"><img src="${LOGO.src}" width="${LOGO.width}" height="${LOGO.height}" alt="NESTURE-X" style="display:block;border:0;outline:none;text-decoration:none;width:${LOGO.width}px;height:${LOGO.height}px;${type}color:${C.text};" /></a>`;
+}
+
 /** Wraps body blocks in the full email document. */
 export function layout({ title, preheader, body, reason }: LayoutOptions): string {
   const socials = SOCIALS.map(s => `<a href="${s.href}" target="_blank" style="color:${C.muted};text-decoration:underline;">${esc(s.label)}</a>`).join('&nbsp;&nbsp;·&nbsp;&nbsp;');
@@ -236,7 +256,7 @@ export function layout({ title, preheader, body, reason }: LayoutOptions): strin
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
 
 <tr><td class="nx-pad" style="padding:0 32px 18px 32px;">
-<a href="${SITE_URL}" target="_blank" style="text-decoration:none;"><img src="${LOGO.src}" width="${LOGO.width}" height="${LOGO.height}" alt="NESTURE-X" style="display:block;border:0;outline:none;width:${LOGO.width}px;height:${LOGO.height}px;font-family:${FONT_HEAD};font-size:26px;line-height:44px;color:${C.text};background-color:${C.card};" /></a>
+${brandHeader()}
 </td></tr>
 
 <tr><td class="nx-card" bgcolor="${C.card}" style="background-color:${C.card};border:1px solid ${C.line};border-radius:20px;">
