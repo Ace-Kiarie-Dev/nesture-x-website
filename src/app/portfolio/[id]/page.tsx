@@ -1,25 +1,53 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import portfolioData from '@/data/portfolio.json';
-import type { PortfolioItem } from '@/components/sections/Portfolio';
 import { JsonLd, breadcrumbList } from '@/lib/jsonLd';
 import { isIndexablePortfolioItem, portfolioDescription, portfolioTitle } from '@/lib/portfolioSeo';
-import PortfolioDetail from './PortfolioDetail';
+import { DESIGN_ITEMS, WORK_CARDS, categoryOf, thumbFor } from '@/lib/portfolio-data';
+import ProjectView from '@/components/redesign/portfolio/ProjectView';
+import '@/components/redesign/portfolio/portfolio.css';
 
 export async function generateStaticParams() {
-  return (portfolioData as PortfolioItem[]).map(i => ({ id: i.id }));
+  return DESIGN_ITEMS.map(i => ({ id: i.id }));
+}
+
+// Share image: the project's own artwork (a PDF's cover), resized by the image
+// optimiser so crawlers never fetch a multi-MB original. GIFs go as they are.
+function ogImage(item: (typeof DESIGN_ITEMS)[number]) {
+  const img = thumbFor(item);
+  if (!img) return undefined;
+  const url = img.unoptimized ? img.src : `/_next/image?url=${encodeURIComponent(img.src)}&w=1200&q=75`;
+  const width = Math.min(1200, img.width);
+  return { url, width, height: Math.round((width * img.height) / img.width), alt: portfolioTitle(item) };
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const item = (portfolioData as PortfolioItem[]).find(i => i.id === id);
+  const item = DESIGN_ITEMS.find(i => i.id === id);
   if (!item) return {};
+  const title = portfolioTitle(item);
+  const description = portfolioDescription(item);
+  const image = ogImage(item);
   return {
-    title: portfolioTitle(item),
-    description: portfolioDescription(item),
+    title,
+    description,
     alternates: {
       canonical: `/portfolio/${id}`,
     },
+    // Without an image, the /portfolio OG card (opengraph-image.tsx) still applies.
+    ...(image
+      ? {
+          openGraph: {
+            siteName: 'Nesture-X',
+            locale: 'en_KE',
+            type: 'website',
+            title: `${title} | Nesture-X`,
+            description,
+            url: `/portfolio/${id}`,
+            images: [image],
+          },
+          twitter: { card: 'summary_large_image', images: [image.url] },
+        }
+      : {}),
     // "Various Clients" pages stay on the site and in the grid, but out of the index.
     ...(isIndexablePortfolioItem(item) ? {} : { robots: { index: false, follow: true } }),
   };
@@ -27,11 +55,19 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function PortfolioDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const items = portfolioData as PortfolioItem[];
-  const item = items.find(i => i.id === id);
-  if (!item) notFound();
+  const index = DESIGN_ITEMS.findIndex(i => i.id === id);
+  if (index === -1) notFound();
+  const item = DESIGN_ITEMS[index];
+
+  const category = categoryOf(item);
+  const more = WORK_CARDS.filter(c => c.category === category && c.key !== item.id).slice(0, 12);
+  const neighbour = (i: number) => {
+    const n = DESIGN_ITEMS[i];
+    return n ? { id: n.id, title: portfolioTitle(n) } : null;
+  };
+
   return (
-    <>
+    <main className="nxpf nxpf-project">
       <JsonLd
         data={breadcrumbList([
           { name: 'Home', path: '/' },
@@ -39,7 +75,9 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
           { name: portfolioTitle(item), path: `/portfolio/${id}` },
         ])}
       />
-      <PortfolioDetail item={item} items={items} />
-    </>
+      <div className="nxpf-wrap">
+        <ProjectView item={item} more={more} prev={neighbour(index - 1)} next={neighbour(index + 1)} />
+      </div>
+    </main>
   );
 }

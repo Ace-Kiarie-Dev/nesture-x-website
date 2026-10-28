@@ -11,28 +11,9 @@ interface Props {
   title: string;
 }
 
-const btnBase: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '0.3rem',
-  background: 'transparent',
-  border: '1px solid rgba(26,111,212,0.4)',
-  color: 'var(--color-primary)',
-  fontFamily: 'var(--font-grotesk), sans-serif',
-  fontSize: '0.7rem',
-  letterSpacing: '0.08em',
-  padding: '0.35rem 0.65rem',
-  cursor: 'pointer',
-  transition: 'background 0.2s, border-color 0.2s, box-shadow 0.2s',
-};
-
-const btnDisabled: React.CSSProperties = {
-  ...btnBase,
-  color: 'rgba(245,245,245,0.25)',
-  border: '1px solid rgba(26,111,212,0.15)',
-  cursor: 'not-allowed',
-};
+// Styles live in components/redesign/portfolio/portfolio.css (.nxpf-pdf*); the
+// buttons are ghost clay buttons, which style their own disabled state.
+const BTN = 'nx-clay-btn nx-clay-btn-ghost nx-clay-btn--sm nxpf-pdf-btn';
 
 const PDF_OPTIONS = { cMapUrl: 'cmaps/', cMapPacked: true };
 
@@ -54,38 +35,23 @@ export default function PDFViewerClient({ src, title }: Props) {
     return () => obs.disconnect();
   }, []);
 
-  const wrapperStyle: React.CSSProperties = isFullscreen
-    ? { position: 'fixed', inset: 0, zIndex: 1000, background: '#0a0a0a', display: 'flex', flexDirection: 'column' }
-    : { position: 'relative', width: '100%', background: '#0a0a0a', display: 'flex', flexDirection: 'column' };
-
   return (
-    <div style={wrapperStyle}>
+    <div className={isFullscreen ? 'nxpf-pdf is-fullscreen' : 'nxpf-pdf'} role="region" aria-label={`${title} (PDF viewer)`}>
       {/* PDF canvas area */}
-      <div
-        ref={containerRef}
-        style={{
-          flex: 1,
-          overflow: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          padding: '1rem 0',
-          minHeight: isFullscreen ? 0 : 'clamp(320px, 55vh, 640px)',
-        }}
-      >
+      <div ref={containerRef} className="nxpf-pdf-stage">
         <Document
           file={src}
           onLoadSuccess={({ numPages: n }) => setNumPages(n)}
           options={options}
           loading={
-            <span style={{ fontFamily: 'var(--font-grotesk)', fontSize: '0.8rem', color: 'rgba(245,245,245,0.35)', padding: '2rem', display: 'block' }}>
+            <span className="nxpf-pdf-msg">
               Loading PDF…
             </span>
           }
           error={
-            <span style={{ fontFamily: 'var(--font-grotesk)', fontSize: '0.8rem', color: 'rgba(245,245,245,0.35)', padding: '2rem', display: 'block' }}>
+            <span className="nxpf-pdf-msg">
               Could not load PDF.{' '}
-              <a href={src} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)' }}>
+              <a href={src} target="_blank" rel="noopener noreferrer">
                 Open directly ↗
               </a>
             </span>
@@ -101,22 +67,9 @@ export default function PDFViewerClient({ src, title }: Props) {
       </div>
 
       {/* Controls bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '0.5rem',
-          padding: '0.55rem 0.85rem',
-          background: 'rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          flexShrink: 0,
-        }}
-      >
+      <div className="nxpf-pdf-bar">
         <button
-          style={pageNumber <= 1 ? btnDisabled : btnBase}
+          className={BTN}
           onClick={() => setPageNumber(n => Math.max(1, n - 1))}
           disabled={pageNumber <= 1}
           aria-label="Previous page"
@@ -125,20 +78,12 @@ export default function PDFViewerClient({ src, title }: Props) {
           PREV
         </button>
 
-        <span
-          style={{
-            fontFamily: 'var(--font-grotesk), sans-serif',
-            fontSize: '0.7rem',
-            color: 'rgba(245,245,245,0.55)',
-            letterSpacing: '0.06em',
-            userSelect: 'none',
-          }}
-        >
+        <span className="nxpf-pdf-count" aria-live="polite">
           {pageNumber} / {numPages || '—'}
         </span>
 
         <button
-          style={pageNumber >= numPages ? btnDisabled : btnBase}
+          className={BTN}
           onClick={() => setPageNumber(n => Math.min(numPages, n + 1))}
           disabled={pageNumber >= numPages}
           aria-label="Next page"
@@ -148,7 +93,7 @@ export default function PDFViewerClient({ src, title }: Props) {
         </button>
 
         <button
-          style={btnBase}
+          className={BTN}
           onClick={() => setIsFullscreen(f => !f)}
           aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
         >

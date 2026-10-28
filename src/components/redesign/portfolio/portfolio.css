@@ -465,3 +465,275 @@
   .nxpf-partners { flex-wrap: nowrap; }
   .nxpf-partner { flex: 1 1 0; min-width: 0; padding-inline: 20px; }
 }
+
+/* ── 5. Project page ───────────────────────────────────────────────────────
+   Phone: crumbs, media, details, buttons full width. 1100px+: 70/30 split with
+   the details panel sticky beside the media. */
+
+.nxpf-project { padding-top: 116px; }
+@media (min-width: 768px) {
+  .nxpf-project { padding-top: 128px; }
+}
+
+.nxpf-crumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-bottom: 24px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxpf-crumbs li { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.nxpf-crumbs li + li::before { content: '/'; color: var(--nx-accent); }
+.nxpf-crumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--nx-accent);
+  text-decoration: none;
+}
+.nxpf-crumbs a:hover { color: var(--nx-text); }
+.nxpf-crumbs a:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; border-radius: 6px; }
+.nxpf-crumbs [aria-current] { color: var(--nx-text); overflow-wrap: anywhere; }
+
+.nxpf-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.nxpf-view-media { min-width: 0; }
+
+/* Image in a clay frame; tall pieces are capped at ~85vh. */
+.nxpf-view-frame {
+  display: flex;
+  justify-content: center;
+  padding: clamp(12px, 2vw, 24px);
+}
+.nxpf-view-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 85vh;
+  border-radius: 14px;
+}
+
+/* Browser mockup for web screenshots. */
+.nxpf-browser-frame {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--nx-glass-border);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-clay);
+}
+.nxpf-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: linear-gradient(160deg, var(--nx-clay-from), var(--nx-clay-to));
+  border-bottom: 1px solid var(--nx-glass-border);
+}
+.nxpf-browser-dots { display: flex; gap: 6px; }
+.nxpf-browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.nxpf-browser-dots span:nth-child(2) { background: #febc2e; }
+.nxpf-browser-dots span:nth-child(3) { background: #28c840; }
+.nxpf-browser-url {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 12px;
+  border-radius: var(--nx-radius-pill);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--nx-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nxpf-browser-frame .nxpf-view-img { width: 100%; max-height: none; border-radius: 0; }
+
+/* Details panel. */
+.nxpf-view-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.nxpf-view-pill { border-radius: var(--nx-radius-pill); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+.nxpf-view-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(40px, 3.2vw + 20px, 60px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+  overflow-wrap: anywhere;
+}
+.nxpf-view-desc { font-size: 16px; }
+.nxpf-view-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.nxpf-view-client {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--nx-text);
+}
+.nxpf-view-client span {
+  margin-right: 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxpf-view-ctas { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 4px; }
+.nxpf-view-ctas .nx-clay-btn { width: 100%; }
+
+@media (min-width: 1100px) {
+  .nxpf-view {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    gap: 32px;
+  }
+  .nxpf-view-side { position: sticky; top: 110px; }
+  .nxpf-view-ctas .nx-clay-btn { white-space: normal; text-align: center; }
+}
+
+/* PDF viewer (PDFViewerClient.tsx): a dark stage in both themes, like a lightbox.
+   The viewer sizes its page to the stage width, so the wrapper's max-width (from the
+   cover's ratio) keeps one page + the 64px bar inside ~88vh. */
+.nxpf-pdf-fit {
+  max-width: min(100%, calc((88vh - 64px - 2rem) * var(--nxpf-pdf-ratio, 0.707) + 32px));
+  margin-inline: auto;
+}
+.nxpf-pdf {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--nx-glass-border);
+  background: #0b1020;
+  box-shadow: var(--nx-shadow-clay);
+}
+.nxpf-pdf.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  border-radius: 0;
+  border: 0;
+}
+.nxpf-pdf-stage {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem 0;
+  min-height: clamp(320px, 55vh, 640px);
+}
+.nxpf-pdf.is-fullscreen .nxpf-pdf-stage { min-height: 0; }
+.nxpf-pdf-skeleton { min-height: clamp(380px, 60vh, 700px); }
+.nxpf-pdf-msg {
+  display: block;
+  padding: 2rem;
+  font-size: 0.85rem;
+  color: rgba(245, 245, 245, 0.55);
+}
+.nxpf-pdf-msg a { color: #8ec0ff; }
+.nxpf-pdf-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+/* The bar is always dark, so its ghost buttons keep light text in light theme too. */
+.nxpf-pdf .nxpf-pdf-btn {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.07);
+}
+.nxpf-pdf .nxpf-pdf-btn:focus-visible { outline-color: #8ec0ff; }
+@media (max-width: 479px) {
+  .nxpf-pdf-bar { gap: 6px; padding: 8px; }
+  .nxpf-pdf .nxpf-pdf-btn { padding: 10px 12px; gap: 4px; }
+}
+.nxpf-pdf-count {
+  white-space: nowrap;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  user-select: none;
+}
+
+/* More like this: horizontal scroll-snap row. */
+.nxpf-more { padding-top: clamp(56px, 8vw, 96px); }
+.nxpf-more-row {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxpf-gutter));
+  padding: 8px var(--nxpf-gutter) 24px;
+  scroll-padding-inline: var(--nxpf-gutter);
+}
+.nxpf-more-row::-webkit-scrollbar { display: none; }
+.nxpf-more-row:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: -3px; border-radius: 12px; }
+.nxpf-more-item { flex: 0 0 240px; scroll-snap-align: start; }
+@media (min-width: 768px) {
+  .nxpf-more-item { flex-basis: 300px; }
+}
+
+/* Previous / next. */
+.nxpf-pager {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 96px);
+}
+.nxpf-pager-link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 20px 24px;
+  text-decoration: none;
+  color: var(--nx-text);
+  transition: transform 180ms ease;
+}
+.nxpf-pager-link:hover { transform: translateY(-2px); }
+.nxpf-pager-link:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+.nxpf-pager-link--next { text-align: right; }
+.nxpf-pager-dir {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxpf-pager-title { font-family: var(--font-display), sans-serif; font-size: 26px; line-height: 1.05; }
+@media (min-width: 768px) {
+  .nxpf-pager { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-pager-link { transition: none; }
+  .nxpf-pager-link:hover { transform: none; }
+}
