@@ -282,3 +282,123 @@
 @media (prefers-reduced-motion: reduce) {
   .nxsv-qnav-chip { transition: none; }
 }
+
+/* ── 3. Service blocks ─────────────────────────────────────────────────────
+   Phone: art (~230px) above the card. From 900px two columns, art left on odd
+   blocks and right on even ones (.nxsv-svc--flip). */
+
+.nxsv-svc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.nxsv-svc-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 230px;
+  min-width: 0;
+}
+.nxsv-svc-glow {
+  position: absolute;
+  inset: -12% 0;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.5), rgba(26, 111, 212, 0));
+}
+[data-theme='light'] .nxsv-svc-glow { opacity: 0.45; }
+.nxsv-svc-img {
+  position: relative;
+  width: auto;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 34px rgba(3, 6, 16, 0.6)) drop-shadow(0 8px 10px rgba(3, 6, 16, 0.35));
+}
+[data-theme='light'] .nxsv-svc-img {
+  filter: drop-shadow(0 26px 30px rgba(13, 27, 62, 0.24)) drop-shadow(0 6px 8px rgba(13, 27, 62, 0.12));
+}
+
+.nxsv-svc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  min-width: 0;
+}
+.nxsv-svc-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+}
+.nxsv-svc-sub {
+  margin-top: -6px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--nx-accent);
+}
+.nxsv-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.nxsv-svc-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  margin-top: 6px;
+}
+.nxsv-svc-seen {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+
+@media (max-width: 479px) {
+  .nxsv-svc-foot .nx-clay-btn { width: 100%; }
+}
+
+@media (min-width: 900px) {
+  .nxsv-svc {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 64px);
+  }
+  .nxsv-svc--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); }
+  .nxsv-svc--flip .nxsv-svc-art { order: 2; }
+  .nxsv-svc-art { height: clamp(340px, 34vw, 460px); }
+  .nxsv-svc-glow { inset: -6% -4%; }
+}
+@media (min-width: 1200px) {
+  .nxsv-svc-title { font-size: 76px; }
+  .nxsv-svc-sub { font-size: 34px; }
+}
+
+/* Scroll reveal (HomeReveal with .nxsv selectors). Only hides anything once JS has
+   marked the page ready, and never under reduced motion. */
+.nxsv-reveal-ready .nxsv-reveal {
+  transition: opacity 0.7s var(--nxsv-ease), translate 0.7s var(--nxsv-ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.nxsv-reveal-ready .nxsv-reveal:not(.is-in) {
+  opacity: 0;
+  translate: 0 28px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxsv-reveal-ready .nxsv-reveal { transition: none; }
+}
+
+/* Block anchors: the section's own top padding already gives air, so the jump lands
+   the content ~10px under the sticky quick nav instead of a padding-height lower. */
+.nxsv .nxsv-svc-sec,
+.nxsv .nxsv-svc-band { scroll-margin-top: calc(176px - clamp(72px, 10vw, 140px)); }
