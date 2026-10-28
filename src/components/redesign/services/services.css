@@ -1,0 +1,35 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   /services, hybrid redesign. Scoped under .nxsv; colours, shadows and radii come
+   from the --nx-* tokens in app/globals.css, so the page follows the light / dark
+   toggle. Building blocks (.nx-clay, .nx-glass, .nx-band, .nx-h2, .nx-outline,
+   .nx-clay-btn, .nx-chip) live in src/styles/hybrid.css; this file lays them out.
+   Breakpoints: 768px (tablet), 1100px (wide hero) and 1200px (wide, as SiteNav).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxsv {
+  --nxsv-gutter: 20px;
+  --nxsv-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  /* Clip, not hidden: no horizontal scroll from glows and bleeding art, and no
+     scroll container, so the sticky quick nav keeps working. */
+  overflow-x: clip;
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxsv { --nxsv-gutter: 40px; }
+}
+
+.nxsv-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--nxsv-gutter);
+}
+
+/* Dark sections let the page's nx-grid-bg show; slate ones use <Band>. */
+.nxsv-sec {
+  position: relative;
+  padding-block: clamp(72px, 10vw, 140px);
+}
