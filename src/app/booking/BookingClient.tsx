@@ -7,6 +7,7 @@ import NxButton from '@/components/ui/NxButton';
 import BookingCalendar from '@/components/booking/BookingCalendar';
 import { formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { CONTACT } from '@/constants';
+import { Eyebrow } from '@/components/redesign';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -203,45 +204,24 @@ export default function BookingClient() {
   };
 
   return (
-    <main className="relative overflow-hidden bg-[var(--color-bg)]">
-      <div className="grid-overlay absolute inset-0 z-0 pointer-events-none" aria-hidden />
+    <main className="nxbk">
+      <div className="nxbk-wrap nxbk-page">
+      <div className="nxbk-layout">
 
-      {/* ── Page hero ── */}
-      <section style={{ padding: 'clamp(8rem, 12vw, 14rem) clamp(2rem, 7vw, 8rem) clamp(3rem, 5vw, 5rem)' }}>
-        <motion.div
-          className="relative z-[1]"
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-        >
-          <p className="section-label" style={{ marginBottom: '1.25rem' }}>Consultation Booking</p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize:   'clamp(3.5rem, 9vw, 8rem)',
-              lineHeight: 0.88,
-              color:      'var(--color-text)',
-              marginBottom: '1.5rem',
-            }}
-          >
-            BOOK YOUR <br />CONSULTATION.
-          </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize:   'clamp(0.95rem, 1.4vw, 1.1rem)',
-              lineHeight: 1.9,
-              color:      'rgba(245,245,245,0.5)',
-              maxWidth:   '34rem',
-            }}
-          >
-            A free 30-minute consultation — no payment required. Pick a day and time that works for you.
-          </p>
-        </motion.div>
-      </section>
+      {/* ── Page header ── */}
+      <header className="nxbk-head">
+        <Eyebrow>Book a consultation</Eyebrow>
+        <h1 className="nxbk-title" aria-label="Book a consultation.">
+          <span className="nxbk-title-line" aria-hidden="true">BOOK A</span>
+          <span className="nxbk-title-line nx-outline" aria-hidden="true">CONSULTATION.</span>
+        </h1>
+        <p className="nxbk-lede">
+          A free 30-minute consultation — no payment required. Pick a day and time that works for you.
+        </p>
+      </header>
 
       {/* ── Form panel ── */}
-      <section style={{ padding: '0 clamp(2rem, 7vw, 8rem) clamp(6rem, 10vw, 10rem)' }}>
+      <section className="nxbk-flow" aria-label="Booking form">
         <motion.div
           className="relative z-[1]"
           initial={{ opacity: 0, y: 24 }}
@@ -546,6 +526,8 @@ export default function BookingClient() {
           </AnimatePresence>
         </motion.div>
       </section>
+      </div>
+      </div>
     </main>
   );
 }

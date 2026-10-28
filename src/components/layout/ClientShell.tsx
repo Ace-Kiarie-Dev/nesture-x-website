@@ -10,11 +10,11 @@ import SiteFooter from '@/components/redesign/SiteFooter';
 // Routes already moved to the hybrid redesign. They get the new SiteNav and SiteFooter
 // and paint their own background, so the particle canvas and the 80px navbar offset
 // are skipped. Exact paths: /nx-gaming/2048 etc. are static games outside this shell.
-const REDESIGNED_ROUTES = new Set(['/', '/nx-gaming', '/services', '/portfolio', '/about', '/contact', '/tools']);
+const REDESIGNED_ROUTES = new Set(['/', '/nx-gaming', '/services', '/portfolio', '/about', '/contact', '/tools', '/booking']);
 
 // Dynamic redesigned routes. Project pages are one segment under /portfolio (the
 // /portfolio/status/[slug] pages keep the legacy chrome); every tool is one segment
-// under /tools.
+// under /tools. /booking has no sub-routes (the whole flow is client state on one page).
 const REDESIGNED_PATTERNS = [/^\/portfolio\/(?!status$)[^/]+$/, /^\/tools\/[^/]+$/];
 
 function isRedesigned(path: string): boolean {

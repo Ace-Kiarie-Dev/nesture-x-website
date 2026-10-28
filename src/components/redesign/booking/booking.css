@@ -1,0 +1,82 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   /booking, hybrid redesign. Scoped under .nxbk; colours, shadows and radii come
+   from the --nx-* tokens in app/globals.css, so the page follows the light / dark
+   toggle. Building blocks (.nx-glass, .nx-clay, .nx-clay-btn and the form fields
+   .nx-field / .nx-input / .nx-select) live in hybrid.css.
+   Mostly used on phones: compact header, full-width 48px buttons, and on step 2 a
+   sticky bar that keeps the picked date and time on screen.
+   Breakpoints: 640px (phone → wider), 1024px (header beside the flow).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxbk {
+  --nxbk-gutter: 16px;
+  --nxbk-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxbk { --nxbk-gutter: 40px; }
+}
+
+.nxbk-wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-inline: var(--nxbk-gutter);
+}
+.nxbk-page { padding-top: 100px; padding-bottom: clamp(48px, 7vw, 96px); }
+
+/* Header on top for phones and tablets; beside the flow from 1024px so the whole
+   step fits a desktop viewport without scrolling. */
+.nxbk-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+@media (min-width: 1024px) {
+  .nxbk-page { padding-top: 116px; }
+  .nxbk-layout {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: start;
+  }
+}
+
+/* ── 1. Header ─────────────────────────────────────────────────────────── */
+
+.nxbk-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.nxbk-title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(46px, 14vw, 72px);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+}
+.nxbk-title-line { display: block; white-space: nowrap; }
+.nxbk-lede {
+  max-width: 460px;
+  padding-left: 14px;
+  border-left: 3px solid var(--nx-blue);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--nx-body);
+}
+@media (min-width: 1024px) {
+  .nxbk-head { position: sticky; top: 116px; gap: 20px; }
+  .nxbk-title { font-size: clamp(72px, 6.4vw, 108px); }
+  .nxbk-lede { font-size: 18px; }
+}
+
+.nxbk-flow { display: flex; flex-direction: column; gap: 16px; min-width: 0; }

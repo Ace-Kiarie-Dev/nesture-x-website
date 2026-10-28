@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import BookingClient from './BookingClient';
+import '@/components/redesign/booking/booking.css';
 
 export const metadata: Metadata = {
   title: 'Book a Consultation',
