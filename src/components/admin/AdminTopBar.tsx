@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FileText, Receipt, CalendarDays, Inbox, Rocket, LogOut, type LucideIcon } from 'lucide-react';
+import { FileText, Receipt, CalendarDays, Inbox, Rocket, Settings, LogOut, type LucideIcon } from 'lucide-react';
 
-export type AdminTab = 'quotes' | 'invoices' | 'bookings' | 'leads' | 'launch-list';
+export type AdminTab = 'quotes' | 'invoices' | 'bookings' | 'leads' | 'launch-list' | 'settings';
 
 interface Tab {
   key:   AdminTab;
@@ -18,6 +18,7 @@ const TABS: Tab[] = [
   { key: 'bookings',    label: 'Bookings',    href: '/admin/bookings',    icon: CalendarDays },
   { key: 'leads',       label: 'Leads',       href: '/admin/leads',       icon: Inbox },
   { key: 'launch-list', label: 'Launch List', href: '/admin/launch-list', icon: Rocket },
+  { key: 'settings',    label: 'Settings',    href: '/admin/settings',    icon: Settings },
 ];
 
 interface AdminTopBarProps {
