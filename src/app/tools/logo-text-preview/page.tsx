@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import BackLink from '@/components/tools/BackLink';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
+import { Segmented } from '@/components/redesign/tools/blocks';
+import { ClayButton } from '@/components/redesign';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -126,37 +127,6 @@ function buildSVG(p: {
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20,25,32,0.6)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  padding: 'clamp(1.5rem,3vw,2.25rem)',
-};
-
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.62rem',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  color: 'rgba(245,245,245,0.35)',
-  display: 'block',
-  marginBottom: '0.4rem',
-};
-
-const INPUT: React.CSSProperties = {
-  width: '100%',
-  background: 'rgba(10,10,10,0.6)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  padding: '0.6rem 0.9rem',
-  fontFamily: 'var(--font-body)',
-  fontSize: '0.88rem',
-  color: 'var(--color-text)',
-  outline: 'none',
-};
-
-// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function LogoTextPreviewerPage() {
   const [brandName, setBrandName] = useState('Your Brand');
@@ -304,125 +274,92 @@ export default function LogoTextPreviewerPage() {
     setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
 
-  const focusBorder = (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = 'var(--color-primary)'; };
-  const blurBorder = (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = 'rgba(255,255,255,0.12)'; };
-
-  const pillBtn = (active: boolean): React.CSSProperties => ({
-    padding: '0.38rem 0.8rem',
-    fontFamily: 'var(--font-mono)',
-    fontSize: '0.68rem',
-    letterSpacing: '0.08em',
-    background: active ? 'rgba(26,111,212,0.14)' : 'transparent',
-    border: `1px solid ${active ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)'}`,
-    color: active ? 'var(--color-primary)' : 'rgba(245,245,245,0.45)',
-    cursor: 'pointer',
-    transition: 'all 120ms ease',
-    whiteSpace: 'nowrap' as const,
-  });
-
   return (
-    <main style={{ padding: 'clamp(6rem,10vw,11rem) clamp(2rem,7vw,8rem) clamp(4rem,6vw,6rem)', background: 'var(--color-bg)' }}>
-      <BackLink />
-
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem,8vw,8rem)', lineHeight: 0.9, color: 'var(--color-text)', marginBottom: '0.75rem' }}>
-        LOGO TEXT PREVIEWER
-      </h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(0.95rem,1.3vw,1.05rem)', color: 'rgba(245,245,245,0.5)', marginBottom: '2.5rem', maxWidth: '44rem' }}>
-        See your brand name in different fonts and layouts before commissioning a logo.
-      </p>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', maxWidth: '1200px', alignItems: 'start' }}>
+    <ToolShell
+      title="Logo Text Previewer"
+      outline="Previewer"
+      description="See your brand name in different fonts and layouts before commissioning a logo."
+    >
+      <div className="nxtl-panes nxtl-panes--wide-right">
 
         {/* ── Controls ── */}
-        <div style={{ ...GLASS, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="nxtl-panel nx-clay">
 
-          <div>
-            <label style={LABEL}>Brand Name</label>
+          <div className="nx-field">
+            <label htmlFor="ltp-brand">Brand Name</label>
             <input
-              style={{ ...INPUT, fontSize: '1rem' }}
+              id="ltp-brand"
+              className="nx-input"
               value={brandName}
               onChange={e => setBrandName(e.target.value)}
               placeholder="Your Brand Name"
-              onFocus={focusBorder} onBlur={blurBorder}
             />
           </div>
 
-          <div>
-            <label style={LABEL}>Tagline (optional)</label>
+          <div className="nx-field">
+            <label htmlFor="ltp-tagline">Tagline (optional)</label>
             <input
-              style={INPUT}
+              id="ltp-tagline"
+              className="nx-input"
               value={tagline}
               onChange={e => setTagline(e.target.value)}
               placeholder="Your tagline (optional)"
-              onFocus={focusBorder} onBlur={blurBorder}
             />
           </div>
 
           {/* Category tabs */}
           <div>
-            <label style={LABEL}>Font Category</label>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              {CATEGORY_TABS.map(t => (
-                <button key={t.id} data-hover onClick={() => setCategory(t.id)} style={pillBtn(category === t.id)}>
-                  {t.label}
-                </button>
-              ))}
-            </div>
+            <span className="nxtl-label">Font Category</span>
+            <Segmented
+              label="Font category"
+              size="sm"
+              options={CATEGORY_TABS.map(t => ({ value: t.id, label: t.label }))}
+              value={category}
+              onChange={setCategory}
+            />
           </div>
 
           {/* Font pills — rendered in their own font */}
           <div>
-            <label style={LABEL}>Font</label>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              {FONTS[category].map(font => {
-                const active = activeFonts[category] === font;
-                return (
-                  <button
-                    key={font}
-                    data-hover
-                    onClick={() => selectFont(font)}
-                    style={{
-                      padding: '0.38rem 0.8rem',
-                      fontFamily: `"${font}", sans-serif`,
-                      fontSize: '0.85rem',
-                      background: active ? 'rgba(26,111,212,0.14)' : 'transparent',
-                      border: `1px solid ${active ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)'}`,
-                      color: active ? 'var(--color-primary)' : 'rgba(245,245,245,0.6)',
-                      cursor: 'pointer',
-                      transition: 'all 120ms ease',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {font}
-                  </button>
-                );
-              })}
-            </div>
+            <span className="nxtl-label">Font</span>
+            <Segmented
+              label="Font"
+              className="nxtl-ltp-fonts"
+              options={FONTS[category].map(font => ({
+                value: font,
+                label: <span style={{ fontFamily: `"${font}", sans-serif` }}>{font}</span>,
+              }))}
+              value={activeFonts[category]}
+              onChange={selectFont}
+            />
           </div>
 
           {/* Colour controls */}
           <div>
-            <label style={LABEL}>Colours</label>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+            <span className="nxtl-label">Colours</span>
+            <div className="nxtl-ltp-colors">
               {([
                 { label: 'Text', val: textColor, set: setTextColor },
                 { label: 'Background', val: bgColor, set: setBgColor },
                 { label: 'Accent', val: accentColor, set: setAccentColor },
               ] as const).map(c => (
-                <div key={c.label}>
-                  <label style={{ ...LABEL, marginBottom: '0.3rem' }}>{c.label}</label>
-                  <input
-                    type="color"
-                    value={c.val}
-                    onChange={e => c.set(e.target.value)}
-                    style={{ width: '44px', height: '36px', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', padding: '2px', display: 'block' }}
-                  />
-                </div>
+                <label key={c.label} className="nxtl-ltp-color">
+                  <span className="nxtl-hint">{c.label}</span>
+                  <span className="nxtl-color">
+                    <input
+                      type="color"
+                      value={c.val}
+                      onChange={e => c.set(e.target.value)}
+                    />
+                  </span>
+                </label>
               ))}
               <button
+                type="button"
                 data-hover
                 onClick={() => { const t = textColor; setTextColor(bgColor); setBgColor(t); }}
-                style={{ padding: '0.5rem 0.9rem', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.08em', color: 'rgba(245,245,245,0.5)', cursor: 'pointer', marginBottom: '1px' }}
+                className="nxtl-chip-btn"
+                aria-label="Swap text and background colours"
               >
                 Swap
               </button>
@@ -431,81 +368,76 @@ export default function LogoTextPreviewerPage() {
 
           {/* Layout selector */}
           <div>
-            <label style={LABEL}>Layout</label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem' }}>
-              {LAYOUTS.map(l => (
-                <button key={l.id} data-hover onClick={() => setLayout(l.id)} style={pillBtn(layout === l.id)}>
-                  {l.label}
-                </button>
-              ))}
-            </div>
+            <span className="nxtl-label">Layout</span>
+            <Segmented
+              label="Layout"
+              size="sm"
+              className="nxtl-ltp-layouts"
+              options={LAYOUTS.map(l => ({ value: l.id, label: l.label }))}
+              value={layout}
+              onChange={setLayout}
+            />
           </div>
 
           {/* Font size */}
           <div>
-            <label style={LABEL}>Size: {fontSize}px</label>
+            <div className="nxtl-range-head">
+              <label htmlFor="ltp-size" className="nxtl-label" style={{ marginBottom: 0 }}>Size: {fontSize}px</label>
+            </div>
             <input
+              id="ltp-size"
               type="range"
               min={24}
               max={120}
               value={fontSize}
               onChange={e => setFontSize(parseInt(e.target.value))}
-              style={{ width: '100%', cursor: 'pointer', accentColor: 'var(--color-primary)' } as React.CSSProperties}
+              className="nxtl-range"
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'rgba(245,245,245,0.25)' }}>24px</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'rgba(245,245,245,0.25)' }}>120px</span>
+            <div className="nxtl-range-head">
+              <span className="nxtl-mono">24px</span>
+              <span className="nxtl-mono">120px</span>
             </div>
           </div>
         </div>
 
         {/* ── Canvas + downloads ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <canvas
-            ref={canvasRef}
-            width={CW}
-            height={CH}
-            style={{ maxWidth: '100%', height: 'auto', display: 'block', border: '1px solid rgba(255,255,255,0.08)' }}
-          />
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <NxButton variant="primary" size="sm" onClick={handleDownloadPNG}>
-              Download PNG
-            </NxButton>
-            <NxButton variant="ghost" size="sm" onClick={handleDownloadSVG}>
-              Download SVG
-            </NxButton>
+        <div className="nxtl-ltp-preview">
+          <div className="nxtl-panel nx-clay">
+            <span className="nxtl-label" style={{ marginBottom: 0 }}>Preview · 800 × 400</span>
+            <canvas
+              ref={canvasRef}
+              width={CW}
+              height={CH}
+              className="nxtl-ltp-canvas"
+              aria-label={`Logo preview: ${brandName || 'Your Brand'}`}
+              role="img"
+            />
+            <div className="nxtl-actions">
+              <ClayButton onClick={handleDownloadPNG}>
+                Download PNG
+              </ClayButton>
+              <ClayButton variant="ghost" onClick={handleDownloadSVG}>
+                Download SVG
+              </ClayButton>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Lead gen CTA (stronger version) ── */}
-      <div
-        style={{
-          marginTop: '3rem',
-          maxWidth: '900px',
-          borderLeft: '4px solid var(--color-primary)',
-          background: 'rgba(20,25,32,0.8)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          borderLeftWidth: '4px',
-          borderLeftColor: 'var(--color-primary)',
-          padding: 'clamp(1.5rem,3vw,2rem)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.85rem',
-        }}
-      >
-        <h2 style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(1.1rem,2vw,1.4rem)', fontWeight: 700, color: 'var(--color-text)', margin: 0 }}>
-          Ready to turn this into a real logo?
-        </h2>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(245,245,245,0.5)', margin: 0, maxWidth: '45rem', lineHeight: 1.6 }}>
-          We design brand identities that work across print, digital, and everything in between. Let&apos;s build yours.
-        </p>
-        <div>
-          <NxButton variant="primary" size="sm" onClick={() => { window.location.href = '/contact'; }}>
-            Start Your Brand Project →
-          </NxButton>
+      <aside className="nxtl-cta nxtl-ltp-cta nx-glass" aria-label="Brand identity">
+        <div className="nxtl-cta-copy">
+          <h2 className="nxtl-ltp-cta-title">
+            Ready to turn this into a real logo?
+          </h2>
+          <p className="nxtl-cta-text">
+            We design brand identities that work across print, digital, and everything in between. Let&apos;s build yours.
+          </p>
         </div>
-      </div>
-    </main>
+        <ClayButton href="/contact" className="nx-clay-btn--sm">
+          Start Your Brand Project →
+        </ClayButton>
+      </aside>
+    </ToolShell>
   );
 }
