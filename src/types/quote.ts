@@ -1,3 +1,5 @@
+import type { ContactSnapshot } from './contact';
+
 export interface QuoteLine {
   id:          string;
   description: string;
@@ -24,6 +26,9 @@ export interface Quote {
   // Extra
   notes:         string;
   paymentTerms:  string;
+  // Contact details copied from the chosen profile at save time (see types/contact.ts).
+  // Absent on quotes saved before contact profiles existed — render via resolveContact().
+  contact?:      ContactSnapshot;
 }
 
 // ── Computed helpers ──────────────────────────────────────────────────────────
