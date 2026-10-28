@@ -994,3 +994,56 @@
 .nxtl-pw-bulk-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .nxtl-pw-bulk-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 2px; }
 .nxtl-pw-bulk-value { flex: 1; min-width: 0; font-family: var(--font-mono), monospace; font-size: 14px; color: var(--nx-text); word-break: break-all; }
+
+/* Base64 encoder / decoder */
+.nxtl-b64 { max-width: 880px; }
+.nxtl-b64-tabs { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.nxtl-b64-tabs > .nxtl-seg { flex: 1 1 240px; }
+.nxtl-b64-sub .nxtl-seg-btn { text-transform: capitalize; }
+.nxtl-b64-tab { display: flex; flex-direction: column; gap: 16px; }
+.nxtl-b64-area { min-height: 160px; }
+.nxtl-b64-area--mono { font-family: var(--font-mono), monospace; font-size: 14px; }
+.nxtl-b64-safe { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.nxtl-b64-result { display: flex; flex-direction: column; gap: 10px; }
+.nxtl-b64-out {
+  min-height: 88px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nx-text);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.nxtl-b64-out--scroll { max-height: 220px; overflow-y: auto; }
+.nxtl-b64-out--text { font-family: var(--font-body), sans-serif; font-size: 15px; word-break: break-word; max-height: 260px; overflow-y: auto; }
+.nxtl-b64-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.nxtl-b64-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--nx-radius-pill);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+  cursor: pointer;
+}
+.nxtl-b64-copy:hover:not(:disabled) { color: var(--nx-text); }
+.nxtl-b64-copy:disabled { opacity: 0.4; cursor: default; }
+.nxtl-b64-copy.is-copied { color: #4ade80; }
+[data-theme='light'] .nxtl-b64-copy.is-copied { color: #15803d; }
+.nxtl-b64-copy:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+.nxtl-b64-drop-icon { color: var(--nx-accent); }
+.nxtl-b64-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: var(--font-mono), monospace; font-size: 13px; color: var(--nx-body); }
+.nxtl-b64-meta-name { color: var(--nx-text); overflow-wrap: anywhere; }
+.nxtl-b64-mime { max-width: 320px; font-family: var(--font-mono), monospace; }
