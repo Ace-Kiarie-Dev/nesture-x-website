@@ -31,3 +31,121 @@
   position: relative;
   padding-block: clamp(56px, 8vw, 112px);
 }
+
+/* ── 1. Hero ───────────────────────────────────────────────────────────────
+   Short on purpose: the grid starts within about one scroll on desktop. Wide
+   wrapper (max 1760px, small side padding) like /services; copy hard left. */
+
+.nxpf-hero-wrap {
+  max-width: 1760px;
+  margin: 0 auto;
+  padding-inline: var(--nxpf-gutter);
+}
+
+.nxpf-hero {
+  /* Clears the floating nav: 22px offset + 68px pill + air. */
+  padding-top: 124px;
+  padding-bottom: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+.nxpf-hero-copy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.nxpf-hero-title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  /* "SPEAKS FOR" is ~3.6em wide in Bebas: 23vw keeps it inside a phone column. */
+  font-size: min(23vw, 80px);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+}
+.nxpf-hero-line { display: block; white-space: nowrap; }
+
+.nxpf-hero-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+}
+.nxpf-hero-lede {
+  max-width: 460px;
+  padding-left: 16px;
+  border-left: 3px solid var(--nx-blue);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--nx-body);
+}
+.nxpf-count {
+  border-radius: var(--nx-radius-pill);
+  padding: 9px 16px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Art: hidden on phones so the grid stays close. */
+.nxpf-hero-art { display: none; }
+
+@media (min-width: 768px) {
+  .nxpf-hero {
+    padding-top: 140px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 32px;
+  }
+  .nxpf-hero-title { font-size: 104px; }
+  .nxpf-hero-art {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .nxpf-hero-glow {
+    position: absolute;
+    inset: -14% -30%;
+    background: radial-gradient(closest-side, rgba(26, 111, 212, 0.5), rgba(26, 111, 212, 0));
+  }
+  [data-theme='light'] .nxpf-hero-glow { opacity: 0.45; }
+  .nxpf-hero-img {
+    position: relative;
+    width: auto;
+    height: 300px;
+    filter: drop-shadow(0 24px 28px rgba(3, 6, 16, 0.5));
+    animation: nxpf-float 6s ease-in-out infinite;
+  }
+  [data-theme='light'] .nxpf-hero-img { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.22)); }
+}
+
+@media (min-width: 1100px) {
+  .nxpf-hero-wrap { padding-inline: clamp(20px, 2.5vw, 48px); }
+  .nxpf-hero {
+    padding-top: 136px;
+    padding-bottom: 32px;
+    column-gap: clamp(24px, 4vw, 80px);
+  }
+  /* ~130px at 1440px and up. */
+  .nxpf-hero-title { font-size: clamp(96px, 9vw, 130px); }
+  .nxpf-hero-art { padding-right: clamp(0px, 4vw, 80px); }
+  .nxpf-hero-img { height: clamp(340px, 28vw, 440px); }
+}
+
+@keyframes nxpf-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-hero-img { animation: none; }
+}
