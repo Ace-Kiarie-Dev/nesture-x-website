@@ -22,7 +22,7 @@ export default function ServicesProcess() {
           alt=""
           width={ROCKET.width}
           height={ROCKET.height}
-          sizes="(min-width: 1200px) 150px, 110px"
+          sizes="(min-width: 1200px) 150px, 125px"
           className="nxsv-proc-rocket"
         />
       </div>

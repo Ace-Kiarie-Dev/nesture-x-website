@@ -24,7 +24,7 @@ export default function ServiceBlock({ service, index }: ServiceBlockProps) {
           alt=""
           width={asset.width}
           height={asset.height}
-          sizes="(min-width: 900px) 440px, 240px"
+          sizes="(min-width: 900px) 500px, 250px"
           className="nxsv-svc-img"
         />
       </div>

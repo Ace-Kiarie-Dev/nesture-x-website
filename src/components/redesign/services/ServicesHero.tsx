@@ -11,9 +11,9 @@ const HEADLINE = [
 
 // Orbiting objects around the phone. Decorative, so alt="" (from the registry).
 const ORBIT: { key: Asset3dKey; className: string; sizes: string }[] = [
-  { key: 'svc-seo', className: 'nxsv-orbit nxsv-orbit--seo', sizes: '(min-width: 1100px) 200px, (min-width: 768px) 130px, 90px' },
-  { key: 'svc-cart', className: 'nxsv-orbit nxsv-orbit--cart', sizes: '(min-width: 1100px) 220px, (min-width: 768px) 140px, 96px' },
-  { key: 'svc-lock', className: 'nxsv-orbit nxsv-orbit--lock', sizes: '(min-width: 1100px) 150px, 100px' },
+  { key: 'svc-seo', className: 'nxsv-orbit nxsv-orbit--seo', sizes: '(min-width: 1100px) 220px, (min-width: 768px) 130px, 90px' },
+  { key: 'svc-cart', className: 'nxsv-orbit nxsv-orbit--cart', sizes: '(min-width: 1100px) 250px, (min-width: 768px) 140px, 96px' },
+  { key: 'svc-lock', className: 'nxsv-orbit nxsv-orbit--lock', sizes: '(min-width: 1100px) 170px, 100px' },
 ];
 
 const PHONE = ASSETS_3D['svc-phone'];
@@ -47,7 +47,7 @@ export default function ServicesHero() {
           height={PHONE.height}
           loading="eager"
           fetchPriority="high"
-          sizes="(min-width: 1100px) 440px, (min-width: 768px) 250px, 165px"
+          sizes="(min-width: 1100px) 440px, (min-width: 768px) 270px, 165px"
           className="nxsv-hero-phone"
         />
         {ORBIT.map(({ key, className, sizes }) => {

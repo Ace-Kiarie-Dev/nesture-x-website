@@ -31,7 +31,7 @@ export default function ServicesCta() {
           alt="Peter of Nesture-X as a 3D character, pointing at the message"
           width={PETER.width}
           height={PETER.height}
-          sizes="(min-width: 1100px) 240px, 170px"
+          sizes="(min-width: 1100px) 250px, (min-width: 768px) 190px, 150px"
           className="nxsv-cta-peter"
         />
       </div>
