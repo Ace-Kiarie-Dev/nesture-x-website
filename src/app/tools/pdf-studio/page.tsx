@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import BackLink from '@/components/tools/BackLink';
-import ToolCTA from '@/components/tools/ToolCTA';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
+import { Segmented, Spinner, Status } from '@/components/redesign/tools/blocks';
+import { ClayButton } from '@/components/redesign';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -20,22 +20,6 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'split', label: 'Split' }, { key: 'rotate', label: 'Rotate' },
   { key: 'protect', label: 'Protect' },
 ];
-
-// ── Style constants ───────────────────────────────────────────────────────────
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20,25,32,0.6)', backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)',
-};
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)', fontSize: '0.62rem', letterSpacing: '0.15em',
-  textTransform: 'uppercase', color: 'rgba(245,245,245,0.35)', display: 'block', marginBottom: '0.5rem',
-};
-const INPUT: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
-  color: 'var(--color-text)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem',
-  padding: '0.5rem 0.75rem', width: '100%', outline: 'none',
-};
 
 // ── Pure helpers ──────────────────────────────────────────────────────────────
 
@@ -97,16 +81,10 @@ function ToggleBtn({ active, onClick, children, title }: {
 }) {
   return (
     <button
+      type="button"
       onClick={onClick} title={title}
-      onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = 'var(--color-primary)'; }}
-      onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
-      style={{
-        fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.04em',
-        padding: '0.5rem 1rem', textTransform: 'uppercase', cursor: 'pointer', whiteSpace: 'nowrap',
-        border: active ? '1px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)',
-        background: active ? 'var(--color-primary)' : 'rgba(20,25,32,0.8)',
-        color: 'var(--color-text)', transition: 'border-color 120ms ease, background 120ms ease',
-      }}
+      aria-pressed={active}
+      className="nxtl-is-opt"
     >
       {children}
     </button>
@@ -115,18 +93,17 @@ function ToggleBtn({ active, onClick, children, title }: {
 
 function ErrCard({ msg }: { msg: string }) {
   return (
-    <div style={{ border: '1px solid rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.07)', padding: '0.75rem 1rem', marginBottom: '1rem' }}>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgb(239,68,68)', margin: 0 }}>{msg}</p>
-    </div>
+    <Status tone="error">{msg}</Status>
   );
 }
 
 function ResultRow({ url, filename, label }: { url: string; filename: string; label: string }) {
   return (
-    <div style={{ padding: '1rem', background: 'rgba(26,111,212,0.04)', border: '1px solid rgba(26,111,212,0.12)', marginBottom: '1.25rem' }}>
-      <NxButton variant="ghost" size="sm" onClick={() => triggerDownload(url, filename)}>
+    <div className="nxtl-pdf-result">
+      <span className="nxtl-pdf-result-icon" aria-hidden="true">✓</span>
+      <ClayButton onClick={() => triggerDownload(url, filename)}>
         {label}
-      </NxButton>
+      </ClayButton>
     </div>
   );
 }
@@ -138,43 +115,37 @@ function PdfZone({ file, pageCount, onFile, onClear, inputRef }: {
 }) {
   const [drag, setDrag] = useState(false);
   return (
-    <div style={{ marginBottom: '1.25rem' }}>
+    <div className="nxtl-pdf-zone">
       <div
         role="button" tabIndex={0}
+        aria-label={file ? `Selected: ${file.name}. Choose a different PDF` : 'Choose a PDF'}
         onClick={() => inputRef.current?.click()}
-        onKeyDown={e => e.key === 'Enter' && inputRef.current?.click()}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
         onDragOver={e => { e.preventDefault(); setDrag(true); }}
         onDragLeave={() => setDrag(false)}
         onDrop={e => { e.preventDefault(); setDrag(false); const f = e.dataTransfer.files[0]; if (f) onFile(f); }}
-        style={{
-          border: `2px dashed ${drag ? 'var(--color-primary)' : file ? 'rgba(26,111,212,0.3)' : 'rgba(255,255,255,0.15)'}`,
-          padding: '1.75rem 1.5rem', cursor: 'pointer', textAlign: 'center',
-          background: drag ? 'rgba(26,111,212,0.05)' : file ? 'rgba(26,111,212,0.03)' : 'transparent',
-          transition: 'border-color 150ms ease, background 150ms ease',
-          minHeight: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
-        }}
+        className={`nxtl-drop${drag ? ' is-drag' : ''}${file ? ' nxtl-pdf-drop--file' : ''}`}
       >
         {file ? (
           <>
-            <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>📄</span>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-text)', wordBreak: 'break-all', margin: 0 }}>{file.name}</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.63rem', color: 'rgba(245,245,245,0.35)', letterSpacing: '0.06em', margin: 0 }}>
+            <span className="nxtl-pdf-icon" aria-hidden="true">📄</span>
+            <p className="nxtl-drop-title nxtl-pdf-name">{file.name}</p>
+            <p className="nxtl-mono">
               {formatBytes(file.size)}{pageCount != null ? ` · ${pageCount} page${pageCount !== 1 ? 's' : ''}` : ''}
             </p>
           </>
         ) : (
           <>
-            <span style={{ fontSize: '1.5rem', color: 'rgba(26,111,212,0.4)', lineHeight: 1 }}>↑</span>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(245,245,245,0.4)', margin: 0 }}>Drop a PDF here, or click to browse</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.1em', color: 'rgba(245,245,245,0.2)', margin: 0 }}>PDF ONLY · MAX 4 MB</p>
+            <span className="nxtl-is-drop-icon" aria-hidden="true">↑</span>
+            <p className="nxtl-drop-title">Drop a PDF here, or click to browse</p>
+            <p className="nxtl-drop-hint nxtl-is-formats">PDF ONLY · MAX 4 MB</p>
           </>
         )}
         <input ref={inputRef} type="file" accept=".pdf,application/pdf" style={{ display: 'none' }}
           onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f); e.target.value = ''; }} />
       </div>
       {file && (
-        <button onClick={e => { e.stopPropagation(); onClear(); }}
-          style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'rgba(245,245,245,0.35)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.3rem 0', textDecoration: 'underline' }}>
+        <button type="button" onClick={e => { e.stopPropagation(); onClear(); }} className="nxtl-link-btn nxtl-pdf-change">
           Change file
         </button>
       )}
@@ -363,103 +334,91 @@ export default function PdfStudioPage() {
   const rotRangeErr   = !rotAllPages ? validateRangeInput(rotPages, rotPageCount) : null;
   const totalMergePages = mergeFiles.reduce((s, m) => s + (m.pageCount ?? 0), 0);
 
-  // ── Tab button style ───────────────────────────────────────────────────────
-
-  const tabStyle = (key: Tab): React.CSSProperties => ({
-    fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 600,
-    letterSpacing: '0.04em', textTransform: 'uppercase', padding: '0.65rem 1rem',
-    background: 'none', border: 'none',
-    borderBottom: activeTab === key ? '2px solid var(--color-primary)' : '2px solid transparent',
-    color: activeTab === key ? 'var(--color-primary)' : 'rgba(245,245,245,0.4)',
-    cursor: 'pointer', whiteSpace: 'nowrap', transition: 'color 120ms ease', marginBottom: '-1px',
-  });
-
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <main style={{ padding: 'clamp(6rem,10vw,11rem) clamp(2rem,7vw,8rem) clamp(4rem,6vw,6rem)', background: 'var(--color-bg)' }}>
-      <BackLink />
-
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem,8vw,8rem)', lineHeight: 0.9, color: 'var(--color-text)', marginBottom: '0.75rem' }}>
-        PDF STUDIO
-      </h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(0.95rem,1.3vw,1.05rem)', color: 'rgba(245,245,245,0.5)', marginBottom: '2.5rem', maxWidth: '44rem' }}>
-        Compress, merge, split, rotate and protect PDF files.
-      </p>
-
-      <div style={{ ...GLASS, padding: 'clamp(1.5rem,3vw,2.25rem)', maxWidth: '700px' }}>
+    <ToolShell
+      title="PDF Studio"
+      outline="Studio"
+      description="Compress, merge, split, rotate and protect PDF files."
+      cta
+    >
+      <div className="nxtl-panel nx-clay nxtl-pdf">
 
         {/* ── Tab bar ── */}
-        <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '1.75rem', overflowX: 'auto' }}>
-          {TABS.map(t => <button key={t.key} style={tabStyle(t.key)} onClick={() => setActiveTab(t.key)}>{t.label}</button>)}
-        </div>
+        <Segmented
+          label="Operation"
+          size="sm"
+          className="nxtl-is-tabs"
+          options={TABS.map(t => ({ value: t.key, label: t.label }))}
+          value={activeTab}
+          onChange={setActiveTab}
+        />
 
         {/* ── COMPRESS ── */}
         {activeTab === 'compress' && (
-          <div>
+          <div className="nxtl-is-tab">
             <PdfZone file={compFile} onFile={acceptComp} onClear={() => { setCompFile(null); setCompError(null); setCompResult(null); }} inputRef={compRef} />
             {compError && <ErrCard msg={compError} />}
 
-            <span style={LABEL}>Compression Level</span>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-              {(['low', 'medium', 'high'] as CompLevel[]).map(l => (
-                <ToggleBtn key={l} active={compLevel === l} onClick={() => setCompLevel(l)}>
-                  {l.charAt(0).toUpperCase() + l.slice(1)}
-                </ToggleBtn>
-              ))}
+            <div>
+              <span className="nxtl-label">Compression Level</span>
+              <div className="nxtl-is-opts">
+                {(['low', 'medium', 'high'] as CompLevel[]).map(l => (
+                  <ToggleBtn key={l} active={compLevel === l} onClick={() => setCompLevel(l)}>
+                    {l.charAt(0).toUpperCase() + l.slice(1)}
+                  </ToggleBtn>
+                ))}
+              </div>
+              <p className="nxtl-hint nxtl-pdf-hint">
+                {compLevel === 'low' && 'Preserves quality, modest size reduction.'}
+                {compLevel === 'medium' && 'Balanced compression — recommended for most files.'}
+                {compLevel === 'high' && 'Maximum compression + metadata strip. Some quality loss possible.'}
+              </p>
             </div>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgba(245,245,245,0.3)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-              {compLevel === 'low' && 'Preserves quality, modest size reduction.'}
-              {compLevel === 'medium' && 'Balanced compression — recommended for most files.'}
-              {compLevel === 'high' && 'Maximum compression + metadata strip. Some quality loss possible.'}
-            </p>
 
             {compResult && (
-              <div style={{ marginBottom: '1.25rem', padding: '1rem', background: 'rgba(26,111,212,0.04)', border: '1px solid rgba(26,111,212,0.12)' }}>
+              <div className="nxtl-pdf-result nxtl-pdf-result--stack" aria-live="polite">
                 {compResult.procSize > compResult.origSize && (
-                  <div style={{ border: '1px solid rgba(251,191,36,0.4)', background: 'rgba(251,191,36,0.05)', padding: '0.65rem 0.9rem', marginBottom: '0.75rem' }}>
-                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgb(251,191,36)', margin: 0 }}>
-                      Compression could not reduce this file further. Try a higher compression level.
-                    </p>
-                  </div>
+                  <p className="nxtl-pdf-warn">
+                    Compression could not reduce this file further. Try a higher compression level.
+                  </p>
                 )}
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'rgba(245,245,245,0.5)', letterSpacing: '0.06em', marginBottom: '1rem' }}>
+                <p className="nxtl-is-diff">
                   {sizeDiff(compResult.origSize, compResult.procSize)}
                 </p>
-                <NxButton variant="ghost" size="sm" onClick={() => triggerDownload(compResult.url, 'compressed.pdf')}>
+                <ClayButton onClick={() => triggerDownload(compResult.url, 'compressed.pdf')}>
                   Download Compressed PDF
-                </NxButton>
+                </ClayButton>
               </div>
             )}
 
-            <NxButton variant="primary" size="md" onClick={processCompress} disabled={!compFile || compLoading}>
-              {compLoading ? 'Compressing…' : 'Compress PDF'}
-            </NxButton>
+            <div className="nxtl-actions">
+              <ClayButton variant={compResult ? 'ghost' : 'primary'} onClick={processCompress} disabled={!compFile || compLoading} aria-busy={compLoading}>
+                {compLoading && <Spinner />}
+                {compLoading ? 'Compressing…' : 'Compress PDF'}
+              </ClayButton>
+            </div>
           </div>
         )}
 
         {/* ── MERGE ── */}
         {activeTab === 'merge' && (
-          <div>
+          <div className="nxtl-is-tab">
             <div
               role="button" tabIndex={0}
+              aria-label={mergeFiles.length === 0 ? 'Choose PDFs to merge' : 'Add more PDFs'}
               onClick={() => mergeRef.current?.click()}
-              onKeyDown={e => e.key === 'Enter' && mergeRef.current?.click()}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mergeRef.current?.click(); } }}
               onDragOver={e => { e.preventDefault(); setMergeDragging(true); }}
               onDragLeave={() => setMergeDragging(false)}
               onDrop={e => { e.preventDefault(); setMergeDragging(false); acceptMergeFiles(e.dataTransfer.files); }}
-              style={{
-                border: `2px dashed ${mergeDragging ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)'}`,
-                padding: '1.25rem', cursor: 'pointer', textAlign: 'center',
-                background: mergeDragging ? 'rgba(26,111,212,0.05)' : 'transparent',
-                transition: 'border-color 150ms ease', marginBottom: '1.25rem',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap',
-              }}
+              className={`nxtl-drop${mergeFiles.length > 0 ? ' nxtl-pdf-drop--compact' : ''}${mergeDragging ? ' is-drag' : ''}`}
             >
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgba(245,245,245,0.4)' }}>
+              <span className="nxtl-drop-title">
                 {mergeFiles.length === 0 ? 'Drop PDFs here or click to browse' : '+ Add more PDFs'}
               </span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.2)', letterSpacing: '0.1em' }}>
+              <span className="nxtl-drop-hint nxtl-is-formats">
                 MAX {10 - mergeFiles.length} MORE · PDF ONLY
               </span>
               <input ref={mergeRef} type="file" accept=".pdf,application/pdf" multiple style={{ display: 'none' }}
@@ -469,39 +428,41 @@ export default function PdfStudioPage() {
             {mergeError && <ErrCard msg={mergeError} />}
 
             {mergeFiles.length > 0 && (
-              <div style={{ marginBottom: '1.25rem' }}>
-                {mergeFiles.map((m, i) => (
-                  <div key={m.id} style={{
-                    display: 'flex', alignItems: 'center', gap: '0.65rem',
-                    padding: '0.6rem 0.75rem', marginBottom: '0.3rem',
-                    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                  }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', flexShrink: 0 }}>
+              <div className="nxtl-pdf-list">
+                <ol className="nxtl-pdf-files">
+                  {mergeFiles.map((m, i) => (
+                    <li key={m.id} className="nxtl-pdf-file">
+                      <div className="nxtl-pdf-move">
+                        <button
+                          type="button"
+                          aria-label={`Move ${m.file.name} up`}
+                          onClick={() => { const a = [...mergeFiles]; [a[i-1], a[i]] = [a[i], a[i-1]]; setMergeFiles(a); }}
+                          disabled={i === 0}
+                        >▲</button>
+                        <button
+                          type="button"
+                          aria-label={`Move ${m.file.name} down`}
+                          onClick={() => { const a = [...mergeFiles]; [a[i], a[i+1]] = [a[i+1], a[i]]; setMergeFiles(a); }}
+                          disabled={i === mergeFiles.length - 1}
+                        >▼</button>
+                      </div>
+                      <span className="nxtl-pdf-icon" aria-hidden="true">📄</span>
+                      <div className="nxtl-pdf-file-text">
+                        <p className="nxtl-is-file-name">{m.file.name}</p>
+                        <p className="nxtl-mono">
+                          {formatBytes(m.file.size)}{m.pageCount != null ? ` · ${m.pageCount} page${m.pageCount !== 1 ? 's' : ''}` : ' · loading…'}
+                        </p>
+                      </div>
                       <button
-                        onClick={() => { const a = [...mergeFiles]; [a[i-1], a[i]] = [a[i], a[i-1]]; setMergeFiles(a); }}
-                        disabled={i === 0}
-                        style={{ background: 'none', border: 'none', cursor: i === 0 ? 'default' : 'pointer', color: i === 0 ? 'rgba(245,245,245,0.12)' : 'rgba(245,245,245,0.5)', fontSize: '0.6rem', padding: '2px 4px', lineHeight: 1 }}
-                      >▲</button>
-                      <button
-                        onClick={() => { const a = [...mergeFiles]; [a[i], a[i+1]] = [a[i+1], a[i]]; setMergeFiles(a); }}
-                        disabled={i === mergeFiles.length - 1}
-                        style={{ background: 'none', border: 'none', cursor: i === mergeFiles.length - 1 ? 'default' : 'pointer', color: i === mergeFiles.length - 1 ? 'rgba(245,245,245,0.12)' : 'rgba(245,245,245,0.5)', fontSize: '0.6rem', padding: '2px 4px', lineHeight: 1 }}
-                      >▼</button>
-                    </div>
-                    <span style={{ fontSize: '1rem', lineHeight: 1, flexShrink: 0 }}>📄</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: 0 }}>{m.file.name}</p>
-                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.3)', letterSpacing: '0.05em', margin: 0 }}>
-                        {formatBytes(m.file.size)}{m.pageCount != null ? ` · ${m.pageCount} page${m.pageCount !== 1 ? 's' : ''}` : ' · loading…'}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setMergeFiles(prev => prev.filter(x => x.id !== m.id))}
-                      style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(245,245,245,0.4)', cursor: 'pointer', padding: '0.2rem 0.45rem', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', flexShrink: 0 }}
-                    >✕</button>
-                  </div>
-                ))}
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.63rem', color: 'rgba(245,245,245,0.3)', letterSpacing: '0.06em', marginTop: '0.65rem' }}>
+                        type="button"
+                        aria-label={`Remove ${m.file.name}`}
+                        onClick={() => setMergeFiles(prev => prev.filter(x => x.id !== m.id))}
+                        className="nxtl-pdf-remove"
+                      >✕</button>
+                    </li>
+                  ))}
+                </ol>
+                <p className="nxtl-mono">
                   {mergeFiles.length} file{mergeFiles.length !== 1 ? 's' : ''}{totalMergePages > 0 ? ` · ${totalMergePages} pages total` : ''}
                 </p>
               </div>
@@ -509,54 +470,59 @@ export default function PdfStudioPage() {
 
             {mergeResult && <ResultRow url={mergeResult.url} filename="merged.pdf" label="Download Merged PDF" />}
 
-            <NxButton variant="primary" size="md" onClick={processMerge} disabled={mergeFiles.length < 2 || mergeLoading}>
-              {mergeLoading ? 'Merging…' : 'Merge PDFs'}
-            </NxButton>
+            <div className="nxtl-actions">
+              <ClayButton variant={mergeResult ? 'ghost' : 'primary'} onClick={processMerge} disabled={mergeFiles.length < 2 || mergeLoading} aria-busy={mergeLoading}>
+                {mergeLoading && <Spinner />}
+                {mergeLoading ? 'Merging…' : 'Merge PDFs'}
+              </ClayButton>
+            </div>
           </div>
         )}
 
         {/* ── SPLIT ── */}
         {activeTab === 'split' && (
-          <div>
+          <div className="nxtl-is-tab">
             <PdfZone file={splitFile} pageCount={splitPageCount} onFile={acceptSplit}
               onClear={() => { setSplitFile(null); setSplitPageCount(null); setSplitError(null); setSplitResult(null); }} inputRef={splitRef} />
             {splitError && <ErrCard msg={splitError} />}
 
-            <span style={LABEL}>Split Mode</span>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-              {([
-                { key: 'extract' as SplitMode, label: 'Extract Pages' },
-                { key: 'split-all' as SplitMode, label: 'Split All Pages' },
-                { key: 'split-at' as SplitMode, label: 'Split At Page' },
-              ]).map(m => <ToggleBtn key={m.key} active={splitMode === m.key} onClick={() => setSplitMode(m.key)}>{m.label}</ToggleBtn>)}
+            <div>
+              <span className="nxtl-label">Split Mode</span>
+              <div className="nxtl-is-opts">
+                {([
+                  { key: 'extract' as SplitMode, label: 'Extract Pages' },
+                  { key: 'split-all' as SplitMode, label: 'Split All Pages' },
+                  { key: 'split-at' as SplitMode, label: 'Split At Page' },
+                ]).map(m => <ToggleBtn key={m.key} active={splitMode === m.key} onClick={() => setSplitMode(m.key)}>{m.label}</ToggleBtn>)}
+              </div>
             </div>
 
             {splitMode === 'extract' && (
-              <div style={{ marginBottom: '1.5rem' }}>
-                <span style={LABEL}>Pages to Extract</span>
-                <input type="text" value={splitPages} onChange={e => setSplitPages(e.target.value)}
-                  placeholder="e.g. 1, 3, 5-8" style={{ ...INPUT, marginBottom: '0.4rem' }} />
-                {splitRangeErr && <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgb(239,68,68)', margin: 0 }}>{splitRangeErr}</p>}
+              <div className="nx-field">
+                <label htmlFor="pdf-extract">Pages to Extract</label>
+                <input id="pdf-extract" type="text" value={splitPages} onChange={e => setSplitPages(e.target.value)}
+                  placeholder="e.g. 1, 3, 5-8" aria-invalid={!!splitRangeErr} className="nx-input nxtl-is-num" />
+                {splitRangeErr && <p className="nxtl-pdf-err" role="alert">{splitRangeErr}</p>}
                 {splitPageCount && !splitRangeErr && (
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)', margin: '0.3rem 0 0' }}>Document has {splitPageCount} pages</p>
+                  <p className="nxtl-hint">Document has {splitPageCount} pages</p>
                 )}
               </div>
             )}
 
             {splitMode === 'split-all' && (
-              <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(245,245,245,0.4)', marginBottom: '1.5rem', lineHeight: 1.6, padding: '0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className="nxtl-pdf-note">
                 Each page saved as a separate PDF, packaged into a ZIP archive.
-                {splitPageCount != null && <span style={{ color: 'var(--color-primary)' }}> ({splitPageCount} files)</span>}
-              </div>
+                {splitPageCount != null && <span className="nxtl-pdf-accent"> ({splitPageCount} files)</span>}
+              </p>
             )}
 
             {splitMode === 'split-at' && (
-              <div style={{ marginBottom: '1.5rem' }}>
-                <span style={LABEL}>Split After Page</span>
-                <input type="number" value={splitAt} min={1} max={splitPageCount ? splitPageCount - 1 : undefined}
-                  onChange={e => setSplitAt(Number(e.target.value))} style={{ ...INPUT, marginBottom: '0.4rem' }} />
+              <div className="nx-field">
+                <label htmlFor="pdf-split-at">Split After Page</label>
+                <input id="pdf-split-at" type="number" value={splitAt} min={1} max={splitPageCount ? splitPageCount - 1 : undefined}
+                  onChange={e => setSplitAt(Number(e.target.value))} className="nx-input nxtl-is-num nxtl-pdf-num" />
                 {splitPageCount != null && (
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)', margin: 0 }}>
+                  <p className="nxtl-hint">
                     Produces: pages 1–{splitAt} + pages {splitAt + 1}–{splitPageCount}. Downloads as ZIP.
                   </p>
                 )}
@@ -565,108 +531,116 @@ export default function PdfStudioPage() {
 
             {splitResult && <ResultRow url={splitResult.url} filename={splitResult.isZip ? 'split.zip' : 'extracted.pdf'} label={splitResult.isZip ? 'Download ZIP' : 'Download PDF'} />}
 
-            <NxButton variant="primary" size="md" onClick={processSplit} disabled={!splitFile || splitLoading || !!splitRangeErr}>
-              {splitLoading ? 'Splitting…' : 'Split PDF'}
-            </NxButton>
+            <div className="nxtl-actions">
+              <ClayButton variant={splitResult ? 'ghost' : 'primary'} onClick={processSplit} disabled={!splitFile || splitLoading || !!splitRangeErr} aria-busy={splitLoading}>
+                {splitLoading && <Spinner />}
+                {splitLoading ? 'Splitting…' : 'Split PDF'}
+              </ClayButton>
+            </div>
           </div>
         )}
 
         {/* ── ROTATE ── */}
         {activeTab === 'rotate' && (
-          <div>
+          <div className="nxtl-is-tab">
             <PdfZone file={rotFile} pageCount={rotPageCount} onFile={acceptRot}
               onClear={() => { setRotFile(null); setRotPageCount(null); setRotError(null); setRotResult(null); }} inputRef={rotRef} />
             {rotError && <ErrCard msg={rotError} />}
 
-            <span style={LABEL}>Pages to Rotate</span>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-              <ToggleBtn active={rotAllPages} onClick={() => setRotAllPages(true)}>All Pages</ToggleBtn>
-              <ToggleBtn active={!rotAllPages} onClick={() => setRotAllPages(false)}>Specific Pages</ToggleBtn>
+            <div>
+              <span className="nxtl-label">Pages to Rotate</span>
+              <div className="nxtl-is-opts">
+                <ToggleBtn active={rotAllPages} onClick={() => setRotAllPages(true)}>All Pages</ToggleBtn>
+                <ToggleBtn active={!rotAllPages} onClick={() => setRotAllPages(false)}>Specific Pages</ToggleBtn>
+              </div>
             </div>
             {!rotAllPages && (
-              <div style={{ marginBottom: '1.25rem' }}>
+              <div className="nx-field">
                 <input type="text" value={rotPages} onChange={e => setRotPages(e.target.value)}
-                  placeholder="e.g. 1, 3, 5-8" style={{ ...INPUT, marginBottom: '0.4rem' }} />
-                {rotRangeErr && <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: 'rgb(239,68,68)', margin: 0 }}>{rotRangeErr}</p>}
+                  placeholder="e.g. 1, 3, 5-8" aria-label="Pages to rotate" aria-invalid={!!rotRangeErr} className="nx-input nxtl-is-num" />
+                {rotRangeErr && <p className="nxtl-pdf-err" role="alert">{rotRangeErr}</p>}
                 {rotPageCount && !rotRangeErr && (
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)', margin: '0.3rem 0 0' }}>Document has {rotPageCount} pages</p>
+                  <p className="nxtl-hint">Document has {rotPageCount} pages</p>
                 )}
               </div>
             )}
-            {rotAllPages && <div style={{ marginBottom: '1.25rem' }} />}
 
-            <span style={LABEL}>Rotation</span>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-              {([
-                { val: 90 as const,  label: '90° Clockwise' },
-                { val: 180 as const, label: '180°' },
-                { val: 270 as const, label: '90° Counter-clockwise' },
-              ]).map(r => <ToggleBtn key={r.val} active={rotDegrees === r.val} onClick={() => setRotDegrees(r.val)}>{r.label}</ToggleBtn>)}
+            <div>
+              <span className="nxtl-label">Rotation</span>
+              <div className="nxtl-is-opts">
+                {([
+                  { val: 90 as const,  label: '90° Clockwise' },
+                  { val: 180 as const, label: '180°' },
+                  { val: 270 as const, label: '90° Counter-clockwise' },
+                ]).map(r => <ToggleBtn key={r.val} active={rotDegrees === r.val} onClick={() => setRotDegrees(r.val)}>{r.label}</ToggleBtn>)}
+              </div>
             </div>
 
             {rotResult && <ResultRow url={rotResult.url} filename="rotated.pdf" label="Download Rotated PDF" />}
 
-            <NxButton variant="primary" size="md" onClick={processRotate} disabled={!rotFile || rotLoading || !!rotRangeErr}>
-              {rotLoading ? 'Rotating…' : 'Rotate PDF'}
-            </NxButton>
+            <div className="nxtl-actions">
+              <ClayButton variant={rotResult ? 'ghost' : 'primary'} onClick={processRotate} disabled={!rotFile || rotLoading || !!rotRangeErr} aria-busy={rotLoading}>
+                {rotLoading && <Spinner />}
+                {rotLoading ? 'Rotating…' : 'Rotate PDF'}
+              </ClayButton>
+            </div>
           </div>
         )}
 
         {/* ── PROTECT ── */}
         {activeTab === 'protect' && (
-          <div>
+          <div className="nxtl-is-tab">
             <PdfZone file={protFile} onFile={acceptProt}
               onClear={() => { setProtFile(null); setProtError(null); setProtResult(null); }} inputRef={protRef} />
             {protError && <ErrCard msg={protError} />}
 
-            <div style={{ marginBottom: '1.25rem' }}>
-              <span style={LABEL}>Open Password — required to open the PDF</span>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <input type={protShowUser ? 'text' : 'password'} value={protUserPwd}
+            <div className="nx-field">
+              <label htmlFor="pdf-pwd">Open Password — required to open the PDF</label>
+              <div className="nxtl-pdf-pwd">
+                <input id="pdf-pwd" type={protShowUser ? 'text' : 'password'} value={protUserPwd}
                   onChange={e => setProtUserPwd(e.target.value)} placeholder="Enter password…"
-                  style={{ ...INPUT, flex: 1 }} />
-                <button onClick={() => setProtShowUser(v => !v)}
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(245,245,245,0.5)', cursor: 'pointer', padding: '0 0.85rem', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', flexShrink: 0, letterSpacing: '0.05em' }}>
+                  autoComplete="new-password" className="nx-input" />
+                <button type="button" onClick={() => setProtShowUser(v => !v)} aria-pressed={protShowUser} className="nxtl-chip-btn">
                   {protShowUser ? 'HIDE' : 'SHOW'}
                 </button>
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <span style={LABEL}>Owner Password — controls editing & printing permissions (optional)</span>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <input type={protShowOwner ? 'text' : 'password'} value={protOwnerPwd}
+            <div className="nx-field">
+              <label htmlFor="pdf-owner">Owner Password — controls editing & printing permissions (optional)</label>
+              <div className="nxtl-pdf-pwd">
+                <input id="pdf-owner" type={protShowOwner ? 'text' : 'password'} value={protOwnerPwd}
                   onChange={e => setProtOwnerPwd(e.target.value)} placeholder="Optional…"
-                  style={{ ...INPUT, flex: 1 }} />
-                <button onClick={() => setProtShowOwner(v => !v)}
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(245,245,245,0.5)', cursor: 'pointer', padding: '0 0.85rem', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', flexShrink: 0, letterSpacing: '0.05em' }}>
+                  autoComplete="new-password" className="nx-input" />
+                <button type="button" onClick={() => setProtShowOwner(v => !v)} aria-pressed={protShowOwner} className="nxtl-chip-btn">
                   {protShowOwner ? 'HIDE' : 'SHOW'}
                 </button>
               </div>
             </div>
 
-            <span style={LABEL}>Encryption Level</span>
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
-              <ToggleBtn active={protEncLevel === 128} onClick={() => setProtEncLevel(128)}>128-bit</ToggleBtn>
-              <ToggleBtn active={protEncLevel === 256} onClick={() => setProtEncLevel(256)}>256-bit</ToggleBtn>
+            <div>
+              <span className="nxtl-label">Encryption Level</span>
+              <div className="nxtl-is-opts">
+                <ToggleBtn active={protEncLevel === 128} onClick={() => setProtEncLevel(128)}>128-bit</ToggleBtn>
+                <ToggleBtn active={protEncLevel === 256} onClick={() => setProtEncLevel(256)}>256-bit</ToggleBtn>
+              </div>
             </div>
 
-            <div style={{ border: '1px solid rgba(251,191,36,0.25)', background: 'rgba(251,191,36,0.04)', padding: '0.9rem 1rem', marginBottom: '1.5rem' }}>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'rgba(251,191,36,0.8)', lineHeight: 1.6, margin: 0 }}>
-                Once protected, you will need the password to open this file. Store it safely — there is no recovery option.
-              </p>
-            </div>
+            <p className="nxtl-pdf-warn">
+              Once protected, you will need the password to open this file. Store it safely — there is no recovery option.
+            </p>
 
             {protResult && <ResultRow url={protResult.url} filename="protected.pdf" label="Download Protected PDF" />}
 
-            <NxButton variant="primary" size="md" onClick={processProtect} disabled={!protFile || !protUserPwd.trim() || protLoading}>
-              {protLoading ? 'Encrypting…' : 'Protect PDF'}
-            </NxButton>
+            <div className="nxtl-actions">
+              <ClayButton variant={protResult ? 'ghost' : 'primary'} onClick={processProtect} disabled={!protFile || !protUserPwd.trim() || protLoading} aria-busy={protLoading}>
+                {protLoading && <Spinner />}
+                {protLoading ? 'Encrypting…' : 'Protect PDF'}
+              </ClayButton>
+            </div>
           </div>
         )}
       </div>
-
-      <ToolCTA />
-    </main>
+    </ToolShell>
   );
 }

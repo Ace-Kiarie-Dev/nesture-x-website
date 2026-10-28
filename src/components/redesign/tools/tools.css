@@ -1199,6 +1199,7 @@
 .nxtl-is-file-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--nx-text); }
 .nxtl-is-change { padding-inline: 0; min-height: 36px; }
 .nxtl-is-tabs .nxtl-seg-btn { flex: 1 1 30%; }
+@media (min-width: 640px) { .nxtl-is-tabs .nxtl-seg-btn { flex: 1 1 0; padding-inline: 8px; } }
 .nxtl-is-tab { display: flex; flex-direction: column; gap: 18px; }
 .nxtl-is-opts { display: flex; flex-wrap: wrap; gap: 8px; }
 .nxtl-is-opts--grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -1293,3 +1294,104 @@
 }
 .nxtl-is-result { gap: 12px; }
 .nxtl-is-diff { font-family: var(--font-mono), monospace; font-size: 14px; letter-spacing: 0.04em; color: var(--nx-text); }
+
+/* PDF Studio */
+.nxtl-pdf { max-width: 880px; }
+.nxtl-pdf-zone { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.nxtl-pdf-zone > .nxtl-drop { align-self: stretch; }
+.nxtl-pdf-drop--file { border-style: solid; border-color: color-mix(in srgb, var(--nx-blue) 35%, transparent); }
+.nxtl-pdf-icon { font-size: 22px; line-height: 1; }
+.nxtl-pdf-name { overflow-wrap: anywhere; }
+.nxtl-pdf-change { padding-inline: 4px; }
+.nxtl-pdf-hint { margin-top: 10px; }
+.nxtl-pdf-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--nx-blue) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nx-blue) 28%, transparent);
+}
+.nxtl-pdf-result--stack { flex-direction: column; align-items: flex-start; }
+.nxtl-pdf-result-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  font-weight: 700;
+}
+[data-theme='light'] .nxtl-pdf-result-icon { color: #15803d; }
+@media (max-width: 559px) { .nxtl-pdf-result > .nx-clay-btn { flex: 1 1 100%; } }
+.nxtl-pdf-warn {
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(251, 191, 36, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.35);
+  font-size: 14px;
+  line-height: 1.6;
+  color: #fbbf24;
+}
+[data-theme='light'] .nxtl-pdf-warn { color: #92400e; }
+.nxtl-pdf-err { font-size: 13px; color: #f87171; }
+[data-theme='light'] .nxtl-pdf-err { color: #b91c1c; }
+.nxtl-pdf-note {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nx-body);
+}
+.nxtl-pdf-accent { color: var(--nx-accent); }
+.nxtl-pdf-num { max-width: 160px; }
+.nxtl-pdf-list { display: flex; flex-direction: column; gap: 10px; }
+.nxtl-pdf-files { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.nxtl-pdf-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 8px;
+  border-radius: 16px;
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+}
+.nxtl-pdf-move { display: flex; flex-direction: column; flex-shrink: 0; }
+.nxtl-pdf-move button {
+  width: 36px;
+  height: 24px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-size: 11px;
+  color: var(--nx-body);
+  cursor: pointer;
+}
+.nxtl-pdf-move button:disabled { opacity: 0.25; cursor: default; }
+.nxtl-pdf-move button:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 1px; }
+.nxtl-pdf-file-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.nxtl-pdf-remove {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  font-family: var(--font-mono), monospace;
+  color: var(--nx-body);
+  cursor: pointer;
+}
+.nxtl-pdf-remove:hover { color: #f87171; }
+.nxtl-pdf-remove:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+.nxtl-pdf-pwd { display: flex; gap: 8px; }
+.nxtl-pdf-pwd .nx-input { flex: 1; min-width: 0; }
+.nxtl-pdf-pwd .nxtl-chip-btn { flex-shrink: 0; min-height: 52px; }
+
+.nxtl-pdf-drop--compact { min-height: 88px; padding-block: 16px; gap: 4px; }
+@media (max-width: 559px) { .nxtl-pdf-result:not(.nxtl-pdf-result--stack) .nxtl-pdf-result-icon { display: none; } }
