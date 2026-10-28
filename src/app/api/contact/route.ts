@@ -2,37 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { getDb } from '@/lib/mongodb';
 import { sendContactReply } from '@/emails/send';
+import { buildContactOwner } from '@/emails/contact-owner';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ─── Email templates ────────────────────────────────────────────────────────────
-
-function internalEmail(data: {
-  name: string; email: string; phone: string;
-  service: string; brief: string; budget: string; timeline: string;
-}): string {
-  return `
-New project inquiry — Nesture-X
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-NAME:      ${data.name}
-EMAIL:     ${data.email}
-PHONE:     ${data.phone || 'Not provided'}
-
-SERVICE:   ${data.service || 'Not specified'}
-BUDGET:    ${data.budget || 'Not specified'}
-TIMELINE:  ${data.timeline || 'Not specified'}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-WHAT THEY'RE BUILDING:
-${data.brief}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Reply directly to this email to respond to ${data.name}.
-  `.trim();
-}
 
 // ─── Route handler ──────────────────────────────────────────────────────────────
 
@@ -78,7 +50,7 @@ export async function POST(req: NextRequest) {
         to:      'nesturex@gmail.com',
         replyTo: email.trim(),
         subject: `New Inquiry — ${service || 'General'} — ${name}`,
-        text:    internalEmail({ name, email, phone, service, brief, budget, timeline }),
+        ...buildContactOwner({ name, email, phone, service, brief, budget, timeline }),
       }),
       sendContactReply({
         to:         email.trim(),
