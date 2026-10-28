@@ -617,3 +617,34 @@
   .nxtl-card:hover .nxtl-card-icon,
   .nxtl-card:hover .nxtl-card-arrow { translate: none; }
 }
+
+/* Shared: a <label> dropzone whose file input is visually hidden but focusable. */
+.nxtl-drop--input:focus-within { outline: 3px solid var(--nx-focus); outline-offset: 3px; }
+/* Busy overlay on a stage (keeps the stage's size). */
+.nxtl-stage-busy {
+  position: absolute;
+  inset: auto 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1558ad;
+}
+.nxtl-stage-busy .nxtl-spinner { border-color: rgba(26, 111, 212, 0.25); border-top-color: #1a6fd4; }
+
+/* QR generator */
+.nxtl-qr-stage { min-height: 360px; }
+.nxtl-qr-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed rgba(13, 27, 62, 0.2);
+  border-radius: 16px;
+  font-size: 11px;
+}
