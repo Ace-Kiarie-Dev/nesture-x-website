@@ -700,6 +700,232 @@ body:has(.nxad-shell) { padding-top: var(--nxad-top); }
 .nxad-profile-line { line-height: 1.6; overflow-wrap: anywhere; }
 .nxad-profile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
+/* ═════════════════════════════════════════════════════════════════════════════
+   Quote / invoice editor (QuoteForm)
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+/* Field: the label wraps its control (no ids needed). Denser than the public forms. */
+.nxad-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.nxad-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nx-input.nxad-input { min-height: 46px; padding: 10px 14px; border-radius: 14px; }
+.nx-select .nx-input.nxad-input { padding-right: 44px; background-position: right 14px center; }
+.nx-input.nxad-input:disabled { opacity: 0.6; cursor: not-allowed; }
+.nx-textarea.nxad-input { min-height: 88px; line-height: 1.6; }
+.nxad-hint { font-family: var(--font-mono), monospace; font-size: 12px; line-height: 1.6; color: var(--nx-body); }
+.nxad-hint--warn { color: var(--nxad-amber); }
+
+.nxad-grid-2,
+.nxad-grid-3 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (min-width: 520px) {
+  .nxad-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nxad-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.nxad-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.nxad-check input { width: 20px; height: 20px; accent-color: var(--nx-blue); cursor: pointer; }
+
+/* Status select dressed as a chip (top bar). */
+.nxad-status-select { position: relative; padding: 0 0 0 10px; }
+.nxad-status-select select {
+  min-height: 36px;
+  padding: 0 26px 0 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.nxad-status-select::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+.nxad-status-select select option { color: var(--nx-text); background: var(--nx-bg); }
+.nxad-status-select:focus-within { outline: 3px solid var(--nx-focus); outline-offset: 2px; }
+.nxad-status-select select:focus-visible { outline: none; }
+
+.nxad-top-actions-group { display: flex; gap: 8px; }
+@media (max-width: 767px) {
+  .nxad-desk-only { display: none; }
+}
+
+/* Page */
+.nxad-page.nxad-page--doc { max-width: 1680px; }
+.nxad-doc-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.nxad-doc-title { font-size: clamp(32px, 3vw + 16px, 48px); overflow-wrap: anywhere; }
+
+.nxad-doc-tabs { display: flex; width: 100%; }
+@media (min-width: 768px) {
+  .nxad-doc-tabs { display: none; }
+}
+@media (max-width: 767px) {
+  .is-hidden-sm { display: none; }
+}
+
+.nxad-doc-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (min-width: 1280px) {
+  .nxad-doc-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+  .nxad-doc-preview { position: sticky; top: calc(var(--nxad-top) + 16px); max-height: calc(100dvh - var(--nxad-top) - 32px); overflow: auto; }
+}
+.nxad-doc-form { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.nxad-doc-form .nxad-section { gap: 14px; }
+.nxad-doc-preview {
+  min-width: 0;
+  padding: clamp(12px, 2.5vw, 24px);
+  border-radius: 24px;
+  background: #111318;
+  overflow-x: auto;
+}
+[data-theme='light'] .nxad-doc-preview { background: #dfe5ef; }
+
+/* Line items: one row per line from 520px; on phones the description takes the
+   first row and qty / price / remove share the second. */
+.nxad-lines-head { display: none; }
+.nxad-lines { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+.nxad-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 44px;
+  grid-template-areas: 'desc desc desc' 'qty price remove';
+  gap: 8px;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--nxad-line);
+}
+.nxad-line:last-child { padding-bottom: 0; border-bottom: 0; }
+.nxad-line-desc { grid-area: desc; }
+.nxad-line-qty { grid-area: qty; text-align: center; }
+.nxad-line-price { grid-area: price; text-align: right; }
+.nxad-line-remove { grid-area: remove; }
+@media (min-width: 520px) {
+  .nxad-lines-head,
+  .nxad-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 72px 128px 44px;
+    grid-template-areas: 'desc qty price remove';
+    gap: 8px;
+  }
+  .nxad-line { padding-bottom: 0; border-bottom: 0; }
+}
+.nxad-add-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  border: 1px dashed color-mix(in srgb, var(--nx-blue) 55%, transparent);
+  border-radius: 14px;
+  background: transparent;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+  cursor: pointer;
+}
+.nxad-add-line:hover { background: color-mix(in srgb, var(--nx-blue) 8%, transparent); }
+
+/* Totals: pinned to the bottom of the form column from 768px. */
+.nxad-totals {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 20px;
+  border-radius: 22px;
+}
+/* From 768px the rows sit side by side in one short strip so the pinned panel
+   doesn't cover the form. */
+@media (min-width: 768px) {
+  .nxad-totals {
+    position: sticky;
+    bottom: 12px;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 4px 16px;
+    padding: 12px 20px;
+  }
+  .nxad-totals .nxad-total-row { flex-direction: column; align-items: flex-start; gap: 2px; padding: 0; border: 0; }
+  .nxad-totals .nxad-total-row.is-key .nxad-total-value { font-size: 26px; line-height: 1; }
+}
+.nxad-total-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--nxad-line) 60%, transparent);
+}
+.nxad-total-row:last-child { border-bottom: 0; }
+.nxad-total-value {
+  font-family: var(--font-mono), monospace;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--nx-text);
+  white-space: nowrap;
+}
+.nxad-total-row.is-key .nxad-label { color: var(--nx-text); font-weight: 700; }
+.nxad-total-row.is-key .nxad-total-value {
+  font-family: var(--font-display), sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+  color: var(--nx-accent);
+}
+
+/* Phone save bar: key total + PDF + Save, fixed to the bottom of the screen. */
+.nxad-savebar { display: none; }
+@media (max-width: 767px) {
+  .nxad-page.nxad-page--doc { padding-bottom: 120px; }
+  .nxad-savebar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--nxad-line);
+    background: color-mix(in srgb, var(--nx-bg) 90%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+  .nxad-savebar-total { display: flex; flex-direction: column; min-width: 0; margin-right: auto; }
+  .nxad-savebar-total .nxad-total-value {
+    font-family: var(--font-display), sans-serif;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--nx-accent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nxad-savebar .nxad-btn.nx-clay-btn { padding-inline: 14px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nxad-skel-row { animation: none; }
 }
