@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
-import { connection } from 'next/server';
-import PortfolioEntry from '@/components/sections/PortfolioEntry';
+import { permanentRedirect } from 'next/navigation';
+import PortfolioHero from '@/components/redesign/portfolio/PortfolioHero';
+import PortfolioGrid from '@/components/redesign/portfolio/PortfolioGrid';
+import TrustStrip from '@/components/redesign/portfolio/TrustStrip';
+import { WORK_CARDS, parseCategory } from '@/lib/portfolio-data';
+import '@/components/redesign/portfolio/portfolio.css';
 
 export const metadata: Metadata = {
   title: 'Portfolio: Websites, Apps, Logos & Design Work',
@@ -11,23 +15,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PortfolioPage() {
-  // Render per request so the server HTML shows whichever view the URL asks
-  // for (?view=design sends the full grid, with links to every project),
-  // instead of an empty shell that only fills in on the client.
-  await connection();
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+// Rendered per request (it reads searchParams), so a shared ?category= link arrives
+// already filtered in the server HTML.
+export default async function PortfolioPage({ searchParams }: { searchParams: SearchParams }) {
+  const params = await searchParams;
+
+  // The old split screen's views: Digital products now live under Web Projects,
+  // and Design work is the default grid.
+  if (params.view === 'digital') permanentRedirect('/portfolio?category=web');
+  if (params.view === 'design') permanentRedirect('/portfolio');
+
+  const category = parseCategory(params.category);
 
   return (
-    <main>
-      {/* The split screen has no visible heading; this keeps the page's h1 and
-          summary in the HTML without changing the design. */}
-      <h1 className="sr-only">Our Portfolio</h1>
-      <p className="sr-only">
-        Design work and digital products by Nesture-X, a creative technology agency in Nairobi:
-        websites, web and mobile apps, logos, company profiles, business cards, flyers, and social
-        media design for Kenyan businesses.
-      </p>
-      <PortfolioEntry />
+    <main className="nxpf">
+      <div className="nxpf-hero-wrap">
+        <PortfolioHero />
+      </div>
+      <div className="nxpf-wrap">
+        <PortfolioGrid cards={WORK_CARDS} initialCategory={category} />
+        <TrustStrip />
+      </div>
     </main>
   );
 }

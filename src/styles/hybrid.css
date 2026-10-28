@@ -157,8 +157,10 @@
 /* The 404 page brings its own SiteNav / SiteFooter (an unknown URL can't opt in by
    pathname in ClientShell), so the legacy chrome steps aside while it is on the page.
    CSS only, so the server HTML is already right. */
-.nx-legacy-chrome { display: contents; }
-body:has(.nx-404) .nx-legacy-chrome { display: none; }
+.nx-legacy-chrome,
+.nx-shell-chrome { display: contents; }
+body:has(.nx-404) .nx-legacy-chrome,
+body:has(.nx-404) .nx-shell-chrome { display: none; }
 body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
 
 /* ── Type ── */

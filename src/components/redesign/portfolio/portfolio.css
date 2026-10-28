@@ -1,0 +1,33 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   /portfolio and /portfolio/[id], hybrid redesign. Scoped under .nxpf; colours,
+   shadows and radii come from the --nx-* tokens in app/globals.css, so both pages
+   follow the light / dark toggle. Building blocks (.nx-clay, .nx-glass, .nx-band,
+   .nx-h2, .nx-outline, .nx-clay-btn, .nx-chip) live in src/styles/hybrid.css.
+   Breakpoints: 768px (tablet), 1100px (wide hero / detail split), 1200px (SiteNav).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxpf {
+  --nxpf-gutter: 20px;
+  --nxpf-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  /* Clip, not hidden: no horizontal scroll from glows, and sticky still works. */
+  overflow-x: clip;
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxpf { --nxpf-gutter: 40px; }
+}
+
+.nxpf-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--nxpf-gutter);
+}
+
+.nxpf-sec {
+  position: relative;
+  padding-block: clamp(56px, 8vw, 112px);
+}

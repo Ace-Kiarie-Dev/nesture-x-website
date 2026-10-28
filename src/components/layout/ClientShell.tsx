@@ -10,7 +10,15 @@ import SiteFooter from '@/components/redesign/SiteFooter';
 // Routes already moved to the hybrid redesign. They get the new SiteNav and SiteFooter
 // and paint their own background, so the particle canvas and the 80px navbar offset
 // are skipped. Exact paths: /nx-gaming/2048 etc. are static games outside this shell.
-const REDESIGNED_ROUTES = new Set(['/', '/nx-gaming', '/services']);
+const REDESIGNED_ROUTES = new Set(['/', '/nx-gaming', '/services', '/portfolio']);
+
+// Dynamic redesigned routes. Project pages are one segment under /portfolio; the
+// /portfolio/status/[slug] pages keep the legacy chrome.
+const REDESIGNED_PATTERNS = [/^\/portfolio\/(?!status$)[^/]+$/];
+
+function isRedesigned(path: string): boolean {
+  return REDESIGNED_ROUTES.has(path) || REDESIGNED_PATTERNS.some((re) => re.test(path));
+}
 
 /**
  * Detects /admin and /legal/[app]/privacy routes and renders only the
@@ -25,13 +33,19 @@ export default function ClientShell({ children }: { children: React.ReactNode })
   }
 
   // Trailing slash dropped, but "/" itself stays "/".
-  if (REDESIGNED_ROUTES.has(pathname.replace(/(.)\/$/, '$1'))) {
+  if (isRedesigned(pathname.replace(/(.)\/$/, '$1'))) {
+    // .nx-shell-chrome is display: contents; an unknown /portfolio/<id> renders the 404
+    // page, which brings its own SiteNav / SiteFooter, so these step aside (hybrid.css).
     return (
       <>
-        <SiteNav />
+        <div className="nx-shell-chrome">
+          <SiteNav />
+        </div>
         <div className="site-wrapper nx-grid-bg flex flex-col flex-1" style={{ paddingTop: 0 }}>
           {children}
-          <SiteFooter />
+          <div className="nx-shell-chrome">
+            <SiteFooter />
+          </div>
         </div>
       </>
     );
