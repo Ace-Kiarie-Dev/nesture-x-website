@@ -7,6 +7,7 @@ import PortfolioChoices from '@/components/redesign/portfolio/PortfolioChoices';
 import DigitalGrid from '@/components/redesign/portfolio/DigitalGrid';
 import BackLink from '@/components/redesign/portfolio/BackLink';
 import TrustStrip from '@/components/redesign/portfolio/TrustStrip';
+import HeroRibbons from '@/components/redesign/HeroRibbons';
 import {
   DESIGN_CARDS,
   DIGITAL_CARDS,
@@ -177,7 +178,8 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Se
 
   return (
     <main className="nxpf">
-      <div className="nxpf-hero-wrap">
+      <div className="nxpf-hero-wrap nx-hero-ribbons-host">
+        <HeroRibbons className="nx-hero-ribbons" />
         <PortfolioHero lede={hero.lede} count={hero.count} />
       </div>
       <div className="nxpf-wrap">

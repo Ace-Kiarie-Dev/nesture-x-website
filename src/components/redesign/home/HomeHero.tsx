@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { ASSETS_3D } from '@/lib/assets3d';
 import { ClayButton, Eyebrow } from '@/components/redesign';
 import HeroArc from './HeroArc';
+import HeroRibbons from '@/components/redesign/HeroRibbons';
 
 const TYPED_PHRASES = [
   'for tourism brands',
@@ -28,10 +28,6 @@ const HEADLINE = [
 ];
 
 const AVATAR = ASSETS_3D['avatar-cutout'];
-
-// Decorative ribbon glow behind the top of the page; client-only and loaded late.
-// Same layer as the NX Gaming hub: nothing renders inside it, so the hero never remounts.
-const HubRibbons = dynamic(() => import('@/components/nx-gaming/HubRibbons'), { ssr: false });
 
 // Same typewriter as the original hero: type at 70ms, hold 1.8s, delete at 40ms, next phrase.
 function useTypewriter(phrases: string[]) {
@@ -71,38 +67,11 @@ function TypedPhrase() {
   return <span>{typedText}</span>;
 }
 
-// The ribbon canvas is cheap to download but busy on the main thread, so it waits for
-// the page load and an idle moment: first paint and LCP never compete with it.
-function useAfterLoadIdle() {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    let idle = 0;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const go = () => {
-      if ('requestIdleCallback' in window) idle = window.requestIdleCallback(() => setReady(true), { timeout: 2000 });
-      else timer = setTimeout(() => setReady(true), 1200);
-    };
-    if (document.readyState === 'complete') go();
-    else window.addEventListener('load', go, { once: true });
-    return () => {
-      window.removeEventListener('load', go);
-      if (idle) window.cancelIdleCallback(idle);
-      clearTimeout(timer);
-    };
-  }, []);
-
-  return ready;
-}
-
 export default function HomeHero() {
-  const showRibbons = useAfterLoadIdle();
-
   return (
     <>
-      <div className="nxhp-ribbons" aria-hidden="true">
-        {showRibbons && <HubRibbons />}
-      </div>
+      {/* Ribbon glow behind the top of the page (shared HeroRibbons, loaded after idle). */}
+      <HeroRibbons className="nxhp-ribbons" />
 
       <section className="nxhp-hero" aria-label="Introduction">
         <div className="nxhp-hero-copy">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+import HeroRibbons from '@/components/redesign/HeroRibbons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NX_GAMES, LIVE_GAMES, LIVE_PERKS, isLive, type Game } from '@/lib/nx-gaming/games';
@@ -37,9 +37,6 @@ const FALLEN: [number, number][] = [
   [0.09, 13],
   [0.04, 0],
 ];
-
-// Decorative ribbon glow behind the top of the page; client-only and loaded late.
-const HubRibbons = dynamic(() => import('./HubRibbons'), { ssr: false });
 
 // Card art is ~250px tall on the fan and ~220px in the swipe row.
 const artSizes = (game: Game) =>
@@ -297,9 +294,7 @@ export default function NxGamingHub() {
 
   return (
     <main className="nxh">
-      <div className="nxh-ribbons" aria-hidden="true">
-        <HubRibbons />
-      </div>
+      <HeroRibbons className="nxh-ribbons" defer={false} />
 
       <div className="nxh-wrap">
         {/* ── Hero ── */}

@@ -445,6 +445,27 @@ body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
   .nx-footer-link { transition: none; }
 }
 
+/* ── Hero ribbons (HeroRibbons.tsx) on page heroes: /services, /portfolio ──
+   Behind the hero copy and art (the wrapper isolates, the layer sits at z -1),
+   clipped to the hero wrapper, fading out over the last quarter of the hero so it
+   never runs behind the tabs or the grid. Same treatment as the homepage layer:
+   0.4 opacity, and none in light theme. The wrapper needs .nx-hero-ribbons-host. */
+.nx-hero-ribbons-host {
+  position: relative;
+  isolation: isolate;
+}
+.nx-hero-ribbons {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  opacity: 0.4;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 75%, transparent);
+  mask-image: linear-gradient(to bottom, #000 75%, transparent);
+}
+[data-theme='light'] .nx-hero-ribbons { display: none; }
+
 /* ── Shared sections: partner card and ticker ──
    Used by the homepage and /portfolio (PartnerCard.tsx, Ticker.tsx). The partner
    card is a dark clay card in both themes. */

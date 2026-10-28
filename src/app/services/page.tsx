@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import HomeReveal from '@/components/redesign/home/HomeReveal';
+import HeroRibbons from '@/components/redesign/HeroRibbons';
 import ServicesHero from '@/components/redesign/services/ServicesHero';
 import ServicesQuickNav from '@/components/redesign/services/ServicesQuickNav';
 import ServiceBlock from '@/components/redesign/services/ServiceBlock';
@@ -18,12 +19,14 @@ export const metadata: Metadata = {
   },
 };
 
-// Server component: only the scroll reveal and the quick nav's active-chip observer ship JS.
+// Server component: only the scroll reveal, the quick nav's active-chip observer and the
+// deferred hero ribbons ship JS.
 export default function ServicesPage() {
   return (
     <main className="nxsv">
       <HomeReveal root=".nxsv" item=".nxsv-reveal" readyClass="nxsv-reveal-ready" />
-      <div className="nxsv-hero-wrap">
+      <div className="nxsv-hero-wrap nx-hero-ribbons-host">
+        <HeroRibbons className="nx-hero-ribbons" />
         <ServicesHero />
       </div>
       <div className="nxsv-wrap">
