@@ -635,6 +635,33 @@ body:has(.nxad-shell) { padding-top: var(--nxad-top); }
 }
 .nxad-disclosure:hover { border-color: var(--nx-accent); }
 
+/* Card list (leads) */
+.nxad-cards { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+.nxad-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--nxad-line);
+  background: var(--nxad-surface);
+  transition: background-color 150ms ease;
+}
+.nxad-card:hover { background: color-mix(in srgb, var(--nx-blue) 6%, var(--nxad-surface)); }
+.nxad-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.nxad-card-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; min-width: 0; }
+.nxad-card-meta .nxad-trunc { max-width: 100%; }
+.nxad-card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--nx-body);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nxad-skel-row { animation: none; }
 }
