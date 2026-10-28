@@ -566,43 +566,6 @@
 
 /* ── 2. Marquee ────────────────────────────────────────────────────────── */
 
-.nxhp-marquee {
-  overflow: hidden;
-  padding-block: 18px;
-  border-block: 1px solid color-mix(in srgb, var(--nx-blue) 22%, transparent);
-  background: color-mix(in srgb, var(--nx-blue) 6%, var(--nx-bg));
-}
-.nxhp-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 30s linear infinite;
-}
-.nxhp-marquee:hover .nxhp-marquee-track { animation-play-state: paused; }
-.nxhp-marquee-list {
-  list-style: none;
-  display: flex;
-  flex-shrink: 0;
-}
-.nxhp-marquee-item {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  padding-right: 32px;
-  font-family: var(--font-mono), monospace;
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--nx-body);
-}
-.nxhp-marquee-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--nx-blue);
-  box-shadow: 0 0 10px rgba(26, 111, 212, 0.7);
-}
-
 /* ── 3. What we solve ──────────────────────────────────────────────────── */
 
 .nxhp-solve-grid {
@@ -1076,63 +1039,8 @@
 .nxhp-partner {
   flex: 0 0 220px;
   scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 22px 22px 26px;
-  border-radius: var(--nx-radius-clay);
-  background: linear-gradient(160deg, #1e2744, #121829);
-  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -9px 16px rgba(0, 0, 0, 0.28), 14px 20px 36px rgba(4, 7, 16, 0.45);
-  color: #f5f5f5;
 }
-[data-theme='light'] .nxhp-partner {
-  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -9px 16px rgba(0, 0, 0, 0.28), 14px 20px 36px rgba(13, 27, 62, 0.2);
-}
-.nxhp-partner-art {
-  position: relative;
-  align-self: center;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  height: 190px;
-  margin-bottom: 8px;
-}
-.nxhp-partner-art::before {
-  content: '';
-  position: absolute;
-  inset: 20% -30% 0;
-  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.4), rgba(26, 111, 212, 0));
-}
-.nxhp-partner-art img {
-  position: relative;
-  width: auto;
-  height: 100%;
-  filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.45));
-}
-.nxhp-partner-badge {
-  padding: 5px 10px;
-  border-radius: var(--nx-radius-pill);
-  border: 1px solid rgba(61, 142, 240, 0.5);
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #8ec0ff;
-}
-.nxhp-partner-name {
-  font-family: var(--font-display), sans-serif;
-  font-size: 28px;
-  line-height: 1;
-}
-.nxhp-partner-industry {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  line-height: 1.45;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #b8cef0;
-}
+
 
 @media (min-width: 768px) {
   /* 3 + 2, centred. */
@@ -1349,7 +1257,6 @@
 @media (prefers-reduced-motion: reduce) {
   .nxhp-hero-avatar-img,
   .nxhp-caret,
-  .nxhp-marquee-track,
   .nxhp-svc-panel,
   .nxhp-svc-art,
   .nxhp-step-rocket,
@@ -1359,8 +1266,4 @@
   .nxhp-port-overlay { transition: none; }
   .nxhp-port-tile:hover .nxhp-port-img { scale: none; }
   .nxhp-reveal-ready .nxhp-reveal { transition: none; }
-  /* Static: one copy, wrapped and centred. */
-  .nxhp-marquee-track { width: auto; justify-content: center; padding-inline: 20px; }
-  .nxhp-marquee-list { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
-  .nxhp-marquee-list[aria-hidden] { display: none; }
 }

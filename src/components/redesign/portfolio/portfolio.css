@@ -411,3 +411,57 @@
   .nxpf-card-overlay { transition: none; }
   .nxpf-card:hover { transform: none; }
 }
+
+/* ── 4. Trust strip ────────────────────────────────────────────────────────
+   Slate band under the grid: partner cards (shared PartnerCard), then the brand
+   ticker (shared Ticker), which bleeds to the band's edges. */
+
+.nxpf-trust-intro { max-width: 620px; margin-top: 24px; }
+
+.nxpf-partners {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxpf-gutter));
+  padding: 8px var(--nxpf-gutter) 24px;
+}
+.nxpf-partners::-webkit-scrollbar { display: none; }
+.nxpf-partners:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: -3px; border-radius: 12px; }
+.nxpf-partner { flex: 0 0 240px; scroll-snap-align: start; }
+
+.nxpf-brands-title {
+  margin-top: clamp(48px, 6vw, 72px);
+  margin-bottom: 20px;
+  font-family: var(--font-mono), monospace;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+  text-align: center;
+}
+/* Full bleed inside the band; the band's own clip trims the overflow. */
+.nxpf-brands {
+  margin-inline: calc(50% - 50vw);
+  background: transparent;
+}
+
+@media (min-width: 768px) {
+  .nxpf-partners {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    overflow: visible;
+    margin: 56px 0 0;
+    padding: 0;
+  }
+  .nxpf-partner { flex: 0 0 calc((100% - 40px) / 3); }
+}
+@media (min-width: 1200px) {
+  .nxpf-partners { flex-wrap: nowrap; }
+  .nxpf-partner { flex: 1 1 0; min-width: 0; padding-inline: 20px; }
+}

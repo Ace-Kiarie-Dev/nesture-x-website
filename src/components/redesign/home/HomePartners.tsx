@@ -1,15 +1,7 @@
 import type { CSSProperties } from 'react';
-import Image from 'next/image';
-import { ASSETS_3D, type Asset3dKey } from '@/lib/assets3d';
+import { PARTNERS } from '@/data/partners';
 import { Band, Eyebrow } from '@/components/redesign';
-
-const PARTNERS: { name: string; industry: string; art: Asset3dKey }[] = [
-  { name: 'Rar Ray Bakes', industry: 'Bakery · Food', art: 'partner-baker' },
-  { name: 'MR Right Imports', industry: 'Imports · Fitness Equipment', art: 'partner-importer' },
-  { name: 'Joyspark Enterprises', industry: 'Décor · Events', art: 'partner-decorator' },
-  { name: 'Vicking Ventures', industry: 'Tours · Travel', art: 'partner-guide' },
-  { name: 'ODU Fitness', industry: 'Fitness · Coaching', art: 'partner-coach' },
-];
+import PartnerCard from '@/components/redesign/PartnerCard';
 
 export default function HomePartners() {
   return (
@@ -29,19 +21,9 @@ export default function HomePartners() {
 
       {/* A swipe row on phones, so it takes focus for keyboard scrolling. */}
       <ul className="nxhp-partners" tabIndex={0} aria-label="NX equity partners">
-        {PARTNERS.map((p, i) => {
-          const art = ASSETS_3D[p.art];
-          return (
-            <li key={p.name} className="nxhp-partner nxhp-reveal" style={{ '--i': i } as CSSProperties}>
-              <span className="nxhp-partner-art">
-                <Image src={art.src} alt="" width={art.width} height={art.height} sizes="110px" />
-              </span>
-              <span className="nxhp-partner-badge">NX Partner</span>
-              <span className="nxhp-partner-name">{p.name}</span>
-              <span className="nxhp-partner-industry">{p.industry}</span>
-            </li>
-          );
-        })}
+        {PARTNERS.map((p, i) => (
+          <PartnerCard key={p.name} partner={p} className="nxhp-partner nxhp-reveal" style={{ '--i': i } as CSSProperties} />
+        ))}
       </ul>
     </Band>
   );

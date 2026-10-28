@@ -444,3 +444,124 @@ body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
   .nx-nav-link,
   .nx-footer-link { transition: none; }
 }
+
+/* ── Shared sections: partner card and ticker ──
+   Used by the homepage and /portfolio (PartnerCard.tsx, Ticker.tsx). The partner
+   card is a dark clay card in both themes. */
+.nx-partner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 22px 22px 26px;
+  border-radius: var(--nx-radius-clay);
+  background: linear-gradient(160deg, #1e2744, #121829);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -9px 16px rgba(0, 0, 0, 0.28), 14px 20px 36px rgba(4, 7, 16, 0.45);
+  color: #f5f5f5;
+}
+[data-theme='light'] .nx-partner {
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -9px 16px rgba(0, 0, 0, 0.28), 14px 20px 36px rgba(13, 27, 62, 0.2);
+}
+.nx-partner-art {
+  position: relative;
+  align-self: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 190px;
+  margin-bottom: 8px;
+}
+.nx-partner-art::before {
+  content: '';
+  position: absolute;
+  inset: 20% -30% 0;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.4), rgba(26, 111, 212, 0));
+}
+.nx-partner-art img {
+  position: relative;
+  width: auto;
+  height: 100%;
+  filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.45));
+}
+.nx-partner-badge {
+  padding: 5px 10px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(61, 142, 240, 0.5);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8ec0ff;
+}
+.nx-partner-name {
+  font-family: var(--font-display), sans-serif;
+  font-size: 28px;
+  line-height: 1;
+}
+.nx-partner-industry {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b8cef0;
+}
+.nx-partner-blurb {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #d6e2f5;
+}
+
+/* Infinite ticker: the track holds the list twice and slides by half its width.
+   Hover or focus pauses it; reduced motion shows one static, wrapped copy. */
+.nx-ticker {
+  overflow: hidden;
+  padding-block: 18px;
+  border-block: 1px solid color-mix(in srgb, var(--nx-blue) 22%, transparent);
+  background: color-mix(in srgb, var(--nx-blue) 6%, var(--nx-bg));
+}
+.nx-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.nx-ticker:hover .nx-ticker-track,
+.nx-ticker:focus-within .nx-ticker-track { animation-play-state: paused; }
+.nx-ticker-list {
+  list-style: none;
+  display: flex;
+  flex-shrink: 0;
+}
+.nx-ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding-right: 32px;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--nx-body);
+}
+.nx-ticker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--nx-blue);
+  box-shadow: 0 0 10px rgba(26, 111, 212, 0.7);
+}
+/* Brand variant: stylised names instead of mono labels. */
+.nx-ticker--brands .nx-ticker-item {
+  font-family: var(--font-display), sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.06em;
+  color: var(--nx-text);
+}
+.nx-ticker:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: -3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nx-ticker-track { animation: none; width: auto; justify-content: center; padding-inline: 20px; }
+  .nx-ticker-list { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
+  .nx-ticker-list[aria-hidden] { display: none; }
+}
