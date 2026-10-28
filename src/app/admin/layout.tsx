@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import '@/components/admin/admin.css';
 
 export const metadata: Metadata = {
   // Absolute so the root "%s | Nesture-X" template doesn't apply.
