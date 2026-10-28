@@ -452,8 +452,10 @@ body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
    on this layer only, so it fades the ribbons out over the last quarter of the hero
    and leaves the grid alone. Height follows the hero; width bleeds to the viewport
    edges like the homepage layer (the page's overflow-x: clip stops any scroll).
-   Same treatment as the homepage: 0.4 opacity, none in light theme. The hero
-   wrapper needs .nx-hero-ribbons-host. */
+   Strength is --nx-hero-ribbons-opacity (the homepage and hub layers keep their own
+   0.4); hidden in light theme like the homepage. The hero wrapper needs
+   .nx-hero-ribbons-host. */
+:root { --nx-hero-ribbons-opacity: 0.55; }
 .nx-hero-ribbons-host {
   position: relative;
   isolation: isolate;
@@ -463,7 +465,7 @@ body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
   inset: 0 calc(50% - 50vw);
   z-index: -1;
   overflow: hidden;
-  opacity: 0.4;
+  opacity: var(--nx-hero-ribbons-opacity);
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, #000 75%, transparent);
   mask-image: linear-gradient(to bottom, #000 75%, transparent);
