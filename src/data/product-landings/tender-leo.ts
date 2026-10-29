@@ -23,6 +23,8 @@ export const TENDER_LEO: ProductLandingConfig = {
   slug: 'tender-leo',
   name: 'Tender Leo',
   platform: 'web',
+  // The screens are mock-ups cropped from the brand board until the app is built.
+  screensNote: 'Design preview',
   themeClass: 'theme-tender-leo',
   theme: {
     colors: {

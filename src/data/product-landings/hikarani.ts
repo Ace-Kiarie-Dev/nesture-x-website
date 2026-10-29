@@ -14,6 +14,8 @@ export const HIKARANI: ProductLandingConfig = {
   slug: 'hikarani',
   name: 'Hikarani',
   platform: 'mobile',
+  // The screens are mock-ups cropped from the brand board until the app is built.
+  screensNote: 'Design preview',
   themeClass: 'theme-hikarani',
   theme: {
     colors: {

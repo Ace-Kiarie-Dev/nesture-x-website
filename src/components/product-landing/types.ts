@@ -58,6 +58,9 @@ export interface ProductLandingConfig {
   platform: 'mobile' | 'web';
   /** Theme class for product-specific CSS, e.g. 'theme-hikarani'. Optional. */
   themeClass?: string;
+  /** Small note under the hero screens and the screens section, e.g. 'Design preview'
+      while the screenshots are mock-ups. Optional; leave it out once they are real. */
+  screensNote?: string;
   theme: ProductTheme;
 
   brand: {

@@ -131,6 +131,8 @@ export default function ProductLanding({ config, fontClassName = '' }: {
   } as React.CSSProperties;
   const mobile = config.platform === 'mobile';
   const [front, back] = hero.screens ?? [];
+  // The note labels screenshots, so it only goes under the hero when it shows screens.
+  const heroNote = !hero.image && front ? config.screensNote : undefined;
 
   return (
     <div className={`theme-pl pl-under-nav ${config.themeClass ?? ''} ${fontClassName} flex-1`} style={vars}>
@@ -162,7 +164,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
               </div>
             </div>
 
-            <div className="pl-hero-visual">
+            <div className={heroNote ? 'pl-hero-visual pl-hero-visual--noted' : 'pl-hero-visual'}>
               {hero.image ? (
                 <HeroImage image={hero.image} />
               ) : mobile ? (
@@ -173,6 +175,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
               ) : (
                 front && <Laptop image={front} sizes="(min-width: 960px) 560px, 92vw" preload />
               )}
+              {heroNote && <p className="pl-screens-note">{heroNote}</p>}
             </div>
           </div>
         </section>
@@ -258,6 +261,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
                 </li>
               ))}
             </ul>
+            {config.screensNote && <p className="pl-screens-note">{config.screensNote}</p>}
           </div>
         </section>
         )}

@@ -147,6 +147,17 @@
 .theme-pl .pl-signup--center { align-items: center; }
 
 .theme-pl .pl-hero-visual { display: flex; justify-content: center; min-width: 0; }
+.theme-pl .pl-hero-visual--noted { flex-direction: column; align-items: center; gap: 1rem; }
+
+/* "Design preview" style note under mock-up screens (config.screensNote). */
+.theme-pl .pl-screens-note {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--pl-muted);
+}
+.theme-pl .pl-screens + .pl-screens-note { margin-top: 2rem; }
 .theme-pl .pl-phone-stack {
   position: relative;
   display: flex;

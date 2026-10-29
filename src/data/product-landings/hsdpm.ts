@@ -25,6 +25,8 @@ export const HSDPM: ProductLandingConfig = {
   slug: 'hsdpm-church-app',
   name: 'HSDPM App',
   platform: 'mobile',
+  // The screens are mock-ups cropped from the brand board until the app is built.
+  screensNote: 'Design preview',
   themeClass: 'theme-hsdpm',
   theme: {
     colors: {
