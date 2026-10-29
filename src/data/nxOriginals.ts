@@ -78,7 +78,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     imageSrc: '/images/originals/Hikarani-Card.webp',
     accent: '#8b5cf6',
-    link: null,
+    link: '/hikarani',
   },
   {
     id: 'matatu-dash',
