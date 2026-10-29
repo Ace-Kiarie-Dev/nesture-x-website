@@ -4,6 +4,8 @@
 // at save time. Renderers read only that copy — never a ContactProfile by id —
 // so editing or deleting a profile later can't change an existing document.
 
+import { HELLO } from '@/lib/contactEmails';
+
 export const COMPANY_NAME     = 'Nesture-X';
 export const COMPANY_LOCATION = 'Nairobi, Kenya';
 export const COMPANY_WEBSITE  = 'nesturex.com';
@@ -21,15 +23,15 @@ export interface ContactProfileInput extends ContactSnapshot {
 }
 
 /**
- * The values that were hardcoded in the document footers before contact
- * profiles existed. Used to seed the "NX Main" profile and as the render
- * fallback for documents saved before snapshots existed.
+ * The default document contact. Seeds the "NX Main" profile (only when it
+ * doesn't exist yet) and is the render fallback for documents saved before
+ * snapshots existed.
  */
 export const FALLBACK_CONTACT: ContactSnapshot = {
   contactName: COMPANY_NAME,
   phone:       '+254 717 164 951',
   whatsapp:    '',
-  email:       'nesturex@gmail.com',
+  email:       HELLO,
 };
 
 const MAX_LEN = 120;
@@ -69,8 +71,8 @@ export function resolveContact(snapshot?: ContactSnapshot | null): ContactSnapsh
 
 /**
  * Footer contact line segments, joined by the caller with its own separator.
- * For FALLBACK_CONTACT this yields exactly the old hardcoded line:
- *   Nairobi, Kenya · +254 717 164 951 · nesturex@gmail.com · nesturex.com
+ * For FALLBACK_CONTACT this yields:
+ *   Nairobi, Kenya · +254 717 164 951 · hello@nesturex.com · nesturex.com
  * The contact name is only printed when it isn't the company name, and
  * WhatsApp only when it differs from the phone number.
  */
