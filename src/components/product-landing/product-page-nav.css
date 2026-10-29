@@ -1,0 +1,204 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Back pill and "More from Nesture-X" row on the dedicated product pages
+   (ProductPageNav.tsx). They sit inside each page's skin wrapper and read the
+   --ppn-* variables below, which each skin maps from its own palette. Every skin
+   keeps one fixed palette whatever the site theme, so one mapping per skin covers
+   light and dark.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Template pages (Hikarani, Tender Leo, HSDPM, No Snooze Solen): from the config colours. */
+.theme-pl {
+  --ppn-text: var(--pl-text);
+  --ppn-muted: var(--pl-muted);
+  --ppn-border: var(--pl-border);
+  --ppn-surface: var(--pl-surface);
+  --ppn-accent: var(--pl-action);
+  --ppn-font-heading: var(--pl-font-heading);
+}
+.theme-betledger {
+  --ppn-text: var(--bl-text);
+  --ppn-muted: var(--bl-text-muted);
+  --ppn-border: var(--bl-stroke);
+  --ppn-surface: var(--bl-surface-navy);
+  --ppn-accent: var(--bl-teal);
+  --ppn-font-heading: var(--bl-font-heading);
+}
+.theme-sorapesa {
+  --ppn-text: var(--sp-text);
+  --ppn-muted: var(--sp-text-muted);
+  --ppn-border: var(--sp-border);
+  --ppn-surface: var(--sp-surface);
+  --ppn-accent: var(--sp-indigo-text);
+  --ppn-font-heading: var(--sp-font);
+}
+.theme-kikota {
+  --ppn-text: var(--kk-text);
+  --ppn-muted: var(--kk-text-muted);
+  --ppn-border: var(--kk-border);
+  --ppn-surface: var(--kk-card);
+  --ppn-accent: var(--kk-blue);
+  --ppn-font-heading: var(--kk-font-display);
+}
+.theme-matatu {
+  --ppn-text: var(--md-light);
+  --ppn-muted: var(--md-text-muted);
+  --ppn-border: var(--md-border-2);
+  --ppn-surface: var(--md-surface);
+  --ppn-accent: var(--md-gold);
+  --ppn-font-heading: var(--md-font-display);
+}
+.theme-ss {
+  --ppn-text: var(--ss-text);
+  --ppn-muted: var(--ss-muted);
+  --ppn-border: var(--ss-border);
+  --ppn-surface: var(--ss-panel);
+  --ppn-accent: var(--ss-amber);
+  --ppn-font-heading: var(--ss-font-display);
+}
+
+.ppn-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 24px);
+}
+
+.ppn-pill,
+.ppn-see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+:is(.ppn-pill, .ppn-see-all, .ppn-card):focus-visible {
+  outline: 3px solid var(--ppn-accent);
+  outline-offset: 3px;
+}
+
+/* ── Back pill ─────────────────────────────────────────────────────────── */
+
+/* The skin wrapper already clears the floating nav (90px); this only adds a small gap. */
+.ppn-back { padding-top: 12px; }
+.ppn-pill {
+  padding: 0 1rem;
+  border: 1px solid var(--ppn-border);
+  border-radius: 999px;
+  background: var(--ppn-surface);
+  color: var(--ppn-text);
+  transition: border-color 150ms ease, color 150ms ease;
+}
+.ppn-pill:hover { border-color: var(--ppn-accent); color: var(--ppn-accent); }
+
+/* ── More row ──────────────────────────────────────────────────────────── */
+
+.ppn-more {
+  padding: 3.5rem 0 4.5rem;
+  color: var(--ppn-text);
+}
+.ppn-eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ppn-muted);
+}
+.ppn-title {
+  margin: 0 0 1.5rem;
+  font-family: var(--ppn-font-heading, inherit);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ppn-text);
+}
+
+/* Phones: one row that scrolls sideways inside itself (snap per card), so the page
+   never scrolls horizontally. From 768px: a plain grid. */
+.ppn-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(78%, 300px);
+  gap: 1rem;
+  margin: 0 calc(-1 * clamp(16px, 4vw, 24px));
+  padding: 4px clamp(16px, 4vw, 24px) 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: clamp(16px, 4vw, 24px);
+  list-style: none;
+}
+.ppn-item { scroll-snap-align: start; min-width: 0; }
+@media (min-width: 768px) {
+  .ppn-row {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    padding: 4px 0 0;
+    overflow: visible;
+  }
+}
+
+.ppn-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ppn-border);
+  border-radius: 16px;
+  background: var(--ppn-surface);
+  color: var(--ppn-text);
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+.ppn-card:hover { border-color: var(--ppn-accent); }
+
+/* Fixed 920:520 frame, so nothing moves when the image arrives. Portfolio cards fill
+   it (their 1672x940 art is the same shape); game art without a card is shown whole. */
+.ppn-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 920 / 520;
+  background: color-mix(in srgb, var(--ppn-border) 50%, transparent);
+}
+.ppn-media img { object-fit: cover; }
+.ppn-media--contain img { object-fit: contain; }
+
+.ppn-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.9rem 1rem 1.1rem;
+}
+.ppn-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--ppn-font-heading, inherit);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.ppn-status {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ppn-muted);
+}
+
+.ppn-see-all {
+  margin-top: 1.25rem;
+  color: var(--ppn-accent);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ppn-pill, .ppn-card { transition: none; }
+}
