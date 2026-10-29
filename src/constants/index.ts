@@ -1,3 +1,5 @@
+import { HELLO, SUPPORT } from '@/lib/contactEmails';
+
 // Brand Colors
 export const COLORS = {
   black: '#0a0a0a',
@@ -120,7 +122,7 @@ export const SERVICES = [
 export const CONTACT = {
   phone: '+254717164951',
   phoneDisplay: '+254-717-164-951',
-  email: 'nesturex@gmail.com',
+  email: HELLO,
   whatsapp: 'https://wa.me/254717164951',
   location: 'Nairobi, Kenya',
 } as const;
@@ -205,7 +207,7 @@ export const BETLEDGER_PLAY_URL_CLEAN =
 // Solo Standoff on Google Play. null until launch: the page shows a
 // "Coming soon" badge. Set the store URL here to swap in the real Play badge.
 export const SOLO_STANDOFF_PLAY_URL: string | null = null;
-export const SOLO_STANDOFF_SUPPORT_EMAIL = 'support@nesturex.com';
+export const SOLO_STANDOFF_SUPPORT_EMAIL = SUPPORT;
 
 // SHINKUSEN storefront (external, opens in a new tab).
 export const SHINKUSEN_STORE_URL = 'https://shinkusen.shop/';
