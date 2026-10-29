@@ -1131,8 +1131,19 @@
   gap: 1rem;
   padding: 2rem 1.5rem;
   border-top: 3px solid var(--kk-blue);
+  box-shadow: var(--kk-offset);
+  transition: var(--kk-lift-transition);
 }
+.theme-kikota .kk-impact[data-active='true'] { box-shadow: var(--kk-offset-blue), var(--kk-glow-soft); }
+.theme-kikota .kk-impact:hover { transform: translate(-3px, -3px); }
 @media (min-width: 768px) { .theme-kikota .kk-impact { padding: 2.25rem 2rem; } }
+/* Kinetic type: the big word slides in from a harder slant as its card reveals. */
+.theme-kikota .kk-reveal-ready .kk-impact .kk-impact-title {
+  transition: transform 0.7s var(--kk-ease) calc(var(--i, 0) * 80ms + 0.15s);
+}
+.theme-kikota .kk-reveal-ready .kk-impact:not(.is-in) .kk-impact-title {
+  transform: translateX(-20px) skewX(-12deg);
+}
 .theme-kikota .kk-impact-title {
   font-size: 48px;
   line-height: 48px;

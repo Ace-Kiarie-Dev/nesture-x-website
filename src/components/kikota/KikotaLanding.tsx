@@ -250,13 +250,13 @@ export default function KikotaLanding() {
       {/* ── 6. Why it matters ───────────────────────────────────────────── */}
       <section className="kk-section kk-section--raised" aria-labelledby="kk-impact-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--center">
+          <div className="kk-head kk-head--center kk-reveal">
             <p className="kk-eyebrow">IMPACT</p>
             <h2 id="kk-impact-title" className="kk-h2">WHY IT MATTERS</h2>
           </div>
           <div className="kk-grid-3">
             {IMPACT.map((card, i) => (
-              <article key={card.title} className="kk-card kk-impact" data-active={i === 1}>
+              <article key={card.title} className="kk-card kk-impact kk-reveal" data-active={i === 1} style={{ '--i': i } as CSSProperties}>
                 <h3 className="kk-impact-title">{card.title}</h3>
                 <p className="kk-body">{card.body}</p>
               </article>
