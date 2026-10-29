@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { activeSocialLinks } from '@/constants';
+import { activeSocialLinks, SHINKUSEN_STORE_URL } from '@/constants';
 import { SocialIcon } from '@/components/layout/SocialIcons';
 
 const SOCIAL_LINKS = activeSocialLinks();
@@ -11,7 +11,7 @@ const LINKS: { label: string; href: string; external?: boolean }[] = [
   { label: 'Contact', href: '/contact' },
   { label: 'Free tools', href: '/tools' },
   { label: 'Privacy policy', href: '/privacy-policy' },
-  { label: 'SHINKUSEN', href: 'https://shinkusen.co.ke', external: true },
+  { label: 'SHINKUSEN', href: SHINKUSEN_STORE_URL, external: true },
 ];
 
 // Redesigned site footer: an inset panel. Opt-in per route (see ClientShell).

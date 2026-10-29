@@ -4,6 +4,8 @@
 // (DigitalProductsGrid.tsx, full list). Define an item once here; both
 // surfaces stay in sync automatically.
 
+import { SHINKUSEN_STORE_URL } from '@/constants';
+
 export type NxOriginalCategory = 'web' | 'mobile';
 
 export interface NxOriginal {
@@ -33,7 +35,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     statusDescription: 'Site coming soon',
     imageSrc: '/images/originals/Shinkusen-Card.webp',
     accent: '#e5484d',
-    link: 'https://shinkusen.co.ke',
+    link: SHINKUSEN_STORE_URL,
   },
   {
     id: 'kikota',

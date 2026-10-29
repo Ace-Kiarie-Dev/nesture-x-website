@@ -206,3 +206,6 @@ export const BETLEDGER_PLAY_URL_CLEAN =
 // "Coming soon" badge. Set the store URL here to swap in the real Play badge.
 export const SOLO_STANDOFF_PLAY_URL: string | null = null;
 export const SOLO_STANDOFF_SUPPORT_EMAIL = 'support@nesturex.com';
+
+// SHINKUSEN storefront (external, opens in a new tab).
+export const SHINKUSEN_STORE_URL = 'https://shinkusen.shop/';

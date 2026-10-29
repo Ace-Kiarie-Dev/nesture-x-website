@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useBreakpoint } from '@/lib/useBreakpoint';
-import { activeSocialLinks } from '@/constants';
+import { activeSocialLinks, SHINKUSEN_STORE_URL } from '@/constants';
 import { SocialIcon } from './SocialIcons';
 
 const SOCIAL_LINKS = activeSocialLinks();
@@ -17,7 +17,7 @@ const NAV: { label: string; href: string; showActive?: boolean }[] = [
   { label: 'Contact', href: '#contact' },
   { label: 'Free Tools', href: '/tools' },
   { label: 'Privacy Policy', href: '/privacy-policy' },
-  { label: 'Shinkusen ↗', href: 'https://shinkusen.co.ke' },
+  { label: 'Shinkusen ↗', href: SHINKUSEN_STORE_URL },
 ];
 
 export default function Footer() {
