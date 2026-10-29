@@ -164,17 +164,17 @@ export default function KikotaLanding() {
       {/* ── 3. Operations deep dive ─────────────────────────────────────── */}
       <section className="kk-section" aria-labelledby="kk-ops-title">
         <div className="kk-container kk-split">
-          <div className="kk-split-visual kk-split-visual--first">
+          <div className="kk-split-visual kk-split-visual--first kk-reveal">
             <HeatmapLaptop />
           </div>
           <div className="kk-split-copy">
-            <div className="kk-head">
+            <div className="kk-head kk-reveal">
               <p className="kk-eyebrow">OPERATIONS</p>
               <h2 id="kk-ops-title" className="kk-h2">YOUR WHOLE GYM IN ONE DASHBOARD</h2>
             </div>
             <ul className="kk-features">
-              {OPERATIONS.map(({ icon: Icon, title, body }) => (
-                <li key={title} className="kk-card kk-feature">
+              {OPERATIONS.map(({ icon: Icon, title, body }, i) => (
+                <li key={title} className="kk-card kk-feature kk-reveal" style={{ '--i': i } as CSSProperties}>
                   <Icon size={22} className="kk-feature-icon" aria-hidden="true" />
                   <div>
                     <h3 className="kk-h3 kk-feature-title">{title}</h3>

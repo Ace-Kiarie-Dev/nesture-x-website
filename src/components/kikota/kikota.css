@@ -100,10 +100,17 @@
 }
 
 /* Scroll reveal (HomeReveal with .kk selectors). Only hides anything once JS has
-   marked the page ready, and never under reduced motion. Stagger comes from --i. */
+   marked the page ready, and never under reduced motion. Stagger comes from --i.
+   The reveal moves `translate`; card hovers move `transform`, so the two never
+   share a property and a hover runs without the reveal's stagger delay. */
+.theme-kikota {
+  --kk-lift-transition: border-color 0.2s, box-shadow 0.25s var(--kk-ease), transform 0.25s var(--kk-ease);
+}
 .theme-kikota .kk-reveal-ready .kk-reveal {
-  transition: opacity 0.6s var(--kk-ease), translate 0.6s var(--kk-ease);
-  transition-delay: calc(var(--i, 0) * 80ms);
+  transition:
+    var(--kk-lift-transition),
+    opacity 0.6s var(--kk-ease) calc(var(--i, 0) * 80ms),
+    translate 0.6s var(--kk-ease) calc(var(--i, 0) * 80ms);
 }
 .theme-kikota .kk-reveal-ready .kk-reveal:not(.is-in) {
   opacity: 0;
@@ -808,8 +815,22 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem 1.25rem;
+  box-shadow: var(--kk-offset-sm);
+  transition: var(--kk-lift-transition);
 }
-.theme-kikota .kk-feature:hover { border-color: var(--kk-border-blue); }
+.theme-kikota .kk-feature:hover {
+  border-color: var(--kk-border-blue);
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 var(--kk-deep-blue);
+}
+.theme-kikota .kk-feature .kk-feature-icon {
+  box-sizing: content-box;
+  padding: 7px;
+  margin-top: -3px;
+  border: 1px solid var(--kk-border-blue);
+  border-radius: var(--kk-radius-sm);
+  background: var(--kk-blue-soft);
+}
 .theme-kikota .kk-feature-icon { flex-shrink: 0; margin-top: 2px; color: var(--kk-blue); }
 .theme-kikota .kk-feature-title { margin-bottom: 0.25rem; }
 
