@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Trophy,
 } from 'lucide-react';
+import HomeReveal from '@/components/redesign/home/HomeReveal';
 import WaitlistForm from './WaitlistForm';
 import Faq from './Faq';
 import FoundingGymLink from './FoundingGymLink';
@@ -99,7 +100,7 @@ export default function KikotaLanding() {
   return (
     <main className="kk-main">
       {/* ── 1. Hero ─────────────────────────────────────────────────────── */}
-      <section className="kk-section kk-hero" aria-labelledby="kk-hero-title">
+      <section className="kk-section kk-hero nx-grid-bg" aria-labelledby="kk-hero-title">
         <span className="kk-glow kk-glow--hero" aria-hidden="true" />
         <div className="kk-container kk-hero-grid">
           <div className="kk-hero-copy">
@@ -128,7 +129,7 @@ export default function KikotaLanding() {
             <FoundingGymLink variant="outline" />
           </div>
 
-          <div className="kk-hero-visual">
+          <div className="kk-hero-visual kk-reveal">
             <DashboardLaptop className="kk-hero-laptop" />
             <HeroRankPhone className="kk-hero-phone" />
           </div>
@@ -322,6 +323,7 @@ export default function KikotaLanding() {
           </div>
         </div>
       </section>
+      <HomeReveal root=".kk-main" item=".kk-reveal" readyClass="kk-reveal-ready" />
     </main>
   );
 }

@@ -42,6 +42,14 @@
   --kk-glow:         0 0 32px -6px rgba(30, 155, 255, 0.45);
   --kk-glow-soft:    0 0 60px -12px rgba(30, 155, 255, 0.3);
 
+  /* Hybrid look: hard offset shadows in the brand blues */
+  --kk-offset-sm:    4px 4px 0 var(--kk-deep-blue);
+  --kk-offset:       6px 6px 0 var(--kk-deep-blue);
+  --kk-offset-lg:    10px 10px 0 var(--kk-deep-blue);
+  --kk-offset-hover: 9px 9px 0 var(--kk-deep-blue);
+  --kk-offset-blue:  6px 6px 0 var(--kk-blue);
+  --kk-ease:         cubic-bezier(0.22, 1, 0.36, 1);
+
   /* Type */
   --kk-font-display: var(--font-kk-display), 'Arial Narrow', sans-serif;
   --kk-font-body:    var(--font-kk-body), system-ui, sans-serif;
@@ -76,7 +84,39 @@
 
 /* ── Layout ─────────────────────────────────────────────────────────────── */
 
-.theme-kikota .kk-main { display: flex; flex-direction: column; }
+.theme-kikota .kk-main {
+  display: flex;
+  flex-direction: column;
+
+  /* The shared hybrid pieces (.nx-grid-bg, .nx-glass / GlassPanel) read these
+     NX tokens. Re-pointed at Kikota's palette here, so they render in the
+     brand's colours and sharp corners in either site theme. */
+  --nx-bg:            var(--kk-bg);
+  --nx-grid-line:     rgba(30, 155, 255, 0.05);
+  --nx-glass-fill:    rgba(28, 29, 33, 0.6);
+  --nx-glass-border:  var(--kk-border-blue);
+  --nx-shadow-glass:  inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--kk-offset-lg);
+  --nx-radius-card:   var(--kk-radius-sm);
+}
+
+/* Scroll reveal (HomeReveal with .kk selectors). Only hides anything once JS has
+   marked the page ready, and never under reduced motion. Stagger comes from --i. */
+.theme-kikota .kk-reveal-ready .kk-reveal {
+  transition: opacity 0.6s var(--kk-ease), translate 0.6s var(--kk-ease);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+.theme-kikota .kk-reveal-ready .kk-reveal:not(.is-in) {
+  opacity: 0;
+  translate: 0 24px;
+}
+
+/* Kinetic type: headings in a revealed block slide in from a harder italic slant. */
+.theme-kikota .kk-reveal-ready .kk-reveal .kk-h2 {
+  transition: transform 0.7s var(--kk-ease) 0.1s;
+}
+.theme-kikota .kk-reveal-ready .kk-reveal:not(.is-in) .kk-h2 {
+  transform: translateX(-16px) skewX(-8deg);
+}
 
 .theme-kikota .kk-section {
   position: relative;
@@ -188,6 +228,24 @@
 
 .theme-kikota .kk-accent { display: block; color: var(--kk-blue); }
 
+/* Kinetic type: in the hero, a slanted blue block wipes off the accent line on
+   load. The text paints underneath from the first frame; the block rests at
+   scaleX(0), so with no animation (reduced motion) nothing is covered. */
+.theme-kikota .kk-hero .kk-accent { position: relative; width: fit-content; max-width: 100%; }
+.theme-kikota .kk-hero .kk-accent::after {
+  content: '';
+  position: absolute;
+  inset: -2px -6px;
+  background: var(--kk-blue);
+  transform: skewX(-12deg) scaleX(0);
+  transform-origin: right center;
+  animation: kk-wipe 0.75s var(--kk-ease) 0.25s backwards;
+  pointer-events: none;
+}
+@keyframes kk-wipe {
+  from { transform: skewX(-12deg) scaleX(1); }
+}
+
 .theme-kikota .kk-lead {
   font-size: 16px;
   line-height: 26px;
@@ -251,7 +309,10 @@
   padding: 6px 14px;
   border-radius: var(--kk-radius-sm);
   border: 1px solid var(--kk-border-blue-strong);
-  background: rgba(11, 11, 12, 0.6);
+  background: rgba(11, 11, 12, 0.45);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--kk-offset-sm);
   color: var(--kk-blue);
   font-size: 11px;
   line-height: 14px;
@@ -319,11 +380,22 @@
 .theme-kikota .kk-btn--primary:disabled { opacity: 0.65; cursor: wait; }
 
 .theme-kikota .kk-btn--outline {
-  background: transparent;
+  background: rgba(11, 11, 12, 0.45);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   color: var(--kk-text);
   border: 1px solid var(--kk-border-blue-strong);
+  box-shadow: var(--kk-offset-sm);
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s var(--kk-ease), translate 0.2s var(--kk-ease);
 }
-.theme-kikota .kk-btn--outline:hover { background: var(--kk-blue-soft); border-color: var(--kk-blue); }
+.theme-kikota .kk-btn--outline:hover {
+  background: var(--kk-blue-soft);
+  border-color: var(--kk-blue);
+  translate: -2px -2px;
+  box-shadow: 6px 6px 0 var(--kk-deep-blue);
+}
+.theme-kikota .kk-btn--outline:active { translate: 2px 2px; box-shadow: 2px 2px 0 var(--kk-deep-blue); }
+.theme-kikota .kk-btn--primary:active:not(:disabled) { translate: 1px 1px; }
 .theme-kikota .kk-btn--outline .kk-btn-icon { color: var(--kk-blue); }
 
 .theme-kikota .kk-text-link {
@@ -492,7 +564,7 @@
   background: var(--kk-bg-raised);
   border: 1px solid var(--kk-border-blue);
   border-radius: var(--kk-radius);
-  box-shadow: var(--kk-glow-soft);
+  box-shadow: var(--kk-offset-lg), var(--kk-glow-soft);
   overflow: hidden;
 }
 .theme-kikota .kk-laptop-bar {
@@ -526,7 +598,7 @@
   background: #16171a;
   border: 2px solid var(--kk-border);
   border-radius: 28px;
-  box-shadow: var(--kk-glow-soft);
+  box-shadow: 8px 8px 0 var(--kk-deep-blue), var(--kk-glow-soft);
 }
 .theme-kikota .kk-phone-notch {
   position: absolute;
