@@ -268,13 +268,13 @@ export default function KikotaLanding() {
       {/* ── 7. How it works ─────────────────────────────────────────────── */}
       <section className="kk-section" aria-labelledby="kk-how-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--center">
+          <div className="kk-head kk-head--center kk-reveal">
             <p className="kk-eyebrow">GETTING STARTED</p>
             <h2 id="kk-how-title" className="kk-h2">HOW KIKOTA WORKS</h2>
           </div>
           <ol className="kk-grid-3 kk-steps">
             {STEPS.map((step, i) => (
-              <li key={step.num} className="kk-card kk-step" data-active={i === STEPS.length - 1}>
+              <li key={step.num} className="kk-card kk-step kk-reveal" data-active={i === STEPS.length - 1} style={{ '--i': i } as CSSProperties}>
                 <span className="kk-step-num" aria-hidden="true">{step.num}</span>
                 <h3 className="kk-h3 kk-step-title">{step.title}</h3>
                 <p className="kk-body">{step.body}</p>

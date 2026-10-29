@@ -1155,12 +1155,34 @@
 
 /* ── 7. How it works ────────────────────────────────────────────────────── */
 
-.theme-kikota .kk-step { display: flex; flex-direction: column; gap: 1rem; padding: 1.75rem 1.5rem; }
+.theme-kikota .kk-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--kk-offset);
+  transition: var(--kk-lift-transition);
+}
+.theme-kikota .kk-step[data-active='true'] { box-shadow: var(--kk-offset-blue), var(--kk-glow-soft); }
+.theme-kikota .kk-step:hover { transform: translate(-3px, -3px); }
+/* Desktop: a dashed rule runs from each step to the next, through the gap. */
+@media (min-width: 1024px) {
+  .theme-kikota .kk-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: calc(1.75rem + 24px);
+    left: 100%;
+    width: 1.5rem;
+    border-top: 2px dashed var(--kk-border-blue-strong);
+    pointer-events: none;
+  }
+}
 .theme-kikota .kk-step-num {
   display: grid;
   place-items: center;
   width: 48px;
   height: 48px;
+  box-shadow: var(--kk-offset-sm);
   border: 2px solid var(--kk-blue);
   font-family: var(--kk-font-display);
   font-style: italic;
