@@ -220,17 +220,17 @@ export default function KikotaLanding() {
         <span className="kk-glow kk-glow--net" aria-hidden="true" />
         <div className="kk-container kk-split">
           <div className="kk-split-copy">
-            <div className="kk-head">
+            <div className="kk-head kk-reveal">
               <p className="kk-eyebrow">THE NETWORK</p>
               <h2 id="kk-net-title" className="kk-h2 kk-h2--lg">GIVE YOUR MEMBERS SOMETHING TO COMPETE FOR</h2>
             </div>
-            <p className="kk-lead">
+            <p className="kk-lead kk-reveal">
               Training is more fun with something on the line. Kikota connects your gym to others
               across the city through friendly competition.
             </p>
             <ul className="kk-net-list">
-              {NETWORK.map(({ icon: Icon, title, body }) => (
-                <li key={title} className="kk-net-item">
+              {NETWORK.map(({ icon: Icon, title, body }, i) => (
+                <li key={title} className="kk-net-item nx-glass kk-reveal" style={{ '--i': i } as CSSProperties}>
                   <Icon size={22} className="kk-feature-icon" aria-hidden="true" />
                   <div>
                     <h3 className="kk-h3 kk-feature-title">{title}</h3>
@@ -240,7 +240,7 @@ export default function KikotaLanding() {
               ))}
             </ul>
           </div>
-          <div className="kk-split-visual kk-net-phones">
+          <div className="kk-split-visual kk-net-phones kk-reveal">
             <LeaderboardPhone className="kk-net-board" />
             <ProfilePhone className="kk-net-profile" />
           </div>
