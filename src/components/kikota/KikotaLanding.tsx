@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Trophy,
 } from 'lucide-react';
+import GlassPanel from '@/components/redesign/GlassPanel';
 import HomeReveal from '@/components/redesign/home/HomeReveal';
 import WaitlistForm from './WaitlistForm';
 import Faq from './Faq';
@@ -191,20 +192,22 @@ export default function KikotaLanding() {
       <section className="kk-section kk-section--stripes" aria-labelledby="kk-pay-title">
         <div className="kk-container kk-split">
           <div className="kk-split-copy">
-            <div className="kk-head">
+            <div className="kk-head kk-reveal">
               <p className="kk-eyebrow kk-eyebrow--boxed">PAYMENTS</p>
               <h2 id="kk-pay-title" className="kk-h2 kk-h2--lg">
                 GET PAID THE WAY{' '}
                 <span className="kk-accent">KENYA PAYS.</span>
               </h2>
             </div>
-            <p className="kk-lead">
+            <p className="kk-lead kk-reveal">
               Members renew with M-Pesa in seconds. Payments show up in your dashboard automatically,
               so you always know who&apos;s paid.
             </p>
-            <Checklist items={PAYMENT_POINTS} />
+            <GlassPanel className="kk-pay-glass kk-reveal">
+              <Checklist items={PAYMENT_POINTS} />
+            </GlassPanel>
           </div>
-          <div className="kk-split-visual">
+          <div className="kk-split-visual kk-reveal">
             <div className="kk-brackets">
               <PaymentPhone />
             </div>

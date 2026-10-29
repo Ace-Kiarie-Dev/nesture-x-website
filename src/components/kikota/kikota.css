@@ -235,20 +235,22 @@
 
 .theme-kikota .kk-accent { display: block; color: var(--kk-blue); }
 
-/* Kinetic type: in the hero, a slanted blue block wipes off the accent line on
-   load. The text paints underneath from the first frame; the block rests at
-   scaleX(0), so with no animation (reduced motion) nothing is covered. */
-.theme-kikota .kk-hero .kk-accent { position: relative; width: fit-content; max-width: 100%; }
-.theme-kikota .kk-hero .kk-accent::after {
+/* Kinetic type: a slanted blue block wipes off the accent line, on load in the
+   hero and as the heading reveals elsewhere. The text paints underneath from the
+   first frame; the block rests at scaleX(0), so with no animation (reduced
+   motion, or no JS outside the hero) nothing is covered. */
+.theme-kikota .kk-accent { position: relative; width: fit-content; max-width: 100%; }
+.theme-kikota .kk-accent::after {
   content: '';
   position: absolute;
   inset: -2px -6px;
   background: var(--kk-blue);
   transform: skewX(-12deg) scaleX(0);
   transform-origin: right center;
-  animation: kk-wipe 0.75s var(--kk-ease) 0.25s backwards;
   pointer-events: none;
 }
+.theme-kikota .kk-hero .kk-accent::after { animation: kk-wipe 0.75s var(--kk-ease) 0.25s backwards; }
+.theme-kikota .kk-reveal-ready .kk-reveal.is-in .kk-accent::after { animation: kk-wipe 0.75s var(--kk-ease) 0.3s backwards; }
 @keyframes kk-wipe {
   from { transform: skewX(-12deg) scaleX(1); }
 }
@@ -905,6 +907,9 @@
   border-radius: var(--kk-radius-sm);
   color: var(--kk-blue);
 }
+
+/* Checklist on a glass panel over the striped band (GlassPanel, Kikota tokens). */
+.theme-kikota .kk-pay-glass { max-width: 32rem; }
 
 /* Corner brackets around the payment phone */
 .theme-kikota .kk-brackets { position: relative; padding: 1.25rem; }
