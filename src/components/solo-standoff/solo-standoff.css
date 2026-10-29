@@ -1018,7 +1018,156 @@
 }
 .theme-ss .ss-cta .ss-h3 { font-size: 1.5rem; }
 
-/* ── 7. Footer strip ────────────────────────────────────────────────────── */
+/* ── Hero actions: Play badge + jump to the launch list ─────────────────── */
+
+.theme-ss .ss-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+}
+
+/* ── 7. Launch list ─────────────────────────────────────────────────────── */
+
+/* Lands with the whole section clear of the floating nav (22px + 68px pill). */
+.theme-ss .ss-final { scroll-margin-top: 100px; }
+
+.theme-ss .ss-final-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 1.75rem;
+  text-align: center;
+  border-color: rgba(242, 169, 59, 0.45);
+}
+@media (min-width: 768px) {
+  .theme-ss .ss-final-card { padding: 3.5rem 3rem 2.25rem; }
+}
+.theme-ss .ss-final-card .ss-eyebrow { margin-bottom: 0; }
+.theme-ss .ss-final-card .ss-lead { color: var(--ss-muted); }
+
+/* Waitlist form (shared behaviour in product-landing/WaitlistForm). The min-height
+   holds the idle footprint (field, button and the note under them, which wraps to two
+   lines on phones) so loading, error and the success panel swap in without moving
+   the page. */
+.theme-ss .ss-form {
+  width: 100%;
+  max-width: 34rem;
+  min-height: 172px;
+  margin-top: 0.4rem;
+  text-align: left;
+}
+.theme-ss .ss-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .theme-ss .ss-form { min-height: 90px; }
+  .theme-ss .ss-form-row { flex-direction: row; align-items: stretch; }
+  .theme-ss .ss-form-row .ss-btn { flex-shrink: 0; }
+}
+
+.theme-ss .ss-input-wrap {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 1rem;
+  border: 2px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  background: var(--ss-bg);
+  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.35);
+  color: var(--ss-muted);
+  transition: border-color 150ms ease;
+}
+.theme-ss .ss-input-wrap:focus-within {
+  border-color: var(--ss-teal);
+  outline: 3px solid var(--ss-teal);
+  outline-offset: 3px;
+}
+.theme-ss .ss-input-wrap[data-invalid='true'] { border-color: var(--ss-danger); }
+
+.theme-ss .ss-input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ss-text);
+  font-family: var(--ss-font-body);
+  font-size: 16px; /* below 640px: 16px stops iOS zoom-on-focus */
+  font-weight: 500;
+}
+.theme-ss .ss-input::placeholder { color: var(--ss-muted); opacity: 1; }
+.theme-ss .ss-input:focus-visible { outline: none; }
+
+/* Scoped under .ss-form so they outrank .ss-card p (the final section is a card). */
+.theme-ss .ss-form .ss-form-note,
+.theme-ss .ss-form .ss-form-error {
+  margin-top: 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.theme-ss .ss-form .ss-form-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ss-muted);
+}
+.theme-ss .ss-form-note svg { color: var(--ss-teal); flex-shrink: 0; }
+.theme-ss .ss-form .ss-form-error { color: #ff8a7c; font-weight: 600; }
+
+.theme-ss .ss-form .ss-form-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.15rem;
+  border: 2px solid rgba(42, 212, 196, 0.5);
+  border-radius: var(--ss-radius);
+  background: rgba(42, 212, 196, 0.08);
+  box-shadow: 0 6px 0 var(--ss-edge);
+  color: var(--ss-text);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+.theme-ss .ss-form-success svg { color: var(--ss-teal); flex-shrink: 0; margin-top: 2px; }
+
+.theme-ss .ss-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  border: 2px solid rgba(43, 26, 4, 0.3);
+  border-top-color: var(--ss-amber-ink);
+  animation: ss-spin 0.7s linear infinite;
+}
+@keyframes ss-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .theme-ss .ss-spinner { animation-duration: 2s; }
+}
+
+.theme-ss .ss-text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ss-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--ss-border);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+.theme-ss .ss-text-link:hover { color: var(--ss-gold); text-decoration-color: var(--ss-amber); }
+
+/* ── 8. Footer strip ────────────────────────────────────────────────────── */
 
 .theme-ss .ss-strip {
   border-top: 2px solid var(--ss-border);

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {
+  ArrowDown,
   BadgeCheck,
   Boxes,
   BrainCircuit,
@@ -16,8 +17,10 @@ import DemoBoard from './DemoBoard';
 import MechanicsGrid from './MechanicsGrid';
 import PlayBadge from './PlayBadge';
 import ScreenshotCarousel from './ScreenshotCarousel';
+import WaitlistForm from './WaitlistForm';
 
 const ART = '/images/solo-standoff';
+const PRIVACY_HREF = '/privacy-policy';
 
 const FEATURES = [
   {
@@ -139,7 +142,13 @@ export default function SoloStandoffLanding() {
               right order to take down every thug, keep the hostages safe, and do it in as few taps
               as possible.
             </p>
-            <PlayBadge />
+            <div className="ss-hero-actions">
+              <PlayBadge />
+              <a href="#waitlist" className="ss-btn">
+                Notify me on launch
+                <ArrowDown size={18} aria-hidden="true" />
+              </a>
+            </div>
           </div>
 
           <div className="ss-hero-demo">
@@ -288,7 +297,22 @@ export default function SoloStandoffLanding() {
         </div>
       </section>
 
-      {/* ── 7. Footer strip ─────────────────────────────────────────────── */}
+      {/* ── 7. Launch list ──────────────────────────────────────────────── */}
+      <section id="waitlist" className="ss-section ss-section--panel ss-final" aria-labelledby="ss-final-title">
+        <div className="ss-wrap">
+          <div className="ss-card ss-final-card">
+            <span className="ss-eyebrow">Launch list</span>
+            <h2 id="ss-final-title" className="ss-h2">
+              The rooftop opens <span className="ss-gold">soon.</span>
+            </h2>
+            <p className="ss-lead">Get one email the day Solo Standoff lands on Google Play. Be first to the Daily.</p>
+            <WaitlistForm note="One email at launch. No spam, no newsletter." />
+            <Link href={PRIVACY_HREF} className="ss-text-link">Privacy policy</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8. Footer strip ─────────────────────────────────────────────── */}
       <footer className="ss-strip">
         <div className="ss-wrap ss-strip-inner">
           <Image
