@@ -14,7 +14,7 @@ const LINKS: { label: string; href: string; external?: boolean }[] = [
   { label: 'SHINKUSEN', href: SHINKUSEN_STORE_URL, external: true },
 ];
 
-// Redesigned site footer: an inset panel. Opt-in per route (see ClientShell).
+// Site footer: an inset panel. Rendered by ClientShell on every route with site chrome.
 export default function SiteFooter() {
   return (
     <footer className="nx-footer-wrap">

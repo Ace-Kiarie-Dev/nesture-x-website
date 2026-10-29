@@ -10,8 +10,8 @@ import { PRODUCT_LANDING_PATHS, fixedThemeFor } from '@/lib/productPages';
 import ClayButton from './ClayButton';
 import { cx } from './cx';
 
-// Redesigned site navigation: a floating glass pill. Opt-in per route through
-// ClientShell's REDESIGNED_ROUTES until the whole site moves over.
+// Site navigation: a floating glass pill. ClientShell renders it on every route
+// except /admin and the in-app privacy policies.
 export default function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
