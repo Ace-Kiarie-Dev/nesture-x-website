@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -139,13 +140,13 @@ export default function KikotaLanding() {
       {/* ── 2. Two layers ───────────────────────────────────────────────── */}
       <section className="kk-section kk-section--raised" aria-labelledby="kk-layers-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--bar">
+          <div className="kk-head kk-head--bar kk-reveal">
             <p className="kk-eyebrow">HOW IT&apos;S BUILT</p>
             <h2 id="kk-layers-title" className="kk-h2">ONE PLATFORM. TWO LAYERS.</h2>
           </div>
           <div className="kk-layers">
-            {LAYERS.map(layer => (
-              <article key={layer.num} className="kk-card kk-layer" data-active={layer.active}>
+            {LAYERS.map((layer, i) => (
+              <article key={layer.num} className="kk-card kk-layer kk-reveal" data-active={layer.active} style={{ '--i': i } as CSSProperties}>
                 <span className="kk-layer-num" aria-hidden="true">{layer.num}</span>
                 <h3 className="kk-h3 kk-layer-title">
                   <span className="sr-only">{layer.num} </span>{layer.title}

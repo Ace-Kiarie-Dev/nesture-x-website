@@ -756,17 +756,28 @@
 @media (min-width: 768px)  { .theme-kikota .kk-layers { gap: 1.5rem; } }
 @media (min-width: 1024px) { .theme-kikota .kk-layers { grid-template-columns: 1fr 1fr; gap: 2rem; } }
 
-.theme-kikota .kk-layer { display: flex; flex-direction: column; gap: 1rem; padding: 1.75rem 1.5rem; }
+.theme-kikota .kk-layer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--kk-offset);
+}
+.theme-kikota .kk-layer[data-active='true'] { box-shadow: var(--kk-offset-blue), var(--kk-glow-soft); }
 @media (min-width: 768px) { .theme-kikota .kk-layer { padding: 2.25rem 2rem; } }
+/* Outlined numerals; the active layer fills in blue. */
 .theme-kikota .kk-layer-num {
   font-family: var(--kk-font-display);
   font-style: italic;
   font-weight: 800;
   font-size: 48px;
   line-height: 48px;
-  color: #34363e;
+  color: var(--kk-text-muted);
 }
-.theme-kikota .kk-layer[data-active='true'] .kk-layer-num { color: var(--kk-blue); }
+@supports (-webkit-text-stroke: 1px) {
+  .theme-kikota .kk-layer-num { color: transparent; -webkit-text-stroke: 1.5px var(--kk-text-muted); }
+}
+.theme-kikota .kk-layer[data-active='true'] .kk-layer-num { color: var(--kk-blue); -webkit-text-stroke: 0; }
 .theme-kikota .kk-layer-title { font-size: 28px; line-height: 30px; }
 @media (min-width: 1024px) { .theme-kikota .kk-layer-title { font-size: 36px; line-height: 38px; } }
 
