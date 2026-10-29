@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "portfolio:media": "node scripts/generate-portfolio-media.mjs"
+    "portfolio:media": "node scripts/generate-portfolio-media.mjs",
+    "test:form-guard": "node scripts/form-guard/test.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.4.1",
