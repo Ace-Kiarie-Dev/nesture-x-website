@@ -87,6 +87,22 @@ function Laptop({ image, sizes, preload = false }: { image: ProductImage; sizes:
   );
 }
 
+// Key art in place of screens, capped at its own width.
+function HeroImage({ image }: { image: ProductImage }) {
+  return (
+    <div className="pl-hero-image" style={{ maxWidth: image.width }}>
+      <Image
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        sizes="(min-width: 960px) 560px, 92vw"
+        preload
+      />
+    </div>
+  );
+}
+
 export default function ProductLanding({ config, fontClassName = '' }: {
   config: ProductLandingConfig;
   /** next/font variable classes for the fonts the theme names. */
@@ -113,7 +129,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
     '--pl-radius-lg': theme.radiusLg,
   } as React.CSSProperties;
   const mobile = config.platform === 'mobile';
-  const [front, back] = hero.screens;
+  const [front, back] = hero.screens ?? [];
 
   return (
     <div className={`theme-pl pl-under-nav ${config.themeClass ?? ''} ${fontClassName} flex-1`} style={vars}>
@@ -145,7 +161,9 @@ export default function ProductLanding({ config, fontClassName = '' }: {
             </div>
 
             <div className="pl-hero-visual">
-              {mobile ? (
+              {hero.image ? (
+                <HeroImage image={hero.image} />
+              ) : mobile ? (
                 <div className="pl-phone-stack">
                   {back && <Phone image={back} className="pl-phone--back" sizes="220px" />}
                   {front && <Phone image={front} className="pl-phone--front" sizes="260px" preload />}
@@ -217,6 +235,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
         </section>
 
         {/* ── 5. Screens ────────────────────────────────────────────────── */}
+        {screens && (
         <section className="pl-section" aria-labelledby="pl-screens-title">
           <div className="pl-container">
             <div className="pl-section-head pl-center">
@@ -239,6 +258,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
             </ul>
           </div>
         </section>
+        )}
 
         {/* ── 6. Values ─────────────────────────────────────────────────── */}
         <section className="pl-section pl-section--tint" aria-labelledby="pl-values-title">

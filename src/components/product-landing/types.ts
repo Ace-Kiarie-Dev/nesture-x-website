@@ -88,7 +88,10 @@ export interface ProductLandingConfig {
     /** One under the form. Plain text; a privacy policy link is added after it. */
     formNote: string;
     /** Phone screens (mobile) or one screenshot (web). The first is in front. */
-    screens: ProductImage[];
+    screens?: ProductImage[];
+    /** A single hero picture (e.g. key art) shown instead of the screens, for a
+        product that has no screenshots yet. */
+    image?: ProductImage;
   };
 
   /** The problem or promise band right under the hero. */
@@ -108,7 +111,8 @@ export interface ProductLandingConfig {
     items: { title: string; body: string }[];
   };
 
-  screens: {
+  /** The screenshot section. Left out until there are screenshots to show. */
+  screens?: {
     eyebrow: string;
     title: string;
     items: { image: ProductImage; caption: string }[];

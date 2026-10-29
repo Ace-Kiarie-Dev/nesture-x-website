@@ -195,6 +195,17 @@
   background: var(--pl-surface);
 }
 
+/* Key art in place of screens (hero.image). */
+.theme-pl .pl-hero-image { width: 100%; }
+.theme-pl .pl-hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--pl-radius-lg);
+  border: 1px solid var(--pl-border);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.55);
+}
+
 .theme-pl .pl-laptop { width: 100%; }
 .theme-pl .pl-laptop-screen {
   padding: 10px;
