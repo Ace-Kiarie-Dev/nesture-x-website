@@ -92,6 +92,8 @@ export const NX_GAMES: readonly Game[] = [
     kind: 'Puzzle shooter',
     status: 'locked',
     pageHref: '/solo-standoff',
+    // The page's closing waitlist form. utm_source is stored with each signup.
+    notifyHref: '/solo-standoff?utm_source=nx-gaming-hub#waitlist',
     hero: { src: '/images/NX-Gaming/hero-solo-standoff.webp', width: 682, height: 1000 },
     heroWidth: { desktop: 250, mobile: 208 },
     emblem: { focus: '44% 14%', zoom: 2.2 },
