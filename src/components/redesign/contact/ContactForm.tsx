@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ASSETS_3D } from '@/lib/assets3d';
 import { ClayButton, ClayCard } from '@/components/redesign';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon';
+import Honeypot from '@/components/ui/Honeypot';
 import {
   BUDGETS,
   SERVICES,
@@ -52,6 +53,7 @@ export default function ContactForm() {
     <ClayCard className="nxct-form-card" style={{ padding: 'clamp(24px, 4vw, 44px)' }}>
       <div id="message" className="nxct-stack">
         <form onSubmit={submit} noValidate className="nxct-form" aria-labelledby="nxct-form-title" inert={sent} aria-hidden={sent || undefined}>
+          <Honeypot />
           <h2 id="nxct-form-title" className="nxct-form-title">
             Send us a message
           </h2>

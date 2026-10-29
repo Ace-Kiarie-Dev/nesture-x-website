@@ -6,6 +6,7 @@ import { ClayButton } from '@/components/redesign';
 import { ASSETS_3D } from '@/lib/assets3d';
 import { CONTACT } from '@/constants';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon';
+import Honeypot from '@/components/ui/Honeypot';
 import { BUDGETS, SERVICES, TIMELINES, WHATSAPP_FOLLOWUP, WHATSAPP_URL, useContactForm, type RequiredField } from '@/lib/useContactForm';
 import './Contact.css';
 
@@ -117,6 +118,7 @@ export default function Contact() {
             </motion.div>
           ) : (
             <form onSubmit={submit} noValidate className="nxc-form">
+              <Honeypot />
 
               {/* Name + Email */}
               <motion.div className="nxc-row" variants={item}>

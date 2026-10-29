@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { CONTACT } from '@/constants';
+import { HONEYPOT_FIELD } from '@/lib/honeypot';
+import { honeypotValue } from '@/components/ui/Honeypot';
 
 // The contact form's logic, shared by the homepage section (sections/Contact.tsx) and
 // /contact (redesign/contact/ContactForm.tsx). Moved here unchanged from Contact.tsx:
@@ -72,6 +74,8 @@ export function useContactForm() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    // Read before the first await: React may reuse the event afterwards.
+    const trap = honeypotValue(e.currentTarget as HTMLFormElement);
     setStatus('sending');
     setErrorMsg('');
 
@@ -79,7 +83,7 @@ export function useContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, [HONEYPOT_FIELD]: trap }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Send failed');
