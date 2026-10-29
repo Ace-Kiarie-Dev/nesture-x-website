@@ -75,9 +75,10 @@ function Phone({ image, className = '', sizes, preload = false }: {
   );
 }
 
+// Same cap for a laptop: the screenshot's width plus the screen's 10px padding each side.
 function Laptop({ image, sizes, preload = false }: { image: ProductImage; sizes: string; preload?: boolean }) {
   return (
-    <div className="pl-laptop" style={{ maxWidth: image.width + 24 }}>
+    <div className="pl-laptop" style={{ maxWidth: image.width + 20 }}>
       <div className="pl-laptop-screen">
         <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes={sizes} preload={preload} />
       </div>

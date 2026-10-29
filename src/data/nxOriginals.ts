@@ -123,7 +123,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     imageSrc: '/images/originals/TenderLeo-Card.webp',
     accent: '#F6B21A',
-    link: null,
+    link: '/tender-leo',
   },
   {
     id: 'hsdpm-church-app',
