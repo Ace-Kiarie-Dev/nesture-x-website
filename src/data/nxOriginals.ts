@@ -92,6 +92,18 @@ export const NX_ORIGINALS: NxOriginal[] = [
     link: '/matatu-dash',
   },
   {
+    id: 'solo-standoff',
+    slug: 'solo-standoff',
+    title: 'Solo Standoff',
+    description: 'Tap. Fire. Clear the grid.',
+    category: 'mobile',
+    status: 'In Development',
+    statusDescription: 'Coming soon on Android',
+    imageSrc: '/images/originals/SoloStandoff-Card.webp',
+    accent: '#E9A23B',
+    link: '/solo-standoff',
+  },
+  {
     id: 'no-snooze-solen',
     slug: 'no-snooze-solen',
     title: 'No Snooze Solen',
