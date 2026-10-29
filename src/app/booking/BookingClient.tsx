@@ -10,6 +10,7 @@ import { formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { CONTACT } from '@/constants';
 import { ASSETS_3D } from '@/lib/assets3d';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon';
+import Honeypot from '@/components/ui/Honeypot';
 import { ClayButton, ClayCard, Eyebrow, GlassPanel } from '@/components/redesign';
 import BookingStepper from '@/components/redesign/booking/BookingStepper';
 import StepHeading from '@/components/redesign/booking/StepHeading';
@@ -25,6 +26,7 @@ interface FormData {
   service:  string;
   date:     string;
   timeSlot: string;
+  website:  string; // honeypot (components/ui/Honeypot.tsx); stays empty for people
 }
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -40,7 +42,7 @@ const SERVICES = [
   { value: 'Not sure yet',       label: "Not sure yet — let's talk" },
 ];
 
-const INITIAL: FormData = { name: '', email: '', phone: '', service: '', date: '', timeSlot: '' };
+const INITIAL: FormData = { name: '', email: '', phone: '', service: '', date: '', timeSlot: '', website: '' };
 
 const WHATSAPP = `https://wa.me/${CONTACT.phone}?text=${encodeURIComponent(
   "Hi, I tried to book a consultation on your site and need some help."
@@ -173,6 +175,7 @@ export default function BookingClient() {
                       transition={{ duration: 0.25 }}
                     >
                       <div className="nxbk-fields">
+                        <Honeypot value={form.website} onChange={handleChange} />
 
                         <div className="nx-field">
                           <label htmlFor="bk-name">Full name <span className="nxbk-req" aria-hidden="true">*</span></label>

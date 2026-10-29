@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ObjectId } from 'mongodb';
 import { Resend } from 'resend';
 import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { sendBookingConfirmation } from '@/emails/send';
 import { buildBookingOwner } from '@/emails/booking-owner';
+import {
+  BodyTooLargeError, EMAIL_RE, checkRateLimit, isHoneypotFilled, rateLimitedResponse, readJsonBody, tooLargeResponse,
+} from '@/lib/formGuard';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -11,7 +15,16 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, phone, service, date, timeSlot } = await req.json() as Record<string, string>;
+    const body = await readJsonBody(req, 'booking');
+
+    // Honeypot filled: answer like a normal booking (with an unused reference),
+    // but store nothing, hold no slot and send no email.
+    if (isHoneypotFilled(body)) {
+      console.info('[booking] honeypot filled, booking dropped');
+      return NextResponse.json({ success: true, bookingId: new ObjectId().toHexString(), emailSent: true });
+    }
+
+    const { name, email, phone, service, date, timeSlot } = body as Record<string, string>;
 
     if (!name?.trim() || !email?.trim() || !phone?.trim() || !date?.trim() || !timeSlot?.trim()) {
       return NextResponse.json(
@@ -19,6 +32,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    if (!EMAIL_RE.test(email.trim())) {
+      return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
+    }
+
+    // Only bookings that would actually be saved count against the limit.
+    const rate = await checkRateLimit('booking', req);
+    if (!rate.allowed) return rateLimitedResponse(rate.retryAfterSeconds, true);
 
     if (!isValidBookingSlot(date.trim(), timeSlot.trim())) {
       return NextResponse.json(
@@ -85,6 +105,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (err) {
+    if (err instanceof BodyTooLargeError) return tooLargeResponse();
     console.error('[booking/POST]', err);
     return NextResponse.json(
       { error: 'Could not save your booking. Please try again or reach us on WhatsApp.' },
