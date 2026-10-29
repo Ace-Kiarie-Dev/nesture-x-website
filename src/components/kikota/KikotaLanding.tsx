@@ -85,6 +85,9 @@ const FOUNDING_POINTS = [
   'Help shape what we build next',
 ];
 
+// GlassPanel sets its padding inline; this hands it back to kikota.css (--kk-panel-pad).
+const PANEL_PAD: CSSProperties = { padding: 'var(--kk-panel-pad)' };
+
 function Checklist({ items }: { items: string[] }) {
   return (
     <ul className="kk-checklist">
@@ -285,9 +288,10 @@ export default function KikotaLanding() {
       </section>
 
       {/* ── 8. Founding gyms ────────────────────────────────────────────── */}
-      <section className="kk-section" aria-labelledby="kk-founding-title">
+      <section className="kk-section nx-grid-bg" aria-labelledby="kk-founding-title">
+        <span className="kk-glow kk-glow--founding" aria-hidden="true" />
         <div className="kk-container">
-          <div className="kk-panel kk-founding">
+          <GlassPanel className="kk-glass-panel kk-founding kk-reveal" style={PANEL_PAD}>
             <div className="kk-founding-copy">
               <p className="kk-eyebrow kk-eyebrow--solid">FOUNDING GYMS</p>
               <h2 id="kk-founding-title" className="kk-h2">BE ONE OF THE FIRST GYMS ON KIKOTA</h2>
@@ -300,7 +304,7 @@ export default function KikotaLanding() {
             <div className="kk-founding-cta">
               <FoundingGymLink variant="primary" arrow />
             </div>
-          </div>
+          </GlassPanel>
         </div>
       </section>
 

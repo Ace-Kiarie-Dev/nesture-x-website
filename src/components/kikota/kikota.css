@@ -534,6 +534,24 @@
 .theme-kikota .kk-panel--stripes { background: var(--kk-stripes), var(--kk-card); }
 @media (min-width: 768px) { .theme-kikota .kk-panel { padding: 3.5rem; } }
 
+/* Glass panels (GlassPanel on Kikota tokens): same padding as .kk-panel, a blue
+   border and the large offset shadow, over a grid and glow so the blur reads. */
+.theme-kikota { --kk-panel-pad: 2rem 1.25rem; }
+@media (min-width: 768px) { .theme-kikota { --kk-panel-pad: 3.5rem; } }
+.theme-kikota .kk-glass-panel {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--kk-blue);
+}
+.theme-kikota .kk-glow--founding {
+  top: 10%;
+  left: 5%;
+  width: 28rem;
+  height: 20rem;
+  max-width: 100%;
+  background: rgba(30, 155, 255, 0.18);
+}
+
 /* ── 1. Hero ────────────────────────────────────────────────────────────── */
 
 .theme-kikota .kk-hero { padding-top: 2.5rem; }
@@ -1201,7 +1219,7 @@
   align-items: center;
   background:
     radial-gradient(circle at 100% 0%, rgba(30, 155, 255, 0.14), transparent 40%),
-    var(--kk-card);
+    var(--nx-glass-fill);
 }
 .theme-kikota .kk-founding-copy { display: flex; flex-direction: column; gap: 1.25rem; }
 .theme-kikota .kk-founding-cta .kk-btn { width: 100%; }
