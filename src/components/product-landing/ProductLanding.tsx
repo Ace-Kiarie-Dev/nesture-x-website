@@ -102,6 +102,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
     '--pl-muted': c.muted,
     '--pl-primary': c.primary,
     '--pl-on-primary': c.onPrimary,
+    '--pl-action': c.action ?? c.primary,
     '--pl-accent': c.accent,
     '--pl-highlight': c.highlight,
     '--pl-border': c.border,

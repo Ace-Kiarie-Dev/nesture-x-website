@@ -134,7 +134,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     imageSrc: '/images/originals/HSDPM-Card.webp',
     accent: '#A6122F',
-    link: null,
+    link: '/hsdpm-church-app',
   },
 ];
 

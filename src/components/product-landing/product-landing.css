@@ -22,7 +22,7 @@
 
 .theme-pl ::selection { background: var(--pl-accent); color: var(--pl-text); }
 .theme-pl :focus-visible {
-  outline: 3px solid var(--pl-primary);
+  outline: 3px solid var(--pl-action);
   outline-offset: 3px;
 }
 
@@ -240,8 +240,8 @@
   transition: border-color 150ms ease;
 }
 .theme-pl .pl-input-wrap:focus-within {
-  border-color: var(--pl-primary);
-  outline: 3px solid color-mix(in srgb, var(--pl-primary) 35%, transparent);
+  border-color: var(--pl-action);
+  outline: 3px solid color-mix(in srgb, var(--pl-action) 35%, transparent);
   outline-offset: 2px;
 }
 .theme-pl .pl-input-wrap[data-invalid='true'] { border-color: var(--pl-danger); }
@@ -269,14 +269,14 @@
   padding: 0 1.4rem;
   border: 0;
   border-radius: var(--pl-radius);
-  background: var(--pl-primary);
+  background: var(--pl-action);
   color: var(--pl-on-primary);
   font: inherit;
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   cursor: pointer;
-  box-shadow: 0 12px 24px -14px color-mix(in srgb, var(--pl-primary) 80%, transparent);
+  box-shadow: 0 12px 24px -14px color-mix(in srgb, var(--pl-action) 80%, transparent);
   transition: filter 150ms ease, transform 150ms ease;
 }
 .theme-pl .pl-btn:hover:not(:disabled) { filter: brightness(1.12); }
@@ -290,7 +290,7 @@
   line-height: 1.4;
 }
 .theme-pl .pl-form .pl-form-note { display: flex; align-items: center; gap: 0.5rem; color: var(--pl-muted); }
-.theme-pl .pl-form .pl-form-note svg { flex-shrink: 0; color: var(--pl-primary); }
+.theme-pl .pl-form .pl-form-note svg { flex-shrink: 0; color: var(--pl-action); }
 .theme-pl .pl-form .pl-form-error { font-weight: 600; color: var(--pl-danger); }
 
 .theme-pl .pl-form .pl-form-success {
@@ -298,14 +298,14 @@
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem 1.15rem;
-  border: 1px solid color-mix(in srgb, var(--pl-primary) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pl-action) 30%, transparent);
   border-radius: var(--pl-radius);
   background: var(--pl-tint);
   color: var(--pl-text);
   font-weight: 600;
   line-height: 1.5;
 }
-.theme-pl .pl-form .pl-form-success svg { flex-shrink: 0; margin-top: 2px; color: var(--pl-primary); }
+.theme-pl .pl-form .pl-form-success svg { flex-shrink: 0; margin-top: 2px; color: var(--pl-action); }
 
 .theme-pl .pl-spinner {
   width: 16px;
@@ -323,7 +323,7 @@
   min-height: 44px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--pl-primary);
+  color: var(--pl-action);
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
@@ -379,7 +379,7 @@
   margin-bottom: 0.4rem;
   border-radius: var(--pl-radius);
   background: var(--pl-tint);
-  color: var(--pl-primary);
+  color: var(--pl-action);
 }
 
 /* ── 4. How it works ───────────────────────────────────────────────────── */
@@ -509,7 +509,7 @@
   cursor: pointer;
 }
 .theme-pl .pl-faq-q:focus-visible { outline-offset: -3px; border-radius: var(--pl-radius); }
-.theme-pl .pl-faq-chevron { flex-shrink: 0; color: var(--pl-primary); transition: transform 0.2s; }
+.theme-pl .pl-faq-chevron { flex-shrink: 0; color: var(--pl-action); transition: transform 0.2s; }
 .theme-pl .pl-faq-item[data-open='true'] .pl-faq-chevron { transform: rotate(180deg); }
 .theme-pl .pl-faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.25s ease; }
 .theme-pl .pl-faq-item[data-open='true'] .pl-faq-a { grid-template-rows: 1fr; }
@@ -553,7 +553,7 @@
   align-items: center;
   min-height: 44px;
   font-weight: 600;
-  color: var(--pl-primary);
+  color: var(--pl-action);
   text-decoration: underline;
   text-underline-offset: 4px;
 }

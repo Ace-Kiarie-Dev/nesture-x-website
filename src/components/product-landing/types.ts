@@ -25,10 +25,13 @@ export interface ProductTheme {
     text: string;
     /** Secondary text. Must still pass 4.5:1 on bg and surface. */
     muted: string;
-    /** Brand colour: headings, buttons, the verse band. */
+    /** Brand colour: headings, the verse band, and buttons unless action is set. */
     primary: string;
-    /** Text and icons on primary. */
+    /** Text and icons on primary (and on action). */
     onPrimary: string;
+    /** Buttons, links, focus rings and feature icons, when the brand keeps them apart
+        from its identity colour. Defaults to primary. */
+    action?: string;
     /** Secondary brand colour, used for decoration and on primary. */
     accent: string;
     /** Highlight colour (rules, dots, the pill dot). Decorative only. */
