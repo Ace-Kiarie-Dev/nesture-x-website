@@ -12,6 +12,8 @@
 // #f5f5f5 body text, #b8cef0 secondary text, #1a6fd4 / #3d8ef0 blue accents. All
 // pairs keep their contrast when a client force-inverts the email.
 
+import { HELLO } from '@/lib/contactEmails';
+
 export const SITE_URL = 'https://nesturex.com';
 const LOGO = { src: `${SITE_URL}/email/nx-logo.png`, width: 168, height: 44 };
 
@@ -189,7 +191,7 @@ const SOCIALS = [
   { label: 'YouTube @nesture-x',   href: 'https://www.youtube.com/@nesture-x' },
 ];
 
-export const FOOTER_EMAIL = 'hello@nesturex.com';
+export const FOOTER_EMAIL = HELLO;
 
 export interface LayoutOptions {
   /** <title> of the document. */

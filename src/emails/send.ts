@@ -2,10 +2,9 @@ import { Resend } from 'resend';
 import { buildContactReply } from './contact-reply';
 import { buildBookingConfirmation } from './booking-confirmation';
 import { buildLaunchSignup } from './launch-signup';
+import { FROM, REPLY_TO } from '@/lib/contactEmails';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-const REPLY_TO = 'nesturex@gmail.com';
 
 export function sendBookingConfirmation(params: {
   to: string;
@@ -17,7 +16,7 @@ export function sendBookingConfirmation(params: {
 }) {
   const { html, text } = buildBookingConfirmation(params);
   return resend.emails.send({
-    from: 'Nesture-X <bookings@nesturex.com>',
+    from: FROM.customer,
     to: params.to,
     replyTo: REPLY_TO,
     subject: 'Your Nesture-X Consultation is Confirmed ✓',
@@ -33,7 +32,7 @@ export function sendContactReply(params: {
 }) {
   const { html, text } = buildContactReply(params);
   return resend.emails.send({
-    from: 'Peter at Nesture-X <inquiries@nesturex.com>',
+    from: FROM.contactReply,
     to: params.to,
     replyTo: REPLY_TO,
     subject: "Got it — we're looking at your idea 👀",
@@ -48,7 +47,7 @@ export function sendLaunchSignup(params: {
 }) {
   const { html, text } = buildLaunchSignup(params);
   return resend.emails.send({
-    from: 'Nesture-X <launch@nesturex.com>',
+    from: FROM.customer,
     to: params.to,
     replyTo: REPLY_TO,
     subject: `You're on the list for ${params.productName}`,

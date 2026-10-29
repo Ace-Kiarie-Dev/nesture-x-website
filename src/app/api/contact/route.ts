@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { getDb } from '@/lib/mongodb';
 import { sendContactReply } from '@/emails/send';
 import { buildContactOwner } from '@/emails/contact-owner';
+import { FROM, OWNER_INBOX } from '@/lib/contactEmails';
 import {
   BodyTooLargeError, EMAIL_RE, checkRateLimit, isHoneypotFilled, rateLimitedResponse, readJsonBody, tooLargeResponse,
 } from '@/lib/formGuard';
@@ -63,8 +64,8 @@ export async function POST(req: NextRequest) {
     // ── 2. Internal notification + auto-reply — email failure never blocks the lead ──
     const [internalResult, replyResult] = await Promise.allSettled([
       resend.emails.send({
-        from:    'Nesture-X Inquiries <inquiries@nesturex.com>',
-        to:      'nesturex@gmail.com',
+        from:    FROM.ownerInquiry,
+        to:      OWNER_INBOX,
         replyTo: email.trim(),
         subject: `New Inquiry — ${service || 'General'} — ${name}`,
         ...buildContactOwner({ name, email, phone, service, brief, budget, timeline }),

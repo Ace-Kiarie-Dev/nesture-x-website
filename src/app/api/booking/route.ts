@@ -5,6 +5,7 @@ import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { sendBookingConfirmation } from '@/emails/send';
 import { buildBookingOwner } from '@/emails/booking-owner';
+import { FROM, OWNER_INBOX } from '@/lib/contactEmails';
 import {
   BodyTooLargeError, EMAIL_RE, checkRateLimit, isHoneypotFilled, rateLimitedResponse, readJsonBody, tooLargeResponse,
 } from '@/lib/formGuard';
@@ -77,8 +78,8 @@ export async function POST(req: NextRequest) {
         bookingRef: bookingId,
       }),
       resend.emails.send({
-        from:    'Nesture-X Bookings <bookings@nesturex.com>',
-        to:      'nesturex@gmail.com',
+        from:    FROM.ownerBooking,
+        to:      OWNER_INBOX,
         subject: `New Consultation — ${booking.name} — ${formatDateLabel(booking.date)}`,
         ...buildBookingOwner({
           name:    booking.name,
