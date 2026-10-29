@@ -5,7 +5,7 @@ import CountUp from '@/components/redesign/home/CountUp';
 // Only numbers already published on the site (the old /services stats strip). The year is
 // shown as is: counting up to 2024 from 0 would read as a quantity, not a date.
 const STATS = [
-  { value: '11+', label: 'Clients served', count: true },
+  { value: '33+', label: 'Clients served', count: true },
   { value: '5', label: 'Equity partners', count: true },
   { value: '100%', label: 'Full-stack in-house', count: true },
   { value: '2024', label: 'Founded', count: false },

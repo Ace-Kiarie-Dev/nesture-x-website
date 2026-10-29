@@ -59,4 +59,5 @@ export const CLIENT_BRANDS = [
   'Shadowcope',
   'Blefice',
   'Centron Technics',
+  'Aegis',
 ];

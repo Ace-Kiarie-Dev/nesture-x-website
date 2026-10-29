@@ -16,7 +16,7 @@ const TYPED_PHRASES = [
 ];
 
 const STATS = [
-  { number: '11+', label: 'Clients Served' },
+  { number: '33+', label: 'Clients Served' },
   { number: '5', label: 'Equity Partners' },
   { number: '100%', label: 'Full-Stack Capable' },
 ];
