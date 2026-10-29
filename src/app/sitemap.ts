@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import portfolioData from '@/data/portfolio.json';
-import type { PortfolioItem } from '@/components/sections/Portfolio';
+import type { PortfolioItem } from '@/types/portfolio';
 import { isIndexablePortfolioItem } from '@/lib/portfolioSeo';
 import { PRODUCT_LANDING_PATHS } from '@/lib/productPages';
 

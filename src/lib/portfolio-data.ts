@@ -1,6 +1,6 @@
 import portfolioData from '@/data/portfolio.json';
 import media from '@/data/portfolio-media.json';
-import type { PortfolioItem } from '@/components/sections/Portfolio';
+import type { PortfolioItem } from '@/types/portfolio';
 import { NX_ORIGINALS } from '@/data/nxOriginals';
 import { DEV_PROJECTS } from '@/data/devProjects';
 import { getProjectDestination } from '@/lib/getProjectDestination';

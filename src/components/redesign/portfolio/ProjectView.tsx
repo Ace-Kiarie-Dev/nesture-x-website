@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { PortfolioItem } from '@/components/sections/Portfolio';
+import type { PortfolioItem } from '@/types/portfolio';
 import PDFViewerLazy from '@/app/portfolio/[id]/PDFViewerLazy';
 import { portfolioTitle } from '@/lib/portfolioSeo';
 import {

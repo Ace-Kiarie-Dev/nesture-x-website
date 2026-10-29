@@ -8,9 +8,9 @@ import './not-found.css';
 
 const COMPASS = ASSETS_3D['misc-compass'];
 
-// Every unmatched URL lands here. ClientShell can't opt it into the redesign by pathname,
-// so the page brings SiteNav and SiteFooter itself and .nx-404 hides the legacy chrome
-// (hybrid.css). Next adds the noindex tag for 404s.
+// Every unmatched URL lands here, including ones under /admin and /legal that get no
+// shell chrome, so the page brings SiteNav and SiteFooter itself and .nx-404 hides
+// ClientShell's copies where there are any (hybrid.css). Next adds the noindex tag for 404s.
 export default function NotFound() {
   return (
     <div className="nx-404 nx-grid-bg">

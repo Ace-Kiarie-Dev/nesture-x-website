@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import portfolioData from '@/data/portfolio.json';
-import type { PortfolioItem } from '@/components/sections/Portfolio';
+import type { PortfolioItem } from '@/types/portfolio';
 import { Band, ClayButton, SectionHeading } from '@/components/redesign';
 
 // Same selection as the old homepage (Portfolio featuredOnly): the first eight featured items.
