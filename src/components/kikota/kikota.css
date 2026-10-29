@@ -425,11 +425,16 @@
 
 /* ── Waitlist form ──────────────────────────────────────────────────────── */
 
-.theme-kikota .kk-form { width: 100%; max-width: 32rem; }
+/* min-height holds the tallest state (row plus one error line), so an error,
+   the success message or the 409 message never moves what sits below the form. */
+.theme-kikota .kk-form { width: 100%; max-width: 32rem; min-height: 144px; }
 
 .theme-kikota .kk-form-row { display: flex; flex-direction: column; gap: 0.5rem; }
 @media (min-width: 640px) {
+  .theme-kikota .kk-form { min-height: 84px; }
   .theme-kikota .kk-form-row { flex-direction: row; align-items: stretch; }
+  /* Wide enough for "JOIN THE WAITLIST", so "Joining…" doesn't shrink the button. */
+  .theme-kikota .kk-form-row .kk-btn { min-width: 14rem; }
 }
 
 .theme-kikota .kk-input-wrap {
