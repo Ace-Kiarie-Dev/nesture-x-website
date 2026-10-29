@@ -311,11 +311,13 @@ export default function KikotaLanding() {
       {/* ── 9. FAQ ──────────────────────────────────────────────────────── */}
       <section className="kk-section kk-section--raised" aria-labelledby="kk-faq-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--bar">
+          <div className="kk-head kk-head--bar kk-reveal">
             <p className="kk-eyebrow">QUESTIONS</p>
             <h2 id="kk-faq-title" className="kk-h2">FREQUENTLY ASKED QUESTIONS</h2>
           </div>
-          <Faq />
+          <div className="kk-reveal">
+            <Faq />
+          </div>
         </div>
       </section>
 
