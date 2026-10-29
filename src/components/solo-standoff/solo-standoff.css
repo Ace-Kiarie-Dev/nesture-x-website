@@ -35,10 +35,9 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Pull the page up behind the transparent fixed navbar so there's no seam. */
+/* Paint behind the floating SiteNav and clear it (22px + 68px). */
 .theme-ss.ss-under-nav {
-  margin-top: -80px;
-  padding-top: 80px;
+  padding-top: 90px;
 }
 
 .theme-ss ::selection {

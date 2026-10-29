@@ -61,7 +61,8 @@ export default function PrivacyPolicyPage() {
       {/* ── Header ── */}
       <section
         className="relative overflow-hidden bg-[var(--color-bg)]"
-        style={{ padding: SECTION_PAD }}
+        // Extra top padding clears the floating SiteNav (22px offset + 68px pill).
+        style={{ padding: SECTION_PAD, paddingTop: 'calc(90px + clamp(6rem, 10vw, 11rem))' }}
       >
         <div className="grid-overlay absolute inset-0 z-0 pointer-events-none" aria-hidden />
         <div className="relative z-[1]" style={{ maxWidth: PROSE_WIDTH }}>

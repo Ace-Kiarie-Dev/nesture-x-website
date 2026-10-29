@@ -32,10 +32,11 @@ export default function StatusPageClient({ project }: { project: StatusProject }
   const categoryHref = `/portfolio?view=digital&type=${project.category}#${project.slug}`;
 
   return (
-    <main className="relative overflow-hidden" style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
+    <main className="relative overflow-hidden" style={{ minHeight: '100vh', paddingTop: 90, background: 'var(--color-bg)' }}>
       <div className="grid-overlay absolute inset-0 z-0 pointer-events-none" aria-hidden />
 
       <Breadcrumb
+        sticky={false}
         segments={[
           { label: 'Portfolio', onClick: () => router.push('/portfolio') },
           { label: categoryLabel, onClick: () => router.push(`/portfolio?view=digital&type=${project.category}`) },
@@ -49,7 +50,7 @@ export default function StatusPageClient({ project }: { project: StatusProject }
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
         style={{
-          minHeight: 'calc(100vh - 80px)',
+          minHeight: 'calc(100vh - 90px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

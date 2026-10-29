@@ -10,12 +10,23 @@ import SiteFooter from '@/components/redesign/SiteFooter';
 // Routes already moved to the hybrid redesign. They get the new SiteNav and SiteFooter
 // and paint their own background, so the particle canvas and the 80px navbar offset
 // are skipped. Exact paths: /nx-gaming/2048 etc. are static games outside this shell.
-const REDESIGNED_ROUTES = new Set(['/', '/nx-gaming', '/services', '/portfolio', '/about', '/contact', '/tools', '/booking']);
+// The product landing pages keep their own skin in the body and clear the floating nav
+// themselves (their *-under-nav wrappers).
+const REDESIGNED_ROUTES = new Set([
+  '/', '/nx-gaming', '/services', '/portfolio', '/about', '/contact', '/tools', '/booking', '/privacy-policy',
+  '/betledger', '/sorapesa', '/kikota', '/matatu-dash', '/solo-standoff',
+]);
 
-// Dynamic redesigned routes. Project pages are one segment under /portfolio (the
-// /portfolio/status/[slug] pages keep the legacy chrome); every tool is one segment
-// under /tools. /booking has no sub-routes (the whole flow is client state on one page).
-const REDESIGNED_PATTERNS = [/^\/portfolio\/(?!status$)[^/]+$/, /^\/tools\/[^/]+$/];
+// Dynamic redesigned routes. Project pages are one segment under /portfolio, status
+// pages are /portfolio/status/[slug]; every tool is one segment under /tools; the Solo
+// Standoff legal docs are one segment under /solo-standoff. /booking has no sub-routes
+// (the whole flow is client state on one page).
+const REDESIGNED_PATTERNS = [
+  /^\/portfolio\/(?!status$)[^/]+$/,
+  /^\/portfolio\/status\/[^/]+$/,
+  /^\/tools\/[^/]+$/,
+  /^\/solo-standoff\/[^/]+$/,
+];
 
 function isRedesigned(path: string): boolean {
   return REDESIGNED_ROUTES.has(path) || REDESIGNED_PATTERNS.some((re) => re.test(path));

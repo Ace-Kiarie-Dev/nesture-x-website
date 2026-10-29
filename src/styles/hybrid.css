@@ -276,6 +276,13 @@ body:has(.nx-404) .site-wrapper { padding-top: 0 !important; }
   justify-content: space-between;
   gap: 20px;
 }
+/* The product landing pages keep their own palette in either site theme (SoraPesa is
+   always light, BetLedger, Kikota and Matatu Dash always dark), so the thin glass can't
+   borrow its contrast from the page behind it. Back it with the theme's own surface.
+   Solo Standoff needs none of this: it forces the dark theme on a dark page. */
+body:has(.bl-under-nav, .sp-under-nav, .kk-under-nav, .md-under-nav) .nx-nav.nx-glass {
+  background: color-mix(in srgb, var(--nx-bg) 90%, transparent);
+}
 .nx-nav-links {
   display: none;
   list-style: none;

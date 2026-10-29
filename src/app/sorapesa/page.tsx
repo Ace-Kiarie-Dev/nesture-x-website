@@ -87,7 +87,7 @@ export default function SoraPesaPage() {
   return (
     <>
       <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
-      <div className={`theme-sorapesa ${montserrat.variable} flex-1`}>
+      <div className={`theme-sorapesa sp-under-nav ${montserrat.variable} flex-1`}>
         <SoraPesaLanding />
       </div>
     </>

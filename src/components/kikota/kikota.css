@@ -66,12 +66,9 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Same as BetLedger: in dark mode, pull the page up behind the transparent
-   fixed navbar so there's no seam. In light mode the navbar keeps its own
-   light backdrop. */
-[data-theme='dark'] .theme-kikota.kk-under-nav {
-  margin-top: -80px;
-  padding-top: 80px;
+/* Same as BetLedger: paint behind the floating SiteNav and clear it (22px + 68px). */
+.theme-kikota.kk-under-nav {
+  padding-top: 90px;
 }
 
 .theme-kikota ::selection { background: var(--kk-blue); color: var(--kk-on-blue); }
