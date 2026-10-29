@@ -322,15 +322,16 @@ export default function KikotaLanding() {
       </section>
 
       {/* ── 10. Final CTA ───────────────────────────────────────────────── */}
-      <section id="waitlist" className="kk-section kk-final" aria-labelledby="kk-final-title">
+      <section id="waitlist" className="kk-section kk-final nx-grid-bg" aria-labelledby="kk-final-title">
+        <span className="kk-glow kk-glow--final" aria-hidden="true" />
         <div className="kk-container">
-          <div className="kk-panel kk-panel--stripes kk-final-panel">
+          <GlassPanel className="kk-glass-panel kk-final-panel kk-reveal" style={PANEL_PAD}>
             <p className="kk-eyebrow">EARLY ACCESS</p>
             <h2 id="kk-final-title" className="kk-h2">READY TO RUN A SMARTER GYM?</h2>
             <p className="kk-lead">Join the waitlist and we&apos;ll let you know as soon as Kikota launches.</p>
             <WaitlistForm />
             <Link href={PRIVACY_HREF} className="kk-text-link">Privacy Policy</Link>
-          </div>
+          </GlassPanel>
         </div>
       </section>
       <HomeReveal root=".kk-main" item=".kk-reveal" readyClass="kk-reveal-ready" />
