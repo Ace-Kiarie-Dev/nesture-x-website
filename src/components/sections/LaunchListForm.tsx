@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NxButton from '@/components/ui/NxButton';
+import Honeypot, { honeypotValue } from '@/components/ui/Honeypot';
+import { HONEYPOT_FIELD } from '@/lib/honeypot';
 
 interface LaunchListFormProps {
   projectSlug: string;
@@ -40,6 +42,7 @@ export default function LaunchListForm({ projectSlug, projectName }: LaunchListF
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    const trap = honeypotValue(e.currentTarget as HTMLFormElement);
 
     if (!EMAIL_RE.test(email.trim())) {
       setError('Enter a valid email address.');
@@ -52,7 +55,7 @@ export default function LaunchListForm({ projectSlug, projectName }: LaunchListF
       const res  = await fetch('/api/launch-list', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ email: email.trim(), projectSlug, projectName }),
+        body:    JSON.stringify({ email: email.trim(), projectSlug, projectName, [HONEYPOT_FIELD]: trap }),
       });
       const data = await res.json() as { error?: string };
       if (!res.ok) throw new Error(data.error || 'Could not join the launch list. Please try again.');
@@ -99,6 +102,7 @@ export default function LaunchListForm({ projectSlug, projectName }: LaunchListF
           animate={{ opacity: 1, y: 0 }}
           style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxWidth: '380px', width: '100%' }}
         >
+          <Honeypot />
           <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
             <input
               type="email"
