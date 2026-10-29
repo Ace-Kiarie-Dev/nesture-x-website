@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import localFont from 'next/font/local';
 import KikotaLanding from '@/components/kikota/KikotaLanding';
+import { ProductBackPill, ProductMoreRow } from '@/components/product-landing/ProductPageNav';
 import '@/components/kikota/kikota.css';
 
 // Barlow Condensed and Inter are only used by Kikota, so they're loaded here
@@ -103,7 +104,9 @@ export default function KikotaPage() {
     <>
       <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
       <div className={`theme-kikota kk-under-nav ${barlowCondensed.variable} ${inter.variable} flex-1`}>
+        <ProductBackPill slug="kikota" />
         <KikotaLanding />
+        <ProductMoreRow slug="kikota" />
       </div>
     </>
   );

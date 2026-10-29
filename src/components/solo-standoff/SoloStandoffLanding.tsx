@@ -18,6 +18,7 @@ import MechanicsGrid from './MechanicsGrid';
 import PlayBadge from './PlayBadge';
 import ScreenshotCarousel from './ScreenshotCarousel';
 import WaitlistForm from './WaitlistForm';
+import { ProductMoreRow } from '@/components/product-landing/ProductPageNav';
 
 const ART = '/images/solo-standoff';
 const PRIVACY_HREF = '/privacy-policy';
@@ -311,6 +312,9 @@ export default function SoloStandoffLanding() {
           </div>
         </div>
       </section>
+
+      {/* More from Nesture-X, above the game's own footer strip. */}
+      <ProductMoreRow slug="solo-standoff" />
 
       {/* ── 8. Footer strip ─────────────────────────────────────────────── */}
       <footer className="ss-strip">

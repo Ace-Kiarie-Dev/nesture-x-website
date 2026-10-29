@@ -83,8 +83,10 @@
 
 /* ── Back pill ─────────────────────────────────────────────────────────── */
 
-/* The skin wrapper already clears the floating nav (90px); this only adds a small gap. */
-.ppn-back { padding-top: 12px; }
+/* The skin wrapper already clears the floating nav (90px); this only adds a small gap.
+   Its own layer keeps it above hero backdrops that bleed up under the nav (Solo
+   Standoff's .ss-hero-bg), so it stays clickable. */
+.ppn-back { position: relative; z-index: 1; padding-top: 12px; }
 .ppn-pill {
   padding: 0 1rem;
   border: 1px solid var(--ppn-border);

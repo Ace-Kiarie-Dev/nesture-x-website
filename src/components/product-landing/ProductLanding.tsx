@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Check } from 'lucide-react';
 import WaitlistForm, { type WaitlistFormClasses } from './WaitlistForm';
 import Faq, { type FaqClasses } from './Faq';
+import { ProductBackPill, ProductMoreRow } from './ProductPageNav';
 import type { ProductImage, ProductLandingConfig } from './types';
 import './product-landing.css';
 
@@ -133,6 +134,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
 
   return (
     <div className={`theme-pl pl-under-nav ${config.themeClass ?? ''} ${fontClassName} flex-1`} style={vars}>
+      <ProductBackPill slug={config.slug} />
       <main>
         {/* ── 1. Hero ───────────────────────────────────────────────────── */}
         <section className="pl-section pl-hero" aria-labelledby="pl-hero-title">
@@ -319,6 +321,7 @@ export default function ProductLanding({ config, fontClassName = '' }: {
           </div>
         </section>
       </main>
+      <ProductMoreRow slug={config.slug} />
     </div>
   );
 }

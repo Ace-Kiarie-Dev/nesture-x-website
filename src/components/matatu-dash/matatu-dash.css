@@ -733,7 +733,8 @@
 
 /* ── 9. Final CTA ───────────────────────────────────────────────────────── */
 
-.theme-matatu .md-final { padding-top: 6rem; }
+/* #waitlist target: land clear of the floating nav, like the other product pages. */
+.theme-matatu .md-final { padding-top: 6rem; scroll-margin-top: 100px; }
 
 .theme-matatu .md-final-card {
   position: relative;

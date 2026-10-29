@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import SoloStandoffLanding from '@/components/solo-standoff/SoloStandoffLanding';
+import { ProductBackPill } from '@/components/product-landing/ProductPageNav';
 
 const TITLE = 'Solo Standoff: Rooftop Puzzle Shooter | NX Gaming';
 const DESCRIPTION =
@@ -63,6 +64,7 @@ export default function SoloStandoffPage() {
   return (
     <>
       <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
+      <ProductBackPill slug="solo-standoff" />
       <SoloStandoffLanding />
     </>
   );

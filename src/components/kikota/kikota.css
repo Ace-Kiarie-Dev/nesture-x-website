@@ -1120,6 +1120,9 @@
 
 /* ── 10. Final CTA ──────────────────────────────────────────────────────── */
 
+/* #waitlist target: land clear of the floating nav, like the other product pages. */
+.theme-kikota .kk-final { scroll-margin-top: 100px; }
+
 .theme-kikota .kk-final-panel {
   display: flex;
   flex-direction: column;

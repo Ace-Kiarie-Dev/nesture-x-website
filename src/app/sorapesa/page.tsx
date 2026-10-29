@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import localFont from 'next/font/local';
 import SoraPesaLanding from '@/components/sorapesa/SoraPesaLanding';
+import { ProductBackPill, ProductMoreRow } from '@/components/product-landing/ProductPageNav';
 import '@/components/sorapesa/sorapesa.css';
 
 // Montserrat is only used by SoraPesa, so it's loaded here rather than in the root layout.
@@ -88,7 +89,9 @@ export default function SoraPesaPage() {
     <>
       <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
       <div className={`theme-sorapesa sp-under-nav ${montserrat.variable} flex-1`}>
+        <ProductBackPill slug="sorapesa" />
         <SoraPesaLanding />
+        <ProductMoreRow slug="sorapesa" />
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import { JsonLd, SITE_URL, breadcrumbList } from '@/lib/jsonLd';
 import localFont from 'next/font/local';
 import { BETLEDGER_PLAY_URL_CLEAN } from '@/constants';
 import BetLedgerLanding from '@/components/betledger/BetLedgerLanding';
+import { ProductBackPill, ProductMoreRow } from '@/components/product-landing/ProductPageNav';
 import '@/components/betledger/betledger.css';
 
 // Inter is only used by BetLedger, so it's loaded here rather than in the root layout.
@@ -91,7 +92,9 @@ export default function BetLedgerPage() {
     <>
       <JsonLd data={[APP_JSON_LD, BREADCRUMB_JSON_LD]} />
       <div className={`theme-betledger bl-under-nav ${inter.variable} flex-1`}>
+        <ProductBackPill slug="betledger" />
         <BetLedgerLanding />
+        <ProductMoreRow slug="betledger" />
       </div>
     </>
   );
