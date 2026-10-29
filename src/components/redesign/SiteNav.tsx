@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '@/constants';
 import SiteThemeSwitch from '@/components/layout/SiteThemeSwitch';
+import { PRODUCT_LANDING_PATHS, fixedThemeFor } from '@/lib/productPages';
 import ClayButton from './ClayButton';
 import { cx } from './cx';
 
@@ -18,15 +19,16 @@ export default function SiteNav() {
   const burgerRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
 
-  // Same rule as the current Navbar: product pages with their own dark skin stay dark.
-  const forceDark = pathname.startsWith('/solo-standoff');
+  // Product pages with one fixed palette pin the site theme to match it and hide the
+  // switch (productPages.ts). Solo Standoff is always dark, Hikarani always light.
+  const fixedTheme = fixedThemeFor(pathname);
   useEffect(() => {
-    if (!forceDark) return;
-    document.documentElement.setAttribute('data-theme', 'dark');
+    if (!fixedTheme) return;
+    document.documentElement.setAttribute('data-theme', fixedTheme);
     return () => {
       document.documentElement.setAttribute('data-theme', localStorage.getItem('nx-theme') || 'dark');
     };
-  }, [forceDark]);
+  }, [fixedTheme]);
 
   // The drawer is a modal <dialog>: the page behind is inert and Esc closes it.
   // Focus goes back to the menu button explicitly, since Safari doesn't focus a
@@ -60,7 +62,9 @@ export default function SiteNav() {
     }
   };
 
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+  // Template product pages sit under Portfolio in the nav, though their URLs don't.
+  const section = PRODUCT_LANDING_PATHS.includes(pathname) ? '/portfolio' : pathname;
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : section.startsWith(href));
 
   return (
     <>
@@ -85,7 +89,7 @@ export default function SiteNav() {
           </ul>
 
           <div className="nx-nav-end">
-            {!forceDark && (
+            {!fixedTheme && (
               <>
                 <span className="nx-nav-switch nx-nav-switch--wide">
                   <SiteThemeSwitch width={92} />

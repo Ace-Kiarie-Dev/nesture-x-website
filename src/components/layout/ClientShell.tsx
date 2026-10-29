@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import ParticleCanvas from '@/components/ui/ParticleCanvas';
 import SiteNav from '@/components/redesign/SiteNav';
 import SiteFooter from '@/components/redesign/SiteFooter';
+import { PRODUCT_LANDING_PATHS } from '@/lib/productPages';
 
 // Routes already moved to the hybrid redesign. They get the new SiteNav and SiteFooter
 // and paint their own background, so the particle canvas and the 80px navbar offset
@@ -15,6 +16,7 @@ import SiteFooter from '@/components/redesign/SiteFooter';
 const REDESIGNED_ROUTES = new Set([
   '/', '/nx-gaming', '/services', '/portfolio', '/about', '/contact', '/tools', '/booking', '/privacy-policy',
   '/betledger', '/sorapesa', '/kikota', '/matatu-dash', '/solo-standoff',
+  ...PRODUCT_LANDING_PATHS,
 ]);
 
 // Dynamic redesigned routes. Project pages are one segment under /portfolio, status

@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import portfolioData from '@/data/portfolio.json';
 import type { PortfolioItem } from '@/components/sections/Portfolio';
 import { isIndexablePortfolioItem } from '@/lib/portfolioSeo';
+import { PRODUCT_LANDING_PATHS } from '@/lib/productPages';
 
 // Bump when the static pages' content changes. A fixed date (not the build
 // time) keeps lastModified meaningful to search engines.
@@ -41,6 +42,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     }));
 
+  // Product pages built from the shared ProductLanding template.
+  const productLandingEntries = PRODUCT_LANDING_PATHS.map((path) => ({
+    url: `${base}${path}`,
+    lastModified: SITE_UPDATED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
   return [
     { url: base, lastModified: SITE_UPDATED, changeFrequency: 'weekly' as const, priority: 1.0 },
     { url: `${base}/about`, lastModified: SITE_UPDATED, changeFrequency: 'monthly' as const, priority: 0.7 },
@@ -53,6 +62,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/sorapesa`, lastModified: SITE_UPDATED, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${base}/kikota`, lastModified: SITE_UPDATED, changeFrequency: 'monthly' as const, priority: 0.7 },
     { url: `${base}/matatu-dash`, lastModified: SITE_UPDATED, changeFrequency: 'monthly' as const, priority: 0.7 },
+    ...productLandingEntries,
     { url: `${base}/solo-standoff`, lastModified: '2026-10-22', changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${base}/nx-gaming`, lastModified: '2026-10-24', changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${base}/nx-gaming/2048`, lastModified: '2026-10-23', changeFrequency: 'monthly' as const, priority: 0.7 },

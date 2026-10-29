@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JsonLd, SITE_URL } from "@/lib/jsonLd";
 import { CONTACT, activeSocialLinks } from "@/constants";
+import { FIXED_THEME_ROUTES } from "@/lib/productPages";
 
 // Self-hosted from src/fonts (latin, OFL). Variable fonts list each weight against the
 // same file, as Google's CSS did, so weight matching is unchanged.
@@ -120,8 +121,11 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `(function() {
-  const forceDark = location.pathname.indexOf('/solo-standoff') === 0;
-  const theme = forceDark ? 'dark' : localStorage.getItem('nx-theme') || 'dark';
+  const fixed = ${JSON.stringify(FIXED_THEME_ROUTES)};
+  const path = location.pathname;
+  let pinned = null;
+  for (const route in fixed) if (path === route || path.indexOf(route + '/') === 0) pinned = fixed[route];
+  const theme = pinned || localStorage.getItem('nx-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', theme);
 })();`,
           }}
