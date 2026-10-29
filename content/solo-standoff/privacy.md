@@ -4,7 +4,7 @@
 
 Solo Standoff ("the game") is made by Nesture-X ("we", "us"), through its gaming studio NX Gaming, based in Nairobi, Kenya. This policy explains what information the game collects, why, and the choices you have.
 
-If you have any question about this policy, email us at **support@nesturex.com**.
+If you have any question about this policy, email us at **{{PRIVACY_EMAIL}}**.
 
 ## 1. The short version
 
@@ -72,7 +72,7 @@ You can:
 - **delete your account and data** at any time: in the game, go to Settings > Delete account. You can also ask us by email (see https://nesturex.com/solo-standoff/delete-account).
 - **change your player name and avatar** in the game
 - **turn off personalised ads** in your phone's settings
-- **ask us** for a copy of the personal information we hold about you, or ask us to correct it, by emailing support@nesturex.com
+- **ask us** for a copy of the personal information we hold about you, or ask us to correct it, by emailing {{PRIVACY_EMAIL}}
 
 Depending on where you live, including under Kenya's Data Protection Act 2019 and the EU's GDPR, you may have further rights. You may also complain to your local data protection authority (in Kenya, the Office of the Data Protection Commissioner).
 
@@ -92,5 +92,5 @@ If we change this policy, we will update the date at the top. If the changes are
 
 Nesture-X (NX Gaming)
 Nairobi, Kenya
-Email: support@nesturex.com
+Email: {{PRIVACY_EMAIL}}
 Website: https://nesturex.com/solo-standoff

@@ -20,7 +20,7 @@ We give you a personal, non-transferable right to download and play the game on 
 We want rankings to be fair for everyone. Every score is checked on our servers before it counts. You agree not to:
 - cheat, hack, or use bots, scripts, or modified versions of the game
 - send fake scores, or interfere with the game's servers
-- exploit bugs. If you find one, please tell us at support@nesturex.com.
+- exploit bugs. If you find one, please tell us at {{SUPPORT_EMAIL}}.
 
 Scores that don't pass our checks won't count. We may remove scores, reset progress, or suspend accounts that break these rules.
 
@@ -70,5 +70,5 @@ If we change these terms, we will update the date at the top. If the changes are
 
 Nesture-X (NX Gaming)
 Nairobi, Kenya
-Email: support@nesturex.com
+Email: {{SUPPORT_EMAIL}}
 Website: https://nesturex.com/solo-standoff

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PRIVACY } from '@/lib/contactEmails';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -160,8 +161,7 @@ export default function PrivacyPolicyPage() {
             marketing. Confirmation emails are sent through our email delivery provider, Resend.
           </p>
           <p style={P_STYLE}>
-            You can ask to be removed from any waitlist at any time by emailing nesturex@gmail.com,
-            and we will delete your details.
+            {`You can ask to be removed from any waitlist at any time by emailing ${PRIVACY}, and we will delete your details.`}
           </p>
 
           {/* 5 */}
@@ -239,7 +239,7 @@ export default function PrivacyPolicyPage() {
               marginBottom: '4rem',
             }}
           >
-            nesturex@gmail.com<br />
+            {PRIVACY}<br />
             Nairobi, Kenya
           </p>
 

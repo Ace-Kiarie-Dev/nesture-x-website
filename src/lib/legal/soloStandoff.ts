@@ -1,9 +1,26 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { PRIVACY, SUPPORT } from '@/lib/contactEmails';
 
 // Solo Standoff legal copy lives as markdown in content/solo-standoff/ and is
 // rendered as written. Only the title and "Last updated" line are lifted out
 // so the shared layout can show them in its header.
+//
+// Email addresses are written as tokens ({{PRIVACY_EMAIL}}, {{SUPPORT_EMAIL}}) and
+// filled in here from lib/contactEmails.ts. An unknown token fails loudly rather
+// than reaching the page.
+const TOKENS: Record<string, string> = {
+  PRIVACY_EMAIL: PRIVACY,
+  SUPPORT_EMAIL: SUPPORT,
+};
+
+function fillTokens(text: string, slug: string): string {
+  return text.replace(/\{\{\s*([A-Z_]+)\s*\}\}/g, (token, name: string) => {
+    const value = TOKENS[name];
+    if (!value) throw new Error(`Unknown token ${token} in content/solo-standoff/${slug}.md`);
+    return value;
+  });
+}
 
 export const SOLO_STANDOFF_DOCS = {
   privacy: 'Privacy Policy',
@@ -35,7 +52,7 @@ export async function loadSoloStandoffDoc(slug: SoloStandoffDocSlug): Promise<Le
     return null;
   }
 
-  let body = raw.replace(/\r\n/g, '\n');
+  let body = fillTokens(raw.replace(/\r\n/g, '\n'), slug);
   let title: string = SOLO_STANDOFF_DOCS[slug];
   let lastUpdated: string | null = null;
 

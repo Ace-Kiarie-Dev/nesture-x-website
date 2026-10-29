@@ -1,3 +1,5 @@
+import { PRIVACY } from '@/lib/contactEmails';
+
 export interface PrivacyPolicySection {
   heading: string;
   body: string;
@@ -17,7 +19,7 @@ export interface PrivacyPolicy {
   live?: boolean;
 }
 
-const CONTACT_EMAIL = 'nesturex@gmail.com';
+const CONTACT_EMAIL = PRIVACY;
 
 const PLACEHOLDER_SECTIONS = (appName: string): PrivacyPolicySection[] => [
   {
@@ -56,18 +58,18 @@ export const privacyPolicies: PrivacyPolicy[] = [
     appName: 'BetLedger',
     platform: 'Android',
     lastUpdated: '2026-07-18',
-    contactEmail: 'nesturex@gmail.com',
+    contactEmail: PRIVACY,
     theme: 'betledger',
     intro:
       'BetLedger is a personal betting-record app. It helps you keep an honest record of the bets you place elsewhere, so you can see what your betting is actually costing you.\n\nBetLedger does not accept bets, hold money, provide odds, offer tips or predictions, or connect to any betting platform. It is a record-keeping tool and nothing else.\n\nThis policy explains what personal data BetLedger collects, why, where it is stored, and what rights you have over it.',
     sections: [
       {
         heading: 'Who is responsible for your data',
-        body: 'Data controller: Peter Kiarie (trading as Nesture-X), Nairobi, Kenya\n\nContact: nesturex@gmail.com\n\nThis policy is published at https://nesturex.com/legal/betledger/privacy',
+        body: `Data controller: Peter Kiarie (trading as Nesture-X), Nairobi, Kenya\n\nContact: ${PRIVACY}\n\nThis policy is published at https://nesturex.com/legal/betledger/privacy`,
       },
       {
         heading: 'Who can use BetLedger',
-        body: 'BetLedger is intended only for people aged 18 years or older. It is not directed at children, and we do not knowingly collect personal data from anyone under 18. If you believe someone under 18 has created an account, contact nesturex@gmail.com and we will delete it.',
+        body: `BetLedger is intended only for people aged 18 years or older. It is not directed at children, and we do not knowingly collect personal data from anyone under 18. If you believe someone under 18 has created an account, contact ${PRIVACY} and we will delete it.`,
       },
       {
         heading: 'What data we collect',
@@ -91,11 +93,11 @@ export const privacyPolicies: PrivacyPolicy[] = [
       },
       {
         heading: 'Your rights',
-        body: 'Under the Data Protection Act, 2019, you have the right to: be informed about how your data is used (this policy), access the personal data we hold about you, correct data that is inaccurate or incomplete, delete your data (right to erasure), object to how we process your data, and lodge a complaint with the Office of the Data Protection Commissioner (ODPC) at https://www.odpc.go.ke.\n\nTo exercise any of these rights, email nesturex@gmail.com. We will respond within a reasonable period and in any case within 30 days.',
+        body: `Under the Data Protection Act, 2019, you have the right to: be informed about how your data is used (this policy), access the personal data we hold about you, correct data that is inaccurate or incomplete, delete your data (right to erasure), object to how we process your data, and lodge a complaint with the Office of the Data Protection Commissioner (ODPC) at https://www.odpc.go.ke.\n\nTo exercise any of these rights, email ${PRIVACY}. We will respond within a reasonable period and in any case within 30 days.`,
       },
       {
         heading: 'Deleting your account and data',
-        body: 'In the app (immediate): Open BetLedger, go to Settings, tap Delete Account, confirm. Your bet history, statistics, username, budget, and sign-in record are permanently deleted straight away. This cannot be undone.\n\nBy email (if you no longer have the app): Email nesturex@gmail.com from the Google account address you signed up with, asking for your account to be deleted. We will delete it within 30 days of receiving your request.\n\nWhat deletion removes: Your Firebase Authentication record (your sign-in), your entire bet history, and your statistics, username, and weekly budget. Nothing is retained afterwards. Deleting your BetLedger account does not affect your Google account, which stays exactly as it was.',
+        body: `In the app (immediate): Open BetLedger, go to Settings, tap Delete Account, confirm. Your bet history, statistics, username, budget, and sign-in record are permanently deleted straight away. This cannot be undone.\n\nBy email (if you no longer have the app): Email ${PRIVACY} from the Google account address you signed up with, asking for your account to be deleted. We will delete it within 30 days of receiving your request.\n\nWhat deletion removes: Your Firebase Authentication record (your sign-in), your entire bet history, and your statistics, username, and weekly budget. Nothing is retained afterwards. Deleting your BetLedger account does not affect your Google account, which stays exactly as it was.`,
       },
       {
         heading: 'How we protect your data',
@@ -107,7 +109,7 @@ export const privacyPolicies: PrivacyPolicy[] = [
       },
       {
         heading: 'Contact',
-        body: 'Questions, requests, or complaints: nesturex@gmail.com. Controller: Peter Kiarie (Nesture-X), Nairobi, Kenya. If you are not satisfied with our response, you may complain to the Office of the Data Protection Commissioner of Kenya at https://www.odpc.go.ke.',
+        body: `Questions, requests, or complaints: ${PRIVACY}. Controller: Peter Kiarie (Nesture-X), Nairobi, Kenya. If you are not satisfied with our response, you may complain to the Office of the Data Protection Commissioner of Kenya at https://www.odpc.go.ke.`,
       },
     ],
   },

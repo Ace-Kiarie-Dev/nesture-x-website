@@ -17,7 +17,7 @@ Your account and its data are removed from our servers immediately.
 
 ## By email
 
-If you can no longer open the game, for example because you uninstalled it or lost the phone, email us at **support@nesturex.com** from the address linked to your account, or tell us your player name and player ID if you played as a guest.
+If you can no longer open the game, for example because you uninstalled it or lost the phone, email us at **{{PRIVACY_EMAIL}}** from the address linked to your account, or tell us your player name and player ID if you played as a guest.
 
 We reply within 30 days and confirm once the account is deleted.
 
@@ -43,5 +43,5 @@ If you only want to move to a new phone, you do not need to delete anything. Cho
 
 Nesture-X (NX Gaming)
 Nairobi, Kenya
-Email: support@nesturex.com
+Email: {{PRIVACY_EMAIL}}
 Website: https://nesturex.com/solo-standoff
