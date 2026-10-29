@@ -13,6 +13,8 @@ export interface PrivacyPolicy {
   contactEmail: string;
   // Optional product theme for the policy page. Unset = standard NX styling.
   theme?: 'betledger';
+  // false = not published: the route 404s and the page isn't built. Content is kept.
+  live?: boolean;
 }
 
 const CONTACT_EMAIL = 'nesturex@gmail.com';
@@ -110,7 +112,9 @@ export const privacyPolicies: PrivacyPolicy[] = [
     ],
   },
   {
+    // Hidden until the real policy is written: restore by removing live: false.
     slug: 'hikarani',
+    live: false,
     appName: 'Hikarani',
     platform: 'Android',
     lastUpdated: '2026-07-16',
@@ -118,7 +122,9 @@ export const privacyPolicies: PrivacyPolicy[] = [
     contactEmail: CONTACT_EMAIL,
   },
   {
+    // Hidden until the real policy is written: restore by removing live: false.
     slug: 'kikota',
+    live: false,
     appName: 'Kikota',
     platform: 'Android',
     lastUpdated: '2026-07-16',
@@ -126,7 +132,9 @@ export const privacyPolicies: PrivacyPolicy[] = [
     contactEmail: CONTACT_EMAIL,
   },
   {
+    // Hidden until the real policy is written: restore by removing live: false.
     slug: 'no-snooze-solen',
+    live: false,
     appName: 'No Snooze Solen',
     platform: 'Android',
     lastUpdated: '2026-07-16',
@@ -134,7 +142,9 @@ export const privacyPolicies: PrivacyPolicy[] = [
     contactEmail: CONTACT_EMAIL,
   },
   {
+    // Hidden until the real policy is written: restore by removing live: false.
     slug: 'unnamed-game',
+    live: false,
     appName: 'NX Game Project — Working Title',
     platform: 'Android',
     lastUpdated: '2026-07-16',
