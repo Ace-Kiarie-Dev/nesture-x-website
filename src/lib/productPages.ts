@@ -4,7 +4,7 @@
 // They get the redesigned chrome (ClientShell), the nav marks Portfolio as current
 // (SiteNav), and they are listed in the sitemap. Add a path here when a new product
 // config gets its own app/<slug>/page.tsx.
-export const PRODUCT_LANDING_PATHS: readonly string[] = ['/hikarani', '/tender-leo', '/hsdpm-church-app'];
+export const PRODUCT_LANDING_PATHS: readonly string[] = ['/hikarani', '/tender-leo', '/hsdpm-church-app', '/no-snooze-solen'];
 
 // Pages whose skin has one fixed palette. The site theme is pinned to match (so the
 // nav and footer read against the page) and the theme switch is hidden. Read by the
@@ -14,6 +14,7 @@ export const FIXED_THEME_ROUTES: Readonly<Record<string, 'dark' | 'light'>> = {
   '/hikarani': 'light',
   '/tender-leo': 'light',
   '/hsdpm-church-app': 'light',
+  '/no-snooze-solen': 'dark',
 };
 
 /** The pinned theme for a path (the route itself or anything under it), or null. */

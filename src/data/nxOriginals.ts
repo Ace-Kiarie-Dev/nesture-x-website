@@ -112,7 +112,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     imageSrc: '/images/originals/Solen-Card.webp',
     accent: '#f59e0b',
-    link: null,
+    link: '/no-snooze-solen',
   },
   {
     id: 'tender-leo',

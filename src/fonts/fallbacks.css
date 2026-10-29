@@ -11,3 +11,7 @@
 @font-face { font-family: 'Barlow Fallback'; src: local(Arial); ascent-override: 103.43%; descent-override: 20.69%; line-gap-override: 0%; size-adjust: 96.68%; }
 @font-face { font-family: 'Barlow Condensed Fallback'; src: local(Arial); ascent-override: 130.73%; descent-override: 26.15%; line-gap-override: 0%; size-adjust: 76.49%; }
 @font-face { font-family: 'Playfair Display Fallback'; src: local('Times New Roman'); ascent-override: 97.25%; descent-override: 22.56%; line-gap-override: 0%; size-adjust: 111.26%; }
+@font-face { font-family: 'Outfit Fallback'; src: local(Arial); ascent-override: 100.18%; descent-override: 26.05%; line-gap-override: 0%; size-adjust: 99.82%; }
+/* Clash Display is served by Fontshare, not self-hosted (see app/no-snooze-solen/page.tsx).
+   These values come from next/font's local-font routine run on the licensed Semibold file. */
+@font-face { font-family: 'Clash Display Fallback'; src: local(Arial); ascent-override: 79.51%; descent-override: 22.33%; line-gap-override: 8.04%; size-adjust: 111.94%; }
