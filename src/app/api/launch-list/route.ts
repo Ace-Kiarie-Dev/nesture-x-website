@@ -4,6 +4,22 @@ import { sendLaunchSignup } from '@/emails/send';
 import {
   BodyTooLargeError, EMAIL_RE, checkRateLimit, isHoneypotFilled, rateLimitedResponse, readJsonBody, tooLargeResponse,
 } from '@/lib/formGuard';
+import { NX_ORIGINALS } from '@/data/nxOriginals';
+import { DEV_PROJECTS } from '@/data/devProjects';
+import { NX_GAMES } from '@/lib/nx-gaming/games';
+import { PRODUCT_LANDING_PATHS } from '@/lib/productPages';
+import { slugify } from '@/lib/slugify';
+
+// Every project a launch list form can name, built from the same data the pages
+// use: NX Originals and client sites without a URL (status pages), product pages,
+// NX Gaming, and Kikota. Anything else is rejected.
+const KNOWN_PROJECT_SLUGS = new Set<string>([
+  ...NX_ORIGINALS.map(o => o.slug),
+  ...DEV_PROJECTS.filter(p => !p.url).map(p => slugify(p.name)),
+  ...PRODUCT_LANDING_PATHS.map(path => path.replace(/^\//, '')),
+  ...NX_GAMES.map(g => g.slug),
+  'kikota',
+]);
 
 let indexEnsured = false;
 
@@ -35,6 +51,9 @@ export async function POST(req: NextRequest) {
     }
     if (!projectSlug?.trim() || !projectName?.trim()) {
       return NextResponse.json({ error: 'Missing project details.' }, { status: 400 });
+    }
+    if (!KNOWN_PROJECT_SLUGS.has(projectSlug.trim())) {
+      return NextResponse.json({ error: 'Unknown project.' }, { status: 400 });
     }
 
     // Only signups that would actually be stored count against the limit.
