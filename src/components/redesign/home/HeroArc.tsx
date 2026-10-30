@@ -160,22 +160,28 @@ export default function HeroArc() {
     const hero = rootRef.current?.closest('.nxhp-hero');
     const layer = layerRef.current;
     if (!hero || !layer) return;
-    // Resolve a length from the mask's CSS variables by measuring a throwaway probe.
-    const probe = (value: string) => {
-      const el = document.createElement('div');
-      el.style.cssText = `position:absolute;visibility:hidden;height:0;width:${value}`;
-      layer.appendChild(el);
-      const px = el.getBoundingClientRect().width;
-      el.remove();
+    // Resolve lengths from the mask's CSS variables by measuring throwaway probes. All are
+    // appended before any is read, so the reads share one layout pass.
+    const probeAll = (values: string[]) => {
+      const els = values.map((value) => {
+        const el = document.createElement('div');
+        el.style.cssText = `position:absolute;visibility:hidden;height:0;width:${value}`;
+        layer.appendChild(el);
+        return el;
+      });
+      const px = els.map((el) => el.getBoundingClientRect().width);
+      els.forEach((el) => el.remove());
       return px;
     };
     const measure = () => {
       const st = s.current;
+      const [maskL, maskR, maskF] = probeAll(['var(--nxhp-arc-l)', 'var(--nxhp-arc-r)', 'var(--nxhp-arc-fade)']);
+      // Probes are absolute and zero height, so the layer's box is the same with them attached.
       const lr = layer.getBoundingClientRect();
       st.H = halfSpan(window.innerWidth);
-      st.maskL = probe('var(--nxhp-arc-l)');
-      st.maskR = probe('var(--nxhp-arc-r)');
-      st.maskF = Math.max(1, probe('var(--nxhp-arc-fade)'));
+      st.maskL = maskL;
+      st.maskR = maskR;
+      st.maskF = Math.max(1, maskF);
       // The rail's end dots sit where the mask turns fully opaque.
       const { d, ends } = railPath(lr.width, st.H, Math.max(60, st.maskL - st.maskF), Math.max(60, st.maskR - st.maskF));
       setRail({ w: lr.width, d, ends });
