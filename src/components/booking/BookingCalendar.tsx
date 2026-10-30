@@ -8,6 +8,7 @@ import {
   TIME_SLOTS,
   getBookingWindow,
   isSelectableDate,
+  parseDateKey,
   toDateKey,
   formatSlotLabel,
   formatDateLabel,
@@ -47,7 +48,11 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onSele
   const today = useMemo(() => new Date(), []);
   const { earliest, latest } = useMemo(() => getBookingWindow(today), [today]);
 
-  const [viewMonth, setViewMonth]     = useState<Date>(() => startOfMonth(earliest));
+  // Open on the chosen date's month when coming back to the calendar.
+  const [viewMonth, setViewMonth]     = useState<Date>(() => {
+    const chosen = selectedDate ? parseDateKey(selectedDate) : null;
+    return startOfMonth(chosen ?? earliest);
+  });
   const [viewingDate, setViewingDate] = useState<string | null>(selectedDate);
   // Availability for the day being viewed. Loading, error and taken slots are derived
   // from it, so a result for another day never shows.
