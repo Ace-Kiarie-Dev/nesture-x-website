@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import { Resend } from 'resend';
 import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
+import { isValidPhone } from '@/lib/phone';
 import { sendBookingConfirmation } from '@/emails/send';
 import { buildBookingOwner } from '@/emails/booking-owner';
 import { FROM, OWNER_INBOX } from '@/lib/contactEmails';
@@ -35,6 +36,9 @@ export async function POST(req: NextRequest) {
     }
     if (!EMAIL_RE.test(email.trim())) {
       return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
+    }
+    if (!isValidPhone(phone)) {
+      return NextResponse.json({ error: 'Enter a valid phone number.' }, { status: 400 });
     }
 
     // Only bookings that would actually be saved count against the limit.
