@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Trash2, Download, Save, ArrowLeft, Send } from 'lucide-react';
 import {
@@ -578,6 +578,9 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
   const [downloading, setDownloading] = useState(false);
   const [saveError,   setSaveError]   = useState('');
   const [dlError,     setDlError]     = useState('');
+  // Brief "saved" confirmation after an edit is updated (create mode navigates away).
+  const [savedNote,   setSavedNote]   = useState('');
+  const savedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [activeTab,   setActiveTab]   = useState<'form' | 'preview'>('form');
   const [profiles,      setProfiles]      = useState<SavedContactProfile[]>([]);
   const [profilesError, setProfilesError] = useState('');
@@ -692,10 +695,22 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     });
   }
 
+  function clearSavedNote() {
+    if (savedTimer.current) clearTimeout(savedTimer.current);
+    setSavedNote('');
+  }
+
+  function showSavedNote(text: string) {
+    clearSavedNote();
+    setSavedNote(text);
+    savedTimer.current = setTimeout(() => setSavedNote(''), 4000);
+  }
+
   async function saveQuote() {
     if (!quote) return;
     setSaving(true);
     setSaveError('');
+    clearSavedNote();
     try {
       if (mode === 'create') {
         const res  = await fetch('/api/admin/quotes', {
@@ -713,6 +728,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
           body:    JSON.stringify({ ...quote, contact: chosenContact, status }),
         });
         if (!res.ok) throw new Error('Save failed.');
+        showSavedNote('Quote saved.');
       }
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : 'Save failed.');
@@ -725,6 +741,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     if (!quote) return;
     setSaving(true);
     setSaveError('');
+    clearSavedNote();
     try {
       const payload = toInvoicePayload(quote, invoiceExtra, chosenContact);
       if (mode === 'create') {
@@ -733,6 +750,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
       } else {
         const saved = await updateInvoice(initialInvoice!._id, payload);
         setInvoiceExtra(prev => ({ ...prev, documentNumber: saved.documentNumber }));
+        showSavedNote('Invoice saved.');
       }
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : 'Save failed.');
@@ -849,6 +867,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
         {/* Error banners */}
         <div className="nxad-live" aria-live="assertive">
           {(saveError || dlError) && <Notice>{saveError || dlError}</Notice>}
+          {savedNote && <Notice tone="success">{savedNote}</Notice>}
         </div>
 
         {/* Phone: form / preview switch */}
