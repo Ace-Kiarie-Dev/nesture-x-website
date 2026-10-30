@@ -14,11 +14,15 @@ interface MergeFile { id: string; file: File; pageCount: number | null; }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
+// Protect needs qpdf on the server, which isn't configured yet (the API returns 501).
+// The tab and its code stay; set to true to offer it again.
+const PDF_PROTECT_ENABLED = false;
+
 const MAX_BYTES = 4 * 1024 * 1024;
 const TABS: { key: Tab; label: string }[] = [
   { key: 'compress', label: 'Compress' }, { key: 'merge', label: 'Merge' },
   { key: 'split', label: 'Split' }, { key: 'rotate', label: 'Rotate' },
-  { key: 'protect', label: 'Protect' },
+  ...(PDF_PROTECT_ENABLED ? [{ key: 'protect' as const, label: 'Protect' }] : []),
 ];
 
 // ── Pure helpers ──────────────────────────────────────────────────────────────

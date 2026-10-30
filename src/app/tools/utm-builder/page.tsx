@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useMemo, useSyncExternalStore } from 'react';
 import ToolShell from '@/components/redesign/tools/ToolShell';
 import { Segmented } from '@/components/redesign/tools/blocks';
 import { ClayButton } from '@/components/redesign';
@@ -53,6 +53,30 @@ function parseUtmUrl(url: string) {
   } catch { return null; }
 }
 
+// Recent links live in localStorage. Read through useSyncExternalStore so the server
+// render (and hydration) sees an empty list and the client then shows the stored one.
+let historyRaw: string | null = null; // last value written this session
+const historyListeners = new Set<() => void>();
+function subscribeHistory(onChange: () => void) {
+  historyListeners.add(onChange);
+  return () => { historyListeners.delete(onChange); };
+}
+function readHistoryRaw() {
+  if (historyRaw !== null) return historyRaw;
+  try { return localStorage.getItem(HISTORY_KEY) ?? '[]'; } catch { return '[]'; }
+}
+const readServerHistoryRaw = () => '[]';
+function writeHistory(next: string[]) {
+  historyRaw = JSON.stringify(next);
+  historyListeners.forEach(l => l());
+  localStorage.setItem(HISTORY_KEY, historyRaw);
+}
+function clearHistory() {
+  historyRaw = '[]';
+  historyListeners.forEach(l => l());
+  localStorage.removeItem(HISTORY_KEY);
+}
+
 function downloadCSV(rows: { original: string; utm: string }[]) {
   const q = (s: string) => `"${s.replace(/"/g, '""')}"`;
   const csv = ['Original URL,UTM Link', ...rows.map(r => `${q(r.original)},${q(r.utm)}`)].join('\n');
@@ -74,16 +98,15 @@ export default function UTMBuilderPage() {
   const [campaign, setCampaign] = useState('');
   const [term, setTerm] = useState('');
   const [content, setContent] = useState('');
-  const [history, setHistory] = useState<string[]>([]);
+  const rawHistory = useSyncExternalStore(subscribeHistory, readHistoryRaw, readServerHistoryRaw);
+  const history = useMemo<string[]>(() => {
+    try { return JSON.parse(rawHistory); } catch { return []; }
+  }, [rawHistory]);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const campaignRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    try { setHistory(JSON.parse(localStorage.getItem(HISTORY_KEY) ?? '[]')); } catch { /* ignore */ }
-  }, []);
 
   // Derived
   const urlError = baseUrl && !baseUrl.trim().match(/^https?:\/\//) ? 'URL must start with http:// or https://' : null;
@@ -102,8 +125,7 @@ export default function UTMBuilderPage() {
     await navigator.clipboard.writeText(builtUrl).catch(() => {});
     setCopied(true); setTimeout(() => setCopied(false), 1800);
     const next = [builtUrl, ...history.filter(h => h !== builtUrl)].slice(0, MAX_HISTORY);
-    setHistory(next);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+    writeHistory(next);
   }
 
   async function copyItem(text: string, id: string) {
@@ -273,7 +295,7 @@ export default function UTMBuilderPage() {
                       <button
                         type="button"
                         data-hover
-                        onClick={() => { setHistory([]); localStorage.removeItem(HISTORY_KEY); }}
+                        onClick={clearHistory}
                         className="nxtl-link-btn nxtl-utm-clear"
                       >
                         Clear History

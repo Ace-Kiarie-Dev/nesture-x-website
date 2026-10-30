@@ -18,10 +18,39 @@ export interface Booking {
   paidAt?:            Date;
 }
 
+// One booking per date and time slot, enforced by a unique index created on first
+// use. Partial, so older records without date/timeSlot are left out. Tried once per
+// server instance; a failure (say, old duplicates in the data) is logged and the
+// booking goes ahead, still covered by the taken-slot check in the route.
+let slotIndexAttempted = false;
+
+async function ensureSlotIndex(db: Awaited<ReturnType<typeof getDb>>) {
+  if (slotIndexAttempted) return;
+  slotIndexAttempted = true;
+  try {
+    await db.collection('bookings').createIndex(
+      { date: 1, timeSlot: 1 },
+      {
+        unique: true,
+        name: 'date_timeSlot_unique',
+        partialFilterExpression: { date: { $type: 'string' }, timeSlot: { $type: 'string' } },
+      }
+    );
+  } catch (err) {
+    console.error('[booking] could not create the date/timeSlot unique index:', err);
+  }
+}
+
+/** Duplicate key on insert: the slot was taken between the check and the save. */
+export function isDuplicateSlotError(err: unknown): boolean {
+  return typeof err === 'object' && err !== null && (err as { code?: number }).code === 11000;
+}
+
 export async function createBooking(
   data: Omit<Booking, '_id' | 'createdAt'>
 ): Promise<string> {
   const db = await getDb();
+  await ensureSlotIndex(db);
   const { insertedId } = await db.collection('bookings').insertOne({
     ...data,
     createdAt: new Date(),

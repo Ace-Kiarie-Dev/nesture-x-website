@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import { Resend } from 'resend';
-import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
+import { createBooking, getTakenSlotsForDate, isDuplicateSlotError } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
+import { isValidPhone } from '@/lib/phone';
 import { sendBookingConfirmation } from '@/emails/send';
 import { buildBookingOwner } from '@/emails/booking-owner';
 import { FROM, OWNER_INBOX } from '@/lib/contactEmails';
@@ -11,6 +12,13 @@ import {
 } from '@/lib/formGuard';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+function slotTakenResponse() {
+  return NextResponse.json(
+    { error: 'That slot was just booked by someone else. Please pick another.' },
+    { status: 409 }
+  );
+}
 
 // ── POST /api/booking — validate, save, confirm ───────────────────────────────
 
@@ -36,6 +44,9 @@ export async function POST(req: NextRequest) {
     if (!EMAIL_RE.test(email.trim())) {
       return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
     }
+    if (!isValidPhone(phone)) {
+      return NextResponse.json({ error: 'Enter a valid phone number.' }, { status: 400 });
+    }
 
     // Only bookings that would actually be saved count against the limit.
     const rate = await checkRateLimit('booking', req);
@@ -50,12 +61,7 @@ export async function POST(req: NextRequest) {
 
     // Re-check for a race between the client's last availability fetch and this submit.
     const taken = await getTakenSlotsForDate(date.trim());
-    if (taken.includes(timeSlot.trim())) {
-      return NextResponse.json(
-        { error: 'That slot was just booked by someone else. Please pick another.' },
-        { status: 409 }
-      );
-    }
+    if (taken.includes(timeSlot.trim())) return slotTakenResponse();
 
     const booking = {
       name:     name.trim(),
@@ -66,7 +72,14 @@ export async function POST(req: NextRequest) {
       timeSlot: timeSlot.trim(),
     };
 
-    const bookingId = await createBooking(booking);
+    let bookingId: string;
+    try {
+      bookingId = await createBooking(booking);
+    } catch (err) {
+      // The unique date/timeSlot index caught a booking that landed after the check above.
+      if (isDuplicateSlotError(err)) return slotTakenResponse();
+      throw err;
+    }
 
     const [clientResult, peterResult] = await Promise.allSettled([
       sendBookingConfirmation({

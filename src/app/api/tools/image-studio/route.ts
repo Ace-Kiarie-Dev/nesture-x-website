@@ -139,12 +139,13 @@ export async function POST(request: NextRequest) {
       }
 
       const { brightness, saturation, hue } = adjustments;
-      if (brightness !== 0 || saturation !== 0 || hue !== 0) {
-        pipeline = pipeline.modulate({
-          brightness: brightness !== 0 ? 1 + brightness / 100 : undefined,
-          saturation: saturation !== 0 ? 1 + saturation / 100 : undefined,
-          hue: hue !== 0 ? hue : undefined,
-        });
+      // sharp rejects a key that is present but undefined, so only pass the set ones.
+      const modulate: { brightness?: number; saturation?: number; hue?: number } = {};
+      if (brightness !== 0) modulate.brightness = 1 + brightness / 100;
+      if (saturation !== 0) modulate.saturation = 1 + saturation / 100;
+      if (hue !== 0) modulate.hue = hue;
+      if (Object.keys(modulate).length > 0) {
+        pipeline = pipeline.modulate(modulate);
       }
 
       if (adjustments.contrast !== 0) {

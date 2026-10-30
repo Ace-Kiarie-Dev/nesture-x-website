@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Check } from 'lucide-react';
 import BookingCalendar from '@/components/booking/BookingCalendar';
 import { formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
+import { isValidPhone } from '@/lib/phone';
 import { CONTACT } from '@/constants';
 import { ASSETS_3D } from '@/lib/assets3d';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon';
@@ -41,6 +42,8 @@ const SERVICES = [
   { value: 'Digital Marketing',  label: 'Digital Marketing' },
   { value: 'Not sure yet',       label: "Not sure yet — let's talk" },
 ];
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const INITIAL: FormData = { name: '', email: '', phone: '', service: '', date: '', timeSlot: '', website: '' };
 
@@ -96,11 +99,20 @@ export default function BookingClient() {
   }
 
   function handleSlotSelect(date: string, timeSlot: string) {
+    setError('');
     setForm(p => ({ ...p, date, timeSlot }));
   }
 
   const step1Valid = form.name.trim() && form.email.trim() && form.phone.trim();
   const step2Valid = !!form.date && !!form.timeSlot;
+
+  // Same format checks as /api/booking, so a typo is caught before the calendar.
+  function continueFromDetails() {
+    if (!EMAIL_RE.test(form.email.trim())) { setError('Enter a valid email address.'); return; }
+    if (!isValidPhone(form.phone)) { setError('Enter a valid phone number.'); return; }
+    setError('');
+    setStep(2);
+  }
 
   // ── Submit booking ───────────────────────────────────────────────────────────
   async function submitBooking() {
@@ -113,6 +125,14 @@ export default function BookingClient() {
         body:    JSON.stringify(form),
       });
       const data = await res.json() as { error?: string; emailSent?: boolean };
+      // Slot just taken: drop it and go back to the calendar, which reloads that
+      // day's availability on mount, so Continue stays off until a new time is picked.
+      if (res.status === 409) {
+        setForm(p => ({ ...p, timeSlot: '' }));
+        setError(data.error || 'That slot was just booked by someone else. Please pick another.');
+        setStep(2);
+        return;
+      }
       if (!res.ok) throw new Error(data.error || 'Could not save your booking.');
       setEmailSent(data.emailSent !== false);
       setStep(4);
@@ -227,12 +247,16 @@ export default function BookingClient() {
                           </div>
                         </div>
 
+                        <div className="nxbk-live" aria-live="assertive">
+                          {error && <p className="nx-form-error">{error}</p>}
+                        </div>
+
                         <div className="nxbk-actions">
                           <ClayButton variant="ghost" href="/contact" className="nxbk-btn">
                             Cancel
                           </ClayButton>
                           <ClayButton
-                            onClick={() => setStep(2)}
+                            onClick={continueFromDetails}
                             disabled={!step1Valid}
                             className="nxbk-btn"
                           >
@@ -259,6 +283,10 @@ export default function BookingClient() {
                         onSelect={handleSlotSelect}
                       />
 
+                      <div className="nxbk-live" aria-live="assertive">
+                        {error && <p className="nx-form-error">{error}</p>}
+                      </div>
+
                       {/* Sticky on phones so the picked date and time stay on screen. */}
                       <div className="nxbk-pickbar">
                         <p className="nxbk-picked" aria-live="polite">
@@ -270,7 +298,7 @@ export default function BookingClient() {
                           )}
                         </p>
                         <div className="nxbk-actions">
-                          <BackLink label="← Edit details" onClick={() => setStep(1)} />
+                          <BackLink label="← Edit details" onClick={() => { setError(''); setStep(1); }} />
                           <ClayButton
                             onClick={() => setStep(3)}
                             disabled={!step2Valid}

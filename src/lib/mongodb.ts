@@ -4,22 +4,21 @@ const uri = process.env.MONGODB_URI!;
 
 if (!uri) throw new Error('Missing MONGODB_URI in environment variables.');
 
-// In development, reuse the client across hot reloads.
-// In production, create a fresh client per serverless invocation.
+// One client per server instance, cached on globalThis so dev hot reloads and warm
+// serverless invocations reuse its connection pool instead of opening new ones.
+// Give up on an unreachable server after 8s rather than the driver's 30s default,
+// unless the URI sets its own serverSelectionTimeoutMS.
 const globalWithMongo = global as typeof globalThis & {
   _mongoClient?: MongoClient;
 };
 
-let client: MongoClient;
-
-if (process.env.NODE_ENV === 'development') {
-  if (!globalWithMongo._mongoClient) {
-    globalWithMongo._mongoClient = new MongoClient(uri);
-  }
-  client = globalWithMongo._mongoClient;
-} else {
-  client = new MongoClient(uri);
+if (!globalWithMongo._mongoClient) {
+  globalWithMongo._mongoClient = new MongoClient(
+    uri,
+    /serverSelectionTimeoutMS=/i.test(uri) ? {} : { serverSelectionTimeoutMS: 8000 },
+  );
 }
+const client: MongoClient = globalWithMongo._mongoClient;
 
 export async function getDb() {
   await client.connect();
