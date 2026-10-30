@@ -5,6 +5,7 @@
 // surfaces stay in sync automatically.
 
 import { SHINKUSEN_STORE_URL } from '@/constants';
+import { HSDPM_LIVE } from '@/lib/productPages';
 
 export type NxOriginalCategory = 'web' | 'mobile';
 
@@ -127,17 +128,22 @@ export const NX_ORIGINALS: NxOriginal[] = [
     accent: '#F6B21A',
     link: '/tender-leo',
   },
-  {
-    id: 'hsdpm-church-app',
-    slug: 'hsdpm-church-app',
-    title: 'HSDPM Church App',
-    description: 'Sermons, devotionals, giving and prayer in one app.',
-    category: 'mobile',
-    status: 'In Development',
-    imageSrc: '/images/originals/HSDPM-Card.webp',
-    accent: '#A6122F',
-    link: '/hsdpm-church-app',
-  },
+  // Hidden while HSDPM_LIVE is false (see lib/productPages.ts).
+  ...(HSDPM_LIVE
+    ? [
+        {
+          id: 'hsdpm-church-app',
+          slug: 'hsdpm-church-app',
+          title: 'HSDPM Church App',
+          description: 'Sermons, devotionals, giving and prayer in one app.',
+          category: 'mobile' as const,
+          status: 'In Development',
+          imageSrc: '/images/originals/HSDPM-Card.webp',
+          accent: '#A6122F',
+          link: '/hsdpm-church-app',
+        },
+      ]
+    : []),
 ];
 
 // Homepage hero carousel shows only these, in this order.
