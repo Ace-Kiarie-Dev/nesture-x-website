@@ -16,6 +16,9 @@ import {
 
 const WEEKDAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
+// Shown for any availability failure instead of the API's raw error text.
+const AVAILABILITY_ERROR = 'We could not load times right now. Please try again in a moment.';
+
 function startOfMonth(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), 1);
 }
@@ -78,13 +81,13 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onSele
       .then((data: { takenSlots?: string[]; error?: string }) => {
         if (cancelled) return;
         if (data.error) {
-          setSlotsResult({ date, takenSlots: [], error: data.error });
+          setSlotsResult({ date, takenSlots: [], error: AVAILABILITY_ERROR });
         } else {
           setSlotsResult({ date, takenSlots: data.takenSlots ?? [], error: '' });
         }
       })
       .catch(() => {
-        if (!cancelled) setSlotsResult({ date, takenSlots: [], error: 'Could not load availability. Please try again.' });
+        if (!cancelled) setSlotsResult({ date, takenSlots: [], error: AVAILABILITY_ERROR });
       });
 
     return () => { cancelled = true; };
