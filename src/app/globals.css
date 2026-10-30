@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../styles/hybrid.css";
 
 :root {
   /* Brand Colors — canonical source of truth */
@@ -86,6 +87,88 @@
   --color-nav-scrolled: rgba(245,245,245,0.85);
 }
 
+/* ── Hybrid redesign tokens (nx-) — used only by src/styles/hybrid.css and
+   src/components/redesign. Dark is the default; [data-theme] on any element
+   re-themes its subtree. Light values keep text pairs at WCAG AA or better. */
+:root,
+[data-theme='dark'] {
+  --nx-bg: #0a0a0a;
+  --nx-band: #141b2b;
+  --nx-blue: #1a6fd4;
+  --nx-accent: #3d8ef0;
+  --nx-accent-soft: #8ec0ff;
+  --nx-navy: #0d1b3e;
+  --nx-ice: #b8cef0;
+  --nx-text: #f5f5f5;
+  --nx-body: #b8cef0;
+  --nx-clay-from: #1e2744;
+  --nx-clay-to: #151b30;
+  --nx-inset: #131828;
+  --nx-footer-panel: #171c2e;
+
+  --nx-grid-line: rgba(26,111,212,0.06);
+  --nx-glass-fill: rgba(255,255,255,0.07);
+  --nx-glass-border: rgba(255,255,255,0.14);
+  --nx-ghost-border: rgba(255,255,255,0.28);
+  --nx-ghost-text: #ffffff;
+  --nx-focus: #8ec0ff;
+
+  --nx-shadow-clay: inset 0 2px 3px rgba(255,255,255,0.1), inset 0 -9px 16px rgba(0,0,0,0.28), 14px 20px 36px rgba(4,7,16,0.6);
+  --nx-shadow-glass: inset 0 1px 0 rgba(255,255,255,0.18), 0 18px 40px rgba(3,6,16,0.5);
+  --nx-shadow-inset: inset 3px 3px 8px rgba(0,0,0,0.5), inset -2px -2px 7px rgba(255,255,255,0.045);
+  --nx-shadow-btn: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.45), 0 10px 22px rgba(26,111,212,0.35);
+  --nx-shadow-btn-hover: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.45), 0 14px 28px rgba(26,111,212,0.45);
+  --nx-shadow-btn-active: inset 0 3px 8px rgba(8,40,96,0.55), 0 4px 10px rgba(26,111,212,0.3);
+}
+
+[data-theme='light'] {
+  --nx-bg: #f3f6fb;
+  --nx-band: #e3eaf5;
+  --nx-blue: #1a6fd4;
+  --nx-accent: #1558ad;
+  --nx-accent-soft: #124a92;
+  --nx-navy: #0d1b3e;
+  --nx-ice: #34466b;
+  --nx-text: #0d1b3e;
+  --nx-body: #34466b;
+  --nx-clay-from: #ffffff;
+  --nx-clay-to: #e8eef8;
+  --nx-inset: #e6ecf5;
+  --nx-footer-panel: #e9eef7;
+
+  --nx-grid-line: rgba(26,111,212,0.08);
+  --nx-glass-fill: rgba(255,255,255,0.55);
+  --nx-glass-border: rgba(13,27,62,0.10);
+  --nx-ghost-border: rgba(13,27,62,0.24);
+  --nx-ghost-text: #0d1b3e;
+  --nx-focus: #1558ad;
+
+  --nx-shadow-clay: inset 0 2px 3px rgba(255,255,255,0.9), inset 0 -9px 16px rgba(13,27,62,0.06), 14px 20px 36px rgba(13,27,62,0.12);
+  --nx-shadow-glass: inset 0 1px 0 rgba(255,255,255,0.8), 0 18px 40px rgba(13,27,62,0.10);
+  --nx-shadow-inset: inset 3px 3px 8px rgba(13,27,62,0.12), inset -2px -2px 7px rgba(255,255,255,0.9);
+  --nx-shadow-btn: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.35), 0 10px 22px rgba(26,111,212,0.25);
+  --nx-shadow-btn-hover: inset 0 2px 2px rgba(255,255,255,0.35), inset 0 -4px 8px rgba(8,40,96,0.35), 0 14px 28px rgba(26,111,212,0.32);
+  --nx-shadow-btn-active: inset 0 3px 8px rgba(8,40,96,0.45), 0 4px 10px rgba(26,111,212,0.2);
+}
+
+:root {
+  --nx-radius-clay: 34px;
+  --nx-radius-card: 28px;
+  --nx-radius-pill: 999px;
+}
+
+/* Theme-specific elements (navbar logo, theme switch before hydration): render
+   both, show the one matching data-theme, so the first paint needs no script. */
+[data-theme='light'] .nx-only-dark,
+[data-theme='dark'] .nx-only-light { display: none; }
+.nx-theme-ssr { display: contents; }
+/* The switch's stick figure is positioned by script; keep it hidden until then. */
+.nx-theme-ssr svg g { visibility: hidden; }
+/* Keyboard focus on the theme switch knob. The component's own ring is a box-shadow
+   that its inline shadow overrides, so draw an outline instead (3:1+ on both panels). */
+.nx-theme-switch [role='switch']:focus-visible { outline: 2px solid #1a6fd4; outline-offset: 3px; }
+[data-theme='dark'] .nx-theme-switch [role='switch']:focus-visible { outline-color: #38bdf8; }
+
 /* Base resets */
 * {
   box-sizing: border-box;
@@ -122,26 +205,6 @@ canvas {
   padding-top: 80px;
 }
 
-/* Glassmorphism utility */
-.glass {
-  background: rgba(26, 111, 212, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(26, 111, 212, 0.2);
-}
-
-/* Neo-Brutalism card utility */
-.brutal-card {
-  border: 2px solid var(--color-text);
-  box-shadow: var(--shadow-brutal);
-  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
-}
-
-.brutal-card:hover {
-  box-shadow: var(--shadow-brutal-lg);
-  transform: translate(-2px, -2px);
-}
-
 /* Grid overlay utility */
 .grid-overlay {
   background-image:
@@ -150,94 +213,16 @@ canvas {
   background-size: 60px 60px;
 }
 
-/* Section label utility */
-.section-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.68rem;
-  color: var(--color-primary);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--color-primary);
-  flex-shrink: 0;
-}
-
-/* Scroll-reveal animation */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* Blinking cursor for typed text */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
 
-/* Scroll hint line animation */
-@keyframes scrollLine {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
 /* Marquee animation */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
-}
-
-/* "Live" status badge — green with a breathing glow and a pinging dot.
-   Colours are hardcoded: badges sit on dark card art in both themes. */
-.nx-live-badge {
-  animation: liveGlow 2.4s ease-in-out infinite;
-}
-.nx-live-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45em;
-}
-.nx-live-dot {
-  position: relative;
-  width: 0.6em;
-  height: 0.6em;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 6px #22c55e;
-}
-.nx-live-dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: livePing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-@keyframes liveGlow {
-  0%, 100% { box-shadow: 0 0 6px rgba(34, 197, 94, 0.35), inset 0 0 4px rgba(34, 197, 94, 0.15); }
-  50%      { box-shadow: 0 0 16px rgba(34, 197, 94, 0.7), inset 0 0 8px rgba(34, 197, 94, 0.3); }
-}
-@keyframes livePing {
-  0%   { transform: scale(1); opacity: 0.8; }
-  80%, 100% { transform: scale(2.6); opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .nx-live-badge { animation: none; box-shadow: 0 0 12px rgba(34, 197, 94, 0.55); }
-  .nx-live-dot::after { animation: none; display: none; }
 }
 
 /* ── NxButton neo-brutalist lift system ── */
@@ -311,807 +296,4 @@ canvas {
 .nx-btn-wrapper--ghost:hover .nx-btn--ghost {
   border-color: var(--color-primary);
   color: var(--color-primary);
-}
-
-/* Electric blue glow utility */
-.glow-blue {
-  box-shadow: 0 0 20px rgba(26, 111, 212, 0.4);
-}
-
-.glow-blue-lg {
-  box-shadow: 0 0 40px rgba(26, 111, 212, 0.6);
-}
-
-/* ── Portfolio section ────────────────────────────────────────────────────── */
-
-/* Filter tab button */
-.portfolio-tab {
-  flex-shrink: 0;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  padding: 0.5rem 0;
-  font-family: var(--font-body), sans-serif;
-  font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: rgba(245, 245, 245, 0.35);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
-}
-
-.portfolio-tab:hover {
-  color: var(--color-white);
-}
-
-.portfolio-tab--active {
-  border-bottom-color: var(--color-blue);
-  color: var(--color-blue);
-}
-
-/* Card */
-.portfolio-card {
-  display: block;
-  text-decoration: none;
-  position: relative;
-  background: rgba(20, 25, 32, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid transparent;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 4px 24px rgba(255, 255, 255, 0.04);
-  transition:
-    box-shadow var(--transition-base),
-    transform 0.2s ease;
-}
-
-.portfolio-card:hover {
-  box-shadow:
-    0 0 0 1px rgba(26, 111, 212, 0.3),
-    0 8px 32px rgba(26, 111, 212, 0.12);
-  transform: translateY(-2px);
-}
-
-/* Hover overlay — gradient from bottom, reveals on hover */
-.portfolio-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(10, 10, 10, 0.92) 0%,
-    rgba(10, 10, 10, 0.3) 50%,
-    transparent 100%
-  );
-  opacity: 0;
-  transition: opacity var(--transition-base);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 0.6rem;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.portfolio-card:hover .portfolio-card__overlay {
-  opacity: 1;
-  pointer-events: all;
-}
-
-/* Type badge inside overlay */
-.portfolio-card__type {
-  display: block;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-blue);
-  margin-bottom: 0.3rem;
-}
-
-/* Client name inside overlay */
-.portfolio-card__client {
-  font-family: var(--font-display), sans-serif;
-  font-size: 1rem;
-  color: var(--color-white);
-  line-height: 1;
-  margin-bottom: 0;
-}
-
-/* PDF badge — top-right corner */
-.portfolio-card__pdf-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  color: var(--color-white);
-  background: var(--color-blue);
-  padding: 0.25rem 0.5rem;
-  z-index: 3;
-}
-
-/* GIF image — fills aspect-ratio container */
-.portfolio-card__gif {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* PDF placeholder — no cover image */
-.portfolio-card__placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(26, 111, 212, 0.04);
-  border: 1px dashed rgba(26, 111, 212, 0.18);
-}
-
-.portfolio-card__placeholder-name {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.55rem;
-  color: rgba(245, 245, 245, 0.3);
-  text-align: center;
-  padding: 0 0.75rem;
-  margin-top: 0.5rem;
-  word-break: break-all;
-  line-height: 1.6;
-  max-width: 200px;
-}
-
-/* Caption below card image */
-.portfolio-card__caption {
-  font-family: var(--font-body), sans-serif;
-  font-size: 11px;
-  color: rgba(245, 245, 245, 0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0.3rem 0.45rem 0.35rem;
-  line-height: 1.3;
-}
-
-/* ── Portfolio Modal ──────────────────────────────────────────────────────── */
-
-/* Fixed full-screen backdrop */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(10, 10, 10, 0.95);
-  z-index: 50;
-}
-
-/* Centres the modal-box in the viewport; pointer-events disabled so
-   backdrop click-to-close still works on the element beneath */
-.modal-positioner {
-  position: fixed;
-  inset: 0;
-  z-index: 51;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(0.5rem, 3vw, 1.5rem);
-  pointer-events: none;
-}
-
-/* The glass brutalist box */
-.modal-box {
-  position: relative;
-  width: 100%;
-  max-width: 72rem;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: rgba(20, 25, 32, 0.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(26, 111, 212, 0.2);
-  border-right: 1px solid rgba(26, 111, 212, 0.2);
-  border-bottom: 1px solid rgba(26, 111, 212, 0.2);
-  border-left: 3px solid var(--color-blue);
-  pointer-events: all;
-}
-
-/* Thin header row — counter + close */
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid rgba(26, 111, 212, 0.1);
-  flex-shrink: 0;
-}
-
-/* Two-column body */
-.modal-body {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* LEFT — image / PDF / GIF (60%) */
-.modal-viewer {
-  position: relative;
-  flex: 0 0 60%;
-  background: var(--color-black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* RIGHT — metadata (40%) */
-.modal-meta {
-  flex: 0 0 40%;
-  overflow-y: auto;
-  padding: 1.75rem;
-  border-left: 1px solid rgba(26, 111, 212, 0.12);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(26, 111, 212, 0.3) transparent;
-}
-
-/* Prev / Next navigation arrows (inside .modal-viewer) */
-.modal-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(20, 25, 32, 0.85);
-  border: 1px solid rgba(26, 111, 212, 0.3);
-  color: var(--color-text);
-  width: 2.25rem;
-  height: 2.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.modal-nav:hover {
-  background: var(--color-blue);
-  border-color: var(--color-blue);
-}
-
-.modal-nav--prev { left: 0.5rem; }
-.modal-nav--next { right: 0.5rem; }
-
-/* Tag pill chips */
-.modal-tag {
-  display: inline-block;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-blue);
-  border: 1px solid rgba(26, 111, 212, 0.4);
-  padding: 0.2rem 0.55rem;
-  white-space: nowrap;
-}
-
-/* Like / reaction button */
-.modal-like-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: transparent;
-  border: 1px solid rgba(245, 245, 245, 0.18);
-  color: rgba(245, 245, 245, 0.55);
-  padding: 0.5rem 1rem;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
-}
-
-.modal-like-btn:hover {
-  border-color: #e05c6b;
-  color: #e05c6b;
-}
-
-.modal-like-btn--liked {
-  border-color: #e05c6b;
-  color: #e05c6b;
-}
-
-/* Related-project mini card */
-.modal-related-card {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  padding: 0.6rem;
-  background: rgba(26, 111, 212, 0.04);
-  border: 1px solid rgba(26, 111, 212, 0.12);
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
-}
-
-.modal-related-card:hover {
-  border-color: rgba(26, 111, 212, 0.4);
-  background: rgba(26, 111, 212, 0.09);
-}
-
-/* Mobile — stack viewer on top, meta below */
-@media (max-width: 767px) {
-  .modal-body {
-    flex-direction: column;
-    overflow-y: auto;
-  }
-
-  .modal-viewer {
-    flex: 0 0 auto;
-    min-height: 260px;
-    max-height: 45vh;
-  }
-
-  .modal-meta {
-    flex: 1 0 auto;
-    overflow-y: visible;
-    border-left: none;
-    border-top: 1px solid rgba(26, 111, 212, 0.12);
-    padding: 1.25rem 1rem;
-  }
-}
-
-/* ── Portfolio Detail Page ────────────────────────────────────────────────── */
-
-/* Page wrapper */
-.pd-page {
-  min-height: 100vh;
-  background: var(--color-black);
-  position: relative;
-}
-
-/* Top bar: back arrow (left) + three-dot (right) — fixed below the global navbar */
-.pd-topbar {
-  position: fixed;
-  top: calc(80px + 0.75rem);
-  left: 1.5rem;
-  right: 1.5rem;
-  z-index: 51;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  padding: 0;
-}
-
-/* Icon buttons (back arrow, three-dot) — floating glass circles */
-.pd-icon-btn {
-  -webkit-appearance: none;
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(245, 245, 245, 0.7);
-  cursor: pointer;
-  text-decoration: none;
-  outline: none;
-  padding: 0;
-  transition: color 0.22s ease, background 0.22s ease,
-              border-color 0.22s ease, box-shadow 0.22s ease,
-              transform 0.22s ease;
-}
-
-.pd-icon-btn:hover {
-  color: #f5f5f5;
-  background: rgba(26, 111, 212, 0.25);
-  border-color: #1a6fd4;
-  box-shadow: 0 0 16px rgba(26, 111, 212, 0.45);
-  transform: scale(1.12);
-}
-
-/* Two-column body */
-.pd-layout {
-  display: flex;
-  align-items: flex-start;
-}
-
-/* LEFT column (60%) — scrolls with page */
-.pd-left {
-  flex: 0 0 60%;
-}
-
-/* Viewer — naturally sized by aspect ratio, max-height 500px */
-.pd-viewer {
-  width: 100%;
-  max-height: 500px;
-  background: var(--color-black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Inner wrapper for fill images — aspect-ratio set via inline style */
-.pd-viewer-inner {
-  position: relative;
-  width: 100%;
-  max-height: 500px;
-}
-
-/* GIF viewer */
-.pd-gif {
-  max-width: 100%;
-  max-height: 500px;
-  object-fit: contain;
-  display: block;
-}
-
-/* PDF viewer */
-.pd-pdf-wrap {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 500px;
-}
-
-.pd-pdf-iframe {
-  flex: 1;
-  width: 100%;
-  border: none;
-  background: var(--color-mid);
-}
-
-.pd-pdf-link {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 1rem;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-  border-top: 1px solid rgba(26, 111, 212, 0.2);
-  background: rgba(20, 25, 32, 0.9);
-  text-decoration: none;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: color var(--transition-fast);
-}
-
-.pd-pdf-link:hover {
-  color: var(--color-white);
-}
-
-/* Info area (below viewer) */
-.pd-info {
-  padding: 2rem;
-  background: var(--color-black);
-}
-
-/* Like button */
-.pd-like-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: transparent;
-  border: none;
-  color: rgba(245, 245, 245, 0.45);
-  cursor: pointer;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  padding: 0;
-  margin-bottom: 1.25rem;
-  transition: color var(--transition-fast);
-}
-
-.pd-like-btn:hover  { color: #e05c6b; }
-.pd-like-btn--liked { color: #e05c6b; }
-
-/* Client name */
-.pd-client {
-  font-family: var(--font-display), sans-serif;
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  color: var(--color-white);
-  line-height: 1;
-  margin-bottom: 0.75rem;
-}
-
-/* Type badge pill */
-.pd-type-badge {
-  display: inline-block;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-  border: 1px solid rgba(26, 111, 212, 0.5);
-  padding: 0.2rem 0.65rem;
-  margin-bottom: 1.1rem;
-}
-
-/* Description */
-.pd-description {
-  font-family: var(--font-body), sans-serif;
-  font-size: 0.875rem;
-  color: rgba(245, 245, 245, 0.6);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-/* Comments section */
-.pd-comments {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 1rem;
-}
-
-.pd-comments-title {
-  font-family: var(--font-body), sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-white);
-  margin-bottom: 0.85rem;
-}
-
-.pd-comments-list {
-  max-height: 400px;
-  overflow-y: auto;
-  margin-bottom: 0.75rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
-}
-
-.pd-comments-empty {
-  font-family: var(--font-body), sans-serif;
-  font-size: 0.8rem;
-  color: rgba(245, 245, 245, 0.28);
-  padding: 0.5rem 0;
-}
-
-.pd-comment {
-  padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.pd-comment:last-child { border-bottom: none; }
-
-.pd-comment-user {
-  display: block;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
-  color: rgba(245, 245, 245, 0.32);
-  margin-bottom: 0.2rem;
-}
-
-.pd-comment-text {
-  font-family: var(--font-body), sans-serif;
-  font-size: 0.82rem;
-  color: rgba(245, 245, 245, 0.75);
-  line-height: 1.5;
-  margin-bottom: 0.2rem;
-}
-
-.pd-comment-time {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.52rem;
-  color: rgba(245, 245, 245, 0.22);
-  letter-spacing: 0.06em;
-}
-
-.pd-comment-input-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.pd-comment-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--color-white);
-  font-family: var(--font-body), sans-serif;
-  font-size: 0.8rem;
-  padding: 0.35rem 0;
-  outline: none;
-  transition: border-color var(--transition-fast);
-}
-
-.pd-comment-input::placeholder { color: rgba(245, 245, 245, 0.25); }
-.pd-comment-input:focus        { border-bottom-color: rgba(26, 111, 212, 0.5); }
-
-.pd-comment-send {
-  background: transparent;
-  border: none;
-  color: rgba(245, 245, 245, 0.3);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem;
-  flex-shrink: 0;
-  transition: color var(--transition-fast);
-}
-
-.pd-comment-send:hover { color: var(--color-blue); }
-
-/* RIGHT column (40%) — sticky, 2-wide grid of related cards */
-.pd-right {
-  position: sticky;
-  top: 80px;
-  flex: 0 0 40%;
-  height: calc(100vh - 80px);
-  background: var(--color-surface);
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.pd-right-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1.25rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
-}
-
-.pd-right-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(245, 245, 245, 0.3);
-  margin-bottom: 0.875rem;
-}
-
-/* 2-column grid inside right panel */
-.pd-right-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-/* Related grid card */
-.pd-grid-card {
-  display: block;
-  text-decoration: none;
-  overflow: hidden;
-  background: rgba(20, 25, 32, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: border-color var(--transition-fast), transform 0.18s ease;
-}
-
-.pd-grid-card:hover {
-  border-color: rgba(26, 111, 212, 0.3);
-  transform: translateY(-2px);
-}
-
-.pd-grid-card-thumb {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: var(--color-black);
-}
-
-.pd-grid-card-gif {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.pd-grid-card-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background: rgba(26, 111, 212, 0.04);
-}
-
-.pd-grid-card-info {
-  padding: 0.45rem 0.5rem 0.5rem;
-}
-
-.pd-grid-card-client {
-  font-family: var(--font-display), sans-serif;
-  font-size: 0.875rem;
-  color: var(--color-white);
-  line-height: 1;
-  margin-bottom: 0.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.pd-grid-card-badge {
-  display: inline-block;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.52rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-  border: 1px solid rgba(26, 111, 212, 0.4);
-  padding: 0.12rem 0.4rem;
-}
-
-/* MORE LIKE THIS — full-width bottom masonry */
-.pd-more {
-  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 2rem);
-  background: var(--color-black);
-}
-
-.pd-more-heading {
-  font-family: var(--font-display), sans-serif;
-  font-size: clamp(1.75rem, 4vw, 3rem);
-  color: var(--color-white);
-  line-height: 1;
-  border-left: 2px solid var(--color-blue);
-  padding-left: 1rem;
-  margin-bottom: 2rem;
-}
-
-/* ── Mobile: stack vertically ── */
-@media (max-width: 767px) {
-  .pd-topbar {
-    top: 0.6rem;
-    left: 1rem;
-    right: 1rem;
-  }
-
-  .pd-layout {
-    flex-direction: column;
-  }
-
-  .pd-left {
-    flex: 0 0 auto;
-    width: 100%;
-  }
-
-  .pd-viewer {
-    max-height: 60vw;
-    min-height: 220px;
-  }
-
-  .pd-info {
-    padding: 1.25rem 1rem;
-  }
-
-  .pd-right {
-    position: relative;
-    top: auto;
-    flex: 0 0 auto;
-    width: 100%;
-    height: auto;
-    max-height: 55vh;
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .pd-right-scroll {
-    padding: 1rem;
-  }
-
-  .pd-comments-list {
-    max-height: none;
-  }
 }

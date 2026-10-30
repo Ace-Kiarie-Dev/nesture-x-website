@@ -2,6 +2,7 @@
 
 import { useState, useEffect, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { ClayButton, GlassPanel } from '@/components/redesign';
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -44,127 +45,57 @@ export default function AdminLogin() {
   }
 
   return (
-    <div style={{
-      minHeight:       '100vh',
-      background:      '#0a0a0a',
-      display:         'flex',
-      alignItems:      'center',
-      justifyContent:  'center',
-      fontFamily:      'var(--font-body), sans-serif',
-    }}>
-
-      {/* Grid overlay */}
-      <div className="grid-overlay" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
-
-      <div style={{
-        position:   'relative',
-        zIndex:     1,
-        width:      'min(400px, calc(100vw - 2rem))',
-        padding:    '2.5rem',
-        background: 'rgba(13,27,62,0.6)',
-        border:     '1px solid rgba(26,111,212,0.2)',
-        backdropFilter: 'blur(20px)',
-      }}>
+    <main id="nxad-main" className="nxad-login nxad-scope">
+      <GlassPanel className="nxad-login-card" style={{ padding: 'clamp(24px, 6vw, 40px)' }}>
 
         {/* Header */}
-        <div style={{ marginBottom: '2rem' }}>
-          <p style={{
-            fontFamily:    'var(--font-mono)',
-            fontSize:      '0.58rem',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color:         'rgba(26,111,212,0.65)',
-            marginBottom:  '0.5rem',
-          }}>
-            Nesture-X
-          </p>
-          <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize:   '2.2rem',
-            color:      'var(--color-text)',
-            lineHeight: 0.95,
-            margin:     0,
-          }}>
-            ADMIN ACCESS
+        <div className="nxad-login-head">
+          <span className="nx-logo">NESTURE<span>-X</span></span>
+          <h1 className="nxad-login-title" aria-label="Admin access">
+            <span aria-hidden="true">ADMIN</span>
+            <span className="nx-outline" aria-hidden="true">ACCESS</span>
           </h1>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label style={{
-              display:       'block',
-              fontFamily:    'var(--font-mono)',
-              fontSize:      '0.58rem',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color:         'rgba(245,245,245,0.38)',
-              marginBottom:  '0.45rem',
-            }}>
-              Password
-            </label>
+        <form onSubmit={handleSubmit} className="nxad-login-form">
+          <div className="nx-field">
+            <label htmlFor="nxad-password">Password</label>
             <input
+              id="nxad-password"
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
               autoFocus
+              autoComplete="current-password"
               placeholder="Enter admin password"
-              style={{
-                width:            '100%',
-                background:       'rgba(26,111,212,0.04)',
-                border:           '1px solid rgba(26,111,212,0.2)',
-                color:            'var(--color-text)',
-                fontFamily:       'var(--font-body)',
-                fontSize:         '0.95rem',
-                padding:          '0.8rem 1rem',
-                outline:          'none',
-                boxSizing:        'border-box',
-              }}
-              onFocus={e  => (e.target.style.borderColor = 'rgba(26,111,212,0.55)')}
-              onBlur={e   => (e.target.style.borderColor = 'rgba(26,111,212,0.2)')}
+              className="nx-input"
+              aria-invalid={status === 'error' || undefined}
+              aria-describedby={status === 'error' ? 'nxad-login-error' : undefined}
             />
           </div>
 
-          {status === 'error' && (
-            <p style={{
-              fontFamily:   'var(--font-mono)',
-              fontSize:     '0.68rem',
-              color:        '#ff4444',
-              background:   'rgba(255,68,68,0.05)',
-              border:       '1px solid rgba(255,68,68,0.2)',
-              padding:      '0.6rem 0.85rem',
-              letterSpacing:'0.04em',
-              margin:       0,
-            }}>
-              {errorMsg}
-            </p>
-          )}
+          <div className="nxad-live" aria-live="assertive">
+            {status === 'error' && (
+              <p id="nxad-login-error" className="nx-form-error">
+                {errorMsg}
+              </p>
+            )}
+          </div>
 
-          <button
+          <ClayButton
             type="submit"
             disabled={status === 'loading' || !password}
-            style={{
-              background:    'var(--color-primary)',
-              border:        'none',
-              color:         'var(--color-text)',
-              fontFamily:    'var(--font-body)',
-              fontWeight:    600,
-              fontSize:      '0.88rem',
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              padding:       '0.85rem',
-              cursor:        status === 'loading' ? 'wait' : 'pointer',
-              opacity:       status === 'loading' ? 0.7 : 1,
-              transition:    'opacity 0.2s',
-              clipPath:      'polygon(10px 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 10px)',
-            }}
+            aria-busy={status === 'loading' || undefined}
+            className="nxad-login-btn"
           >
-            {status === 'loading' ? 'CHECKING…' : 'ENTER →'}
-          </button>
+            {status === 'loading' && <span className="nxad-spinner" aria-hidden="true" />}
+            {status === 'loading' ? 'Checking…' : 'Sign in'}
+          </ClayButton>
         </form>
 
-      </div>
-    </div>
+      </GlassPanel>
+    </main>
   );
 }

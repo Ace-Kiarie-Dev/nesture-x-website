@@ -1,31 +1,51 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import "../fonts/fallbacks.css";
 import ClientShell from "@/components/layout/ClientShell";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JsonLd, SITE_URL } from "@/lib/jsonLd";
 import { CONTACT, activeSocialLinks } from "@/constants";
+import { FIXED_THEME_ROUTES } from "@/lib/productPages";
 
-const bebasNeue = Bebas_Neue({
+// Self-hosted from src/fonts (latin, OFL). Variable fonts list each weight against the
+// same file, as Google's CSS did, so weight matching is unchanged.
+const bebasNeue = localFont({
+  src: '../fonts/bebas-neue/bebas-neue-latin-400-normal.woff2',
   weight: '400',
-  subsets: ['latin'],
+  style: 'normal',
   variable: '--font-bebas',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Bebas Neue Fallback'],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin'],
+const spaceGrotesk = localFont({
+  src: [
+    { path: '../fonts/space-grotesk/space-grotesk-latin-wght-normal.woff2', weight: '300', style: 'normal' },
+    { path: '../fonts/space-grotesk/space-grotesk-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/space-grotesk/space-grotesk-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/space-grotesk/space-grotesk-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../fonts/space-grotesk/space-grotesk-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-grotesk',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Space Grotesk Fallback'],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+const jetbrainsMono = localFont({
+  src: [
+    { path: '../fonts/jetbrains-mono/jetbrains-mono-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/jetbrains-mono/jetbrains-mono-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/jetbrains-mono/jetbrains-mono-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../fonts/jetbrains-mono/jetbrains-mono-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-jetbrains',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['JetBrains Mono Fallback'],
 });
 
 export const metadata: Metadata = {
@@ -93,13 +113,19 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="dark"
+      // The inline script below rewrites data-theme before hydration.
+      suppressHydrationWarning
       className={`${bebasNeue.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function() {
-  const theme = localStorage.getItem('nx-theme') || 'dark';
+  const fixed = ${JSON.stringify(FIXED_THEME_ROUTES)};
+  const path = location.pathname;
+  let pinned = null;
+  for (const route in fixed) if (path === route || path.indexOf(route + '/') === 0) pinned = fixed[route];
+  const theme = pinned || localStorage.getItem('nx-theme') || 'dark';
   document.documentElement.setAttribute('data-theme', theme);
 })();`,
           }}

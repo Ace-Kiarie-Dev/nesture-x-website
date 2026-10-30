@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import '@/components/redesign/tools/tools.css';
 
 export const metadata: Metadata = {
   // A plain string title here would reset the root "%s | Nesture-X" template

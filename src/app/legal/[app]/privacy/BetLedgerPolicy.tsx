@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import { ArrowLeft } from 'lucide-react';
 import type { PrivacyPolicy } from '@/lib/legal/privacy-policies';
 import { renderParagraphs } from './renderText';
@@ -8,11 +8,17 @@ import '@/components/betledger/betledger.css';
 
 // Inter is BetLedger-only (see src/app/betledger/page.tsx); the variable is
 // applied on the themed wrapper so the NX policies never pick it up.
-const inter = Inter({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
+const inter = localFont({
+  src: [
+    { path: '../../../../fonts/inter/inter-latin-wght-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../../../fonts/inter/inter-latin-wght-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../../../fonts/inter/inter-latin-wght-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../../../fonts/inter/inter-latin-wght-normal.woff2', weight: '700', style: 'normal' },
+  ],
   variable: '--font-inter',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Inter Fallback'],
 });
 
 export default function BetLedgerPolicy({ policy }: { policy: PrivacyPolicy }) {

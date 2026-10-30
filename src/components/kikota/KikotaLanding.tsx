@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -11,6 +12,8 @@ import {
   TrendingUp,
   Trophy,
 } from 'lucide-react';
+import GlassPanel from '@/components/redesign/GlassPanel';
+import HomeReveal from '@/components/redesign/home/HomeReveal';
 import WaitlistForm from './WaitlistForm';
 import Faq from './Faq';
 import FoundingGymLink from './FoundingGymLink';
@@ -82,6 +85,9 @@ const FOUNDING_POINTS = [
   'Help shape what we build next',
 ];
 
+// GlassPanel sets its padding inline; this hands it back to kikota.css (--kk-panel-pad).
+const PANEL_PAD: CSSProperties = { padding: 'var(--kk-panel-pad)' };
+
 function Checklist({ items }: { items: string[] }) {
   return (
     <ul className="kk-checklist">
@@ -99,7 +105,7 @@ export default function KikotaLanding() {
   return (
     <main className="kk-main">
       {/* ── 1. Hero ─────────────────────────────────────────────────────── */}
-      <section className="kk-section kk-hero" aria-labelledby="kk-hero-title">
+      <section className="kk-section kk-hero nx-grid-bg" aria-labelledby="kk-hero-title">
         <span className="kk-glow kk-glow--hero" aria-hidden="true" />
         <div className="kk-container kk-hero-grid">
           <div className="kk-hero-copy">
@@ -128,7 +134,7 @@ export default function KikotaLanding() {
             <FoundingGymLink variant="outline" />
           </div>
 
-          <div className="kk-hero-visual">
+          <div className="kk-hero-visual kk-reveal">
             <DashboardLaptop className="kk-hero-laptop" />
             <HeroRankPhone className="kk-hero-phone" />
           </div>
@@ -138,13 +144,13 @@ export default function KikotaLanding() {
       {/* ── 2. Two layers ───────────────────────────────────────────────── */}
       <section className="kk-section kk-section--raised" aria-labelledby="kk-layers-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--bar">
+          <div className="kk-head kk-head--bar kk-reveal">
             <p className="kk-eyebrow">HOW IT&apos;S BUILT</p>
             <h2 id="kk-layers-title" className="kk-h2">ONE PLATFORM. TWO LAYERS.</h2>
           </div>
           <div className="kk-layers">
-            {LAYERS.map(layer => (
-              <article key={layer.num} className="kk-card kk-layer" data-active={layer.active}>
+            {LAYERS.map((layer, i) => (
+              <article key={layer.num} className="kk-card kk-layer kk-reveal" data-active={layer.active} style={{ '--i': i } as CSSProperties}>
                 <span className="kk-layer-num" aria-hidden="true">{layer.num}</span>
                 <h3 className="kk-h3 kk-layer-title">
                   <span className="sr-only">{layer.num} </span>{layer.title}
@@ -162,17 +168,17 @@ export default function KikotaLanding() {
       {/* ── 3. Operations deep dive ─────────────────────────────────────── */}
       <section className="kk-section" aria-labelledby="kk-ops-title">
         <div className="kk-container kk-split">
-          <div className="kk-split-visual kk-split-visual--first">
+          <div className="kk-split-visual kk-split-visual--first kk-reveal">
             <HeatmapLaptop />
           </div>
           <div className="kk-split-copy">
-            <div className="kk-head">
+            <div className="kk-head kk-reveal">
               <p className="kk-eyebrow">OPERATIONS</p>
               <h2 id="kk-ops-title" className="kk-h2">YOUR WHOLE GYM IN ONE DASHBOARD</h2>
             </div>
             <ul className="kk-features">
-              {OPERATIONS.map(({ icon: Icon, title, body }) => (
-                <li key={title} className="kk-card kk-feature">
+              {OPERATIONS.map(({ icon: Icon, title, body }, i) => (
+                <li key={title} className="kk-card kk-feature kk-reveal" style={{ '--i': i } as CSSProperties}>
                   <Icon size={22} className="kk-feature-icon" aria-hidden="true" />
                   <div>
                     <h3 className="kk-h3 kk-feature-title">{title}</h3>
@@ -189,20 +195,22 @@ export default function KikotaLanding() {
       <section className="kk-section kk-section--stripes" aria-labelledby="kk-pay-title">
         <div className="kk-container kk-split">
           <div className="kk-split-copy">
-            <div className="kk-head">
+            <div className="kk-head kk-reveal">
               <p className="kk-eyebrow kk-eyebrow--boxed">PAYMENTS</p>
               <h2 id="kk-pay-title" className="kk-h2 kk-h2--lg">
                 GET PAID THE WAY{' '}
                 <span className="kk-accent">KENYA PAYS.</span>
               </h2>
             </div>
-            <p className="kk-lead">
+            <p className="kk-lead kk-reveal">
               Members renew with M-Pesa in seconds. Payments show up in your dashboard automatically,
               so you always know who&apos;s paid.
             </p>
-            <Checklist items={PAYMENT_POINTS} />
+            <GlassPanel className="kk-pay-glass kk-reveal">
+              <Checklist items={PAYMENT_POINTS} />
+            </GlassPanel>
           </div>
-          <div className="kk-split-visual">
+          <div className="kk-split-visual kk-reveal">
             <div className="kk-brackets">
               <PaymentPhone />
             </div>
@@ -215,17 +223,17 @@ export default function KikotaLanding() {
         <span className="kk-glow kk-glow--net" aria-hidden="true" />
         <div className="kk-container kk-split">
           <div className="kk-split-copy">
-            <div className="kk-head">
+            <div className="kk-head kk-reveal">
               <p className="kk-eyebrow">THE NETWORK</p>
               <h2 id="kk-net-title" className="kk-h2 kk-h2--lg">GIVE YOUR MEMBERS SOMETHING TO COMPETE FOR</h2>
             </div>
-            <p className="kk-lead">
+            <p className="kk-lead kk-reveal">
               Training is more fun with something on the line. Kikota connects your gym to others
               across the city through friendly competition.
             </p>
             <ul className="kk-net-list">
-              {NETWORK.map(({ icon: Icon, title, body }) => (
-                <li key={title} className="kk-net-item">
+              {NETWORK.map(({ icon: Icon, title, body }, i) => (
+                <li key={title} className="kk-net-item nx-glass kk-reveal" style={{ '--i': i } as CSSProperties}>
                   <Icon size={22} className="kk-feature-icon" aria-hidden="true" />
                   <div>
                     <h3 className="kk-h3 kk-feature-title">{title}</h3>
@@ -235,7 +243,7 @@ export default function KikotaLanding() {
               ))}
             </ul>
           </div>
-          <div className="kk-split-visual kk-net-phones">
+          <div className="kk-split-visual kk-net-phones kk-reveal">
             <LeaderboardPhone className="kk-net-board" />
             <ProfilePhone className="kk-net-profile" />
           </div>
@@ -245,13 +253,13 @@ export default function KikotaLanding() {
       {/* ── 6. Why it matters ───────────────────────────────────────────── */}
       <section className="kk-section kk-section--raised" aria-labelledby="kk-impact-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--center">
+          <div className="kk-head kk-head--center kk-reveal">
             <p className="kk-eyebrow">IMPACT</p>
             <h2 id="kk-impact-title" className="kk-h2">WHY IT MATTERS</h2>
           </div>
           <div className="kk-grid-3">
             {IMPACT.map((card, i) => (
-              <article key={card.title} className="kk-card kk-impact" data-active={i === 1}>
+              <article key={card.title} className="kk-card kk-impact kk-reveal" data-active={i === 1} style={{ '--i': i } as CSSProperties}>
                 <h3 className="kk-impact-title">{card.title}</h3>
                 <p className="kk-body">{card.body}</p>
               </article>
@@ -263,13 +271,13 @@ export default function KikotaLanding() {
       {/* ── 7. How it works ─────────────────────────────────────────────── */}
       <section className="kk-section" aria-labelledby="kk-how-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--center">
+          <div className="kk-head kk-head--center kk-reveal">
             <p className="kk-eyebrow">GETTING STARTED</p>
             <h2 id="kk-how-title" className="kk-h2">HOW KIKOTA WORKS</h2>
           </div>
           <ol className="kk-grid-3 kk-steps">
             {STEPS.map((step, i) => (
-              <li key={step.num} className="kk-card kk-step" data-active={i === STEPS.length - 1}>
+              <li key={step.num} className="kk-card kk-step kk-reveal" data-active={i === STEPS.length - 1} style={{ '--i': i } as CSSProperties}>
                 <span className="kk-step-num" aria-hidden="true">{step.num}</span>
                 <h3 className="kk-h3 kk-step-title">{step.title}</h3>
                 <p className="kk-body">{step.body}</p>
@@ -280,9 +288,10 @@ export default function KikotaLanding() {
       </section>
 
       {/* ── 8. Founding gyms ────────────────────────────────────────────── */}
-      <section className="kk-section" aria-labelledby="kk-founding-title">
+      <section className="kk-section nx-grid-bg" aria-labelledby="kk-founding-title">
+        <span className="kk-glow kk-glow--founding" aria-hidden="true" />
         <div className="kk-container">
-          <div className="kk-panel kk-founding">
+          <GlassPanel className="kk-glass-panel kk-founding kk-reveal" style={PANEL_PAD}>
             <div className="kk-founding-copy">
               <p className="kk-eyebrow kk-eyebrow--solid">FOUNDING GYMS</p>
               <h2 id="kk-founding-title" className="kk-h2">BE ONE OF THE FIRST GYMS ON KIKOTA</h2>
@@ -295,33 +304,37 @@ export default function KikotaLanding() {
             <div className="kk-founding-cta">
               <FoundingGymLink variant="primary" arrow />
             </div>
-          </div>
+          </GlassPanel>
         </div>
       </section>
 
       {/* ── 9. FAQ ──────────────────────────────────────────────────────── */}
       <section className="kk-section kk-section--raised" aria-labelledby="kk-faq-title">
         <div className="kk-container">
-          <div className="kk-head kk-head--bar">
+          <div className="kk-head kk-head--bar kk-reveal">
             <p className="kk-eyebrow">QUESTIONS</p>
             <h2 id="kk-faq-title" className="kk-h2">FREQUENTLY ASKED QUESTIONS</h2>
           </div>
-          <Faq />
+          <div className="kk-reveal">
+            <Faq />
+          </div>
         </div>
       </section>
 
       {/* ── 10. Final CTA ───────────────────────────────────────────────── */}
-      <section id="waitlist" className="kk-section kk-final" aria-labelledby="kk-final-title">
+      <section id="waitlist" className="kk-section kk-final nx-grid-bg" aria-labelledby="kk-final-title">
+        <span className="kk-glow kk-glow--final" aria-hidden="true" />
         <div className="kk-container">
-          <div className="kk-panel kk-panel--stripes kk-final-panel">
+          <GlassPanel className="kk-glass-panel kk-final-panel kk-reveal" style={PANEL_PAD}>
             <p className="kk-eyebrow">EARLY ACCESS</p>
             <h2 id="kk-final-title" className="kk-h2">READY TO RUN A SMARTER GYM?</h2>
             <p className="kk-lead">Join the waitlist and we&apos;ll let you know as soon as Kikota launches.</p>
             <WaitlistForm />
             <Link href={PRIVACY_HREF} className="kk-text-link">Privacy Policy</Link>
-          </div>
+          </GlassPanel>
         </div>
       </section>
+      <HomeReveal root=".kk-main" item=".kk-reveal" readyClass="kk-reveal-ready" />
     </main>
   );
 }

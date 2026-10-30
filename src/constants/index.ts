@@ -1,3 +1,5 @@
+import { HELLO, SUPPORT } from '@/lib/contactEmails';
+
 // Brand Colors
 export const COLORS = {
   black: '#0a0a0a',
@@ -12,6 +14,7 @@ export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Games', href: '/nx-gaming' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
   { label: 'Tools', href: '/tools' },
@@ -119,7 +122,7 @@ export const SERVICES = [
 export const CONTACT = {
   phone: '+254717164951',
   phoneDisplay: '+254-717-164-951',
-  email: 'nesturex@gmail.com',
+  email: HELLO,
   whatsapp: 'https://wa.me/254717164951',
   location: 'Nairobi, Kenya',
 } as const;
@@ -200,3 +203,11 @@ export const BETLEDGER_PLAY_URL =
   'https://play.google.com/store/apps/details?id=com.nesture.betledger&referrer=utm_source%3Dnesturex%26utm_medium%3Dwebsite%26utm_campaign%3Dbetledger';
 export const BETLEDGER_PLAY_URL_CLEAN =
   'https://play.google.com/store/apps/details?id=com.nesture.betledger';
+
+// Solo Standoff on Google Play. null until launch: the page shows a
+// "Coming soon" badge. Set the store URL here to swap in the real Play badge.
+export const SOLO_STANDOFF_PLAY_URL: string | null = null;
+export const SOLO_STANDOFF_SUPPORT_EMAIL = SUPPORT;
+
+// SHINKUSEN storefront (external, opens in a new tab).
+export const SHINKUSEN_STORE_URL = 'https://shinkusen.shop/';

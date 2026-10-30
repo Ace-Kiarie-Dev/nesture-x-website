@@ -6,8 +6,11 @@ import BetLedgerPolicy from './BetLedgerPolicy';
 import { renderParagraphs } from './renderText';
 import './privacy.css';
 
+// Only published policies (live !== false) are built or served; the rest 404.
+const publishedPolicy = (slug: string) => privacyPolicies.find((p) => p.slug === slug && p.live !== false);
+
 export async function generateStaticParams() {
-  return privacyPolicies.map((p) => ({ app: p.slug }));
+  return privacyPolicies.filter((p) => p.live !== false).map((p) => ({ app: p.slug }));
 }
 
 export async function generateMetadata({
@@ -16,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ app: string }>;
 }): Promise<Metadata> {
   const { app } = await params;
-  const policy = privacyPolicies.find((p) => p.slug === app);
+  const policy = publishedPolicy(app);
   if (!policy) return {};
 
   return {
@@ -35,7 +38,7 @@ export default async function NxPrivPolicyPage({
   params: Promise<{ app: string }>;
 }) {
   const { app } = await params;
-  const policy = privacyPolicies.find((p) => p.slug === app);
+  const policy = publishedPolicy(app);
   if (!policy) notFound();
 
   // Themed policies get their product's own presentation; the rest keep NX styling.

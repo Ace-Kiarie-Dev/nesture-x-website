@@ -1,0 +1,17 @@
+/* Metric-matched fallbacks for the self-hosted fonts (Arial for the sans faces, Times New Roman for Playfair Display). The values are the ones
+   next/font/google generated, so text shown while a font loads, and glyphs the web
+   fonts lack (→, ✓ …), keep exactly the size and spacing they had before. Each
+   localFont call sets adjustFontFallback: false and names its face here. */
+@font-face { font-family: 'Bebas Neue Fallback'; src: local(Arial); ascent-override: 117.32%; descent-override: 39.11%; line-gap-override: 0%; size-adjust: 76.72%; }
+@font-face { font-family: 'Space Grotesk Fallback'; src: local(Arial); ascent-override: 89.71%; descent-override: 26.62%; line-gap-override: 0%; size-adjust: 109.69%; }
+@font-face { font-family: 'JetBrains Mono Fallback'; src: local(Arial); ascent-override: 75.79%; descent-override: 22.29%; line-gap-override: 0%; size-adjust: 134.59%; }
+@font-face { font-family: 'Inter Fallback'; src: local(Arial); ascent-override: 90.44%; descent-override: 22.52%; line-gap-override: 0%; size-adjust: 107.12%; }
+@font-face { font-family: 'Montserrat Fallback'; src: local(Arial); ascent-override: 85.79%; descent-override: 22.25%; line-gap-override: 0%; size-adjust: 112.83%; }
+@font-face { font-family: 'Baloo2 Fallback'; src: local(Arial); ascent-override: 112.55%; descent-override: 54.71%; line-gap-override: 0%; size-adjust: 95.78%; }
+@font-face { font-family: 'Barlow Fallback'; src: local(Arial); ascent-override: 103.43%; descent-override: 20.69%; line-gap-override: 0%; size-adjust: 96.68%; }
+@font-face { font-family: 'Barlow Condensed Fallback'; src: local(Arial); ascent-override: 130.73%; descent-override: 26.15%; line-gap-override: 0%; size-adjust: 76.49%; }
+@font-face { font-family: 'Playfair Display Fallback'; src: local('Times New Roman'); ascent-override: 97.25%; descent-override: 22.56%; line-gap-override: 0%; size-adjust: 111.26%; }
+@font-face { font-family: 'Outfit Fallback'; src: local(Arial); ascent-override: 100.18%; descent-override: 26.05%; line-gap-override: 0%; size-adjust: 99.82%; }
+/* Clash Display is served by Fontshare, not self-hosted (see app/no-snooze-solen/page.tsx).
+   These values come from next/font's local-font routine run on the licensed Semibold file. */
+@font-face { font-family: 'Clash Display Fallback'; src: local(Arial); ascent-override: 79.51%; descent-override: 22.33%; line-gap-override: 8.04%; size-adjust: 111.94%; }

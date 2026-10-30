@@ -1,13 +1,19 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import ParticleCanvas from '@/components/ui/ParticleCanvas';
+import SiteNav from '@/components/redesign/SiteNav';
+import SiteFooter from '@/components/redesign/SiteFooter';
 
 /**
- * Detects /admin and /legal/[app]/privacy routes and renders only the
- * children — no site chrome. All other routes get the full Navbar / Footer / canvas.
+ * Site chrome for every route: the redesigned SiteNav and SiteFooter. Pages paint
+ * their own background (no navbar offset); product landing pages keep their own
+ * skin in the body and clear the floating nav themselves (their *-under-nav wrappers).
+ *
+ * Two kinds of route render only their children, no site chrome:
+ *  - /admin, which has its own shell;
+ *  - /legal/[app]/privacy, the policies opened inside the apps.
+ * The /nx-gaming/2048 and /nx-gaming/flappy-horror games are route handlers that
+ * serve their own HTML, so they never reach this shell.
  */
 export default function ClientShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,14 +22,19 @@ export default function ClientShell({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
+  // .nx-shell-chrome is display: contents; the 404 page brings its own SiteNav and
+  // SiteFooter, so these step aside there (hybrid.css).
   return (
     <>
-      <ParticleCanvas />
-      <Navbar />
-      <div className="site-wrapper flex flex-col flex-1" style={{ paddingTop: '80px' }}>
-        {children}
+      <div className="nx-shell-chrome">
+        <SiteNav />
       </div>
-      <Footer />
+      <div className="site-wrapper nx-grid-bg flex flex-col flex-1" style={{ paddingTop: 0 }}>
+        {children}
+        <div className="nx-shell-chrome">
+          <SiteFooter />
+        </div>
+      </div>
     </>
   );
 }

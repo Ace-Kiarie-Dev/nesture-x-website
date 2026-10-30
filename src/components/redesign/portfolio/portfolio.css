@@ -1,0 +1,946 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   /portfolio and /portfolio/[id], hybrid redesign. Scoped under .nxpf; colours,
+   shadows and radii come from the --nx-* tokens in app/globals.css, so both pages
+   follow the light / dark toggle. Building blocks (.nx-clay, .nx-glass, .nx-band,
+   .nx-h2, .nx-outline, .nx-clay-btn, .nx-chip) live in src/styles/hybrid.css.
+   Breakpoints: 768px (tablet), 1100px (wide hero / detail split), 1200px (SiteNav).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxpf {
+  --nxpf-gutter: 20px;
+  --nxpf-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  /* Clip, not hidden: no horizontal scroll from glows, and sticky still works. */
+  overflow-x: clip;
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxpf { --nxpf-gutter: 40px; }
+}
+
+.nxpf-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--nxpf-gutter);
+}
+
+.nxpf-sec {
+  position: relative;
+  padding-block: clamp(56px, 8vw, 112px);
+}
+
+/* ── 1. Hero ───────────────────────────────────────────────────────────────
+   Short on purpose: the grid starts within about one scroll on desktop. Wide
+   wrapper (max 1760px, small side padding) like /services; copy hard left. */
+
+.nxpf-hero-wrap {
+  max-width: 1760px;
+  margin: 0 auto;
+  padding-inline: var(--nxpf-gutter);
+}
+
+.nxpf-hero {
+  /* Clears the floating nav: 22px offset + 68px pill + air. */
+  padding-top: 124px;
+  padding-bottom: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+.nxpf-hero-copy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.nxpf-hero-title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  /* "SPEAKS FOR" is ~3.6em wide in Bebas: 23vw keeps it inside a phone column. */
+  font-size: min(23vw, 80px);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+}
+.nxpf-hero-line { display: block; white-space: nowrap; }
+
+.nxpf-hero-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+}
+.nxpf-hero-lede {
+  max-width: 460px;
+  padding-left: 16px;
+  border-left: 3px solid var(--nx-blue);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--nx-body);
+}
+.nxpf-count {
+  border-radius: var(--nx-radius-pill);
+  padding: 9px 16px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Art: hidden on phones so the grid stays close. */
+.nxpf-hero-art { display: none; }
+
+@media (min-width: 768px) {
+  .nxpf-hero {
+    padding-top: 140px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 32px;
+  }
+  .nxpf-hero-title { font-size: 104px; }
+  .nxpf-hero-art {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .nxpf-hero-glow {
+    position: absolute;
+    inset: -14% -30%;
+    background: radial-gradient(closest-side, rgba(26, 111, 212, 0.5), rgba(26, 111, 212, 0));
+  }
+  [data-theme='light'] .nxpf-hero-glow { opacity: 0.45; }
+  .nxpf-hero-img {
+    position: relative;
+    width: auto;
+    height: 300px;
+    filter: drop-shadow(0 24px 28px rgba(3, 6, 16, 0.5));
+    animation: nxpf-float 6s ease-in-out infinite;
+  }
+  [data-theme='light'] .nxpf-hero-img { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.22)); }
+}
+
+@media (min-width: 1100px) {
+  .nxpf-hero-wrap { padding-inline: clamp(20px, 2.5vw, 48px); }
+  .nxpf-hero {
+    padding-top: 136px;
+    padding-bottom: 32px;
+    column-gap: clamp(24px, 4vw, 80px);
+  }
+  /* ~130px at 1440px and up. */
+  .nxpf-hero-title { font-size: clamp(96px, 9vw, 130px); }
+  .nxpf-hero-art { padding-right: clamp(0px, 4vw, 80px); }
+  .nxpf-hero-img { height: clamp(340px, 28vw, 440px); }
+}
+
+@keyframes nxpf-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-hero-img { animation: none; }
+}
+
+/* ── 2. Category tabs ──────────────────────────────────────────────────────
+   Sticky under the floating nav (22px + 68px pill + 10px air) while the grid
+   scrolls. Below 1200px one scroll-snap row with no visible scrollbar; from
+   1200px the tabs wrap, centred. Active tab: blue chip with an underline. */
+
+.nxpf-tabs {
+  position: sticky;
+  top: 100px;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+  pointer-events: none;
+}
+.nxpf-tabs-row {
+  pointer-events: auto;
+  position: relative;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  padding: 8px;
+  border-radius: var(--nx-radius-pill);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+}
+.nxpf-tabs-row::-webkit-scrollbar { display: none; }
+.nxpf-tabs-row li { flex-shrink: 0; scroll-snap-align: start; }
+
+.nxpf-tab {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  border-radius: var(--nx-radius-pill);
+  text-decoration: none;
+}
+.nxpf-tab:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 2px;
+}
+.nxpf-tab-chip {
+  border-radius: var(--nx-radius-pill);
+  padding: 12px 16px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: color 180ms ease, background 180ms ease;
+}
+.nxpf-tab:hover .nx-chip { color: var(--nx-text); }
+.nxpf-tab-count { font-size: 10px; opacity: 0.6; }
+/* Underline on the active tab. */
+.nxpf-tab[aria-current='true']::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--nx-blue);
+}
+
+@media (min-width: 1200px) {
+  /* One line from ~1300px; narrower desktops wrap to two, hence the card radius. */
+  .nxpf-tabs-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    overflow: visible;
+    border-radius: 32px;
+  }
+  .nxpf-tab-chip { padding: 12px 11px; letter-spacing: 0; gap: 6px; }
+  .nxpf-tab[aria-current='true']::after { left: 12px; right: 12px; }
+}
+
+/* Filtering: the wrapper's data-cat hides the other categories' cards. */
+.nxpf-browser[data-cat='logos'] .nxpf-item:not([data-cat='logos']),
+.nxpf-browser[data-cat='business-cards'] .nxpf-item:not([data-cat='business-cards']),
+.nxpf-browser[data-cat='company-profiles'] .nxpf-item:not([data-cat='company-profiles']),
+.nxpf-browser[data-cat='one-pagers'] .nxpf-item:not([data-cat='one-pagers']),
+.nxpf-browser[data-cat='social-media'] .nxpf-item:not([data-cat='social-media']),
+.nxpf-browser[data-cat='flyers-posters'] .nxpf-item:not([data-cat='flyers-posters']),
+.nxpf-browser[data-cat='mockups'] .nxpf-item:not([data-cat='mockups']),
+.nxpf-browser[data-cat='web'] .nxpf-item:not([data-cat='web']) { display: none; }
+
+.nxpf-empty { display: none; }
+.nxpf-browser[data-empty] .nxpf-empty { display: flex; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-tab-chip { transition: none; }
+}
+
+/* ── 3. Masonry grid ───────────────────────────────────────────────────────
+   CSS columns: 1 below 380px, 2 from 380px (larger phones and tablets), 3 from
+   1024px. Each card keeps its image's real aspect ratio (no layout shift). */
+
+.nxpf-grid-sec { padding-bottom: clamp(56px, 8vw, 112px); }
+
+.nxpf-grid {
+  list-style: none;
+  columns: 1;
+  column-gap: 14px;
+}
+.nxpf-item {
+  break-inside: avoid;
+  margin-bottom: 14px;
+}
+@media (min-width: 380px) {
+  .nxpf-grid { columns: 2; }
+}
+@media (min-width: 768px) {
+  .nxpf-grid { column-gap: 20px; }
+  .nxpf-item { margin-bottom: 20px; }
+}
+@media (min-width: 1024px) {
+  .nxpf-grid { columns: 3; }
+}
+
+/* Card: clay-style frame, thin border, soft shadow. */
+.nxpf-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--nx-glass-border);
+  background: var(--nx-inset);
+  box-shadow: 0 14px 30px rgba(3, 6, 16, 0.45);
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 220ms var(--nxpf-ease), box-shadow 220ms var(--nxpf-ease);
+}
+[data-theme='light'] .nxpf-card { box-shadow: 0 12px 26px rgba(13, 27, 62, 0.12); }
+.nxpf-card:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 3px;
+}
+.nxpf-card-media { position: relative; display: block; width: 100%; }
+.nxpf-card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No-image tile (PDF without a cover, coming-soon site). */
+.nxpf-card-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(160deg, var(--nx-clay-from), var(--nx-clay-to));
+}
+.nxpf-card-ph-mark {
+  font-family: var(--font-display), sans-serif;
+  font-size: 56px;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--nx-blue);
+}
+.nxpf-card-ph-text {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+
+/* Type pill, top left. Dark glass in both themes so it reads on any artwork. */
+.nxpf-card-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(8, 12, 24, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/* Title + View, over a dark gradient from the bottom. */
+.nxpf-card-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 44px 14px 14px;
+  background: linear-gradient(to top, rgba(4, 8, 20, 0.92), rgba(4, 8, 20, 0.6) 55%, rgba(4, 8, 20, 0));
+}
+.nxpf-card-title {
+  min-width: 0;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #ffffff;
+}
+.nxpf-card-view { flex-shrink: 0; min-height: 36px; padding: 8px 14px; font-size: 11px; }
+
+/* Mouse-like pointers: the overlay rises on hover or keyboard focus. */
+@media (hover: hover) {
+  .nxpf-card-overlay {
+    opacity: 0;
+    translate: 0 30%;
+    transition: opacity 220ms var(--nxpf-ease), translate 220ms var(--nxpf-ease);
+  }
+  .nxpf-card:hover .nxpf-card-overlay,
+  .nxpf-card:focus-visible .nxpf-card-overlay { opacity: 1; translate: 0 0; }
+  .nxpf-card:hover { transform: translateY(-3px); }
+}
+/* Touch: no hover, so a slim title bar stays at the bottom. */
+@media (max-width: 767px) {
+  .nxpf-card { border-radius: 16px; }
+  .nxpf-card-pill { top: 8px; left: 8px; padding: 4px 8px; font-size: 9px; letter-spacing: 0.08em; }
+}
+@media (hover: none) {
+  .nxpf-card-overlay { padding: 22px 10px 8px; }
+  .nxpf-card-title {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nxpf-card-view { display: none; }
+}
+
+/* Empty category. */
+.nxpf-empty {
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 48px 24px;
+  text-align: center;
+}
+.nxpf-empty-img { width: auto; height: 140px; filter: drop-shadow(0 16px 18px rgba(3, 6, 16, 0.45)); }
+.nxpf-empty-text {
+  font-family: var(--font-display), sans-serif;
+  font-size: 32px;
+  line-height: 1.05;
+  color: var(--nx-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-card,
+  .nxpf-card-overlay { transition: none; }
+  .nxpf-card:hover { transform: none; }
+}
+
+/* ── 4. Trust strip ────────────────────────────────────────────────────────
+   Slate band under the grid: partner cards (shared PartnerCard), then the brand
+   ticker (shared Ticker), which bleeds to the band's edges. */
+
+.nxpf-trust-intro { max-width: 620px; margin-top: 24px; }
+
+.nxpf-partners {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxpf-gutter));
+  padding: 8px var(--nxpf-gutter) 24px;
+}
+.nxpf-partners::-webkit-scrollbar { display: none; }
+.nxpf-partners:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: -3px; border-radius: 12px; }
+.nxpf-partner { flex: 0 0 240px; scroll-snap-align: start; }
+
+.nxpf-brands-title {
+  margin-top: clamp(48px, 6vw, 72px);
+  margin-bottom: 20px;
+  font-family: var(--font-mono), monospace;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+  text-align: center;
+}
+/* Full bleed inside the band; the band's own clip trims the overflow. */
+.nxpf-brands {
+  margin-inline: calc(50% - 50vw);
+  background: transparent;
+}
+
+@media (min-width: 768px) {
+  .nxpf-partners {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    overflow: visible;
+    margin: 56px 0 0;
+    padding: 0;
+  }
+  .nxpf-partner { flex: 0 0 calc((100% - 40px) / 3); }
+}
+@media (min-width: 1200px) {
+  .nxpf-partners { flex-wrap: nowrap; }
+  .nxpf-partner { flex: 1 1 0; min-width: 0; padding-inline: 20px; }
+}
+
+/* ── 5. Project page ───────────────────────────────────────────────────────
+   Phone: crumbs, media, details, buttons full width. 1100px+: 70/30 split with
+   the details panel sticky beside the media. */
+
+.nxpf-project { padding-top: 116px; }
+@media (min-width: 768px) {
+  .nxpf-project { padding-top: 128px; }
+}
+
+.nxpf-crumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-bottom: 24px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+}
+.nxpf-crumbs li { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.nxpf-crumbs li + li::before { content: '/'; color: var(--nx-accent); }
+.nxpf-crumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--nx-accent);
+  text-decoration: none;
+}
+.nxpf-crumbs a:hover { color: var(--nx-text); }
+.nxpf-crumbs a:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 2px; border-radius: 6px; }
+.nxpf-crumbs [aria-current] { color: var(--nx-text); overflow-wrap: anywhere; }
+
+.nxpf-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.nxpf-view-media { min-width: 0; }
+
+/* Media height budget: the viewport minus the nav, breadcrumb, frame and the pager
+   under the media, so a tall piece never pushes the pager off the first screen. */
+.nxpf-project { --nxpf-media-max: max(300px, calc(100svh - 340px)); }
+
+/* Image in a clay frame, capped by the height budget. */
+.nxpf-view-frame {
+  display: flex;
+  justify-content: center;
+  padding: clamp(12px, 2vw, 24px);
+}
+.nxpf-view-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: var(--nxpf-media-max);
+  border-radius: 14px;
+}
+
+/* Browser mockup for web screenshots. */
+.nxpf-browser-frame {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--nx-glass-border);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-clay);
+}
+.nxpf-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: linear-gradient(160deg, var(--nx-clay-from), var(--nx-clay-to));
+  border-bottom: 1px solid var(--nx-glass-border);
+}
+.nxpf-browser-dots { display: flex; gap: 6px; }
+.nxpf-browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.nxpf-browser-dots span:nth-child(2) { background: #febc2e; }
+.nxpf-browser-dots span:nth-child(3) { background: #28c840; }
+.nxpf-browser-url {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 12px;
+  border-radius: var(--nx-radius-pill);
+  background: var(--nx-inset);
+  box-shadow: var(--nx-shadow-inset);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--nx-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nxpf-browser-frame .nxpf-view-img { width: 100%; max-height: none; border-radius: 0; }
+
+/* Details panel. */
+.nxpf-view-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.nxpf-view-pill { border-radius: var(--nx-radius-pill); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+.nxpf-view-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(40px, 3.2vw + 20px, 60px);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+  overflow-wrap: anywhere;
+}
+.nxpf-view-desc { font-size: 16px; }
+.nxpf-view-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.nxpf-view-client {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--nx-text);
+}
+.nxpf-view-client span {
+  margin-right: 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxpf-view-ctas { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 4px; }
+.nxpf-view-ctas .nx-clay-btn { width: 100%; }
+
+@media (min-width: 1100px) {
+  .nxpf-view {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    gap: 32px;
+  }
+  .nxpf-view-side { position: sticky; top: 110px; }
+  .nxpf-view-ctas .nx-clay-btn { white-space: normal; text-align: center; }
+}
+
+/* PDF viewer (PDFViewerClient.tsx): a dark stage in both themes, like a lightbox.
+   The viewer sizes its page to the stage width, so the wrapper's max-width (from the
+   cover's ratio) keeps one page + the 64px bar inside ~88vh. */
+/* --nxpf-col is the media column width (the viewport math the grid resolves to);
+   --nxpf-fit the viewer width. The stage reserves the page's final height up front
+   (page = stage width - 32px, at the cover's ratio), so nothing shifts while react-pdf
+   draws it. No container query here: it would trap the fullscreen position: fixed. */
+.nxpf-pdf-fit {
+  --nxpf-col: calc(100vw - 2 * var(--nxpf-gutter));
+  --nxpf-fit: min(var(--nxpf-col), calc((var(--nxpf-media-max) - 64px - 2rem) * var(--nxpf-pdf-ratio, 0.707) + 32px));
+  width: var(--nxpf-fit);
+  max-width: 100%;
+  margin-inline: auto;
+}
+@media (min-width: 1100px) {
+  .nxpf-pdf-fit { --nxpf-col: calc((min(100vw, 1320px) - 2 * var(--nxpf-gutter) - 32px) * 0.7); }
+}
+.nxpf-pdf-fit .nxpf-pdf-stage { min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707) + 2rem); }
+.nxpf-pdf-fit .nxpf-pdf-skeleton { min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707) + 2rem + 65px); }
+@media (max-width: 479px) {
+  .nxpf-pdf-fit .nxpf-pdf-skeleton { min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707) + 2rem + 61px); }
+}
+.nxpf-pdf-fit .nxpf-pdf.is-fullscreen .nxpf-pdf-stage { min-height: 0; }
+/* react-pdf's page starts as a small loading line; reserve its final box so it
+   doesn't jump from centred-and-tiny to full width. Not in fullscreen, where the
+   viewer sizes the page to the screen. !important because react-pdf sets inline
+   min-width / min-height: min-content on the page element. */
+.nxpf-pdf-fit .nxpf-pdf:not(.is-fullscreen) .react-pdf__Page {
+  min-width: calc(var(--nxpf-fit) - 34px) !important;
+  min-height: calc((var(--nxpf-fit) - 34px) / var(--nxpf-pdf-ratio, 0.707)) !important;
+  max-width: calc(var(--nxpf-fit) - 34px);
+}
+/* Before its ResizeObserver reports, the viewer draws the first page 480px wide; on a
+   narrow screen that first draw is scaled down to the final width instead of pushing
+   the page around. The document wrapper keeps full width while it says "Loading". */
+.nxpf-pdf-fit .nxpf-pdf:not(.is-fullscreen) .react-pdf__Page canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+.nxpf-pdf-fit .nxpf-pdf:not(.is-fullscreen) .react-pdf__Document {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.nxpf-pdf {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--nx-glass-border);
+  background: #0b1020;
+  box-shadow: var(--nx-shadow-clay);
+}
+.nxpf-pdf.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  border-radius: 0;
+  border: 0;
+}
+.nxpf-pdf-stage {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem 0;
+  min-height: clamp(320px, 55vh, 640px);
+}
+.nxpf-pdf.is-fullscreen .nxpf-pdf-stage { min-height: 0; }
+.nxpf-pdf-skeleton { min-height: clamp(380px, 60vh, 700px); }
+.nxpf-pdf-msg {
+  display: block;
+  padding: 2rem;
+  font-size: 0.85rem;
+  color: rgba(245, 245, 245, 0.55);
+}
+.nxpf-pdf-msg a { color: #8ec0ff; }
+.nxpf-pdf-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+/* The bar is always dark, so its ghost buttons keep light text in light theme too. */
+.nxpf-pdf .nxpf-pdf-btn {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.07);
+}
+.nxpf-pdf .nxpf-pdf-btn:focus-visible { outline-color: #8ec0ff; }
+@media (max-width: 479px) {
+  .nxpf-pdf-bar { gap: 6px; padding: 8px; }
+  .nxpf-pdf .nxpf-pdf-btn { padding: 10px 12px; gap: 4px; }
+}
+.nxpf-pdf-count {
+  white-space: nowrap;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.75);
+  user-select: none;
+}
+
+/* More like this: horizontal scroll-snap row. */
+.nxpf-more { padding-top: clamp(56px, 8vw, 96px); }
+.nxpf-more-row {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--nxpf-gutter));
+  padding: 8px var(--nxpf-gutter) 24px;
+  scroll-padding-inline: var(--nxpf-gutter);
+}
+.nxpf-more-row::-webkit-scrollbar { display: none; }
+.nxpf-more-row:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: -3px; border-radius: 12px; }
+.nxpf-more-item { flex: 0 0 240px; scroll-snap-align: start; }
+@media (min-width: 768px) {
+  .nxpf-more-item { flex-basis: 300px; }
+}
+
+
+/* ── 6. Two-step flow: back link, choice cards, digital grid, card badges ── */
+
+.nxpf-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--nx-accent);
+}
+.nxpf-back:hover { color: var(--nx-text); }
+.nxpf-back:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 3px; border-radius: 8px; }
+
+.nxpf-choices { padding-bottom: clamp(56px, 8vw, 112px); }
+.nxpf-choices-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.nxpf-choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--nx-text);
+  transition: transform 220ms var(--nxpf-ease), box-shadow 220ms var(--nxpf-ease);
+}
+.nxpf-choice:hover { transform: translateY(-4px); }
+.nxpf-choice:focus-visible { outline: 3px solid var(--nx-focus); outline-offset: 4px; }
+.nxpf-choice-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  padding-top: 24px;
+}
+.nxpf-choice-glow {
+  position: absolute;
+  inset: 0 10%;
+  background: radial-gradient(closest-side, rgba(26, 111, 212, 0.5), rgba(26, 111, 212, 0));
+}
+[data-theme='light'] .nxpf-choice-glow { opacity: 0.45; }
+.nxpf-choice-img {
+  position: relative;
+  width: auto;
+  max-width: 80%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 26px rgba(3, 6, 16, 0.5));
+  transition: translate 220ms var(--nxpf-ease);
+}
+[data-theme='light'] .nxpf-choice-img { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.22)); }
+.nxpf-choice:hover .nxpf-choice-img { translate: 0 -6px; }
+.nxpf-choice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 26px 28px;
+}
+.nxpf-choice-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(48px, 3vw + 32px, 76px);
+  line-height: 0.92;
+}
+.nxpf-choice-line { font-size: 16px; line-height: 1.55; color: var(--nx-body); }
+.nxpf-choice-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+.nxpf-choice-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 22px;
+  color: #ffffff;
+  background: linear-gradient(180deg, #4a97f2 0%, #1a6fd4 50%, #1558ad 100%);
+  box-shadow: var(--nx-shadow-btn);
+  transition: translate 220ms var(--nxpf-ease);
+}
+.nxpf-choice:hover .nxpf-choice-arrow { translate: 4px 0; }
+@media (min-width: 768px) {
+  .nxpf-choices-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .nxpf-choice-art { height: 280px; }
+}
+
+.nxpf-sub-title {
+  margin-bottom: 24px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 3vw + 28px, 72px);
+  line-height: 0.95;
+  color: var(--nx-text);
+}
+.nxpf-digital {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.nxpf-digital-item { scroll-margin-top: 120px; }
+@media (min-width: 640px) {
+  .nxpf-digital { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .nxpf-digital { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Status badge, top right (digital products). */
+.nxpf-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(142, 192, 255, 0.5);
+  background: rgba(8, 12, 24, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8ec0ff;
+}
+.nxpf-card-badge.is-live { color: #4ade80; border-color: rgba(74, 222, 128, 0.55); }
+.nxpf-card-badge.is-soon { color: #fbbf24; border-color: rgba(251, 191, 36, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nxpf-choice,
+  .nxpf-choice-img,
+  .nxpf-choice-arrow { transition: none; }
+  .nxpf-choice:hover { transform: none; }
+  .nxpf-choice:hover .nxpf-choice-img,
+  .nxpf-choice:hover .nxpf-choice-arrow { translate: none; }
+}
+
+/* Project pager, directly under the media. Desktop: two ghost clay buttons with the
+   neighbour titles on one line and a counter between. Phones: 44px arrow buttons. */
+.nxpf-pager {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.nxpf-pager-btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 12px;
+  gap: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.nxpf-pager-btn[aria-disabled='true'] { opacity: 0.4; cursor: not-allowed; }
+.nxpf-pager-btn[aria-disabled='true']:hover { transform: none; border-color: var(--nx-ghost-border); }
+.nxpf-pager-text { display: none; }
+.nxpf-pager-count {
+  justify-self: center;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--nx-body);
+  white-space: nowrap;
+}
+@media (min-width: 768px) {
+  .nxpf-pager { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .nxpf-pager-btn { min-width: 0; padding: 10px 18px; max-width: 100%; }
+  .nxpf-pager-btn--prev { justify-self: start; }
+  .nxpf-pager-btn--next { justify-self: end; }
+  .nxpf-pager-text { display: flex; flex-direction: column; min-width: 0; text-align: left; }
+  .nxpf-pager-btn--next .nxpf-pager-text { text-align: right; }
+  .nxpf-pager-dir {
+    font-family: var(--font-mono), monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--nx-accent);
+  }
+  .nxpf-pager-title {
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

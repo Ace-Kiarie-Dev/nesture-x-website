@@ -2,6 +2,8 @@
 
 import { useId, useState } from 'react';
 import { ArrowRight, BadgeCheck, CircleCheck, Mail } from 'lucide-react';
+import Honeypot, { honeypotValue } from '@/components/ui/Honeypot';
+import { HONEYPOT_FIELD } from '@/lib/honeypot';
 
 // Shared launch-waitlist form for product landing pages (BetLedger, SoraPesa…).
 // Owns the behaviour only — validation, submission, loading/success/error
@@ -65,6 +67,7 @@ export default function WaitlistForm({
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (status === 'loading') return;
+    const trap = honeypotValue(e.currentTarget as HTMLFormElement);
 
     if (!EMAIL_RE.test(email.trim())) {
       setStatus('error');
@@ -83,6 +86,7 @@ export default function WaitlistForm({
           projectSlug,
           projectName,
           source: readSource(),
+          [HONEYPOT_FIELD]: trap,
         }),
       });
 
@@ -118,6 +122,7 @@ export default function WaitlistForm({
 
   return (
     <form className={classes.form} onSubmit={submit} noValidate>
+      <Honeypot />
       <div className={classes.row} data-invalid={invalid}>
         <div className={classes.inputWrap} data-invalid={invalid}>
           <Mail size={18} aria-hidden="true" />

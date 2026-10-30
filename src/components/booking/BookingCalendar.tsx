@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cx } from '@/components/redesign/cx';
 import {
   TIME_SLOTS,
   getBookingWindow,
@@ -31,64 +32,8 @@ function getMonthGrid(viewMonth: Date): (Date | null)[] {
   return cells;
 }
 
-// ── Cell / button styles ──────────────────────────────────────────────────────
-
-function navBtnStyle(disabled: boolean): React.CSSProperties {
-  return {
-    width: '28px',
-    height: '28px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'transparent',
-    border: '1px solid rgba(26,111,212,0.2)',
-    color: disabled ? 'rgba(245,245,245,0.15)' : 'var(--color-primary)',
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    transition: 'border-color 0.2s, color 0.2s',
-  };
-}
-
-function dayCellStyle(opts: { selectable: boolean; isViewing: boolean; isConfirmed: boolean }): React.CSSProperties {
-  const { selectable, isViewing, isConfirmed } = opts;
-  return {
-    aspectRatio: '1 / 1',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'var(--font-body)',
-    fontSize: '0.8rem',
-    background: isConfirmed
-      ? 'var(--color-primary)'
-      : isViewing
-      ? 'rgba(26,111,212,0.16)'
-      : 'transparent',
-    color: !selectable
-      ? 'rgba(245,245,245,0.15)'
-      : isConfirmed
-      ? 'var(--color-text)'
-      : 'rgba(245,245,245,0.75)',
-    border: isViewing && !isConfirmed ? '1px solid var(--color-primary)' : '1px solid transparent',
-    cursor: selectable ? 'pointer' : 'not-allowed',
-    transition: 'background 0.2s ease, border-color 0.2s ease, color 0.2s ease',
-  };
-}
-
-function slotButtonStyle(opts: { isTaken: boolean; isSelected: boolean }): React.CSSProperties {
-  const { isTaken, isSelected } = opts;
-  return {
-    padding: '0.6rem 0.5rem',
-    fontFamily: 'var(--font-mono)',
-    fontSize: '0.72rem',
-    letterSpacing: '0.03em',
-    textAlign: 'center',
-    background: isSelected ? 'var(--color-primary)' : 'rgba(26,111,212,0.04)',
-    color: isTaken ? 'rgba(245,245,245,0.2)' : isSelected ? 'var(--color-text)' : 'rgba(245,245,245,0.75)',
-    border: isSelected ? '1px solid var(--color-primary)' : '1px solid rgba(26,111,212,0.2)',
-    textDecoration: isTaken ? 'line-through' : 'none',
-    cursor: isTaken ? 'not-allowed' : 'pointer',
-    transition: 'background 0.2s ease, border-color 0.2s ease, color 0.2s ease',
-  };
-}
+// Styles: components/redesign/booking/booking.css. Taken slots are struck through and
+// labelled "Taken", the picked one carries a tick, so state never rests on colour alone.
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
@@ -157,117 +102,106 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onSele
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-      {/* Month nav */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <button onClick={goPrev} disabled={prevDisabled} aria-label="Previous month" data-hover={!prevDisabled || undefined} style={navBtnStyle(prevDisabled)}>
-          <ChevronLeft size={15} aria-hidden />
-        </button>
-        <span style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.7rem',
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          color: 'rgba(245,245,245,0.6)',
-        }}>
-          {viewMonth.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
-        </span>
-        <button onClick={goNext} disabled={nextDisabled} aria-label="Next month" data-hover={!nextDisabled || undefined} style={navBtnStyle(nextDisabled)}>
-          <ChevronRight size={15} aria-hidden />
-        </button>
-      </div>
-
-      {/* Weekday header */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
-        {WEEKDAY_LABELS.map(w => (
-          <div key={w} style={{
-            textAlign: 'center',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.55rem',
-            letterSpacing: '0.1em',
-            color: 'rgba(245,245,245,0.3)',
-          }}>
-            {w}
-          </div>
-        ))}
-      </div>
-
-      {/* Day grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`${viewMonth.getFullYear()}-${viewMonth.getMonth()}`}
-          initial={{ opacity: 0, x: 12 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -12 }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}
-        >
-          {cells.map((d, i) => {
-            if (!d) return <div key={i} />;
-            const key = toDateKey(d);
-            const selectable  = isSelectableDate(d, today);
-            const isViewing   = key === viewingDate;
-            const isConfirmed = key === selectedDate && !!selectedTimeSlot;
-            return (
-              <button
-                key={i}
-                type="button"
-                onClick={() => handleDayClick(d)}
-                disabled={!selectable}
-                data-hover={selectable || undefined}
-                style={dayCellStyle({ selectable, isViewing, isConfirmed })}
-              >
-                {d.getDate()}
-              </button>
-            );
-          })}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Slot list for the day being viewed */}
-      {viewingDate && (
-        <div style={{ marginTop: '0.25rem' }}>
-          <p style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.6rem',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'rgba(245,245,245,0.35)',
-            marginBottom: '0.75rem',
-          }}>
-            {formatDateLabel(viewingDate)}
+    <div className="nxbk-cal">
+      <div className="nxbk-cal-month">
+        {/* Month nav */}
+        <div className="nxbk-cal-nav">
+          <button type="button" onClick={goPrev} disabled={prevDisabled} aria-label="Previous month" className="nxbk-cal-arrow">
+            <ChevronLeft size={18} aria-hidden />
+          </button>
+          <p className="nxbk-cal-title" aria-live="polite">
+            {viewMonth.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
           </p>
-
-          {loadingSlots ? (
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'rgba(245,245,245,0.4)' }}>
-              Checking availability…
-            </p>
-          ) : slotError ? (
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#ff4444' }}>
-              {slotError}
-            </p>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.5rem' }}>
-              {TIME_SLOTS.map(slot => {
-                const isTaken    = takenSlots.includes(slot);
-                const isSelected = viewingDate === selectedDate && slot === selectedTimeSlot;
-                return (
-                  <button
-                    key={slot}
-                    type="button"
-                    onClick={() => handleSlotClick(slot)}
-                    disabled={isTaken}
-                    data-hover={!isTaken || undefined}
-                    style={slotButtonStyle({ isTaken, isSelected })}
-                  >
-                    {formatSlotLabel(slot)}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          <button type="button" onClick={goNext} disabled={nextDisabled} aria-label="Next month" className="nxbk-cal-arrow">
+            <ChevronRight size={18} aria-hidden />
+          </button>
         </div>
-      )}
+
+        {/* Weekday header (each day button carries its full date for screen readers) */}
+        <div className="nxbk-cal-week" aria-hidden="true">
+          {WEEKDAY_LABELS.map(w => (
+            <span key={w}>{w}</span>
+          ))}
+        </div>
+
+        {/* Day grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${viewMonth.getFullYear()}-${viewMonth.getMonth()}`}
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="nxbk-cal-grid"
+          >
+            {cells.map((d, i) => {
+              if (!d) return <div key={i} />;
+              const key = toDateKey(d);
+              const selectable  = isSelectableDate(d, today);
+              const isViewing   = key === viewingDate;
+              const isConfirmed = key === selectedDate && !!selectedTimeSlot;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handleDayClick(d)}
+                  disabled={!selectable}
+                  aria-label={formatDateLabel(key)}
+                  aria-pressed={selectable ? isViewing : undefined}
+                  className={cx('nxbk-day', isViewing && 'is-viewing', isConfirmed && 'is-confirmed')}
+                >
+                  {d.getDate()}
+                </button>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Slot list for the day being viewed. Fixed min-height so loading → slots doesn't jump. */}
+      <div className="nxbk-slots-area">
+        {viewingDate ? (
+          <>
+            <p className="nxbk-slots-date">
+              {formatDateLabel(viewingDate)}
+            </p>
+
+            {loadingSlots ? (
+              <p className="nxbk-slot-status" role="status">
+                <span className="nxbk-spinner nxbk-spinner--blue" aria-hidden="true" />
+                Checking availability…
+              </p>
+            ) : slotError ? (
+              <p className="nx-form-error" role="alert">
+                {slotError}
+              </p>
+            ) : (
+              <div className="nxbk-slots" role="group" aria-label={`Times on ${formatDateLabel(viewingDate)}`}>
+                {TIME_SLOTS.map(slot => {
+                  const isTaken    = takenSlots.includes(slot);
+                  const isSelected = viewingDate === selectedDate && slot === selectedTimeSlot;
+                  return (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => handleSlotClick(slot)}
+                      disabled={isTaken}
+                      aria-pressed={isTaken ? undefined : isSelected}
+                      className={cx('nxbk-slot', isTaken && 'is-taken', isSelected && 'is-selected')}
+                    >
+                      {isSelected && <Check size={14} strokeWidth={3} aria-hidden />}
+                      <span className="nxbk-slot-time">{formatSlotLabel(slot)}</span>
+                      {isTaken && <span className="nxbk-slot-tag">Taken</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="nxbk-slots-hint">Pick a weekday to see open times.</p>
+        )}
+      </div>
     </div>
   );
 }

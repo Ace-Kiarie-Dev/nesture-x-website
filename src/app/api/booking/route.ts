@@ -1,35 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ObjectId } from 'mongodb';
 import { Resend } from 'resend';
 import { createBooking, getTakenSlotsForDate } from '@/services/bookingService';
 import { isValidBookingSlot, formatDateLabel, formatSlotLabel } from '@/lib/bookingSlots';
 import { sendBookingConfirmation } from '@/emails/send';
+import { buildBookingOwner } from '@/emails/booking-owner';
+import { FROM, OWNER_INBOX } from '@/lib/contactEmails';
+import {
+  BodyTooLargeError, EMAIL_RE, checkRateLimit, isHoneypotFilled, rateLimitedResponse, readJsonBody, tooLargeResponse,
+} from '@/lib/formGuard';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ── Email templates ───────────────────────────────────────────────────────────
-// Relocated from api/mpesa/callback/route.ts — these used to fire only once
-// Safaricom confirmed payment; now the booking itself is the confirmation.
-
-function peterEmail(name: string, email: string, phone: string, service: string, date: string, timeSlot: string): string {
-  return `
-New Consultation Booking — Nesture-X
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NAME     : ${name}
-EMAIL    : ${email}
-PHONE    : ${phone}
-SERVICE  : ${service}
-DATE     : ${formatDateLabel(date)}
-TIME     : ${formatSlotLabel(timeSlot)}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  `.trim();
-}
 
 // ── POST /api/booking — validate, save, confirm ───────────────────────────────
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, phone, service, date, timeSlot } = await req.json() as Record<string, string>;
+    const body = await readJsonBody(req, 'booking');
+
+    // Honeypot filled: answer like a normal booking (with an unused reference),
+    // but store nothing, hold no slot and send no email.
+    if (isHoneypotFilled(body)) {
+      console.info('[booking] honeypot filled, booking dropped');
+      return NextResponse.json({ success: true, bookingId: new ObjectId().toHexString(), emailSent: true });
+    }
+
+    const { name, email, phone, service, date, timeSlot } = body as Record<string, string>;
 
     if (!name?.trim() || !email?.trim() || !phone?.trim() || !date?.trim() || !timeSlot?.trim()) {
       return NextResponse.json(
@@ -37,6 +33,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    if (!EMAIL_RE.test(email.trim())) {
+      return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
+    }
+
+    // Only bookings that would actually be saved count against the limit.
+    const rate = await checkRateLimit('booking', req);
+    if (!rate.allowed) return rateLimitedResponse(rate.retryAfterSeconds, true);
 
     if (!isValidBookingSlot(date.trim(), timeSlot.trim())) {
       return NextResponse.json(
@@ -75,10 +78,17 @@ export async function POST(req: NextRequest) {
         bookingRef: bookingId,
       }),
       resend.emails.send({
-        from:    'Nesture-X Bookings <bookings@nesturex.com>',
-        to:      'nesturex@gmail.com',
+        from:    FROM.ownerBooking,
+        to:      OWNER_INBOX,
         subject: `New Consultation — ${booking.name} — ${formatDateLabel(booking.date)}`,
-        text:    peterEmail(booking.name, booking.email, booking.phone, booking.service, booking.date, booking.timeSlot),
+        ...buildBookingOwner({
+          name:    booking.name,
+          email:   booking.email,
+          phone:   booking.phone,
+          service: booking.service,
+          date:    formatDateLabel(booking.date),
+          time:    formatSlotLabel(booking.timeSlot),
+        }),
       }),
     ]);
 
@@ -96,6 +106,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (err) {
+    if (err instanceof BodyTooLargeError) return tooLargeResponse();
     console.error('[booking/POST]', err);
     return NextResponse.json(
       { error: 'Could not save your booking. Please try again or reach us on WhatsApp.' },

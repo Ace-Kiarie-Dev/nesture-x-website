@@ -1,5 +1,5 @@
 import portfolioData from '@/data/portfolio.json';
-import type { PortfolioItem } from '@/components/sections/Portfolio';
+import type { PortfolioItem } from '@/types/portfolio';
 
 // SEO titles and descriptions for /portfolio/[id].
 //

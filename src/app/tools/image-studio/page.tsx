@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import BackLink from '@/components/tools/BackLink';
-import ToolCTA from '@/components/tools/ToolCTA';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
+import { Segmented, Spinner, Status } from '@/components/redesign/tools/blocks';
+import { ClayButton } from '@/components/redesign';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -39,34 +39,6 @@ const SOCIAL_PRESETS = [
   { label: 'YouTube Thumb',   w: 1280, h: 720  },
 ];
 
-// ── Styles ────────────────────────────────────────────────────────────────────
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20, 25, 32, 0.6)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-};
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.62rem',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  color: 'rgba(245,245,245,0.35)',
-  display: 'block',
-  marginBottom: '0.5rem',
-};
-const INPUT: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  color: 'var(--color-text)',
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.85rem',
-  padding: '0.5rem 0.75rem',
-  width: '100%',
-  outline: 'none',
-};
-
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function formatBytes(n: number) {
@@ -87,26 +59,16 @@ function sizeDiff(orig: number, proc: number) {
 
 function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', userSelect: 'none' }}>
-      <div
-        role="switch"
-        aria-checked={on}
-        onClick={() => onChange(!on)}
-        style={{
-          width: '40px', height: '22px', flexShrink: 0,
-          background: on ? 'var(--color-primary)' : 'rgba(255,255,255,0.1)',
-          border: '1px solid rgba(255,255,255,0.15)',
-          position: 'relative', transition: 'background 150ms ease',
-        }}
-      >
-        <div style={{
-          position: 'absolute', top: '2px', left: on ? '20px' : '2px',
-          width: '16px', height: '16px', background: 'var(--color-text)',
-          transition: 'left 150ms ease',
-        }} />
-      </div>
-      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(245,245,245,0.7)' }}>{label}</span>
-    </label>
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={() => onChange(!on)}
+      className="nxtl-is-switch"
+    >
+      <span className="nxtl-toggle-track" aria-hidden="true" />
+      <span className="nxtl-toggle-label">{label}</span>
+    </button>
   );
 }
 
@@ -117,24 +79,11 @@ function ToggleBtn({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       title={title}
-      style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: small ? '0.7rem' : '0.78rem',
-        fontWeight: 600,
-        letterSpacing: '0.04em',
-        padding: small ? '0.35rem 0.6rem' : '0.5rem 0.75rem',
-        border: active ? '1px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)',
-        background: active ? 'var(--color-primary)' : 'rgba(20,25,32,0.8)',
-        color: 'var(--color-text)',
-        cursor: 'pointer',
-        textTransform: 'uppercase',
-        transition: 'border-color 120ms ease, background 120ms ease',
-        whiteSpace: 'nowrap',
-      }}
-      onMouseEnter={e => { if (!active) (e.currentTarget).style.borderColor = 'var(--color-primary)'; }}
-      onMouseLeave={e => { if (!active) (e.currentTarget).style.borderColor = 'rgba(255,255,255,0.1)'; }}
+      aria-pressed={active}
+      className={`nxtl-is-opt${small ? ' nxtl-is-opt--sm' : ''}`}
     >
       {children}
     </button>
@@ -148,19 +97,19 @@ function SliderRow({
   onChange: (v: number) => void;
 }) {
   return (
-    <div style={{ marginBottom: '1.25rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-        <span style={LABEL}>{label}</span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--color-primary)' }}>
+    <label className="nxtl-is-slider">
+      <span className="nxtl-range-head">
+        <span className="nxtl-label" style={{ marginBottom: 0 }}>{label}</span>
+        <span className="nxtl-is-slider-val">
           {value}{unit}
         </span>
-      </div>
+      </span>
       <input
         type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(Number(e.target.value))}
-        style={{ width: '100%', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
+        className="nxtl-range"
       />
-    </div>
+    </label>
   );
 }
 
@@ -360,352 +309,332 @@ export default function ImageStudioPage() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <main style={{ padding: 'clamp(6rem, 10vw, 11rem) clamp(2rem, 7vw, 8rem) clamp(4rem, 6vw, 6rem)', background: 'var(--color-bg)' }}>
-      <BackLink />
+    <ToolShell
+      title="Image Studio"
+      outline="Studio"
+      description="Convert, compress, resize, transform and adjust images. Full power, one tool."
+      cta
+    >
+      <div className="nxtl-panes nxtl-panes--wide-left">
 
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem, 8vw, 8rem)', lineHeight: 0.9, color: 'var(--color-text)', marginBottom: '0.75rem' }}>
-        IMAGE STUDIO
-      </h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(0.95rem, 1.3vw, 1.05rem)', color: 'rgba(245,245,245,0.5)', marginBottom: '2.5rem', maxWidth: '44rem' }}>
-        Convert, compress, resize, transform and adjust images. Full power, one tool.
-      </p>
+        {/* ── Controls ── */}
+        <div className="nxtl-panel nx-clay">
 
-      {/* ── Main card ── */}
-      <div style={{ ...GLASS, padding: 'clamp(1.5rem, 3vw, 2.25rem)', maxWidth: '760px' }}>
-
-        {/* ── Upload zone / preview ── */}
-        {!file ? (
-          <div
-            role="button" tabIndex={0} aria-label="Upload image"
-            onClick={() => inputRef.current?.click()}
-            onKeyDown={e => e.key === 'Enter' && inputRef.current?.click()}
-            onDragOver={e => { e.preventDefault(); setDragging(true); }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={onDrop}
-            style={{
-              border: `2px dashed ${dragging ? 'var(--color-primary)' : 'rgba(255,255,255,0.15)'}`,
-              padding: '2.5rem 2rem',
-              textAlign: 'center',
-              cursor: 'pointer',
-              marginBottom: '1.75rem',
-              transition: 'border-color 150ms ease, background 150ms ease',
-              background: dragging ? 'rgba(26,111,212,0.05)' : 'transparent',
-              minHeight: '160px',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
-            }}
-          >
-            <div style={{ fontSize: '2rem', color: 'rgba(26,111,212,0.5)', lineHeight: 1 }}>↑</div>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'rgba(245,245,245,0.4)', lineHeight: 1.5 }}>
-              Drop an image here, or click to browse
-            </p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', letterSpacing: '0.1em', color: 'rgba(245,245,245,0.2)' }}>
-              JPEG · PNG · WebP · AVIF · GIF · TIFF · BMP · ICO — MAX 4 MB
-            </p>
-            <input
-              ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
-              onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f); e.target.value = ''; }}
-            />
-          </div>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem', marginBottom: '1.75rem', padding: '1rem', background: 'rgba(26,111,212,0.04)', border: '1px solid rgba(26,111,212,0.12)' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={preview!} alt="Preview" style={{ width: '80px', height: '80px', objectFit: 'cover', flexShrink: 0, border: '1px solid rgba(255,255,255,0.08)' }} />
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: '0.25rem' }}>
-                {file.name}
-              </p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'rgba(245,245,245,0.35)', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>
-                {formatBytes(file.size)}{origDims ? ` · ${origDims.w}×${origDims.h}px` : ''}
-              </p>
-              <button
-                onClick={resetAll}
-                style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'var(--color-primary)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}
-              >
-                Change image
-              </button>
-            </div>
-            <input
-              ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
-              onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f); e.target.value = ''; }}
-            />
-          </div>
-        )}
-
-        {/* ── File error ── */}
-        {fileError && (
-          <div style={{ border: '1px solid rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.07)', padding: '0.75rem 1rem', marginBottom: '1.5rem' }}>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgb(239,68,68)' }}>{fileError}</p>
-          </div>
-        )}
-
-        {/* ── Tab bar ── */}
-        <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '1.75rem', overflowX: 'auto', gap: 0 }}>
-          {TABS.map(t => (
-            <button
-              key={t.key}
-              onClick={() => setActiveTab(t.key)}
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
-                padding: '0.65rem 1.1rem',
-                background: 'none',
-                border: 'none',
-                borderBottom: activeTab === t.key ? '2px solid var(--color-primary)' : '2px solid transparent',
-                color: activeTab === t.key ? 'var(--color-primary)' : 'rgba(245,245,245,0.4)',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'color 120ms ease',
-                marginBottom: '-1px',
-              }}
+          {/* ── Upload zone / preview ── */}
+          {!file ? (
+            <div
+              role="button" tabIndex={0} aria-label="Upload image"
+              onClick={() => inputRef.current?.click()}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
+              onDragOver={e => { e.preventDefault(); setDragging(true); }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={onDrop}
+              className={`nxtl-drop${dragging ? ' is-drag' : ''}`}
             >
-              {t.label}
-            </button>
-          ))}
+              <span className="nxtl-is-drop-icon" aria-hidden="true">↑</span>
+              <p className="nxtl-drop-title">
+                Drop an image here, or click to browse
+              </p>
+              <p className="nxtl-drop-hint nxtl-is-formats">
+                JPEG · PNG · WebP · AVIF · GIF · TIFF · BMP · ICO — MAX 4 MB
+              </p>
+              <input
+                ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
+                onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f); e.target.value = ''; }}
+              />
+            </div>
+          ) : (
+            <div className="nxtl-is-file">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={preview!} alt="Preview" className="nxtl-is-thumb" />
+              <div className="nxtl-is-file-text">
+                <p className="nxtl-is-file-name">
+                  {file.name}
+                </p>
+                <p className="nxtl-mono">
+                  {formatBytes(file.size)}{origDims ? ` · ${origDims.w}×${origDims.h}px` : ''}
+                </p>
+                <button
+                  type="button"
+                  onClick={resetAll}
+                  className="nxtl-link-btn nxtl-is-change"
+                >
+                  Change image
+                </button>
+              </div>
+              <input
+                ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
+                onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f); e.target.value = ''; }}
+              />
+            </div>
+          )}
+
+          {/* ── File error ── */}
+          {fileError && <Status tone="error">{fileError}</Status>}
+
+          {/* ── Tab bar ── */}
+          <Segmented
+            label="Operation"
+            size="sm"
+            className="nxtl-is-tabs"
+            options={TABS.map(t => ({ value: t.key, label: t.label }))}
+            value={activeTab}
+            onChange={setActiveTab}
+          />
+
+          {/* ── Tab: Convert ── */}
+          {activeTab === 'convert' && (
+            <div className="nxtl-is-tab">
+              <div>
+                <span className="nxtl-label">Output Format</span>
+                <div className="nxtl-is-opts nxtl-is-opts--grid">
+                  {FORMATS.map(f => (
+                    <ToggleBtn key={f} active={convFmt === f} onClick={() => setConvFmt(f)}>
+                      {f.toUpperCase()}
+                    </ToggleBtn>
+                  ))}
+                </div>
+              </div>
+              {LOSSY.includes(convFmt) && (
+                <SliderRow label={`Quality`} value={convQuality} min={10} max={100} unit="%" onChange={setConvQuality} />
+              )}
+            </div>
+          )}
+
+          {/* ── Tab: Compress ── */}
+          {activeTab === 'compress' && (
+            <div className="nxtl-is-tab">
+              <SliderRow label="Quality" value={compQuality} min={10} max={90} unit="%" onChange={setCompQuality} />
+              <p className="nxtl-hint">
+                Lower quality = smaller file size. Recommended: 70–85 for most use cases.
+                Output format matches the input file.
+              </p>
+            </div>
+          )}
+
+          {/* ── Tab: Resize ── */}
+          {activeTab === 'resize' && (
+            <div className="nxtl-is-tab">
+              {/* W × H inputs */}
+              <div className="nxtl-is-wh">
+                <div className="nx-field">
+                  <label htmlFor="is-w">Width (px)</label>
+                  <input id="is-w" type="number" min={1} value={resizeW} onChange={e => handleWidthChange(e.target.value)} className="nx-input nxtl-is-num" />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLockAspect(!lockAspect)}
+                  title={lockAspect ? 'Aspect ratio locked — click to unlock' : 'Aspect ratio unlocked — click to lock'}
+                  aria-label={lockAspect ? 'Aspect ratio locked — click to unlock' : 'Aspect ratio unlocked — click to lock'}
+                  aria-pressed={lockAspect}
+                  className="nxtl-is-lock"
+                >
+                  {lockAspect ? '🔒' : '🔓'}
+                </button>
+                <div className="nx-field">
+                  <label htmlFor="is-h">Height (px)</label>
+                  <input id="is-h" type="number" min={1} value={resizeH} onChange={e => handleHeightChange(e.target.value)} className="nx-input nxtl-is-num" />
+                </div>
+              </div>
+
+              {/* % buttons */}
+              <div>
+                <span className="nxtl-label">Quick Scale</span>
+                <div className="nxtl-is-opts">
+                  {[25, 50, 75, 100, 150, 200].map(pct => (
+                    <ToggleBtn key={pct} active={false} onClick={() => applyPct(pct)} small>
+                      {pct}%
+                    </ToggleBtn>
+                  ))}
+                </div>
+              </div>
+
+              {/* Fit mode */}
+              <div>
+                <span className="nxtl-label">Fit Mode</span>
+                <div className="nxtl-is-opts">
+                  {FIT_MODES.map(m => (
+                    <ToggleBtn key={m.value} active={fitMode === m.value} onClick={() => setFitMode(m.value)} title={m.tip}>
+                      {m.label}
+                    </ToggleBtn>
+                  ))}
+                </div>
+              </div>
+
+              {/* Social presets */}
+              <div>
+                <span className="nxtl-label">Social Media Presets</span>
+                <div className="nxtl-is-opts">
+                  {SOCIAL_PRESETS.map(p => (
+                    <ToggleBtn key={p.label} active={parseInt(resizeW) === p.w && parseInt(resizeH) === p.h} onClick={() => applyPreset(p.w, p.h)} small>
+                      {p.label}
+                    </ToggleBtn>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Tab: Transform ── */}
+          {activeTab === 'transform' && (
+            <div className="nxtl-is-tab">
+              {/* Flip */}
+              <div>
+                <span className="nxtl-label">Flip</span>
+                <div className="nxtl-is-opts">
+                  <ToggleBtn active={flipH} onClick={() => setFlipH(!flipH)}>
+                    Flip Horizontal
+                  </ToggleBtn>
+                  <ToggleBtn active={flipV} onClick={() => setFlipV(!flipV)}>
+                    Flip Vertical
+                  </ToggleBtn>
+                  <ToggleBtn active={flipH && flipV} onClick={() => { const both = flipH && flipV; setFlipH(!both); setFlipV(!both); }}>
+                    Flip Both
+                  </ToggleBtn>
+                </div>
+              </div>
+
+              {/* Rotate */}
+              <div>
+                <span className="nxtl-label">Rotate</span>
+                <div className="nxtl-is-opts">
+                  {[90, 180, 270].map(deg => (
+                    <ToggleBtn key={deg} active={rotAngle === deg} onClick={() => setRotAngle(rotAngle === deg ? 0 : deg)}>
+                      {deg}°
+                    </ToggleBtn>
+                  ))}
+                </div>
+              </div>
+              <div className="nxtl-is-angle">
+                <div className="nx-field">
+                  <label htmlFor="is-angle">Custom Angle</label>
+                  <input
+                    id="is-angle"
+                    type="number" min={-360} max={360} value={rotAngle}
+                    onChange={e => setRotAngle(Math.max(-360, Math.min(360, Number(e.target.value))))}
+                    className="nx-input nxtl-is-num"
+                  />
+                </div>
+                <span className="nxtl-mono">
+                  deg (–360 to 360)
+                </span>
+              </div>
+
+              {/* Trim */}
+              <Toggle on={trim} onChange={setTrim} label="Auto-trim whitespace borders" />
+
+              {/* Extend canvas */}
+              <div>
+                <span className="nxtl-label">Extend Canvas (px)</span>
+                <div className="nxtl-is-extend">
+                  {([['Top', extTop, setExtTop], ['Right', extRight, setExtRight], ['Bottom', extBottom, setExtBottom], ['Left', extLeft, setExtLeft]] as [string, number, (v: number) => void][]).map(([label, val, set]) => (
+                    <label key={label} className="nx-field">
+                      <span>{label}</span>
+                      <input type="number" min={0} max={2000} value={val}
+                        onChange={e => set(Math.max(0, Math.min(2000, Number(e.target.value))))}
+                        className="nx-input nxtl-is-num" />
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <span className="nxtl-label">Fill Colour</span>
+                <span className="nxtl-color">
+                  <input type="color" value={extFill} onChange={e => setExtFill(e.target.value)} aria-label="Fill colour" />
+                  <span className="nxtl-mono">{extFill}</span>
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* ── Tab: Adjustments ── */}
+          {activeTab === 'adjustments' && (
+            <div className="nxtl-is-tab">
+              <Toggle on={grayscale} onChange={setGrayscale} label="Grayscale" />
+
+              {!grayscale && (
+                <div>
+                  <span className="nxtl-label">Tint Colour (optional)</span>
+                  <span className="nxtl-color">
+                    <input type="color" value={tint || '#1a6fd4'} onChange={e => setTint(e.target.value)} aria-label="Tint colour" />
+                    <span className="nxtl-mono">
+                      {tint || 'none'}
+                    </span>
+                    {tint && (
+                      <button type="button" onClick={() => setTint('')} className="nxtl-link-btn">
+                        Remove
+                      </button>
+                    )}
+                  </span>
+                </div>
+              )}
+
+              <SliderRow label="Brightness" value={brightness} min={-100} max={100} unit="" onChange={setBrightness} />
+              <SliderRow label="Saturation" value={saturation} min={-100} max={100} unit="" onChange={setSaturation} />
+              <SliderRow label="Contrast"   value={contrast}   min={-100} max={100} unit="" onChange={setContrast}   />
+              <SliderRow label="Hue"        value={hue}        min={0}    max={360} unit="°" onChange={setHue}        />
+              <SliderRow label="Blur"       value={blurVal}    min={0}    max={20}  unit="px" onChange={setBlurVal}   />
+
+              <Toggle on={sharpenOn} onChange={setSharpenOn} label="Sharpen" />
+              {sharpenOn && (
+                <SliderRow label="Sharpen Sigma" value={sharpenSigma} min={0.5} max={3} step={0.1} unit="" onChange={setSharpenSigma} />
+              )}
+            </div>
+          )}
+
+          {/* ── Process button ── */}
+          <div className="nxtl-actions">
+            <ClayButton onClick={handleProcess} disabled={!file || loading} aria-busy={loading}>
+              {loading && <Spinner />}
+              {loading ? 'Processing…' : 'Process Image'}
+            </ClayButton>
+          </div>
         </div>
 
-        {/* ── Tab: Convert ── */}
-        {activeTab === 'convert' && (
-          <div>
-            <span style={LABEL}>Output Format</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-              {FORMATS.map(f => (
-                <ToggleBtn key={f} active={convFmt === f} onClick={() => setConvFmt(f)}>
-                  {f.toUpperCase()}
-                </ToggleBtn>
-              ))}
-            </div>
-            {LOSSY.includes(convFmt) && (
-              <SliderRow label={`Quality`} value={convQuality} min={10} max={100} unit="%" onChange={setConvQuality} />
-            )}
-          </div>
-        )}
-
-        {/* ── Tab: Compress ── */}
-        {activeTab === 'compress' && (
-          <div>
-            <SliderRow label="Quality" value={compQuality} min={10} max={90} unit="%" onChange={setCompQuality} />
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'rgba(245,245,245,0.35)', lineHeight: 1.6, marginTop: '-0.5rem' }}>
-              Lower quality = smaller file size. Recommended: 70–85 for most use cases.
-              Output format matches the input file.
-            </p>
-          </div>
-        )}
-
-        {/* ── Tab: Resize ── */}
-        {activeTab === 'resize' && (
-          <div>
-            {/* W × H inputs */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '0.75rem', alignItems: 'end', marginBottom: '1.25rem' }}>
-              <div>
-                <span style={LABEL}>Width (px)</span>
-                <input type="number" min={1} value={resizeW} onChange={e => handleWidthChange(e.target.value)} style={INPUT} />
-              </div>
-              <div
-                onClick={() => setLockAspect(!lockAspect)}
-                title={lockAspect ? 'Aspect ratio locked — click to unlock' : 'Aspect ratio unlocked — click to lock'}
-                style={{
-                  padding: '0.5rem',
-                  border: `1px solid ${lockAspect ? 'var(--color-primary)' : 'rgba(255,255,255,0.12)'}`,
-                  cursor: 'pointer',
-                  color: lockAspect ? 'var(--color-primary)' : 'rgba(245,245,245,0.3)',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.85rem',
-                  textAlign: 'center',
-                  lineHeight: '1.5rem',
-                  alignSelf: 'flex-end',
-                  userSelect: 'none',
-                  transition: 'border-color 150ms ease, color 150ms ease',
-                }}
-              >
-                {lockAspect ? '🔒' : '🔓'}
-              </div>
-              <div>
-                <span style={LABEL}>Height (px)</span>
-                <input type="number" min={1} value={resizeH} onChange={e => handleHeightChange(e.target.value)} style={INPUT} />
-              </div>
-            </div>
-
-            {/* % buttons */}
-            <span style={LABEL}>Quick Scale</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-              {[25, 50, 75, 100, 150, 200].map(pct => (
-                <ToggleBtn key={pct} active={false} onClick={() => applyPct(pct)} small>
-                  {pct}%
-                </ToggleBtn>
-              ))}
-            </div>
-
-            {/* Fit mode */}
-            <span style={LABEL}>Fit Mode</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-              {FIT_MODES.map(m => (
-                <ToggleBtn key={m.value} active={fitMode === m.value} onClick={() => setFitMode(m.value)} title={m.tip}>
-                  {m.label}
-                </ToggleBtn>
-              ))}
-            </div>
-
-            {/* Social presets */}
-            <span style={LABEL}>Social Media Presets</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {SOCIAL_PRESETS.map(p => (
-                <ToggleBtn key={p.label} active={parseInt(resizeW) === p.w && parseInt(resizeH) === p.h} onClick={() => applyPreset(p.w, p.h)} small>
-                  {p.label}
-                </ToggleBtn>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── Tab: Transform ── */}
-        {activeTab === 'transform' && (
-          <div>
-            {/* Flip */}
-            <span style={{ ...LABEL, marginBottom: '0.75rem' }}>Flip</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.75rem' }}>
-              <ToggleBtn active={flipH} onClick={() => setFlipH(!flipH)}>
-                Flip Horizontal
-              </ToggleBtn>
-              <ToggleBtn active={flipV} onClick={() => setFlipV(!flipV)}>
-                Flip Vertical
-              </ToggleBtn>
-              <ToggleBtn active={flipH && flipV} onClick={() => { const both = flipH && flipV; setFlipH(!both); setFlipV(!both); }}>
-                Flip Both
-              </ToggleBtn>
-            </div>
-
-            {/* Rotate */}
-            <span style={{ ...LABEL, marginBottom: '0.75rem' }}>Rotate</span>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-              {[90, 180, 270].map(deg => (
-                <ToggleBtn key={deg} active={rotAngle === deg} onClick={() => setRotAngle(rotAngle === deg ? 0 : deg)}>
-                  {deg}°
-                </ToggleBtn>
-              ))}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.75rem' }}>
-              <div style={{ flex: 1 }}>
-                <span style={LABEL}>Custom Angle</span>
-                <input
-                  type="number" min={-360} max={360} value={rotAngle}
-                  onChange={e => setRotAngle(Math.max(-360, Math.min(360, Number(e.target.value))))}
-                  style={INPUT}
-                />
-              </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'rgba(245,245,245,0.3)', alignSelf: 'flex-end', paddingBottom: '0.55rem' }}>
-                deg (–360 to 360)
-              </span>
-            </div>
-
-            {/* Trim */}
-            <div style={{ marginBottom: '1.75rem' }}>
-              <Toggle on={trim} onChange={setTrim} label="Auto-trim whitespace borders" />
-            </div>
-
-            {/* Extend canvas */}
-            <span style={{ ...LABEL, marginBottom: '0.75rem' }}>Extend Canvas (px)</span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
-              {([['Top', extTop, setExtTop], ['Right', extRight, setExtRight], ['Bottom', extBottom, setExtBottom], ['Left', extLeft, setExtLeft]] as [string, number, (v: number) => void][]).map(([label, val, set]) => (
-                <div key={label}>
-                  <span style={LABEL}>{label}</span>
-                  <input type="number" min={0} max={2000} value={val}
-                    onChange={e => set(Math.max(0, Math.min(2000, Number(e.target.value))))}
-                    style={INPUT} />
-                </div>
-              ))}
-            </div>
-            <div>
-              <span style={LABEL}>Fill Colour</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <input type="color" value={extFill} onChange={e => setExtFill(e.target.value)}
-                  style={{ width: '40px', height: '36px', border: '1px solid rgba(255,255,255,0.12)', background: 'none', cursor: 'pointer', padding: '2px' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'rgba(245,245,245,0.5)' }}>{extFill}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Tab: Adjustments ── */}
-        {activeTab === 'adjustments' && (
-          <div>
-            <div style={{ marginBottom: '1.25rem' }}>
-              <Toggle on={grayscale} onChange={setGrayscale} label="Grayscale" />
-            </div>
-
-            {!grayscale && (
-              <div style={{ marginBottom: '1.5rem' }}>
-                <span style={LABEL}>Tint Colour (optional)</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <input type="color" value={tint || '#1a6fd4'} onChange={e => setTint(e.target.value)}
-                    style={{ width: '40px', height: '36px', border: '1px solid rgba(255,255,255,0.12)', background: 'none', cursor: 'pointer', padding: '2px' }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'rgba(245,245,245,0.5)' }}>
-                    {tint || 'none'}
-                  </span>
-                  {tint && (
-                    <button onClick={() => setTint('')} style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'rgba(245,245,245,0.4)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
-                      Remove
-                    </button>
-                  )}
-                </div>
+        {/* ── Result stage ── */}
+        <div className="nxtl-is-out">
+          <div className="nxtl-stage nxtl-stage--checker nxtl-is-stage" aria-live="polite">
+            {result ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={result.url} alt="Processed" className="nxtl-is-result-img" style={{ opacity: loading ? 0.35 : 1 }} />
+            ) : preview && !fileError ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={preview} alt="" className="nxtl-is-result-img nxtl-is-original" style={{ opacity: loading ? 0.35 : 0.55 }} />
+            ) : (
+              <div className="nxtl-stage-empty">
+                <span className="nxtl-is-ph" aria-hidden="true">IMG</span>
+                Your processed image appears here
               </div>
             )}
+            {loading && <span className="nxtl-stage-busy"><Spinner /> Processing…</span>}
+            {!result && preview && !loading && !fileError && <span className="nxtl-is-tag">Original</span>}
+          </div>
 
-            <SliderRow label="Brightness" value={brightness} min={-100} max={100} unit="" onChange={setBrightness} />
-            <SliderRow label="Saturation" value={saturation} min={-100} max={100} unit="" onChange={setSaturation} />
-            <SliderRow label="Contrast"   value={contrast}   min={-100} max={100} unit="" onChange={setContrast}   />
-            <SliderRow label="Hue"        value={hue}        min={0}    max={360} unit="°" onChange={setHue}        />
-            <SliderRow label="Blur"       value={blurVal}    min={0}    max={20}  unit="px" onChange={setBlurVal}   />
+          {/* ── Process error ── */}
+          {processError && <Status tone="error">{processError}</Status>}
 
-            <div style={{ marginBottom: '1rem' }}>
-              <Toggle on={sharpenOn} onChange={setSharpenOn} label="Sharpen" />
+          {/* ── Result ── */}
+          {result && (
+            <div className="nxtl-panel nx-clay nxtl-is-result">
+              <p className="nxtl-is-diff">
+                {sizeDiff(result.origSize, result.procSize)}
+              </p>
+              <div className="nxtl-actions">
+                <ClayButton onClick={handleDownload}>
+                  Download Image
+                </ClayButton>
+                <button
+                  type="button"
+                  onClick={resetAll}
+                  className="nxtl-link-btn"
+                >
+                  Process Again
+                </button>
+              </div>
             </div>
-            {sharpenOn && (
-              <SliderRow label="Sharpen Sigma" value={sharpenSigma} min={0.5} max={3} step={0.1} unit="" onChange={setSharpenSigma} />
-            )}
-          </div>
-        )}
-
-        {/* ── Process error ── */}
-        {processError && (
-          <div style={{ border: '1px solid rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.07)', padding: '0.75rem 1rem', marginBottom: '1.25rem', marginTop: '1rem' }}>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'rgb(239,68,68)' }}>{processError}</p>
-          </div>
-        )}
-
-        {/* ── Result ── */}
-        {result && (
-          <div style={{ marginTop: '1.5rem', padding: '1.25rem', background: 'rgba(26,111,212,0.04)', border: '1px solid rgba(26,111,212,0.12)', marginBottom: '1.25rem' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={result.url} alt="Processed" style={{ maxWidth: '100%', maxHeight: '280px', objectFit: 'contain', display: 'block', marginBottom: '1rem', border: '1px solid rgba(255,255,255,0.06)' }} />
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'rgba(245,245,245,0.5)', letterSpacing: '0.06em', marginBottom: '1rem' }}>
-              {sizeDiff(result.origSize, result.procSize)}
-            </p>
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              <NxButton variant="ghost" size="sm" onClick={handleDownload}>
-                Download Image
-              </NxButton>
-              <button
-                onClick={resetAll}
-                style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'rgba(245,245,245,0.4)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
-              >
-                Process Again
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ── Process button ── */}
-        <div style={{ marginTop: result ? 0 : '1.5rem' }}>
-          <NxButton variant="primary" size="md" onClick={handleProcess} disabled={!file || loading}>
-            {loading ? 'Processing…' : 'Process Image'}
-          </NxButton>
+          )}
         </div>
       </div>
-
-      <ToolCTA />
-    </main>
+    </ToolShell>
   );
 }

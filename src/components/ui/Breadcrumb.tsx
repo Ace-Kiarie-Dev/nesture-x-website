@@ -40,13 +40,15 @@ function BreadcrumbLink({ label, onClick }: BreadcrumbSegment) {
   );
 }
 
-export default function Breadcrumb({ segments }: { segments: BreadcrumbSegment[] }) {
+// sticky pins the bar under the legacy 80px navbar. Pages on the redesigned chrome pass
+// sticky={false}: the floating SiteNav has no full-width edge for the bar to sit under.
+export default function Breadcrumb({ segments, sticky = true }: { segments: BreadcrumbSegment[]; sticky?: boolean }) {
   return (
     <div
       style={{
-        position: 'sticky',
-        top: 80,
-        zIndex: 49,
+        position: sticky ? 'sticky' : 'relative',
+        top: sticky ? 80 : undefined,
+        zIndex: sticky ? 49 : 1,
         padding: '0.85rem 2rem',
         background: 'rgba(10,10,10,0.92)',
         backdropFilter: 'blur(8px)',

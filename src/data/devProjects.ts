@@ -14,6 +14,12 @@ export interface DevProject {
 
 export const DEV_PROJECTS: DevProject[] = [
   {
+    name: 'Aegis Infrastructure Technologies',
+    image: '/images/aegis.png',
+    url: 'https://aegisitltd.com/',
+    industry: 'ICT and Security Infrastructure',
+  },
+  {
     name: 'MegaJackpot Predictions',
     image: '/images/megajp.png',
     url: 'https://megajackpot-predicitions.netlify.app/',

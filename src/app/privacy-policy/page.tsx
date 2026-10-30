@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { PRIVACY } from '@/lib/contactEmails';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -61,7 +62,8 @@ export default function PrivacyPolicyPage() {
       {/* ── Header ── */}
       <section
         className="relative overflow-hidden bg-[var(--color-bg)]"
-        style={{ padding: SECTION_PAD }}
+        // Extra top padding clears the floating SiteNav (22px offset + 68px pill).
+        style={{ padding: SECTION_PAD, paddingTop: 'calc(90px + clamp(6rem, 10vw, 11rem))' }}
       >
         <div className="grid-overlay absolute inset-0 z-0 pointer-events-none" aria-hidden />
         <div className="relative z-[1]" style={{ maxWidth: PROSE_WIDTH }}>
@@ -159,8 +161,7 @@ export default function PrivacyPolicyPage() {
             marketing. Confirmation emails are sent through our email delivery provider, Resend.
           </p>
           <p style={P_STYLE}>
-            You can ask to be removed from any waitlist at any time by emailing nesturex@gmail.com,
-            and we will delete your details.
+            {`You can ask to be removed from any waitlist at any time by emailing ${PRIVACY}, and we will delete your details.`}
           </p>
 
           {/* 5 */}
@@ -238,7 +239,7 @@ export default function PrivacyPolicyPage() {
               marginBottom: '4rem',
             }}
           >
-            nesturex@gmail.com<br />
+            {PRIVACY}<br />
             Nairobi, Kenya
           </p>
 

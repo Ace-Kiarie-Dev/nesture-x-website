@@ -27,6 +27,9 @@ import {
 } from '@/types/contact';
 import type { SavedContactProfile } from '@/services/contactProfileService';
 import { fetchContactProfiles } from '@/services/contactProfileClient';
+import AdminTopBar from '@/components/admin/AdminTopBar';
+import { AdminPage, Notice, Segmented, SkeletonRows, type Tone } from '@/components/admin/ui';
+import { ClayButton } from '@/components/redesign';
 
 export type DocumentType = 'quotation' | 'invoice';
 
@@ -133,32 +136,9 @@ function blankContact(): ContactSnapshot {
   return { contactName: '', phone: '', whatsapp: '', email: '' };
 }
 
-// ── Shared input styles ───────────────────────────────────────────────────────
-
-export const inp: React.CSSProperties = {
-  background:   'rgba(255,255,255,0.04)',
-  border:       '1px solid rgba(255,255,255,0.1)',
-  color:        '#f5f5f5',
-  fontFamily:   'inherit',
-  fontSize:     '0.88rem',
-  padding:      '0.55rem 0.75rem',
-  outline:      'none',
-  width:        '100%',
-  boxSizing:    'border-box',
-  transition:   'border-color 0.18s',
-};
-
-export const lbl: React.CSSProperties = {
-  display:       'block',
-  fontSize:      '0.56rem',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  color:         'rgba(255,255,255,0.35)',
-  marginBottom:  '0.35rem',
-  fontFamily:    'var(--font-mono)',
-} as React.CSSProperties;
-
 // ── Sub-components ────────────────────────────────────────────────────────────
+// Styles: components/admin/admin.css (.nxad-*) and the shared .nx-input (hybrid.css).
+// The label wraps its input, so every field is labelled without needing ids.
 
 function Field({
   label, value, onChange, type = 'text', placeholder = '',
@@ -167,38 +147,26 @@ function Field({
   type?: string; placeholder?: string;
 }) {
   return (
-    <div>
-      <label style={lbl}>{label}</label>
+    <label className="nxad-field">
+      <span className="nxad-label">{label}</span>
       <input
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={e => onChange(e.target.value)}
-        style={inp}
-        onFocus={e  => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')}
-        onBlur={e   => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
+        className="nx-input nxad-input"
       />
-    </div>
+    </label>
   );
 }
 
 function SectionHead({ title }: { title: string }) {
   return (
-    <p style={{
-      fontFamily:    'var(--font-mono)',
-      fontSize:      '0.58rem',
-      letterSpacing: '0.2em',
-      textTransform: 'uppercase',
-      color:         'rgba(26,111,212,0.75)',
-      borderBottom:  '1px solid rgba(26,111,212,0.15)',
-      paddingBottom: '0.5rem',
-      marginBottom:  '1rem',
-    }}>
+    <h2 className="nxad-section-title">
       {title}
-    </p>
+    </h2>
   );
 }
-
 // ── Quote HTML preview ────────────────────────────────────────────────────────
 
 function QuotePreview({ q }: { q: Quote }) {
@@ -522,35 +490,36 @@ function ContactPicker({
 }) {
   return (
     <>
-      <label style={lbl}>Contact on document</label>
-      <div style={{ position: 'relative' }}>
-        <select
-          value={choice}
-          onChange={e => onChoice(e.target.value)}
-          style={{ ...inp, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' } as React.CSSProperties}
-        >
-          {!choice && <option value="" style={{ background: '#0d1b3e' }}>Loading…</option>}
-          {profiles.map(p => (
-            <option key={p._id} value={p._id} style={{ background: '#0d1b3e' }}>
-              {p.label}{p.isDefault ? ' (default)' : ''} · {p.contactName} · {p.phone}
-            </option>
-          ))}
-          <option value={CUSTOM_CONTACT} style={{ background: '#0d1b3e' }}>Custom (this document only)</option>
-        </select>
-        <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
-      </div>
+      <label className="nxad-field">
+        <span className="nxad-label">Contact on document</span>
+        <span className="nx-select">
+          <select
+            value={choice}
+            onChange={e => onChoice(e.target.value)}
+            className="nx-input nxad-input"
+          >
+            {!choice && <option value="">Loading…</option>}
+            {profiles.map(p => (
+              <option key={p._id} value={p._id}>
+                {p.label}{p.isDefault ? ' (default)' : ''} · {p.contactName} · {p.phone}
+              </option>
+            ))}
+            <option value={CUSTOM_CONTACT}>Custom (this document only)</option>
+          </select>
+        </span>
+      </label>
       {error && (
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#fbbf24', margin: '0.5rem 0 0' }}>{error}</p>
+        <p className="nxad-hint nxad-hint--warn" role="status">{error}</p>
       )}
       {choice === CUSTOM_CONTACT && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginTop: '0.85rem' }}>
+        <div className="nxad-grid-2">
           <Field label="Contact Name *"      value={custom.contactName} onChange={v => onCustom('contactName', v)} placeholder="Jane Doe" />
           <Field label="Phone *"             value={custom.phone}       onChange={v => onCustom('phone', v)}       placeholder="+254 7XX XXX XXX" />
           <Field label="Email *"             value={custom.email}       onChange={v => onCustom('email', v)}       placeholder="jane@nesturex.com" type="email" />
           <Field label="WhatsApp (optional)" value={custom.whatsapp}    onChange={v => onCustom('whatsapp', v)}    placeholder="Only if different from phone" />
         </div>
       )}
-      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.56rem', color: 'rgba(255,255,255,0.3)', margin: '0.6rem 0 0', lineHeight: 1.6 }}>
+      <p className="nxad-hint">
         Copied onto the document when you save. Later profile edits won&apos;t change it.
       </p>
     </>
@@ -558,43 +527,32 @@ function ContactPicker({
 }
 
 // ── Status badge ──────────────────────────────────────────────────────────────
+// A native select styled as a status chip (colour + the status text).
 
-const STATUS_COLORS: Record<QuoteStatus, { bg: string; color: string }> = {
-  draft:    { bg: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.45)' },
-  sent:     { bg: 'rgba(26,111,212,0.15)',  color: '#5ba8f5' },
-  approved: { bg: 'rgba(34,197,94,0.12)',   color: '#4ade80' },
-  declined: { bg: 'rgba(239,68,68,0.12)',   color: '#f87171' },
-  expired:  { bg: 'rgba(234,179,8,0.1)',    color: '#fbbf24' },
+const QUOTE_STATUSES: QuoteStatus[] = ['draft', 'sent', 'approved', 'declined', 'expired'];
+
+const QUOTE_TONE: Record<QuoteStatus, Tone> = {
+  draft:    'neutral',
+  sent:     'blue',
+  approved: 'green',
+  declined: 'red',
+  expired:  'amber',
 };
 
 function StatusBadge({ status, onChange }: { status: QuoteStatus; onChange: (s: QuoteStatus) => void }) {
-  const col = STATUS_COLORS[status];
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
+    <span className={`nxad-status-select nxad-chip nxad-chip--${QUOTE_TONE[status]}`}>
+      <span className="nxad-chip-mark" aria-hidden="true" />
       <select
         value={status}
         onChange={e => onChange(e.target.value as QuoteStatus)}
-        style={{
-          background:    col.bg,
-          color:         col.color,
-          border:        `1px solid ${col.color}30`,
-          fontFamily:    'var(--font-mono)',
-          fontSize:      '0.6rem',
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          padding:       '0.3rem 1.6rem 0.3rem 0.65rem',
-          cursor:        'pointer',
-          appearance:    'none',
-          WebkitAppearance: 'none',
-          outline:       'none',
-        }}
+        aria-label="Quote status"
       >
-        {(Object.keys(STATUS_COLORS) as QuoteStatus[]).map(s => (
-          <option key={s} value={s} style={{ background: '#0d1b3e', color: '#f5f5f5' }}>{s}</option>
+        {QUOTE_STATUSES.map(s => (
+          <option key={s} value={s}>{s}</option>
         ))}
       </select>
-      <span style={{ position: 'absolute', right: '0.5rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: col.color, fontSize: '0.5rem' }}>▼</span>
-    </div>
+    </span>
   );
 }
 
@@ -821,11 +779,12 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
   // ── Loading ───────────────────────────────────────────────────────────────
   if (!quote) {
     return (
-      <div style={{ minHeight: '100vh', background: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(26,111,212,0.6)' }}>
-          Loading…
-        </p>
-      </div>
+      <>
+        <AdminTopBar active={docType === 'quotation' ? 'quotes' : 'invoices'} />
+        <AdminPage className="nxad-page--doc" aria-busy="true">
+          <SkeletonRows rows={6} tall label="Loading…" />
+        </AdminPage>
+      </>
     );
   }
 
@@ -833,319 +792,324 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
   const isValid = quote.clientName.trim()
     && quote.lines.some(l => l.description.trim() && l.unitPrice > 0)
     && (contactChoice !== CUSTOM_CONTACT || customContactValid);
-  const panelBg: React.CSSProperties = {
-    background:   'rgba(13,27,62,0.45)',
-    border:       '1px solid rgba(26,111,212,0.12)',
-    padding:      '1.5rem',
-    marginBottom: '1rem',
-  };
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', fontFamily: 'var(--font-body), sans-serif', color: '#f5f5f5' }}>
+    <>
+      {/* Shell top bar: status (quotes) everywhere; Save and PDF here from 768px,
+          in the sticky bar at the bottom on phones. */}
+      <AdminTopBar
+        active={docType === 'quotation' ? 'quotes' : 'invoices'}
+        actions={
+          <>
+            {docType === 'quotation' && <StatusBadge status={status} onChange={setStatus} />}
+            <span className="nxad-desk-only nxad-top-actions-group">
+              <ClayButton
+                onClick={saveDocument}
+                disabled={!isValid || saving}
+                aria-busy={saving || undefined}
+                className="nxad-btn"
+              >
+                {saving ? <span className="nxad-spinner" aria-hidden="true" /> : <Save size={16} aria-hidden />}
+                {saving ? 'Saving…' : mode === 'create' ? 'Save' : 'Update'}
+              </ClayButton>
+              <ClayButton
+                variant="ghost"
+                onClick={downloadPDF}
+                disabled={!isValid || downloading || (docType === 'invoice' && !invoiceExtra.documentNumber)}
+                title={docType === 'invoice' && !invoiceExtra.documentNumber ? 'Save the invoice first to generate its number' : undefined}
+                aria-busy={downloading || undefined}
+                className="nxad-btn"
+              >
+                <Download size={16} aria-hidden /> {downloading ? 'Generating…' : 'PDF'}
+              </ClayButton>
+            </span>
+          </>
+        }
+      />
 
-      {/* Top bar */}
-      <div style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'rgba(10,10,10,0.92)', backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(26,111,212,0.15)',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 2rem', height: '60px',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <button
+      <AdminPage className="nxad-page--doc">
+
+        {/* Heading with the way back */}
+        <div className="nxad-doc-head">
+          <ClayButton
+            variant="ghost"
             onClick={() => router.push(docType === 'quotation' ? '/admin/quotes' : '/admin/invoices')}
-            style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.35)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '0.4rem 0.6rem', transition: 'color 0.18s' }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)')}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)')}
+            className="nxad-btn nxad-back"
           >
-            <ArrowLeft size={12} /> {docType === 'quotation' ? 'Quotes' : 'Invoices'}
-          </button>
-          <span style={{ width: '1px', height: '18px', background: 'rgba(26,111,212,0.3)' }} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)' }}>
+            <ArrowLeft size={16} aria-hidden /> {docType === 'quotation' ? 'Quotes' : 'Invoices'}
+          </ClayButton>
+          <h1 className="nxad-h1 nxad-doc-title">
             {docType === 'quotation'
               ? (mode === 'create' ? 'New Quote'   : `Edit · ${quote.quoteNumber}`)
               : (mode === 'create' ? 'New Invoice' : `Edit · ${invoiceExtra.documentNumber}`)}
-          </span>
+          </h1>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {docType === 'quotation' && <StatusBadge status={status} onChange={setStatus} />}
-          <button
-            onClick={saveDocument}
-            disabled={!isValid || saving}
-            style={{
-              background: isValid && !saving ? 'var(--color-primary)' : 'rgba(26,111,212,0.2)',
-              border: 'none', color: '#fff',
-              fontFamily: 'var(--font-mono)', fontSize: '0.58rem',
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              padding: '0.4rem 1rem', cursor: isValid && !saving ? 'pointer' : 'not-allowed',
-              opacity: saving ? 0.7 : 1, transition: 'all 0.18s',
-              display: 'flex', alignItems: 'center', gap: '0.4rem',
-            }}
-          >
-            <Save size={11} /> {saving ? 'Saving…' : mode === 'create' ? 'Save' : 'Update'}
-          </button>
-          <button
-            onClick={downloadPDF}
-            disabled={!isValid || downloading || (docType === 'invoice' && !invoiceExtra.documentNumber)}
-            title={docType === 'invoice' && !invoiceExtra.documentNumber ? 'Save the invoice first to generate its number' : undefined}
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(26,111,212,0.3)',
-              color: 'rgba(26,111,212,0.8)',
-              fontFamily: 'var(--font-mono)', fontSize: '0.58rem',
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              padding: '0.4rem 0.85rem', cursor: !isValid || downloading ? 'not-allowed' : 'pointer',
-              opacity: !isValid || downloading || (docType === 'invoice' && !invoiceExtra.documentNumber) ? 0.5 : 1, transition: 'all 0.18s',
-              display: 'flex', alignItems: 'center', gap: '0.4rem',
-            }}
-            onMouseEnter={e => { if (isValid) { (e.currentTarget as HTMLElement).style.background = 'rgba(26,111,212,0.1)'; } }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-          >
-            <Download size={11} /> {downloading ? 'Generating…' : 'PDF'}
-          </button>
+
+        {/* Error banners */}
+        <div className="nxad-live" aria-live="assertive">
+          {(saveError || dlError) && <Notice>{saveError || dlError}</Notice>}
         </div>
-      </div>
 
-      {/* Error banners */}
-      {(saveError || dlError) && (
-        <div style={{ background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid rgba(239,68,68,0.2)', padding: '0.6rem 2rem', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#f87171', letterSpacing: '0.04em' }}>
-          {saveError || dlError}
-        </div>
-      )}
+        {/* Phone: form / preview switch */}
+        <Segmented
+          label="View"
+          className="nxad-doc-tabs"
+          value={activeTab}
+          onChange={setActiveTab}
+          options={[
+            { value: 'form',    label: docType === 'quotation' ? 'Quote Form' : 'Invoice Form' },
+            { value: 'preview', label: 'Preview' },
+          ]}
+        />
 
-      {/* Mobile tab switcher */}
-      <div className="flex md:hidden" style={{ borderBottom: '1px solid rgba(26,111,212,0.15)', background: '#0a0a0a' }}>
-        {(['form', 'preview'] as const).map(tab => (
-          <button key={tab} onClick={() => setActiveTab(tab)} style={{
-            flex: 1, padding: '0.75rem', background: 'transparent', border: 'none',
-            borderBottom: activeTab === tab ? '2px solid var(--color-primary)' : '2px solid transparent',
-            color: activeTab === tab ? 'var(--color-primary)' : 'rgba(255,255,255,0.4)',
-            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase',
-            cursor: 'pointer', transition: 'all 0.18s',
-          }}>
-            {tab === 'form' ? (docType === 'quotation' ? 'Quote Form' : 'Invoice Form') : 'Preview'}
-          </button>
-        ))}
-      </div>
+        {/* Main grid */}
+        <div className="nxad-doc-grid">
 
-      {/* Main grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))', gap: 0, minHeight: 'calc(100vh - 60px)' }}>
+          {/* LEFT: Form */}
+          <div className={activeTab === 'preview' ? 'nxad-doc-form is-hidden-sm' : 'nxad-doc-form'}>
 
-        {/* LEFT: Form */}
-        <div className={activeTab === 'preview' ? 'hidden md:block' : ''} style={{ padding: 'clamp(1.25rem, 3vw, 2rem)', overflowY: 'auto', borderRight: '1px solid rgba(26,111,212,0.1)' }}>
-
-          {/* Billing — document type */}
-          <div style={panelBg}>
-            <SectionHead title="Billing" />
-            <div>
-              <label style={lbl}>Document Type</label>
-              <div style={{ position: 'relative' }}>
-                <select
-                  value={docType}
-                  disabled={mode === 'edit'}
-                  onChange={e => setDocType(e.target.value as DocumentType)}
-                  style={{
-                    ...inp,
-                    cursor:  mode === 'edit' ? 'not-allowed' : 'pointer',
-                    opacity: mode === 'edit' ? 0.55 : 1,
-                    appearance: 'none', WebkitAppearance: 'none',
-                  } as React.CSSProperties}
-                >
-                  <option value="quotation" style={{ background: '#0d1b3e' }}>Quotation</option>
-                  <option value="invoice"   style={{ background: '#0d1b3e' }}>Invoice</option>
-                </select>
-                <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Client details */}
-          <div style={panelBg}>
-            <SectionHead title="Client Details" />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-              <Field label="Client Name *"  value={quote.clientName}    onChange={v => update('clientName', v)}    placeholder="John Doe" />
-              <Field label="Company"        value={quote.clientCompany} onChange={v => update('clientCompany', v)} placeholder="ABC Ltd" />
-              <Field label="Email"          value={quote.clientEmail}   onChange={v => update('clientEmail', v)}   placeholder="john@company.com" type="email" />
-              <Field label="Phone"          value={quote.clientPhone}   onChange={v => update('clientPhone', v)}   placeholder="+254 7XX XXX XXX" />
-            </div>
-          </div>
-
-          {/* Quote meta */}
-          {docType === 'quotation' ? (
-            <div style={panelBg}>
-              <SectionHead title="Quote Details" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.85rem' }}>
-                <Field label="Quote Number" value={quote.quoteNumber} onChange={v => update('quoteNumber', v)} />
-                <Field label="Date"         value={quote.date}        onChange={v => update('date', v)}        type="date" />
-                <Field label="Valid Until"  value={quote.expiryDate}  onChange={v => update('expiryDate', v)}  type="date" />
-              </div>
-            </div>
-          ) : (
-            <>
-              <div style={panelBg}>
-                <SectionHead title="Invoice Details" />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.85rem' }}>
-                  <div>
-                    <label style={lbl}>Invoice Number</label>
-                    <input
-                      value={invoiceExtra.documentNumber || '(assigned on save)'}
-                      readOnly
-                      disabled
-                      style={{ ...inp, opacity: 0.55, cursor: 'not-allowed' }}
-                    />
-                  </div>
-                  <Field label="Issue Date" value={invoiceExtra.issueDate} onChange={v => updateInvoiceExtra('issueDate', v)} type="date" />
-                  <Field label="Due Date"   value={invoiceExtra.dueDate}   onChange={v => updateInvoiceExtra('dueDate', v)}   type="date" />
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginTop: '0.85rem' }}>
-                  <div>
-                    <label style={lbl}>Payment Status</label>
-                    <div style={{ position: 'relative' }}>
-                      <select
-                        value={invoiceExtra.paymentStatus}
-                        onChange={e => updateInvoiceExtra('paymentStatus', e.target.value as PaymentStatus)}
-                        style={{ ...inp, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' } as React.CSSProperties}
-                      >
-                        <option value="unpaid"  style={{ background: '#0d1b3e' }}>Unpaid</option>
-                        <option value="partial" style={{ background: '#0d1b3e' }}>Partial</option>
-                        <option value="paid"    style={{ background: '#0d1b3e' }}>Paid</option>
-                      </select>
-                      <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
-                    </div>
-                  </div>
-                  <Field label="Amount Paid (KES)" value={invoiceExtra.amountPaid} onChange={v => updateInvoiceExtra('amountPaid', Number(v))} type="number" placeholder="0" />
-                </div>
-              </div>
-
-              <div style={panelBg}>
-                <SectionHead title="Tax Info (KRA)" />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                  <Field label="Your KRA PIN"         value={invoiceExtra.yourKraPin}  onChange={v => updateInvoiceExtra('yourKraPin', v)}  placeholder="P0XXXXXXXXX" />
-                  <Field label="Buyer PIN (optional)" value={invoiceExtra.buyerKraPin} onChange={v => updateInvoiceExtra('buyerKraPin', v)} placeholder="A0XXXXXXXXX" />
-                </div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.85rem', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={invoiceExtra.etimsCompliant}
-                    onChange={e => updateInvoiceExtra('etimsCompliant', e.target.checked)}
-                    style={{ width: '14px', height: '14px', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
-                  />
-                  <span style={{ ...lbl, marginBottom: 0 }}>eTIMS compliant invoice</span>
-                </label>
-              </div>
-            </>
-          )}
-
-          {/* Contact details — snapshotted onto the quote/invoice on save */}
-          <div style={panelBg}>
-            <SectionHead title="Contact Details" />
-            <ContactPicker
-              profiles={profiles}
-              choice={contactChoice}
-              custom={customContact}
-              error={profilesError}
-              onChoice={changeContactChoice}
-              onCustom={updateCustomContact}
-            />
-          </div>
-
-          {/* Line items */}
-          <div style={panelBg}>
-            <SectionHead title="Line Items" />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 56px 90px 36px', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              {['Description', 'Qty', 'Unit Price (KES)', ''].map(h => (
-                <span key={h} style={{ ...lbl, marginBottom: 0 }}>{h}</span>
-              ))}
-            </div>
-            {quote.lines.map(line => (
-              <div key={line.id} style={{ display: 'grid', gridTemplateColumns: '1fr 56px 90px 36px', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center' }}>
-                <input value={line.description} onChange={e => updateLine(line.id, 'description', e.target.value)} placeholder="Service description…" style={inp} onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                <input type="number" min={1} value={line.qty} onChange={e => updateLine(line.id, 'qty', e.target.value)} style={{ ...inp, textAlign: 'center' }} onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                <input type="number" min={0} value={line.unitPrice} onChange={e => updateLine(line.id, 'unitPrice', e.target.value)} style={{ ...inp, textAlign: 'right' }} onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                <button onClick={() => removeLine(line.id)} disabled={quote.lines.length <= 1} style={{ background: 'transparent', border: 'none', color: quote.lines.length <= 1 ? 'rgba(255,255,255,0.15)' : 'rgba(255,80,80,0.5)', cursor: quote.lines.length <= 1 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.4rem', transition: 'color 0.15s' }} onMouseEnter={e => { if (quote.lines.length > 1) (e.currentTarget as HTMLElement).style.color = 'rgba(255,80,80,0.9)'; }} onMouseLeave={e => { if (quote.lines.length > 1) (e.currentTarget as HTMLElement).style.color = 'rgba(255,80,80,0.5)'; }}>
-                  <Trash2 size={13} />
-                </button>
-              </div>
-            ))}
-            <button onClick={addLine} style={{ background: 'transparent', border: '1px dashed rgba(26,111,212,0.3)', color: 'rgba(26,111,212,0.65)', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', padding: '0.5rem 0', cursor: 'pointer', width: '100%', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', transition: 'all 0.18s' }} onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(26,111,212,0.6)'; (e.currentTarget as HTMLElement).style.color = 'rgba(26,111,212,0.9)'; }} onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(26,111,212,0.3)'; (e.currentTarget as HTMLElement).style.color = 'rgba(26,111,212,0.65)'; }}>
-              <Plus size={12} /> Add Line Item
-            </button>
-          </div>
-
-          {/* Discount */}
-          <div style={panelBg}>
-            <SectionHead title="Discount (optional)" />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-              <div>
-                <label style={lbl}>Type</label>
-                <div style={{ position: 'relative' }}>
-                  <select value={quote.discountType} onChange={e => update('discountType', e.target.value as DiscountType)} style={{ ...inp, cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' } as React.CSSProperties} onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}>
-                    <option value="percent" style={{ background: '#0d1b3e' }}>Percentage (%)</option>
-                    <option value="flat"    style={{ background: '#0d1b3e' }}>Flat Amount (KES)</option>
+            {/* Billing — document type */}
+            <section className="nxad-section nx-clay">
+              <SectionHead title="Billing" />
+              <label className="nxad-field">
+                <span className="nxad-label">Document Type</span>
+                <span className="nx-select">
+                  <select
+                    value={docType}
+                    disabled={mode === 'edit'}
+                    onChange={e => setDocType(e.target.value as DocumentType)}
+                    className="nx-input nxad-input"
+                  >
+                    <option value="quotation">Quotation</option>
+                    <option value="invoice">Invoice</option>
                   </select>
-                  <span style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(26,111,212,0.5)', pointerEvents: 'none', fontSize: '0.6rem' }}>▼</span>
+                </span>
+              </label>
+            </section>
+
+            {/* Client details */}
+            <section className="nxad-section nx-clay">
+              <SectionHead title="Client Details" />
+              <div className="nxad-grid-2">
+                <Field label="Client Name *"  value={quote.clientName}    onChange={v => update('clientName', v)}    placeholder="John Doe" />
+                <Field label="Company"        value={quote.clientCompany} onChange={v => update('clientCompany', v)} placeholder="ABC Ltd" />
+                <Field label="Email"          value={quote.clientEmail}   onChange={v => update('clientEmail', v)}   placeholder="john@company.com" type="email" />
+                <Field label="Phone"          value={quote.clientPhone}   onChange={v => update('clientPhone', v)}   placeholder="+254 7XX XXX XXX" />
+              </div>
+            </section>
+
+            {/* Quote meta */}
+            {docType === 'quotation' ? (
+              <section className="nxad-section nx-clay">
+                <SectionHead title="Quote Details" />
+                <div className="nxad-grid-3">
+                  <Field label="Quote Number" value={quote.quoteNumber} onChange={v => update('quoteNumber', v)} />
+                  <Field label="Date"         value={quote.date}        onChange={v => update('date', v)}        type="date" />
+                  <Field label="Valid Until"  value={quote.expiryDate}  onChange={v => update('expiryDate', v)}  type="date" />
                 </div>
-              </div>
-              <Field label={quote.discountType === 'percent' ? 'Percentage (%)' : 'Amount (KES)'} value={quote.discountValue} onChange={v => update('discountValue', Number(v))} type="number" placeholder="0" />
-            </div>
-          </div>
+              </section>
+            ) : (
+              <>
+                <section className="nxad-section nx-clay">
+                  <SectionHead title="Invoice Details" />
+                  <div className="nxad-grid-3">
+                    <label className="nxad-field">
+                      <span className="nxad-label">Invoice Number</span>
+                      <input
+                        value={invoiceExtra.documentNumber || '(assigned on save)'}
+                        readOnly
+                        disabled
+                        className="nx-input nxad-input"
+                      />
+                    </label>
+                    <Field label="Issue Date" value={invoiceExtra.issueDate} onChange={v => updateInvoiceExtra('issueDate', v)} type="date" />
+                    <Field label="Due Date"   value={invoiceExtra.dueDate}   onChange={v => updateInvoiceExtra('dueDate', v)}   type="date" />
+                  </div>
+                  <div className="nxad-grid-2">
+                    <label className="nxad-field">
+                      <span className="nxad-label">Payment Status</span>
+                      <span className="nx-select">
+                        <select
+                          value={invoiceExtra.paymentStatus}
+                          onChange={e => updateInvoiceExtra('paymentStatus', e.target.value as PaymentStatus)}
+                          className="nx-input nxad-input"
+                        >
+                          <option value="unpaid">Unpaid</option>
+                          <option value="partial">Partial</option>
+                          <option value="paid">Paid</option>
+                        </select>
+                      </span>
+                    </label>
+                    <Field label="Amount Paid (KES)" value={invoiceExtra.amountPaid} onChange={v => updateInvoiceExtra('amountPaid', Number(v))} type="number" placeholder="0" />
+                  </div>
+                </section>
 
-          {/* Notes & Terms */}
-          <div style={panelBg}>
-            <SectionHead title="Notes & Terms" />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              <div>
-                <label style={lbl}>Notes</label>
-                <textarea value={quote.notes} onChange={e => update('notes', e.target.value)} rows={3} placeholder="Any additional notes…" style={{ ...inp, resize: 'vertical', minHeight: '72px', lineHeight: 1.65 }} onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-              </div>
-              <div>
-                <label style={lbl}>Payment Terms</label>
-                <textarea value={quote.paymentTerms} onChange={e => update('paymentTerms', e.target.value)} rows={2} placeholder="e.g. M-Pesa Paybill 123456, Account: Client Name" style={{ ...inp, resize: 'vertical', minHeight: '56px', lineHeight: 1.65 }} onFocus={e => (e.target.style.borderColor = 'rgba(26,111,212,0.6)')} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-              </div>
-            </div>
-          </div>
+                <section className="nxad-section nx-clay">
+                  <SectionHead title="Tax Info (KRA)" />
+                  <div className="nxad-grid-2">
+                    <Field label="Your KRA PIN"         value={invoiceExtra.yourKraPin}  onChange={v => updateInvoiceExtra('yourKraPin', v)}  placeholder="P0XXXXXXXXX" />
+                    <Field label="Buyer PIN (optional)" value={invoiceExtra.buyerKraPin} onChange={v => updateInvoiceExtra('buyerKraPin', v)} placeholder="A0XXXXXXXXX" />
+                  </div>
+                  <label className="nxad-check">
+                    <input
+                      type="checkbox"
+                      checked={invoiceExtra.etimsCompliant}
+                      onChange={e => updateInvoiceExtra('etimsCompliant', e.target.checked)}
+                    />
+                    <span className="nxad-label">eTIMS compliant invoice</span>
+                  </label>
+                </section>
+              </>
+            )}
 
-          {/* Totals summary */}
-          <div style={{ ...panelBg, background: 'rgba(26,111,212,0.06)' }}>
-            {[
-              { label: 'Subtotal', value: fmt(subtotal(quote.lines)), dim: true },
-              ...(quote.discountValue > 0 ? [{
-                label: `Discount (${quote.discountType === 'percent' ? quote.discountValue + '%' : 'flat'})`,
-                value: `− ${fmt(discountAmount(subtotal(quote.lines), quote.discountType, quote.discountValue))}`,
-                dim: true,
-              }] : []),
-              { label: docType === 'invoice' ? 'Grand Total' : 'Total Due', value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue)), dim: false },
-              ...(docType === 'invoice' ? [
-                ...(invoiceExtra.amountPaid > 0 ? [{
-                  label: 'Amount Paid',
-                  value: fmt(invoiceExtra.amountPaid),
+            {/* Contact details — snapshotted onto the quote/invoice on save */}
+            <section className="nxad-section nx-clay">
+              <SectionHead title="Contact Details" />
+              <ContactPicker
+                profiles={profiles}
+                choice={contactChoice}
+                custom={customContact}
+                error={profilesError}
+                onChoice={changeContactChoice}
+                onCustom={updateCustomContact}
+              />
+            </section>
+
+            {/* Line items */}
+            <section className="nxad-section nx-clay">
+              <SectionHead title="Line Items" />
+              <div className="nxad-lines-head" aria-hidden="true">
+                {['Description', 'Qty', 'Unit Price (KES)', ''].map(h => (
+                  <span key={h} className="nxad-label">{h}</span>
+                ))}
+              </div>
+              <ul className="nxad-lines">
+                {quote.lines.map((line, i) => (
+                  <li key={line.id} className="nxad-line">
+                    <input value={line.description} onChange={e => updateLine(line.id, 'description', e.target.value)} placeholder="Service description…" aria-label={`Line ${i + 1} description`} className="nx-input nxad-input nxad-line-desc" />
+                    <input type="number" min={1} value={line.qty} onChange={e => updateLine(line.id, 'qty', e.target.value)} aria-label={`Line ${i + 1} quantity`} className="nx-input nxad-input nxad-line-qty" />
+                    <input type="number" min={0} value={line.unitPrice} onChange={e => updateLine(line.id, 'unitPrice', e.target.value)} aria-label={`Line ${i + 1} unit price (KES)`} className="nx-input nxad-input nxad-line-price" />
+                    <button
+                      type="button"
+                      onClick={() => removeLine(line.id)}
+                      disabled={quote.lines.length <= 1}
+                      title="Remove line"
+                      aria-label={`Remove line ${i + 1}`}
+                      className="nxad-icon-btn nxad-icon-btn--danger nxad-line-remove"
+                    >
+                      <Trash2 size={16} aria-hidden />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <button type="button" onClick={addLine} className="nxad-add-line">
+                <Plus size={16} aria-hidden /> Add Line Item
+              </button>
+            </section>
+
+            {/* Discount */}
+            <section className="nxad-section nx-clay">
+              <SectionHead title="Discount (optional)" />
+              <div className="nxad-grid-2">
+                <label className="nxad-field">
+                  <span className="nxad-label">Type</span>
+                  <span className="nx-select">
+                    <select value={quote.discountType} onChange={e => update('discountType', e.target.value as DiscountType)} className="nx-input nxad-input">
+                      <option value="percent">Percentage (%)</option>
+                      <option value="flat">Flat Amount (KES)</option>
+                    </select>
+                  </span>
+                </label>
+                <Field label={quote.discountType === 'percent' ? 'Percentage (%)' : 'Amount (KES)'} value={quote.discountValue} onChange={v => update('discountValue', Number(v))} type="number" placeholder="0" />
+              </div>
+            </section>
+
+            {/* Notes & Terms */}
+            <section className="nxad-section nx-clay">
+              <SectionHead title="Notes & Terms" />
+              <label className="nxad-field">
+                <span className="nxad-label">Notes</span>
+                <textarea value={quote.notes} onChange={e => update('notes', e.target.value)} rows={3} placeholder="Any additional notes…" className="nx-input nx-textarea nxad-input" />
+              </label>
+              <label className="nxad-field">
+                <span className="nxad-label">Payment Terms</span>
+                <textarea value={quote.paymentTerms} onChange={e => update('paymentTerms', e.target.value)} rows={2} placeholder="e.g. M-Pesa Paybill 123456, Account: Client Name" className="nx-input nx-textarea nxad-input" />
+              </label>
+            </section>
+
+            {/* Totals summary: pinned to the bottom of the form column from 768px */}
+            <section className="nxad-totals nx-clay" aria-label="Totals">
+              {[
+                { label: 'Subtotal', value: fmt(subtotal(quote.lines)), dim: true },
+                ...(quote.discountValue > 0 ? [{
+                  label: `Discount (${quote.discountType === 'percent' ? quote.discountValue + '%' : 'flat'})`,
+                  value: `− ${fmt(discountAmount(subtotal(quote.lines), quote.discountType, quote.discountValue))}`,
                   dim: true,
                 }] : []),
-                {
-                  label: 'Balance Due',
-                  value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue) - invoiceExtra.amountPaid),
-                  dim: false,
-                },
-              ] : []),
-            ].map(({ label, value, dim }) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0', borderBottom: '1px solid rgba(26,111,212,0.1)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-                <span style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.58rem' }}>{label}</span>
-                <span style={{ color: dim ? 'rgba(255,255,255,0.65)' : '#1a6fd4', fontWeight: dim ? 400 : 700 }}>{value}</span>
-              </div>
-            ))}
+                { label: docType === 'invoice' ? 'Grand Total' : 'Total Due', value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue)), dim: false },
+                ...(docType === 'invoice' ? [
+                  ...(invoiceExtra.amountPaid > 0 ? [{
+                    label: 'Amount Paid',
+                    value: fmt(invoiceExtra.amountPaid),
+                    dim: true,
+                  }] : []),
+                  {
+                    label: 'Balance Due',
+                    value: fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue) - invoiceExtra.amountPaid),
+                    dim: false,
+                  },
+                ] : []),
+              ].map(({ label, value, dim }) => (
+                <div key={label} className={dim ? 'nxad-total-row' : 'nxad-total-row is-key'}>
+                  <span className="nxad-label">{label}</span>
+                  <span className="nxad-total-value">{value}</span>
+                </div>
+              ))}
+            </section>
+
+          </div>
+
+          {/* RIGHT: Preview (the paper preview is left as it was) */}
+          <div className={activeTab === 'form' ? 'nxad-doc-preview is-hidden-sm' : 'nxad-doc-preview'}>
+            {docType === 'quotation'
+              ? <QuotePreview q={{ ...quote, contact: chosenContact }} />
+              : <InvoicePreview inv={toInvoicePayload(quote, invoiceExtra, chosenContact)} />}
           </div>
 
         </div>
 
-        {/* RIGHT: Preview */}
-        <div className={activeTab === 'form' ? 'hidden md:block' : ''} style={{ background: '#111318', overflowY: 'auto', padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
-          {docType === 'quotation'
-            ? <QuotePreview q={{ ...quote, contact: chosenContact }} />
-            : <InvoicePreview inv={toInvoicePayload(quote, invoiceExtra, chosenContact)} />}
+        {/* Phone: sticky save bar with the key total */}
+        <div className="nxad-savebar">
+          <div className="nxad-savebar-total">
+            <span className="nxad-label">{docType === 'invoice' ? 'Balance Due' : 'Total Due'}</span>
+            <span className="nxad-total-value">
+              {docType === 'invoice'
+                ? fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue) - invoiceExtra.amountPaid)
+                : fmt(grandTotal(quote.lines, quote.discountType, quote.discountValue))}
+            </span>
+          </div>
+          <ClayButton
+            variant="ghost"
+            onClick={downloadPDF}
+            disabled={!isValid || downloading || (docType === 'invoice' && !invoiceExtra.documentNumber)}
+            aria-label={downloading ? 'Generating PDF' : 'Download PDF'}
+            aria-busy={downloading || undefined}
+            className="nxad-btn nxad-savebar-pdf"
+          >
+            <Download size={16} aria-hidden /> PDF
+          </ClayButton>
+          <ClayButton
+            onClick={saveDocument}
+            disabled={!isValid || saving}
+            aria-busy={saving || undefined}
+            className="nxad-btn"
+          >
+            {saving ? <span className="nxad-spinner" aria-hidden="true" /> : <Save size={16} aria-hidden />}
+            {saving ? 'Saving…' : mode === 'create' ? 'Save' : 'Update'}
+          </ClayButton>
         </div>
-
-      </div>
-    </div>
+      </AdminPage>
+    </>
   );
 }

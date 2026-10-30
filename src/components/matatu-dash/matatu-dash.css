@@ -55,12 +55,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Same as BetLedger and Kikota: in dark mode, pull the page up behind the
-   transparent fixed navbar so there's no seam. In light mode the navbar keeps
-   its own light backdrop. */
-[data-theme='dark'] .theme-matatu.md-under-nav {
-  margin-top: -80px;
-  padding-top: 80px;
+/* Same as BetLedger and Kikota: paint behind the floating SiteNav and clear it
+   (22px + 68px). */
+.theme-matatu.md-under-nav {
+  padding-top: 90px;
 }
 
 .theme-matatu ::selection { background: var(--md-gold); color: var(--md-ink); }
@@ -735,7 +733,8 @@
 
 /* ── 9. Final CTA ───────────────────────────────────────────────────────── */
 
-.theme-matatu .md-final { padding-top: 6rem; }
+/* #waitlist target: land clear of the floating nav, like the other product pages. */
+.theme-matatu .md-final { padding-top: 6rem; scroll-margin-top: 100px; }
 
 .theme-matatu .md-final-card {
   position: relative;

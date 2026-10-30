@@ -2,9 +2,9 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { Copy, Check, Upload } from 'lucide-react';
-import BackLink from '@/components/tools/BackLink';
-import ToolCTA from '@/components/tools/ToolCTA';
-import NxButton from '@/components/ui/NxButton';
+import ToolShell from '@/components/redesign/tools/ToolShell';
+import { Segmented, Status } from '@/components/redesign/tools/blocks';
+import { ClayButton } from '@/components/redesign';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -54,58 +54,6 @@ function mimeToExt(mime: string): string {
   return MIME_EXT[mime.toLowerCase()] ?? 'bin';
 }
 
-// ── Shared styles ─────────────────────────────────────────────────────────────
-
-const GLASS: React.CSSProperties = {
-  background: 'rgba(20, 25, 32, 0.6)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  padding: 'clamp(1.5rem, 3vw, 2.25rem)',
-};
-
-const LABEL: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.62rem',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase' as const,
-  color: 'rgba(245,245,245,0.35)',
-  display: 'block',
-  marginBottom: '0.5rem',
-};
-
-const TOGGLE_BASE: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.72rem',
-  letterSpacing: '0.08em',
-  padding: '0.4rem 0.9rem',
-  border: '1px solid rgba(255,255,255,0.15)',
-  background: 'transparent',
-  color: 'rgba(245,245,245,0.4)',
-  cursor: 'pointer',
-  transition: 'all 150ms',
-};
-
-const TOGGLE_ACTIVE: React.CSSProperties = {
-  ...TOGGLE_BASE,
-  border: '1px solid var(--color-primary)',
-  background: 'rgba(26,111,212,0.15)',
-  color: 'var(--color-primary)',
-};
-
-const MONO_OUTPUT: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: '0.82rem',
-  lineHeight: 1.6,
-  background: 'rgba(10,10,10,0.5)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  padding: '0.75rem 1rem',
-  color: 'var(--color-text)',
-  wordBreak: 'break-all' as const,
-  minHeight: '80px',
-  whiteSpace: 'pre-wrap' as const,
-};
-
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function CopyButton({ text, style }: { text: string; style?: React.CSSProperties }) {
@@ -119,26 +67,13 @@ function CopyButton({ text, style }: { text: string; style?: React.CSSProperties
   }
   return (
     <button
+      type="button"
       onClick={handleCopy}
       disabled={!text}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.4rem',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.68rem',
-        letterSpacing: '0.08em',
-        padding: '0.35rem 0.75rem',
-        border: '1px solid rgba(255,255,255,0.12)',
-        background: copied ? 'rgba(22,163,74,0.12)' : 'transparent',
-        color: copied ? '#16a34a' : 'rgba(245,245,245,0.45)',
-        cursor: text ? 'pointer' : 'default',
-        opacity: text ? 1 : 0.4,
-        transition: 'all 150ms',
-        ...style,
-      }}
+      className={`nxtl-b64-copy${copied ? ' is-copied' : ''}`}
+      style={style}
     >
-      {copied ? <Check size={12} /> : <Copy size={12} />}
+      {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
       {copied ? 'Copied!' : 'Copy'}
     </button>
   );
@@ -155,21 +90,12 @@ function DataUriButton({ dataUri }: { dataUri: string }) {
   }
   return (
     <button
+      type="button"
       onClick={handleCopy}
       disabled={!dataUri}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '0.4rem',
-        fontFamily: 'var(--font-mono)', fontSize: '0.68rem', letterSpacing: '0.08em',
-        padding: '0.35rem 0.75rem',
-        border: '1px solid rgba(255,255,255,0.12)',
-        background: copied ? 'rgba(22,163,74,0.12)' : 'transparent',
-        color: copied ? '#16a34a' : 'rgba(245,245,245,0.45)',
-        cursor: dataUri ? 'pointer' : 'default',
-        opacity: dataUri ? 1 : 0.4,
-        transition: 'all 150ms',
-      }}
+      className={`nxtl-b64-copy${copied ? ' is-copied' : ''}`}
     >
-      {copied ? <Check size={12} /> : <Copy size={12} />}
+      {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
       {copied ? 'Copied!' : 'Copy as Data URI'}
     </button>
   );
@@ -205,43 +131,30 @@ function EncodeTextTab() {
   const dataUri = encoded ? `data:text/plain;base64,${encoded}` : '';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <label style={LABEL}>Text Input</label>
+    <div className="nxtl-b64-tab">
+      <div className="nx-field">
+        <label htmlFor="b64-enc-text">Text Input</label>
         <textarea
+          id="b64-enc-text"
           value={input}
           onChange={e => handleInput(e.target.value)}
           placeholder="Type or paste text to encode…"
-          style={{
-            width: '100%',
-            minHeight: '140px',
-            resize: 'vertical',
-            background: 'rgba(10,10,10,0.5)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            padding: '0.75rem 1rem',
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.9rem',
-            color: 'var(--color-text)',
-            outline: 'none',
-            boxSizing: 'border-box',
-          }}
-          onFocus={e => (e.target.style.borderColor = 'var(--color-primary)')}
-          onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
+          className="nx-input nx-textarea nxtl-b64-area"
         />
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <button onClick={() => handleUrlSafe(!urlSafe)} style={urlSafe ? TOGGLE_ACTIVE : TOGGLE_BASE}>URL-safe</button>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'rgba(245,245,245,0.25)' }}>
+      <div className="nxtl-b64-safe">
+        <button type="button" onClick={() => handleUrlSafe(!urlSafe)} aria-pressed={urlSafe} className="nxtl-chip-btn">URL-safe</button>
+        <span className="nxtl-hint">
           replaces + → - and / → _
         </span>
       </div>
 
       {encoded && (
-        <div>
-          <label style={LABEL}>Base64 Output</label>
-          <div style={MONO_OUTPUT}>{encoded}</div>
-          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+        <div className="nxtl-b64-result" aria-live="polite">
+          <span className="nxtl-label" style={{ marginBottom: 0 }}>Base64 Output</span>
+          <div className="nxtl-b64-out">{encoded}</div>
+          <div className="nxtl-b64-btns">
             <CopyButton text={encoded} />
             <DataUriButton dataUri={dataUri} />
           </div>
@@ -309,37 +222,34 @@ function EncodeFileTab() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div className="nxtl-b64-tab">
       {/* Drop zone */}
       <div
         onDragOver={e => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
-        style={{
-          border: `2px dashed ${dragging ? 'var(--color-primary)' : 'rgba(255,255,255,0.12)'}`,
-          padding: '2rem 1.5rem',
-          textAlign: 'center',
-          cursor: 'pointer',
-          transition: 'border-color 150ms',
-          background: dragging ? 'rgba(26,111,212,0.05)' : 'transparent',
-        }}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef.current?.click(); } }}
+        role="button"
+        tabIndex={0}
+        aria-label="Choose a file to encode"
+        className={`nxtl-drop${dragging ? ' is-drag' : ''}`}
       >
-        <Upload size={24} style={{ margin: '0 auto 0.5rem', display: 'block', color: 'rgba(245,245,245,0.3)' }} />
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: 'rgba(245,245,245,0.4)', margin: 0 }}>
+        <Upload size={28} aria-hidden="true" className="nxtl-b64-drop-icon" />
+        <p className="nxtl-drop-title">
           Drag & drop a file, or click to browse
         </p>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'rgba(245,245,245,0.2)', marginTop: '0.25rem' }}>
+        <p className="nxtl-drop-hint">
           Max 4 MB · any file type
         </p>
         <input ref={inputRef} type="file" style={{ display: 'none' }} onChange={e => e.target.files?.[0] && processFile(e.target.files[0])} />
       </div>
 
-      {error && <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#dc2626', margin: 0 }}>{error}</p>}
+      {error && <Status tone="error">{error}</Status>}
 
       {fileName && (
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'rgba(245,245,245,0.5)', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <span>{fileName}</span>
+        <div className="nxtl-b64-meta">
+          <span className="nxtl-b64-meta-name">{fileName}</span>
           <span>{(fileSize / 1024).toFixed(1)} KB original</span>
           {encoded && <span>{(encoded.length / 1024).toFixed(1)} KB encoded</span>}
           <span>{fileMime}</span>
@@ -348,27 +258,20 @@ function EncodeFileTab() {
 
       {encoded && (
         <>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <button onClick={() => handleUrlSafe(!urlSafe)} style={urlSafe ? TOGGLE_ACTIVE : TOGGLE_BASE}>URL-safe</button>
+          <div className="nxtl-b64-safe">
+            <button type="button" onClick={() => handleUrlSafe(!urlSafe)} aria-pressed={urlSafe} className="nxtl-chip-btn">URL-safe</button>
           </div>
-          <div>
-            <label style={LABEL}>Base64 Output ({(encodedSize / 1024).toFixed(1)} KB)</label>
-            <div style={{ ...MONO_OUTPUT, maxHeight: '200px', overflowY: 'auto' }}>{encoded}</div>
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+          <div className="nxtl-b64-result">
+            <span className="nxtl-label" style={{ marginBottom: 0 }}>Base64 Output ({(encodedSize / 1024).toFixed(1)} KB)</span>
+            <div className="nxtl-b64-out nxtl-b64-out--scroll">{encoded}</div>
+            <div className="nxtl-b64-btns">
               <CopyButton text={encoded} />
               <button
+                type="button"
                 onClick={copyDataUri}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '0.4rem',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.68rem', letterSpacing: '0.08em',
-                  padding: '0.35rem 0.75rem',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  background: dataUriCopied ? 'rgba(22,163,74,0.12)' : 'transparent',
-                  color: dataUriCopied ? '#16a34a' : 'rgba(245,245,245,0.45)',
-                  cursor: 'pointer', transition: 'all 150ms',
-                }}
+                className={`nxtl-b64-copy${dataUriCopied ? ' is-copied' : ''}`}
               >
-                {dataUriCopied ? <Check size={12} /> : <Copy size={12} />}
+                {dataUriCopied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
                 Copy as Data URI
               </button>
             </div>
@@ -405,57 +308,28 @@ function DecodeTextTab() {
     debounce.current = setTimeout(() => process(val), 200);
   }
 
-  const borderColor = error ? 'rgba(220,38,38,0.5)' : 'rgba(255,255,255,0.1)';
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <label style={LABEL}>Base64 Input</label>
+    <div className="nxtl-b64-tab">
+      <div className="nx-field">
+        <label htmlFor="b64-dec-text">Base64 Input</label>
         <textarea
+          id="b64-dec-text"
           value={input}
           onChange={e => handleInput(e.target.value)}
           placeholder="Paste Base64 or data URI here…"
-          style={{
-            width: '100%',
-            minHeight: '140px',
-            resize: 'vertical',
-            background: 'rgba(10,10,10,0.5)',
-            border: `1px solid ${borderColor}`,
-            padding: '0.75rem 1rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.82rem',
-            color: 'var(--color-text)',
-            outline: 'none',
-            boxSizing: 'border-box',
-          }}
-          onFocus={e => (e.target.style.borderColor = error ? 'rgba(220,38,38,0.7)' : 'var(--color-primary)')}
-          onBlur={e => (e.target.style.borderColor = borderColor)}
+          aria-invalid={!!error}
+          spellCheck={false}
+          className="nx-input nx-textarea nxtl-b64-area nxtl-b64-area--mono"
         />
-        {error && (
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#dc2626', marginTop: '0.25rem' }}>{error}</p>
-        )}
+        {error && <Status tone="error">{error}</Status>}
       </div>
       {decoded && (
-        <div>
-          <label style={LABEL}>Decoded Text</label>
-          <div
-            style={{
-              background: 'rgba(10,10,10,0.5)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              padding: '0.75rem 1rem',
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.9rem',
-              color: 'var(--color-text)',
-              lineHeight: 1.6,
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              maxHeight: '240px',
-              overflowY: 'auto',
-            }}
-          >
+        <div className="nxtl-b64-result" aria-live="polite">
+          <span className="nxtl-label" style={{ marginBottom: 0 }}>Decoded Text</span>
+          <div className="nxtl-b64-out nxtl-b64-out--text">
             {decoded}
           </div>
-          <div style={{ marginTop: '0.5rem' }}>
+          <div className="nxtl-b64-btns">
             <CopyButton text={decoded} />
           </div>
         </div>
@@ -492,55 +366,39 @@ function DecodeFileTab() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <label style={LABEL}>Base64 Input</label>
+    <div className="nxtl-b64-tab">
+      <div className="nx-field">
+        <label htmlFor="b64-dec-file">Base64 Input</label>
         <textarea
+          id="b64-dec-file"
           value={input}
           onChange={e => { setInput(e.target.value); setError(''); }}
           placeholder="Paste Base64 or data URI to download as a file…"
-          style={{
-            width: '100%',
-            minHeight: '140px',
-            resize: 'vertical',
-            background: 'rgba(10,10,10,0.5)',
-            border: `1px solid ${error ? 'rgba(220,38,38,0.5)' : 'rgba(255,255,255,0.1)'}`,
-            padding: '0.75rem 1rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.82rem',
-            color: 'var(--color-text)',
-            outline: 'none',
-            boxSizing: 'border-box',
-          }}
+          aria-invalid={!!error}
+          spellCheck={false}
+          className="nx-input nx-textarea nxtl-b64-area nxtl-b64-area--mono"
         />
-        {error && <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#dc2626', marginTop: '0.25rem' }}>{error}</p>}
+        {error && <Status tone="error">{error}</Status>}
       </div>
-      <div>
-        <label style={LABEL}>MIME Type</label>
+      <div className="nx-field">
+        <label htmlFor="b64-mime">MIME Type</label>
         <input
+          id="b64-mime"
           type="text"
           value={mime}
           onChange={e => setMime(e.target.value)}
           placeholder="application/octet-stream"
-          style={{
-            background: 'rgba(10,10,10,0.5)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            padding: '0.4rem 0.75rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.82rem',
-            color: 'var(--color-text)',
-            outline: 'none',
-            width: '260px',
-          }}
+          spellCheck={false}
+          className="nx-input nxtl-b64-mime"
         />
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'rgba(245,245,245,0.2)', marginTop: '0.3rem' }}>
+        <p className="nxtl-hint">
           e.g. image/png · application/pdf · text/html
         </p>
       </div>
-      <div>
-        <NxButton variant="primary" size="sm" onClick={handleDownload} disabled={!input.trim()}>
+      <div className="nxtl-actions">
+        <ClayButton onClick={handleDownload} disabled={!input.trim()}>
           Download Decoded File
-        </NxButton>
+        </ClayButton>
       </div>
     </div>
   );
@@ -561,79 +419,41 @@ export default function Base64EncoderPage() {
   }
 
   return (
-    <main
-      style={{
-        padding: 'clamp(6rem, 10vw, 11rem) clamp(2rem, 7vw, 8rem) clamp(4rem, 6vw, 6rem)',
-        background: 'var(--color-bg)',
-      }}
+    <ToolShell
+      title="Base64 Encoder / Decoder"
+      outline="Encoder"
+      description="Encode and decode text and files to and from Base64. URL-safe mode and data URI support included. Everything runs locally."
+      cta
     >
-      <BackLink />
+      <div className="nxtl-panel nx-clay nxtl-b64">
+        <div className="nxtl-b64-tabs">
+          {/* Direction tabs */}
+          <Segmented
+            label="Direction"
+            options={[
+              { value: 'encode' as Direction, label: 'Encode' },
+              { value: 'decode' as Direction, label: 'Decode' },
+            ]}
+            value={dir}
+            onChange={switchDir}
+          />
 
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3.5rem, 8vw, 8rem)',
-          lineHeight: 0.9,
-          color: 'var(--color-text)',
-          marginBottom: '0.75rem',
-        }}
-      >
-        BASE64 ENCODER / DECODER
-      </h1>
-      <p
-        style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 'clamp(0.95rem, 1.3vw, 1.05rem)',
-          color: 'rgba(245,245,245,0.5)',
-          marginBottom: '2.5rem',
-          maxWidth: '42rem',
-        }}
-      >
-        Encode and decode text and files to and from Base64. URL-safe mode and data URI support included. Everything runs locally.
-      </p>
-
-      <div style={{ maxWidth: '700px' }}>
-        {/* Direction tabs */}
-        <div style={{ display: 'flex', marginBottom: '0.75rem' }}>
-          <button style={dir === 'encode' ? TOGGLE_ACTIVE : TOGGLE_BASE} onClick={() => switchDir('encode')}>Encode</button>
-          <button style={dir === 'decode' ? TOGGLE_ACTIVE : TOGGLE_BASE} onClick={() => switchDir('decode')}>Decode</button>
+          {/* Sub-tabs */}
+          <Segmented
+            label="Input type"
+            size="sm"
+            className="nxtl-b64-sub"
+            options={(['text', 'file'] as SubTab[]).map(t => ({ value: t, label: t }))}
+            value={sub}
+            onChange={setSub}
+          />
         </div>
 
-        {/* Sub-tabs */}
-        <div style={{ display: 'flex', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-          {(['text', 'file'] as SubTab[]).map(t => (
-            <button
-              key={t}
-              onClick={() => setSub(t)}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.68rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                padding: '0.5rem 1rem',
-                border: 'none',
-                borderBottom: sub === t ? '2px solid var(--color-primary)' : '2px solid transparent',
-                background: 'transparent',
-                color: sub === t ? 'var(--color-primary)' : 'rgba(245,245,245,0.35)',
-                cursor: 'pointer',
-                marginBottom: '-1px',
-                transition: 'color 150ms',
-              }}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ ...GLASS, marginBottom: '2rem' }}>
-          {dir === 'encode' && sub === 'text' && <EncodeTextTab />}
-          {dir === 'encode' && sub === 'file' && <EncodeFileTab />}
-          {dir === 'decode' && sub === 'text' && <DecodeTextTab />}
-          {dir === 'decode' && sub === 'file' && <DecodeFileTab />}
-        </div>
-
-        <ToolCTA />
+        {dir === 'encode' && sub === 'text' && <EncodeTextTab />}
+        {dir === 'encode' && sub === 'file' && <EncodeFileTab />}
+        {dir === 'decode' && sub === 'text' && <DecodeTextTab />}
+        {dir === 'decode' && sub === 'file' && <DecodeFileTab />}
       </div>
-    </main>
+    </ToolShell>
   );
 }

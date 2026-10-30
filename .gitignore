@@ -42,3 +42,18 @@ next-env.d.ts
 
 # claude code local settings
 .claude/settings.local.json
+
+# large design source files (kept locally, not deployed)
+/design-source/
+
+# design references: brand boards and mock-ups, kept locally, never published
+/design-refs/
+
+# logs and local file lists
+*.log
+/portfolio-files.txt
+
+# source PNGs kept locally; the site ships the optimised versions in the subfolders
+/public/images/3d/*.png
+/public/images/cards/*.png
+/public/images/solo-standoff/*.png

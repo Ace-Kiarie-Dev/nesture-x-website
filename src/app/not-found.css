@@ -1,0 +1,70 @@
+/* 404 page, hybrid redesign. Colours come from the --nx-* tokens, so light and dark both work. */
+
+.nx-404 {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+  color: var(--nx-text);
+}
+
+.nx404 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  /* Clears the floating nav. */
+  padding-block: 140px 72px;
+}
+
+.nx404-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.nx404-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  min-width: 0;
+}
+
+/* "PAGE NOT FOUND" falls on its own stage. Letter size follows the stage width (cqi), so
+   the line never overflows it at any width. */
+.nx404-gt {
+  --nx404-gt-h: 220px;
+  container-type: inline-size;
+  align-self: stretch;
+}
+.nx404-letter {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: min(clamp(72px, 9vw, 160px), 100cqi / 6.4);
+  letter-spacing: 0.01em;
+}
+
+.nx404-line { max-width: 460px; }
+
+.nx404-art {
+  justify-self: center;
+  width: 160px;
+  height: auto;
+  filter: drop-shadow(0 22px 26px rgba(3, 6, 16, 0.45));
+}
+[data-theme='light'] .nx404-art { filter: drop-shadow(0 18px 22px rgba(13, 27, 62, 0.2)); }
+
+@media (min-width: 768px) {
+  .nx404-wrap { padding-inline: 40px; }
+  .nx404-gt { --nx404-gt-h: 300px; }
+}
+
+@media (min-width: 1024px) {
+  .nx404-wrap { grid-template-columns: minmax(0, 1fr) 300px; gap: 64px; }
+  .nx404-art { width: 260px; }
+}

@@ -6,6 +6,11 @@
    [data-theme] toggle says. The NX navbar and footer are untouched.
    ───────────────────────────────────────────────────────────────────────────── */
 
+/* Same as BetLedger: paint behind the floating SiteNav and clear it (22px + 68px). */
+.theme-sorapesa.sp-under-nav {
+  padding-top: 90px;
+}
+
 .theme-sorapesa {
   /* Brand */
   --sp-indigo:        #6366f1;

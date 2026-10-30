@@ -2,43 +2,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { getDb } from '@/lib/mongodb';
 import { sendContactReply } from '@/emails/send';
+import { buildContactOwner } from '@/emails/contact-owner';
+import { FROM, OWNER_INBOX } from '@/lib/contactEmails';
+import {
+  BodyTooLargeError, EMAIL_RE, checkRateLimit, isHoneypotFilled, rateLimitedResponse, readJsonBody, tooLargeResponse,
+} from '@/lib/formGuard';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// ─── Email templates ────────────────────────────────────────────────────────────
-
-function internalEmail(data: {
-  name: string; email: string; phone: string;
-  service: string; brief: string; budget: string; timeline: string;
-}): string {
-  return `
-New project inquiry — Nesture-X
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-NAME:      ${data.name}
-EMAIL:     ${data.email}
-PHONE:     ${data.phone || 'Not provided'}
-
-SERVICE:   ${data.service || 'Not specified'}
-BUDGET:    ${data.budget || 'Not specified'}
-TIMELINE:  ${data.timeline || 'Not specified'}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-WHAT THEY'RE BUILDING:
-${data.brief}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Reply directly to this email to respond to ${data.name}.
-  `.trim();
-}
 
 // ─── Route handler ──────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await readJsonBody(req, 'contact');
+
+    // Honeypot filled: answer like a normal send, but store and send nothing.
+    if (isHoneypotFilled(body)) {
+      console.info('[contact] honeypot filled, submission dropped');
+      return NextResponse.json({ success: true });
+    }
+
     const { name, email, phone, service, brief, budget, timeline } = body as Record<string, string>;
 
     // Validate required fields
@@ -48,6 +31,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    if (!EMAIL_RE.test(email.trim())) {
+      return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
+    }
+
+    // Only submissions that would actually store and send count against the limit.
+    const rate = await checkRateLimit('contact', req);
+    if (!rate.allowed) return rateLimitedResponse(rate.retryAfterSeconds, true);
 
     const lead = {
       name:      name.trim(),
@@ -74,11 +64,11 @@ export async function POST(req: NextRequest) {
     // ── 2. Internal notification + auto-reply — email failure never blocks the lead ──
     const [internalResult, replyResult] = await Promise.allSettled([
       resend.emails.send({
-        from:    'Nesture-X Inquiries <inquiries@nesturex.com>',
-        to:      'nesturex@gmail.com',
+        from:    FROM.ownerInquiry,
+        to:      OWNER_INBOX,
         replyTo: email.trim(),
         subject: `New Inquiry — ${service || 'General'} — ${name}`,
-        text:    internalEmail({ name, email, phone, service, brief, budget, timeline }),
+        ...buildContactOwner({ name, email, phone, service, brief, budget, timeline }),
       }),
       sendContactReply({
         to:         email.trim(),
@@ -97,6 +87,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
 
   } catch (err) {
+    if (err instanceof BodyTooLargeError) return tooLargeResponse();
     console.error('[contact] error:', err);
     return NextResponse.json(
       { error: 'Failed to send. Please reach us directly on WhatsApp.' },

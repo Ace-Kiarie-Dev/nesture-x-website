@@ -4,6 +4,8 @@
 // (DigitalProductsGrid.tsx, full list). Define an item once here; both
 // surfaces stay in sync automatically.
 
+import { SHINKUSEN_STORE_URL } from '@/constants';
+
 export type NxOriginalCategory = 'web' | 'mobile';
 
 export interface NxOriginal {
@@ -15,6 +17,8 @@ export interface NxOriginal {
   status: string;
   statusDescription?: string;
   imageSrc: string;
+  // Accent colour for the homepage arc carousel (the slanted tab behind each card).
+  accent: string;
   // Absolute URL = external site; root-relative path = on-site landing page;
   // null = falls back to /portfolio/status/[slug]. See getProjectDestination.
   link?: string | null;
@@ -30,7 +34,8 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     statusDescription: 'Site coming soon',
     imageSrc: '/images/originals/Shinkusen-Card.webp',
-    link: 'https://shinkusen.co.ke',
+    accent: '#e5484d',
+    link: SHINKUSEN_STORE_URL,
   },
   {
     id: 'kikota',
@@ -40,6 +45,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'web',
     status: 'In Development',
     imageSrc: '/images/originals/Kikota-Card.webp',
+    accent: '#1a6fd4',
     link: '/kikota',
   },
   {
@@ -50,6 +56,7 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'Live',
     imageSrc: '/images/originals/BetLedger-Card.webp',
+    accent: '#2dd4bf',
     link: '/betledger',
   },
   {
@@ -61,17 +68,19 @@ export const NX_ORIGINALS: NxOriginal[] = [
     status: 'In Development',
     statusDescription: 'Coming to Play Store',
     imageSrc: '/images/originals/SoraPesa-Card.webp',
+    accent: '#6366f1',
     link: '/sorapesa',
   },
   {
     id: 'hikarani',
     slug: 'hikarani',
     title: 'Hikarani',
-    description: 'Faith Community App',
+    description: "Because you're not alone.",
     category: 'mobile',
     status: 'In Development',
-    imageSrc: '/images/placeholder-hikarani.svg',
-    link: null,
+    imageSrc: '/images/originals/Hikarani-Card.webp',
+    accent: '#8b5cf6',
+    link: '/hikarani',
   },
   {
     id: 'matatu-dash',
@@ -81,7 +90,20 @@ export const NX_ORIGINALS: NxOriginal[] = [
     category: 'mobile',
     status: 'In Development',
     imageSrc: '/images/originals/MatatuDash-Card.webp',
+    accent: '#facc15',
     link: '/matatu-dash',
+  },
+  {
+    id: 'solo-standoff',
+    slug: 'solo-standoff',
+    title: 'Solo Standoff',
+    description: 'Tap. Fire. Clear the grid.',
+    category: 'mobile',
+    status: 'In Development',
+    statusDescription: 'Coming soon on Android',
+    imageSrc: '/images/originals/SoloStandoff-Card.webp',
+    accent: '#E9A23B',
+    link: '/solo-standoff',
   },
   {
     id: 'no-snooze-solen',
@@ -90,8 +112,31 @@ export const NX_ORIGINALS: NxOriginal[] = [
     description: "The alarm that won't let you quit",
     category: 'mobile',
     status: 'In Development',
-    imageSrc: '/images/placeholder-no-snooze-solen.svg',
-    link: null,
+    imageSrc: '/images/originals/Solen-Card.webp',
+    accent: '#f59e0b',
+    link: '/no-snooze-solen',
+  },
+  {
+    id: 'tender-leo',
+    slug: 'tender-leo',
+    title: 'Tender Leo',
+    description: 'Compliant bids. Greater chances.',
+    category: 'web',
+    status: 'In Development',
+    imageSrc: '/images/originals/TenderLeo-Card.webp',
+    accent: '#F6B21A',
+    link: '/tender-leo',
+  },
+  {
+    id: 'hsdpm-church-app',
+    slug: 'hsdpm-church-app',
+    title: 'HSDPM Church App',
+    description: 'Sermons, devotionals, giving and prayer in one app.',
+    category: 'mobile',
+    status: 'In Development',
+    imageSrc: '/images/originals/HSDPM-Card.webp',
+    accent: '#A6122F',
+    link: '/hsdpm-church-app',
   },
 ];
 

@@ -66,12 +66,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Landing page only (the policy page has no site chrome): in dark mode, pull the
-   page up behind the transparent fixed navbar so there's no #0a0a0a seam. In
-   light mode the navbar keeps its own light backdrop. */
-[data-theme='dark'] .theme-betledger.bl-under-nav {
-  margin-top: -80px;
-  padding-top: 80px;
+/* Landing page only (the policy page has no site chrome): the page paints from the
+   top of the viewport, behind the floating SiteNav, in both themes. The padding
+   clears the nav: 22px offset + 68px pill. */
+.theme-betledger.bl-under-nav {
+  padding-top: 90px;
 }
 
 .theme-betledger ::selection {

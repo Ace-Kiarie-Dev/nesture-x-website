@@ -1,0 +1,213 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Contact section (homepage and /contact), hybrid redesign. Scoped under .nxc;
+   colours, shadows and radii come from the --nx-* tokens, so it follows the
+   light / dark toggle. Building blocks (.nx-clay, .nx-inset, .nx-eyebrow, .nx-body,
+   .nx-outline, .nx-clay-btn) live in src/styles/hybrid.css.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.nxc {
+  --nxc-gutter: 20px;
+  position: relative;
+  padding-block: clamp(72px, 10vw, 140px);
+  color: var(--nx-text);
+  font-family: var(--font-body), sans-serif;
+}
+@media (min-width: 768px) {
+  .nxc { --nxc-gutter: 40px; }
+}
+
+.nxc-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: var(--nxc-gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .nxc-wrap { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; }
+}
+
+/* ── Left column ── */
+
+.nxc-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  min-width: 0;
+}
+.nxc-title {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 2.4rem + 3vw, 84px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--nx-text);
+}
+.nxc-title-2 { display: block; }
+
+.nxc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 460px;
+  padding: 14px 22px;
+}
+.nxc-detail {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+}
+.nxc-detail dt {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nx-accent);
+}
+.nxc-detail dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  color: var(--nx-body);
+}
+.nxc-detail a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--nx-text);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.nxc-detail a:hover { color: var(--nx-accent); }
+
+/* Green-tinted glass pill for WhatsApp. */
+.nxc-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: var(--nx-radius-pill);
+  border: 1px solid rgba(37, 211, 102, 0.42);
+  background: rgba(37, 211, 102, 0.1);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--nx-shadow-glass);
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #25d366;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.nxc-whatsapp:hover { background: rgba(37, 211, 102, 0.18); border-color: rgba(37, 211, 102, 0.65); }
+.nxc-whatsapp--wide { width: 100%; }
+[data-theme='light'] .nxc-whatsapp { color: #0f7a3d; background: rgba(37, 211, 102, 0.14); }
+
+.nxc-art {
+  width: 160px;
+  height: auto;
+  margin-top: 8px;
+  pointer-events: none;
+  filter: drop-shadow(0 18px 22px rgba(3, 6, 16, 0.45));
+}
+[data-theme='light'] .nxc-art { filter: drop-shadow(0 16px 20px rgba(13, 27, 62, 0.2)); }
+@media (min-width: 1024px) {
+  .nxc-art { width: 220px; margin-top: 24px; }
+}
+
+/* ── Right column: the form panel ── */
+
+.nxc-panel {
+  border-radius: 44px;
+  padding: 24px 20px 28px;
+  min-width: 0;
+}
+@media (min-width: 768px) {
+  .nxc-panel { padding: 40px; }
+}
+
+.nxc-form { display: flex; flex-direction: column; gap: 22px; }
+.nxc-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+@media (min-width: 560px) {
+  .nxc-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+
+
+.nxc-note {
+  padding-left: 14px;
+  border-left: 3px solid var(--nx-blue);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--nx-body);
+}
+
+.nxc-submit { width: 100%; }
+.nxc-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: nxc-spin 0.8s linear infinite;
+}
+
+.nxc-footnote {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--nx-body);
+  opacity: 0.75;
+}
+
+/* ── Success ── */
+.nxc-success { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+.nxc-success-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(52px, 6vw, 80px);
+  line-height: 0.9;
+  color: var(--nx-text);
+}
+.nxc-again {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--nx-body);
+  cursor: pointer;
+}
+.nxc-again:hover { color: var(--nx-text); }
+
+.nxc-detail a:focus-visible,
+.nxc-whatsapp:focus-visible,
+.nxc-again:focus-visible {
+  outline: 3px solid var(--nx-focus);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+.nxc-whatsapp:focus-visible { border-radius: var(--nx-radius-pill); }
+
+@keyframes nxc-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nxc-spinner { animation: none; border-top-color: rgba(255, 255, 255, 0.35); }
+  .nxc-whatsapp,
+  .nxc-detail a { transition: none; }
+}
