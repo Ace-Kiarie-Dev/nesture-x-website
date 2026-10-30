@@ -21,7 +21,7 @@ const LOGO = { src: `${SITE_URL}/email/nx-logo.png`, width: 168, height: 44 };
 // then the URL is a 404). While false, the header is a pure text wordmark that
 // always renders. Flip to true after release to use the PNG, which then falls back
 // to a matching styled alt text when images are blocked.
-const USE_LOGO_IMAGE = false;
+const USE_LOGO_IMAGE = true;
 
 const C = {
   page:   '#0a0a0a',
