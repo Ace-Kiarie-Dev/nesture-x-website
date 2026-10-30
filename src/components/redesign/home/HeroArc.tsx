@@ -416,7 +416,7 @@ export default function HeroArc() {
                           fill
                           draggable={false}
                           loading={i === 0 ? 'eager' : 'lazy'}
-                          sizes="(min-width: 1100px) 180px, 70vw"
+                          sizes="(min-width: 1100px) 180px, 300px"
                         />
                       </span>
                       <span className="nxhp-arc-body">
