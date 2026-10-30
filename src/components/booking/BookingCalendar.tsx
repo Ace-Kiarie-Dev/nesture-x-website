@@ -49,9 +49,13 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onSele
 
   const [viewMonth, setViewMonth]     = useState<Date>(() => startOfMonth(earliest));
   const [viewingDate, setViewingDate] = useState<string | null>(selectedDate);
-  const [takenSlots, setTakenSlots]   = useState<string[]>([]);
-  const [loadingSlots, setLoadingSlots] = useState(false);
-  const [slotError, setSlotError]     = useState('');
+  // Availability for the day being viewed. Loading, error and taken slots are derived
+  // from it, so a result for another day never shows.
+  const [slotsResult, setSlotsResult] = useState<{ date: string; takenSlots: string[]; error: string } | null>(null);
+  const current      = slotsResult && slotsResult.date === viewingDate ? slotsResult : null;
+  const loadingSlots = !!viewingDate && !current;
+  const slotError    = current?.error ?? '';
+  const takenSlots   = current?.takenSlots ?? [];
 
   const cells = useMemo(() => getMonthGrid(viewMonth), [viewMonth]);
 
@@ -62,29 +66,31 @@ export default function BookingCalendar({ selectedDate, selectedTimeSlot, onSele
     if (!viewingDate) return; // nothing renders the slot list without a viewingDate
 
     let cancelled = false;
-    setLoadingSlots(true);
-    setSlotError('');
+    const date = viewingDate;
 
-    fetch(`/api/booking/availability?date=${viewingDate}`)
+    fetch(`/api/booking/availability?date=${date}`)
       .then(res => res.json())
       .then((data: { takenSlots?: string[]; error?: string }) => {
         if (cancelled) return;
         if (data.error) {
-          setSlotError(data.error);
-          setTakenSlots([]);
+          setSlotsResult({ date, takenSlots: [], error: data.error });
         } else {
-          setTakenSlots(data.takenSlots ?? []);
+          setSlotsResult({ date, takenSlots: data.takenSlots ?? [], error: '' });
         }
       })
-      .catch(() => { if (!cancelled) setSlotError('Could not load availability. Please try again.'); })
-      .finally(() => { if (!cancelled) setLoadingSlots(false); });
+      .catch(() => {
+        if (!cancelled) setSlotsResult({ date, takenSlots: [], error: 'Could not load availability. Please try again.' });
+      });
 
     return () => { cancelled = true; };
   }, [viewingDate]);
 
   function handleDayClick(d: Date) {
     if (!isSelectableDate(d, today)) return;
-    setViewingDate(toDateKey(d));
+    const key = toDateKey(d);
+    if (key === viewingDate) return; // same day: no refetch, as before
+    setSlotsResult(null); // show loading until this day's fetch lands
+    setViewingDate(key);
   }
 
   function handleSlotClick(slot: string) {
