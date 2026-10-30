@@ -152,6 +152,30 @@ export const HIKARANI: ProductLandingConfig = {
         a: 'Scripture-based answers that meet you where you are and replace lies with truth.',
       },
       {
+        q: 'Is Hikarani free?',
+        a: 'Yes. Hikarani is free to use.',
+      },
+      {
+        q: 'Which phones will it work on?',
+        a: 'Hikarani is built for Android phones.',
+      },
+      {
+        q: 'Is Hikarani for one denomination?',
+        a: 'No. Hikarani is for all Christians, whatever church you come from.',
+      },
+      {
+        q: 'Are my prayer requests public?',
+        a: 'No. Prayer requests are anonymous. Someone from the Hikarani team prays with you, but they never see who sent the request.',
+      },
+      {
+        q: 'Can I confess anonymously?',
+        a: 'Yes. Confessions are anonymous.',
+      },
+      {
+        q: 'Who moderates the community?',
+        a: 'A church moderates the Hikarani community.',
+      },
+      {
         q: 'Is Hikarani available yet?',
         a: "Not yet. Hikarani is coming soon. Join the launch list and we'll email you when it opens.",
       },
