@@ -1,8 +1,10 @@
 import localFont from 'next/font/local';
+import { notFound } from 'next/navigation';
 import { JsonLd } from '@/lib/jsonLd';
 import ProductLanding from '@/components/product-landing/ProductLanding';
 import { productJsonLd, productMetadata } from '@/components/product-landing/productSeo';
 import { HSDPM } from '@/data/product-landings/hsdpm';
+import { HSDPM_LIVE } from '@/lib/productPages';
 
 // Playfair Display and Inter, loaded on this route rather than in the root layout.
 // Self-hosted from src/fonts (latin, OFL).
@@ -30,9 +32,11 @@ const inter = localFont({
   fallback: ['Inter Fallback'],
 });
 
-export const metadata = productMetadata(HSDPM);
+// Hidden while HSDPM_LIVE is false: the route 404s and gets no product metadata.
+export const metadata = HSDPM_LIVE ? productMetadata(HSDPM) : {};
 
 export default function HsdpmPage() {
+  if (!HSDPM_LIVE) notFound();
   return (
     <>
       <JsonLd data={productJsonLd(HSDPM)} />

@@ -1,10 +1,21 @@
 // Routes that need site-level treatment beyond their own page.
+
+// HSDPM Church App page, hidden until church leadership approves it. While false the
+// route 404s and it is left out of the sitemap, NX Originals and every link. Content is
+// kept: set to true to restore it.
+export const HSDPM_LIVE = false;
+
 //
 // PRODUCT_LANDING_PATHS: pages built from components/product-landing/ProductLanding.
 // They get the redesigned chrome (ClientShell), the nav marks Portfolio as current
 // (SiteNav), and they are listed in the sitemap. Add a path here when a new product
 // config gets its own app/<slug>/page.tsx.
-export const PRODUCT_LANDING_PATHS: readonly string[] = ['/hikarani', '/tender-leo', '/hsdpm-church-app', '/no-snooze-solen'];
+export const PRODUCT_LANDING_PATHS: readonly string[] = [
+  '/hikarani',
+  '/tender-leo',
+  ...(HSDPM_LIVE ? ['/hsdpm-church-app'] : []),
+  '/no-snooze-solen',
+];
 
 // Pages whose skin has one fixed palette. The site theme is pinned to match (so the
 // nav and footer read against the page) and the theme switch is hidden. Read by the
@@ -13,7 +24,7 @@ export const FIXED_THEME_ROUTES: Readonly<Record<string, 'dark' | 'light'>> = {
   '/solo-standoff': 'dark',
   '/hikarani': 'light',
   '/tender-leo': 'light',
-  '/hsdpm-church-app': 'light',
+  ...(HSDPM_LIVE ? { '/hsdpm-church-app': 'light' as const } : {}),
   '/no-snooze-solen': 'dark',
 };
 
