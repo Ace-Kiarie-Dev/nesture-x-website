@@ -96,6 +96,7 @@ export default function BookingClient() {
   }
 
   function handleSlotSelect(date: string, timeSlot: string) {
+    setError('');
     setForm(p => ({ ...p, date, timeSlot }));
   }
 
@@ -113,6 +114,14 @@ export default function BookingClient() {
         body:    JSON.stringify(form),
       });
       const data = await res.json() as { error?: string; emailSent?: boolean };
+      // Slot just taken: drop it and go back to the calendar, which reloads that
+      // day's availability on mount, so Continue stays off until a new time is picked.
+      if (res.status === 409) {
+        setForm(p => ({ ...p, timeSlot: '' }));
+        setError(data.error || 'That slot was just booked by someone else. Please pick another.');
+        setStep(2);
+        return;
+      }
       if (!res.ok) throw new Error(data.error || 'Could not save your booking.');
       setEmailSent(data.emailSent !== false);
       setStep(4);
@@ -258,6 +267,10 @@ export default function BookingClient() {
                         selectedTimeSlot={form.timeSlot || null}
                         onSelect={handleSlotSelect}
                       />
+
+                      <div className="nxbk-live" aria-live="assertive">
+                        {error && <p className="nx-form-error">{error}</p>}
+                      </div>
 
                       {/* Sticky on phones so the picked date and time stay on screen. */}
                       <div className="nxbk-pickbar">
