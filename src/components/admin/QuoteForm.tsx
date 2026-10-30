@@ -710,6 +710,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     if (!quote) return;
     setSaving(true);
     setSaveError('');
+    setDlError(''); // a new action replaces any older error
     clearSavedNote();
     try {
       if (mode === 'create') {
@@ -741,6 +742,7 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     if (!quote) return;
     setSaving(true);
     setSaveError('');
+    setDlError(''); // a new action replaces any older error
     clearSavedNote();
     try {
       const payload = toInvoicePayload(quote, invoiceExtra, chosenContact);
@@ -768,6 +770,8 @@ export default function QuoteForm({ mode, initial, initialInvoice, defaultDocTyp
     if (!quote) return;
     setDownloading(true);
     setDlError('');
+    setSaveError(''); // a new action replaces any older error
+    clearSavedNote();
     try {
       if (docType === 'quotation') {
         const res = await fetch('/api/admin/quote/pdf', {
