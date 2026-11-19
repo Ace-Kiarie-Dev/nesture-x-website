@@ -111,7 +111,7 @@ export default function HomeHero() {
               height={AVATAR.height}
               loading="eager"
               fetchPriority="high"
-              sizes="(min-width: 1100px) 640px, (min-width: 768px) 400px, 296px"
+              sizes="(min-width: 1920px) 632px, (min-width: 1100px) 35vw, (min-width: 768px) 400px, 296px"
               className="nxhp-hero-avatar-img"
             />
           </div>
