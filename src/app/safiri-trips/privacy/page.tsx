@@ -27,15 +27,28 @@ export const metadata: Metadata = {
   },
 };
 
+const LINK_STYLE: CSSProperties = {
+  color: 'var(--color-primary)',
+  textDecoration: 'underline',
+  textUnderlineOffset: '3px',
+};
+
 const mail = (
-  <a href={`mailto:${HELLO}`} style={{ color: 'var(--color-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+  <a href={`mailto:${HELLO}`} style={LINK_STYLE}>
     {HELLO}
+  </a>
+);
+
+// Third party service name linked to that service's own privacy policy.
+const policyLink = (href: string, name: string) => (
+  <a href={href} style={LINK_STYLE}>
+    {name}
   </a>
 );
 
 type Block =
   | { type: 'p'; content: ReactNode }
-  | { type: 'ul'; items: string[] };
+  | { type: 'ul'; items: ReactNode[] };
 
 type Section = { heading: string; blocks: Block[] };
 
@@ -137,12 +150,33 @@ const SECTIONS: Section[] = [
       {
         type: 'ul',
         items: [
-          'OpenStreetMap: place search (Nominatim) and nearby places (Overpass)',
-          'OpenRouteService by HeiGIT: driving routes',
-          'Open-Meteo: weather and air quality',
-          'Wikipedia and Wikimedia Commons: place summaries and photos',
-          'OpenFreeMap: map tiles',
-          'Vercel: hosting for our proxy',
+          <>
+            {policyLink('https://osmfoundation.org/wiki/Privacy_Policy', 'OpenStreetMap')}
+            {': place search (Nominatim) and nearby places (Overpass)'}
+          </>,
+          <>
+            {policyLink('https://heigit.org/privacy-policy/', 'OpenRouteService by HeiGIT')}
+            {': driving routes'}
+          </>,
+          <>
+            {policyLink('https://open-meteo.com/en/terms', 'Open-Meteo')}
+            {': weather and air quality'}
+          </>,
+          <>
+            {policyLink(
+              'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy',
+              'Wikipedia and Wikimedia Commons',
+            )}
+            {': place summaries and photos'}
+          </>,
+          <>
+            {policyLink('https://openfreemap.org/tos/', 'OpenFreeMap')}
+            {': map tiles'}
+          </>,
+          <>
+            {policyLink('https://vercel.com/legal/privacy-policy', 'Vercel')}
+            {': hosting for our proxy'}
+          </>,
         ],
       },
     ],
@@ -154,6 +188,41 @@ const SECTIONS: Section[] = [
         type: 'p',
         content:
           'Open Settings in the app and tap "Delete all my data". This removes your trips, packing lists, saved maps, cached information and scheduled alerts from your phone. Uninstalling the app also removes everything. Because we store nothing about you on our servers, there is nothing else to delete.',
+      },
+    ],
+  },
+  {
+    heading: 'How long anything is kept',
+    blocks: [
+      {
+        type: 'p',
+        content:
+          'Our proxy keeps no copy of your requests. Answers from public services, such as a forecast or a route, may be cached on Vercel\'s network for up to a day so repeat requests are faster. These cached answers contain the place coordinates that were asked about, not who asked. Server error logs record the type of error only, with no search text and no exact coordinates, and are kept for Vercel\'s standard log period.',
+      },
+    ],
+  },
+  {
+    heading: 'Where requests are processed',
+    blocks: [
+      {
+        type: 'p',
+        content:
+          'Our proxy runs on Vercel\'s global network, and the public services we use are run from Europe and elsewhere. This means a request from the app may be processed outside Kenya. We send these services only what each request needs, as described above.',
+      },
+    ],
+  },
+  {
+    heading: 'Your rights',
+    blocks: [
+      {
+        type: 'p',
+        content: (
+          <>
+            {'Under Kenya\'s Data Protection Act, 2019, you can ask what personal data we hold about you, and ask us to correct or delete it. Because the app keeps your information on your phone and our servers store nothing about you, there is usually nothing for us to hand over or delete: the "Delete all my data" button removes everything. If you have a question or a request, email '}
+            {mail}
+            {' and we will reply within 14 days.'}
+          </>
+        ),
       },
     ],
   },
@@ -292,8 +361,8 @@ export default function SafiriTripsPrivacyPage() {
                   </p>
                 ) : (
                   <ul key={i} style={UL_STYLE}>
-                    {block.items.map((item) => (
-                      <li key={item} style={LI_STYLE}>
+                    {block.items.map((item, j) => (
+                      <li key={j} style={LI_STYLE}>
                         {item}
                       </li>
                     ))}
