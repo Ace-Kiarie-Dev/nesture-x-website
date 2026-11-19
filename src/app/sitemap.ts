@@ -69,6 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/nx-gaming/flappy-horror`, lastModified: '2026-10-24', changeFrequency: 'monthly' as const, priority: 0.7 },
     ...toolEntries,
     ...portfolioEntries,
+    { url: `${base}/safiri-trips/privacy`, lastModified: '2026-11-19', changeFrequency: 'yearly' as const, priority: 0.3 },
     { url: `${base}/privacy-policy`, lastModified: SITE_UPDATED, changeFrequency: 'yearly' as const, priority: 0.3 },
   ];
 }
